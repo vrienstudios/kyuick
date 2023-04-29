@@ -3,8 +3,7 @@ import sdl2
 import sdl2/ttf
 
 # Kyuick Components
-import kyuick/components/label
-import kyuick/components/kyuickObject
+import kyuick/components/[kyuickObject, label, button]
 
 # Window settings to be set before startGameLoop is called.
 const
@@ -48,7 +47,8 @@ proc testRendering*() =
     [255, 255, 255, 255], font, fSize)
   frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
   screenObjects.add frameRate
-
+  screenObjects.add newButton(100, 150, 250, 50, [25, 255, 100, 255], "Button",
+    font, fSize, [0, 0, 0, 255])
   # Debug loop assigning onLeftClick for every object, (to be deleted)
   for obj in screenObjects:
     obj.onLeftClick = clicked
