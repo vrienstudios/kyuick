@@ -41,7 +41,7 @@ proc clicked(obj: kyuickObject) =
 var frameRate: Label
 proc testRendering*() =
   # Load the TTF font 'liberation-sans.ttf' at fontsize 20.
-  let fSize: cint = 20
+  let fSize: cint = 24
   let font = ttf.openFont("liberation-sans.ttf", fSize)
   # Create our white label at (100,100) with our font.
   screenObjects.add newLabel(100, 100, "Lorem Ipsum Dollarunis",

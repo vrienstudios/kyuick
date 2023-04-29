@@ -18,7 +18,7 @@ type Label* = ref object of kyuickObject
 proc renderLabel*(renderer: RendererPtr, obj: kyuickObject) =
   let
     label: Label = (Label)obj
-    surface = ttf.renderTextSolid(label.font, label.text, color(label.color[0],
+    surface = ttf.renderTextBlended(label.font, label.text, color(label.color[0],
       label.color[1], label.color[2], label.color[3]))
     texture = renderer.createTextureFromSurface(surface)
   surface.freeSurface()
