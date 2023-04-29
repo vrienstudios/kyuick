@@ -28,4 +28,3 @@ proc renderButton*(renderer: RendererPtr, obj: kyuickObject) =
 proc newButton*(x, y, w, h: cint, bColor: array[4, int], text: string,
   font: FontPtr, fontSize: cint, tColor: array[4, int]) =
   var label = newLabel(x, y, text, tColor, font, fontSize)
-  
