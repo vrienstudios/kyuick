@@ -38,6 +38,21 @@ proc mousePress(e: MouseButtonEventPtr) =
 proc clicked(obj: kyuickObject) =
   echo "Clicked object at ($1, $2)" % [$obj.x, $obj.y]
 
+var frameRate: Label
+proc testRendering*() =
+  # Load the TTF font 'liberation-sans.ttf' at fontsize 20.
+  let fSize: cint = 20
+  let font = ttf.openFont("liberation-sans.ttf", fSize)
+  # Create our white label at (100,100) with our font.
+  screenObjects.add newLabel(100, 100, "Lorem Ipsum Dollarunis",
+    [255, 255, 255, 255], font, fSize)
+  frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
+  screenObjects.add frameRate
+
+  # Debug loop assigning onLeftClick for every object, (to be deleted)
+  for obj in screenObjects:
+    obj.onLeftClick = clicked
+
 # The game loop; everything is rendered and processed here.
 proc startGameLoop*(name: string) =
   # Init SDL2 and SDL_TTF
@@ -48,18 +63,8 @@ proc startGameLoop*(name: string) =
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
     flags = Renderer_Accelerated or Renderer_PresentVsync or Renderer_TargetTexture)
-  # Load the TTF font 'liberation-sans.ttf' at fontsize 20.
-  let fSize: cint = 30
-  let font = ttf.openFont("liberation-sans.ttf", fSize)
-  # Create our white label at (100,100) with our font.
-  screenObjects.add newLabel(100, 100, "Lorem Ipsum Dollarunis",
-    [255, 255, 255, 255], font, fSize)
-  var frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
-  screenObjects.add frameRate
 
-  # Debug loop assigning onLeftClick for every object, (to be deleted)
-  for obj in screenObjects:
-    obj.onLeftClick = clicked
+  testRendering()
 
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
@@ -78,7 +83,6 @@ proc startGameLoop*(name: string) =
           continue
     # Render our objects.
     renderer.draw()
-    renderer.render(frameRate)
     for obj in screenObjects:
       renderer.render(obj)
     renderer.present()
