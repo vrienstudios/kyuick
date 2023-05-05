@@ -8,8 +8,10 @@ type
 
     # Event-related procs.
     onLeftClick*: proc(obj: kyuickObject)
-
+    onHover*: proc(obj. kyuickObject)
 proc render*(renderer: RendererPtr, obj: kyuickObject) =
   obj.render(renderer, obj)
 proc leftClick*(obj: kyuickObject) =
   obj.onLeftClick(obj)
+proc hover*(obj: kyuickObject) =
+  obj.onHover(obj)

@@ -19,12 +19,16 @@ proc draw(renderer: RendererPtr) =
   renderer.fillRect(r)
 
 var screenObjects: seq[kyuickObject] = @[]
-
+var hoverHooked: seq[kyuickObject] = @[]
+var clickHooked: seq[kyuickObject] = @[]
+proc hookHover(kyuickObj: kyuickObject,
+  funct: proc(obj: kyuickObject)) =
+    kyuickObj.onHover = hookHover
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr) =
   case e.button:
     of 1:
-      for obj in screenObjects:
+      for obj in clickHooked:
         #echo ("mouse($1, $2) objX($3, $4) objY($5, $6)" % [$e.x, $e.y, $obj.x, $(obj.x + obj.width), $obj.y, $(obj.y + obj.height)])
         if e.x >= obj.x and e.x <= (obj.x + obj.width):
           if e.y >= obj.y and e.y <= (obj.y + obj.height):
@@ -72,11 +76,11 @@ proc startGameLoop*(name: string) =
     flags = Renderer_Accelerated or Renderer_TargetTexture)
 
   testRendering()
-  # (stress test)
-  var i: int = 0
-  while i < 100000:
-    screenObjects.add newLabel(1000, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
-    inc i
+   #(stress test)
+  #var i: int = 0
+  #while i < 100000:
+  #  screenObjects.add newLabel(1000, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
+  #  inc i
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   # Start the infinite renderer.
