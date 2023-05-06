@@ -30,7 +30,12 @@ proc hookClick*(kyuickObj: kyuickObject,
   funct: proc(obj: kyuickObject)) =
     kyuickObj.onLeftClick = funct
     clickHooked.add kyuickObj
-
+proc unHookObject*(obj: kyuickObject) =
+  obj.texture.destroy()
+  if obj.onLeftClick != nil:
+    hookClick.delete(hookClick.find(obj))
+  if obj.onHoverStatusChange != nil:
+    hookHover.delete(hookHover.find(obj))
 
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr) =
@@ -100,15 +105,12 @@ proc startGameLoop*(name: string) =
     flags = Renderer_Accelerated or Renderer_TargetTexture)
 
   testRendering()
-   #(stress test)
-   #var i: int = 0
-   #while i < 1000000:
-   #  screenObjects.add newLabel(1000, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
-   #  inc i
+
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   # Start the infinite renderer.
   while true:
+    var ticks = getTicks()
     startCounter = getPerformanceCounter()
     var event = defaultEvent
     # Check for events.
