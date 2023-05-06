@@ -21,9 +21,17 @@ proc draw(renderer: RendererPtr) =
 var screenObjects: seq[kyuickObject] = @[]
 var hoverHooked: seq[kyuickObject] = @[]
 var clickHooked: seq[kyuickObject] = @[]
-proc hookHover(kyuickObj: kyuickObject,
+
+proc hookHover*(kyuickObj: kyuickObject,
+  funct: proc(obj: kyuickObject, status: bool)) =
+    kyuickObj.onHoverStatusChange = funct
+    hoverHooked.add kyuickObj
+proc hookClick*(kyuickObj: kyuickObject,
   funct: proc(obj: kyuickObject)) =
-    kyuickObj.onHover = hookHover
+    kyuickObj.onLeftClick = funct
+    clickHooked.add kyuickObj
+
+
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr) =
   case e.button:
@@ -36,6 +44,16 @@ proc mousePress(e: MouseButtonEventPtr) =
             return
     else:
       return
+proc mouseMove(e: MouseMotionEventPtr) =
+  var hoverObjFound: bool = false
+  for obj in hoverHooked:
+    if hoverObjFound == false:
+      if e.x >= obj.x and e.x <= (obj.x + obj.width):
+        if e.y >= obj.y and e.y <= (obj.y + obj.height):
+          obj.hoverStatus = true
+          hoverObjFound = true
+          continue
+    obj.hoverStatus = false
 
 var frameRate: Label
 var memLabel: Label
@@ -48,7 +66,14 @@ var font: FontPtr
 proc clicked(obj: kyuickObject) =
   #echo "Clicked object at ($1, $2)" % [$obj.x, $obj.y]
   screenObjects.add newLabel((cint)(obj.x + 20), (cint)obj.y, "pow!", [100, 100, 100, 255], font, fSize)
-
+proc tOHover(obj: kyuickObject, b: bool) =
+  let btn: Button = (Button)obj
+  if b:
+    echo "hovered"
+    btn.foreColor = [1, 24, 21, 255]
+  else:
+    btn.foreColor = [25, 255, 100, 255]
+  return
 proc testRendering*() =
   font = ttf.openFont("liberation-sans.ttf", fSize)
   # Create our white label at (100,100) with our font.
@@ -58,11 +83,10 @@ proc testRendering*() =
   memLabel = newLabel(10, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
   screenObjects.add frameRate
   screenObjects.add memLabel
-  screenObjects.add newButton(100, 150, 250, 50, [25, 255, 100, 255], "Button",
+  var btn = newButton(100, 150, 250, 50, [25, 255, 100, 255], "Button",
     font, fSize, [0, 0, 0, 255])
-  # Debug loop assigning onLeftClick for every object, (to be deleted)
-  for obj in screenObjects:
-    obj.onLeftClick = clicked
+  screenObjects.add btn
+  hookHover(btn, tOHover)
 
 # The game loop; everything is rendered and processed here.
 proc startGameLoop*(name: string) =
@@ -77,10 +101,10 @@ proc startGameLoop*(name: string) =
 
   testRendering()
    #(stress test)
-  #var i: int = 0
-  #while i < 100000:
-  #  screenObjects.add newLabel(1000, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
-  #  inc i
+   #var i: int = 0
+   #while i < 1000000:
+   #  screenObjects.add newLabel(1000, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
+   #  inc i
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   # Start the infinite renderer.
@@ -94,6 +118,8 @@ proc startGameLoop*(name: string) =
           break
         of MouseButtonDown:
           mousePress(event.button)
+        of MouseMotion:
+          mouseMove(event.motion)
         else:
           continue
     # Render our objects.

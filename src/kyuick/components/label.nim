@@ -13,9 +13,6 @@ type Label* = ref object of kyuickObject
   text: string
   color*: array[4, int]
   font*: FontPtr
-  rect: Rect
-  texture: TexturePtr
-  renderSaved*: bool
   fontSize*: cint
 
 proc renderLabel*(renderer: RendererPtr, obj: kyuickObject) =
@@ -40,7 +37,7 @@ proc newLabel*(x, y: cint, text: string, color: array[4, int], font: FontPtr, fo
   return Label(x: x, y: y, width: w,
     height: h, text: text, color: color, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
 
-proc text*(this: Label): string = this.text
+proc text*(this: Label): string = return this.text
 proc `text=`*(this: var Label, text: string) = 
   this.text = text
   var w, h: cint = 0

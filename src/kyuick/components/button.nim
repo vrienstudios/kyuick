@@ -13,21 +13,21 @@ type Button* = ref object of kyuickObject
 
 proc renderButton*(renderer: RendererPtr, obj: kyuickObject) =
   let button: Button = (Button)obj
-  var surface = ttf.renderTextBlended(button.btnLabel.font, button.btnLabel.text, color(button.btnLabel.color[0],
-    button.btnLabel.color[1], button.btnLabel.color[2], button.btnLabel.color[3]))
-  var texture = renderer.createTextureFromSurface(surface)
-
-  surface.freeSurface()
-  defer: texture.destroy()
-
+  if button.renderSaved:
+    renderer.setDrawColor(color(button.foreColor[0], button.foreColor[1], button.foreColor[2], button.foreColor[3]))
+    renderer.fillRect(obj.rect)
+    renderLabel(renderer, button.btnLabel)
+    return
   var r = rect(cint(button.x), cint(button.y), cint(button.width), cint(button.height))
   renderer.setDrawColor(color(button.foreColor[0], button.foreColor[1], button.foreColor[2], button.foreColor[3]))
   renderer.fillRect(r)
-  renderer.copy texture, nil, addr r
+  button.rect = r
+  renderLabel(renderer, button.btnLabel)
+  button.renderSaved = true
 
 proc newButton*(x, y, w, h: cint, bColor: array[4, int], text: string,
   font: FontPtr, fontSize: cint, tColor: array[4, int]): Button =
   var label = newLabel(x, y, text, tColor, font, fontSize)
   var btn: Button = Button(x: x, y: y, width: w, height: h,
-    btnLabel: label, foreColor: bColor, render: renderButton)
+    btnLabel: label, foreColor: bColor, render: renderButton, renderSaved: false)
   return btn
