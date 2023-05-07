@@ -33,9 +33,9 @@ proc hookClick*(kyuickObj: kyuickObject,
 proc unHookObject*(obj: kyuickObject) =
   obj.texture.destroy()
   if obj.onLeftClick != nil:
-    hookClick.delete(hookClick.find(obj))
+    clickHooked.del(find(clickHooked, obj))
   if obj.onHoverStatusChange != nil:
-    hookHover.delete(hookHover.find(obj))
+    hoverHooked.del(find(hoverHooked, obj))
 
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr) =
@@ -74,10 +74,9 @@ proc clicked(obj: kyuickObject) =
 proc tOHover(obj: kyuickObject, b: bool) =
   let btn: Button = (Button)obj
   if b:
-    echo "hovered"
     btn.foreColor = [1, 24, 21, 255]
   else:
-    btn.foreColor = [25, 255, 100, 255]
+    btn.foreColor = [25, 100, 100, 255]
   return
 proc testRendering*() =
   font = ttf.openFont("liberation-sans.ttf", fSize)
@@ -88,8 +87,8 @@ proc testRendering*() =
   memLabel = newLabel(10, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
   screenObjects.add frameRate
   screenObjects.add memLabel
-  var btn = newButton(100, 150, 250, 50, [25, 255, 100, 255], "Button",
-    font, fSize, [0, 0, 0, 255])
+  var btn = newButton(100, 150, 250, 50, [25, 100, 100, 255], "Button",
+    font, fSize, [255, 255, 255, 255])
   screenObjects.add btn
   hookHover(btn, tOHover)
 
@@ -102,7 +101,7 @@ proc startGameLoop*(name: string) =
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
-    flags = Renderer_Accelerated or Renderer_TargetTexture)
+    flags = Renderer_Accelerated or Renderer_TargetTexture or Renderer_PresentVsync)
 
   testRendering()
 
