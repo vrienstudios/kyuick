@@ -1,4 +1,5 @@
 import sdl2
+
 type
   kyuickObject* = ref object of RootObj
     x*, y*: cint
@@ -13,7 +14,7 @@ type
     # A function to render hover-specific content to the control, called every frame when hoverStatus = true
     hoverRender*: proc(renderer: RendererPtr, obj: kyuickObject)
     # Event-related procs.
-    onLeftClick*: proc(obj: kyuickObject)
+    onLeftClick*: proc(obj: kyuickObject, mouseEvent: MouseButtonEventPtr)
     # When status is true, the mouse is hovering, when false, the mouse has stopped hovering.
     onHoverStatusChange*: proc(obj: kyuickObject, status: bool)
 proc render*(renderer: RendererPtr, obj: kyuickObject) =
@@ -21,8 +22,10 @@ proc render*(renderer: RendererPtr, obj: kyuickObject) =
     obj.hoverRender(renderer, obj)
     return
   obj.render(renderer, obj)
-proc leftClick*(obj: kyuickObject) =
-  obj.onLeftClick(obj)
+proc leftClick*(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
+  if obj.onLeftClick == nil:
+    return
+  obj.onLeftClick(obj, mouseEvent)
 # Manually trigger the hover function.
 proc hover*(obj: kyuickObject, b: bool) =
   obj.onHoverStatusChange(obj, b)
@@ -33,4 +36,5 @@ proc `hoverStatus=`*(this: kyuickObject, b: bool) =
   this.renderSaved = false
   this.texture.destroy()
   this.hoverStatus = b
-  this.onHoverStatusChange(this, b)
+  if this.onHoverStatusChange != nil:
+    this.onHoverStatusChange(this, b)

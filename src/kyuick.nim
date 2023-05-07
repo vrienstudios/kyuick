@@ -3,7 +3,7 @@ import sdl2
 import sdl2/ttf
 
 # Kyuick Components
-import kyuick/components/[kyuickObject, label, button]
+import kyuick/components/[kyuickObject, label, button, textInput]
 
 # Window settings to be set before startGameLoop is called.
 const
@@ -21,13 +21,14 @@ proc draw(renderer: RendererPtr) =
 var screenObjects: seq[kyuickObject] = @[]
 var hoverHooked: seq[kyuickObject] = @[]
 var clickHooked: seq[kyuickObject] = @[]
+var inFocus: kyuickObject
 
 proc hookHover*(kyuickObj: kyuickObject,
   funct: proc(obj: kyuickObject, status: bool)) =
     kyuickObj.onHoverStatusChange = funct
     hoverHooked.add kyuickObj
 proc hookClick*(kyuickObj: kyuickObject,
-  funct: proc(obj: kyuickObject)) =
+  funct: proc(obj: kyuickObject, mouseEvent: MouseButtonEventPtr)) =
     kyuickObj.onLeftClick = funct
     clickHooked.add kyuickObj
 proc unHookObject*(obj: kyuickObject) =
@@ -39,13 +40,16 @@ proc unHookObject*(obj: kyuickObject) =
 
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr) =
+  if inFocus != nil:
+    inFocus.leftClick(e)
+    return
   case e.button:
     of 1:
       for obj in clickHooked:
         #echo ("mouse($1, $2) objX($3, $4) objY($5, $6)" % [$e.x, $e.y, $obj.x, $(obj.x + obj.width), $obj.y, $(obj.y + obj.height)])
         if e.x >= obj.x and e.x <= (obj.x + obj.width):
           if e.y >= obj.y and e.y <= (obj.y + obj.height):
-            obj.leftClick()
+            obj.leftClick(e)
             return
     else:
       return
@@ -57,18 +61,36 @@ proc mouseMove(e: MouseMotionEventPtr) =
         if e.y >= obj.y and e.y <= (obj.y + obj.height):
           obj.hoverStatus = true
           hoverObjFound = true
+          inFocus = obj
           continue
+    if inFocus == obj:
+      inFocus = nil
     obj.hoverStatus = false
-
+proc textInput(textEvent: TextInputEventPtr) =
+  if not (inFocus of textInput.TextInput):
+    return
+  textInput.TextInput(inFocus).add(textEvent.text[0])
+proc textEdit(textEvent: TextEditingEventPtr) =
+  if not (inFocus of textInput.TextInput):
+    return
+  echo "WIP"
+proc textEdit(key: KeyboardEventPtr) =
+  if not (inFocus of textInput.TextInput):
+    return
+  case key.keysym.sym:
+    of cint(8): # BACKSPACE
+      textInput.TextInput(inFocus).remove()
+    else:
+      return
 var frameRate: Label
 var memLabel: Label
 
-# Load the TTF font 'liberation-sans.ttf' at fontsize 20.
+# Load the TTF font 'liberation-sans.ttf' at fontsize 24.
 let fSize: cint = 24
 var font: FontPtr
 
 # Test proc, to be deleted.
-proc clicked(obj: kyuickObject) =
+proc clicked(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   #echo "Clicked object at ($1, $2)" % [$obj.x, $obj.y]
   screenObjects.add newLabel((cint)(obj.x + 20), (cint)obj.y, "pow!", [100, 100, 100, 255], font, fSize)
 proc tOHover(obj: kyuickObject, b: bool) =
@@ -89,8 +111,14 @@ proc testRendering*() =
   screenObjects.add memLabel
   var btn = newButton(100, 150, 250, 50, [25, 100, 100, 255], "Button",
     font, fSize, [255, 255, 255, 255])
+  btn.onLeftClick = clicked
   screenObjects.add btn
   hookHover(btn, tOHover)
+
+  var textInput = newTextInput(100, 300, 250, 30, [0, 0, 0, 255],
+    "default", [255, 255, 255, 255], font, fSize)
+  screenObjects.add textInput
+  hoverHooked.add textInput
 
 # The game loop; everything is rendered and processed here.
 proc startGameLoop*(name: string) =
@@ -101,7 +129,7 @@ proc startGameLoop*(name: string) =
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
-    flags = Renderer_Accelerated or Renderer_TargetTexture or Renderer_PresentVsync)
+    flags = Renderer_Accelerated or Renderer_TargetTexture)
 
   testRendering()
 
@@ -121,6 +149,13 @@ proc startGameLoop*(name: string) =
           mousePress(event.button)
         of MouseMotion:
           mouseMove(event.motion)
+        of EventType.TextInput:
+          textInput(event.text)
+        # TODO: Write IME-compatible code.
+        of TextEditing:
+          textEdit(event.edit)
+        of KeyDown:
+          textEdit(event.key)
         else:
           continue
     # Render our objects.
