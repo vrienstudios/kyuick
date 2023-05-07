@@ -12,12 +12,6 @@ const
   WinWidth* = 980
   WinHeight* = 720
 
-# Fill screen with gray texture.
-proc draw(renderer: RendererPtr) =
-  renderer.setDrawColor 50,50,50,255
-  var r = rect(0, 0, 980, 720)
-  renderer.fillRect(r)
-
 var screenObjects: seq[kyuickObject] = @[]
 var hoverHooked: seq[kyuickObject] = @[]
 var clickHooked: seq[kyuickObject] = @[]
@@ -31,6 +25,8 @@ proc hookClick*(kyuickObj: kyuickObject,
   funct: proc(obj: kyuickObject, mouseEvent: MouseButtonEventPtr)) =
     kyuickObj.onLeftClick = funct
     clickHooked.add kyuickObj
+proc addObject*(obj: kyuickObject) =
+  screenObjects.add obj
 proc unHookObject*(obj: kyuickObject) =
   obj.texture.destroy()
   if obj.onLeftClick != nil:
@@ -66,6 +62,7 @@ proc mouseMove(e: MouseMotionEventPtr) =
     if inFocus == obj:
       inFocus = nil
     obj.hoverStatus = false
+
 proc textInput(textEvent: TextInputEventPtr) =
   if not (inFocus of textInput.TextInput):
     return
@@ -82,63 +79,25 @@ proc textEdit(key: KeyboardEventPtr) =
       textInput.TextInput(inFocus).remove()
     else:
       return
-var frameRate: Label
-var memLabel: Label
-
-# Load the TTF font 'liberation-sans.ttf' at fontsize 24.
-let fSize: cint = 24
-var font: FontPtr
-
-# Test proc, to be deleted.
-proc clicked(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
-  #echo "Clicked object at ($1, $2)" % [$obj.x, $obj.y]
-  screenObjects.add newLabel((cint)(obj.x + 20), (cint)obj.y, "pow!", [100, 100, 100, 255], font, fSize)
-proc tOHover(obj: kyuickObject, b: bool) =
-  let btn: Button = (Button)obj
-  if b:
-    btn.foreColor = [1, 24, 21, 255]
-  else:
-    btn.foreColor = [25, 100, 100, 255]
-  return
-proc testRendering*() =
-  font = ttf.openFont("liberation-sans.ttf", fSize)
-  # Create our white label at (100,100) with our font.
-  screenObjects.add newLabel(100, 100, "Lorem Ipsum Dollarunis",
-    [255, 255, 255, 255], font, fSize)
-  frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
-  memLabel = newLabel(10, 30, "Occ. Mem: ", [25, 255, 100, 255], font, fSize)
-  screenObjects.add frameRate
-  screenObjects.add memLabel
-  var btn = newButton(100, 150, 250, 50, [25, 100, 100, 255], "Button",
-    font, fSize, [255, 255, 255, 255])
-  btn.onLeftClick = clicked
-  screenObjects.add btn
-  hookHover(btn, tOHover)
-
-  var textInput = newTextInput(100, 300, 250, 30, [0, 0, 0, 255],
-    "default", [255, 255, 255, 255], font, fSize)
-  screenObjects.add textInput
-  hoverHooked.add textInput
-
+var currentFrameRate*: int = 0
 # The game loop; everything is rendered and processed here.
-proc startGameLoop*(name: string) =
+proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr)) =
   # Init SDL2 and SDL_TTF
   sdl2.init(INIT_VIDEO or INIT_TIMER or INIT_EVENTS)
   ttfInit()
+  if onInit != nil:
+    onInit()
   # Create the game window.
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
     flags = Renderer_Accelerated or Renderer_TargetTexture)
-
-  testRendering()
-
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   # Start the infinite renderer.
   while true:
-    var ticks = getTicks()
     startCounter = getPerformanceCounter()
+    var ticks = getTicks()
     var event = defaultEvent
     # Check for events.
     while pollEvent(event):
@@ -158,17 +117,18 @@ proc startGameLoop*(name: string) =
           textEdit(event.key)
         else:
           continue
+    renderer.clear()
     # Render our objects.
-    renderer.draw()
     for obj in screenObjects:
       renderer.render(obj)
+    if cRender != nil:
+      renderer.cRender()
     renderer.present()
     endCounter = getPerformanceCounter()
-    frameRate.text = "FPS: " & $(int)(1 / ((endCounter - startCounter).float /
+    currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
-    memLabel.text = "Res. Mem: " & $(getTotalMem().float / 1000.0f) & " KB" & " | Used: " & $int((getOccupiedMem().float / 1000.0f)) & " KB"
     #echo GC_getStatistics()
     #echo $len(screenObjects)
 
 when isMainModule:
-  startGameLoop("tester")
+  startGameLoop("tester", nil)
