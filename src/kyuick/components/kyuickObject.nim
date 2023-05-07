@@ -6,6 +6,7 @@ type
     width*, height*: cint
     hoverStatus: bool
     # Fields to save render information to memory for performance.
+    backgroundColor*: array[4, int]
     rect*: Rect
     texture*: TexturePtr
     renderSaved*: bool
@@ -38,3 +39,12 @@ proc `hoverStatus=`*(this: kyuickObject, b: bool) =
   this.hoverStatus = b
   if this.onHoverStatusChange != nil:
     this.onHoverStatusChange(this, b)
+proc defaultRender*(renderer: RendererPtr, this: kyuickObject) =
+  renderer.setDrawColor(color(this.backgroundColor[0], this.backgroundColor[1],
+        this.backgroundColor[2], this.backgroundColor[3]))
+  renderer.fillRect(this.rect)
+proc newKyuickObject*(x, y, width, height: cint, background: array[4, int]): kyuickObject =
+  var obj: kyuickObject = kyuickObject(x: x, y: y, width: width, height: height, backgroundColor: background)
+  obj.rect = rect(x, y, width, height)
+  obj.render = defaultRender
+  return obj

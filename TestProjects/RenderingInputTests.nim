@@ -17,12 +17,15 @@ proc clicked(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
 proc tOHover(obj: kyuickObject, b: bool) =
   let btn: Button = (Button)obj
   if b:
-    btn.foreColor = [1, 24, 21, 255]
+    btn.backgroundColor = [1, 24, 21, 255]
   else:
-    btn.foreColor = [25, 100, 100, 255]
+    btn.backgroundColor = [25, 100, 100, 255]
   return
 
 proc testRendering*() =
+  var backGround = newKyuickObject(0, 0, WinWidth, WinHeight, [25, 25, 25, 255])
+  addObject backGround
+
   font = ttf.openFont("../src/liberation-sans.ttf", fSize)
   # Create our white label at (100,100) with our font.
   addObject newLabel(100, 100, "Lorem Ipsum Dollarunis",
@@ -42,11 +45,13 @@ proc testRendering*() =
 
   addObject textInput
   hookHover textInput, nil
+
 proc init() =
   testRendering()
 proc sRender(renderer: RendererPtr) =
   frameRate.text = $currentFrameRate
-startGameLoop("Rendering Tests", init, sRender)
+
+startGameLoop("Rendering aand Input Tests", init, sRender)
 
 #var startCounter = getPerformanceCounter()
 #var endCounter = getPerformanceCounter()
