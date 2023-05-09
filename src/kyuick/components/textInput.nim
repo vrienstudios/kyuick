@@ -11,7 +11,7 @@ type TextInput* = ref object of kyuickObject
   textField: Label
   multiLine: bool
   characterLimit: int
-  widthPadding: int
+  cLength: seq[cint]
 
 proc renderTextInput*(renderer: RendererPtr, obj: kyuickObject) =
   let textInput: TextInput = (TextInput)obj
@@ -33,12 +33,13 @@ proc add*(this: TextInput, chr: char) =
   if this.cursorPosition > len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
   this.renderSaved = false
-  if chr.isUpperAscii():
-    this.widthPadding = this.widthPadding + 1
+  var w, h: cint = 0
+  discard ttf.sizeText(this.textField.font, $chr, addr w, addr h)
   var str: string = this.textField.text
   str.insert($chr, this.cursorPosition)
-  inc this.cursorPosition
   this.textField.text = str
+  this.cLength.insert(w, this.cursorPosition)
+  inc this.cursorPosition
 proc remove*(this: TextInput) =
   if len(this.textField.text) == 0:
     return
@@ -47,18 +48,28 @@ proc remove*(this: TextInput) =
   if this.cursorPosition > len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
   this.renderSaved = false
+  this.cLength.delete(this.cursorPosition)
   var str: string = this.textField.text
-  if str[this.cursorPosition - 1].isUpperAscii():
-    this.widthPadding = this.widthPadding - 1
   str.delete(this.cursorPosition - 1..this.cursorPosition - 1)
   this.textField.text = str
   dec this.cursorPosition
 proc defaultOnLeftClick*(obj: kyuickObject, mouse: MouseButtonEventPtr) =
-  var this = (TextInput)obj
+  var
+    this = (TextInput)obj
+    idx = 0
+    calcLength = 0
   let relativeX = mouse.x - obj.x
-  let wRatio = this.textField.width / len(this.textField.text)
-  this.cursorPosition = (int)floor(float(relativeX + this.widthPadding) / wRatio)
-  echo this.cursorPosition
+  echo relativeX
+  if len(this.cLength) == 0:
+    this.cursorPosition = 0
+    return
+  while calcLength < int(round(float(relativeX))) and idx < this.cLength.len:
+    calcLength = calcLength + this.cLength[idx]
+    inc idx
+  echo idx
+  this.cursorPosition = idx
+  echo this.cLength
+  echo calcLength
   return
 proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: string, color: array[4, int],
   font: FontPtr, fontSize: cint): TextInput =
@@ -68,4 +79,8 @@ proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: st
   ti.textField = tInput
   ti.render = renderTextInput
   ti.onLeftClick = defaultOnLeftClick
+  var w, h: cint = 0
+  for chr in defaultText:
+    discard ttf.sizeText(ti.textField.font, $chr, addr w, addr h)
+    ti.cLength.add w
   return ti
