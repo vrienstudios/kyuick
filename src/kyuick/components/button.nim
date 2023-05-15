@@ -18,7 +18,7 @@ proc renderButton*(renderer: RendererPtr, obj: kyuickObject) =
     renderer.fillRect(obj.rect)
     renderLabel(renderer, button.btnLabel)
     return
-  var r = rect(cint(button.x), cint(button.y), cint(button.width), cint(button.height))
+  var r = rect(button.x, button.y, button.width, button.height)
   renderer.setDrawColor(color(button.backgroundColor[0], button.backgroundColor[1],
     button.backgroundColor[2], button.backgroundColor[3]))
   renderer.fillRect(r)
