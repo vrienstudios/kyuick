@@ -66,7 +66,7 @@ proc loadDefaults*() =
   # Build Credits Scene
   var cnameLabel: Label = newLabel(0, 50, "Engine: Kyuick 0.1", [255, 255, 255, 255], font, fSize)
   cnameLabel.x = centerX - cint(nameLabel.width / 2)
-  var descLabel: Label = newLabel(0, 80, "An Engine by Vrien.", [255, 255, 255, 255], littleFont, littleFontSize)
+  var descLabel: Label = newLabel(0, 80, "An Engine by Vrien", [255, 255, 255, 255], littleFont, littleFontSize)
   descLabel.x = centerX - cint(nameLabel.width / 2)
   var returnBtn: Button = newButton(centerX - cint(nameLabel.width / 2), 100, nameLabel.width, 50, [25, 100, 100, 255], "Back",
     font, fSize, [255, 255, 255, 255])
