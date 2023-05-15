@@ -5,6 +5,7 @@ type
     x*, y*: cint
     width*, height*: cint
     hoverStatus: bool
+    autoFocusable*: bool
     # Fields to save render information to memory for performance.
     backgroundColor*: array[4, int]
     rect*: Rect

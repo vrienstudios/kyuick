@@ -13,8 +13,8 @@ const
   WinHeight* = 720
 
 var screenObjects: seq[kyuickObject] = @[]
-var hoverHooked: seq[kyuickObject] = @[]
-var clickHooked: seq[kyuickObject] = @[]
+var hoverHooked*: seq[kyuickObject] = @[]
+var clickHooked*: seq[kyuickObject] = @[]
 var inFocus: kyuickObject
 
 proc hookHover*(kyuickObj: kyuickObject,
@@ -33,6 +33,11 @@ proc unHookObject*(obj: kyuickObject) =
     clickHooked.del(find(clickHooked, obj))
   if obj.onHoverStatusChange != nil:
     hoverHooked.del(find(hoverHooked, obj))
+proc clearScene*() =
+  screenObjects = @[]
+  hoverHooked = @[]
+  clickHooked = @[]
+  inFocus = nil
 
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr) =
@@ -46,6 +51,7 @@ proc mousePress(e: MouseButtonEventPtr) =
         if e.x >= obj.x and e.x <= (obj.x + obj.width):
           if e.y >= obj.y and e.y <= (obj.y + obj.height):
             obj.leftClick(e)
+            inFocus = obj
             return
     else:
       return
@@ -57,9 +63,10 @@ proc mouseMove(e: MouseMotionEventPtr) =
         if e.y >= obj.y and e.y <= (obj.y + obj.height):
           obj.hoverStatus = true
           hoverObjFound = true
-          inFocus = obj
+          if obj.autoFocusable:
+            inFocus = obj
           continue
-    if inFocus == obj:
+    if inFocus == obj and obj.autoFocusable:
       inFocus = nil
     obj.hoverStatus = false
 

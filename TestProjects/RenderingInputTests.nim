@@ -28,22 +28,24 @@ proc testRendering*() =
 
   font = ttf.openFont("../src/liberation-sans.ttf", fSize)
   # Create our white label at (100,100) with our font.
-  addObject newLabel(100, 100, "Lorem Ipsum Dollarunis",
+  var lbl = newLabel(100, 100, "Lorem Ipsum Dollarunis",
     [255, 255, 255, 255], font, fSize)
+  addObject lbl
 
   frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
   addObject frameRate
 
   var btn = newButton(100, 150, 250, 50, [25, 100, 100, 255], "Button",
     font, fSize, [255, 255, 255, 255])
-  btn.onLeftClick = clicked
   addObject btn
+  hookClick(btn, clicked)
   hookHover(btn, tOHover)
 
   var textInput = newTextInput(100, 300, 250, 30, [0, 0, 0, 255],
     "default", [255, 255, 255, 255], font, fSize)
 
   addObject textInput
+  clickHooked.add textInput
   hookHover textInput, nil
 
 proc init() =
