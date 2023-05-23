@@ -12,6 +12,7 @@ let fSize: cint = 24
 var font: FontPtr
 let littleFontSize: cint = 12
 var littleFont: FontPtr
+
 proc clicked(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   #echo "Clicked object at ($1, $2)" % [$obj.x, $obj.y]
   addObject newLabel((cint)(obj.x + 20), (cint)obj.y, "pow!", [100, 100, 100, 255], font, fSize)

@@ -1,5 +1,5 @@
 import kyuick
-import kyuick/components/[kyuickObject, label, textInput, button]
+import kyuick/components/[kyuickObject, animatedObject, label, textInput, button]
 
 import sdl2
 import sdl2/ttf
@@ -46,8 +46,10 @@ proc testRendering*() =
 
   addObject textInput
   clickHooked.add textInput
-  hookHover textInput, nil
 
+# proc newAnimatedObject*(x, y, width, height: cint, dirOrSheet: string): animatedObject
+  var animTest = newAnimatedObject(200, 400, 64, 205, "./foo.png")
+  animatables.add animTest
 proc init() =
   testRendering()
 proc sRender(renderer: RendererPtr) =

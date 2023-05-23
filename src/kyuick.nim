@@ -1,9 +1,12 @@
 #SDL
 import sdl2
 import sdl2/ttf
+import sdl2/image
 
 # Kyuick Components
 import kyuick/components/[kyuickObject, label, button, textInput]
+
+import std/math
 
 # Window settings to be set before startGameLoop is called.
 const
@@ -12,9 +15,11 @@ const
   WinWidth* = 980
   WinHeight* = 720
 
+
 var screenObjects*: seq[kyuickObject] = @[]
 var hoverHooked*: seq[kyuickObject] = @[]
 var clickHooked*: seq[kyuickObject] = @[]
+var animatables*: seq[kyuickObject] = @[]
 var inFocus: kyuickObject
 
 proc hookHover*(kyuickObj: kyuickObject,
@@ -94,19 +99,21 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
   # Init SDL2 and SDL_TTF
   sdl2.init(INIT_VIDEO or INIT_TIMER or INIT_EVENTS)
   ttfInit()
+  # Later we can add error handling for init
+  discard image.init()
+
   if onInit != nil:
     onInit()
   # Create the game window.
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
-    flags = Renderer_Accelerated or Renderer_TargetTexture)
+    flags = Renderer_Accelerated or Renderer_TargetTexture or Renderer_PresentVSync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   # Start the infinite renderer.
   while true:
     startCounter = getPerformanceCounter()
-    var ticks = getTicks()
     var event = defaultEvent
     # Check for events.
     while pollEvent(event):
@@ -130,14 +137,21 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
     # Render our objects.
     for obj in screenObjects:
       renderer.render(obj)
+    for obj in animatables:
+      renderer.render(obj)
     if cRender != nil:
       renderer.cRender()
     renderer.present()
+
     endCounter = getPerformanceCounter()
+
     currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
+    
+    # Cap
+    #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
     #echo $len(screenObjects)
 
 when isMainModule:
-  startGameLoop("tester", nil)
+  startGameLoop("tester", nil, nil)
