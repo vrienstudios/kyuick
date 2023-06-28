@@ -48,8 +48,8 @@ proc testRendering*() =
   clickHooked.add textInput
 
 # proc newAnimatedObject*(x, y, width, height: cint, dirOrSheet: string): animatedObject
-  var animTest = newAnimatedObject(200, 400, 64, 205, "./foo.png")
-  animatables.add animTest
+  var animTest = newAnimatedObject(200, 400, 64, 205, "./foo.png", 60)
+  #animatables.add animTest
 proc init() =
   testRendering()
 proc sRender(renderer: RendererPtr) =

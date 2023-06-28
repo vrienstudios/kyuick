@@ -44,5 +44,4 @@ proc `text=`*(this: var Label, text: string) =
   discard ttf.sizeText(this.font, text, addr w, addr h)
   this.width = w
   this.height = h
-  this.texture.destroy()
   this.renderSaved = false

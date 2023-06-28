@@ -5,7 +5,7 @@ import sdl2/image
 
 # Kyuick Components
 import kyuick/components/[kyuickObject, label, button, textInput]
-
+import kyuick/scene
 import std/math
 
 # Window settings to be set before startGameLoop is called.
@@ -20,6 +20,7 @@ var screenObjects*: seq[kyuickObject] = @[]
 var hoverHooked*: seq[kyuickObject] = @[]
 var clickHooked*: seq[kyuickObject] = @[]
 var animatables*: seq[kyuickObject] = @[]
+var scenes*: seq[scene] = @[]
 var inFocus: kyuickObject
 
 proc hookHover*(kyuickObj: kyuickObject,
@@ -108,7 +109,7 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
-    flags = Renderer_Accelerated or Renderer_TargetTexture or Renderer_PresentVSync)
+    flags = Renderer_Accelerated or Renderer_PresentVSync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   # Start the infinite renderer.

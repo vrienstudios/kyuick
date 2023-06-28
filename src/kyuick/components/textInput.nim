@@ -32,7 +32,6 @@ proc add*(this: TextInput, chr: char) =
     return
   if this.cursorPosition > len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
-  this.renderSaved = false
   var w, h: cint = 0
   discard ttf.sizeText(this.textField.font, $chr, addr w, addr h)
   var str: string = this.textField.text
@@ -47,7 +46,6 @@ proc remove*(this: TextInput) =
     return
   if this.cursorPosition > len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
-  this.renderSaved = false
   this.cLength.delete(this.cursorPosition)
   var str: string = this.textField.text
   str.delete(this.cursorPosition - 1..this.cursorPosition - 1)
@@ -59,17 +57,13 @@ proc defaultOnLeftClick*(obj: kyuickObject, mouse: MouseButtonEventPtr) =
     idx = 0
     calcLength = 0
   let relativeX = mouse.x - obj.x
-  echo relativeX
   if len(this.cLength) == 0:
     this.cursorPosition = 0
     return
   while calcLength < int(round(float(relativeX))) and idx < this.cLength.len:
     calcLength = calcLength + this.cLength[idx]
     inc idx
-  echo idx
   this.cursorPosition = idx
-  echo this.cLength
-  echo calcLength
   return
 proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: string, color: array[4, int],
   font: FontPtr, fontSize: cint): TextInput =
