@@ -22,8 +22,9 @@ proc renderAnimated*(renderer: RendererPtr, obj: kyuickObject) =
     this.frameBuffer = rect(this.cFrame, 0, this.width, this.height)
     this.rect = rect(this.x, this.y, this.width, this.height)
     this.renderSaved = true
-  let current = getTicks()
-  let fU = floor(((current - this.lastUpdate).float/1000.0f).float / (1.0f/this.fps.float))
+  let 
+    current = getTicks()
+    fU = floor(((current - this.lastUpdate).float/1000.0f).float / (1.0f/this.fps.float))
   var tP: Point = point(this.x, this.y)
   if fU > 0:
     this.frameBuffer = rect(this.cFrame, 0, this.width, this.height)
