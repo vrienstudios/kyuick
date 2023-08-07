@@ -2,7 +2,7 @@
 
 version       = "0.1.0"
 author        = "VrienCo"
-description   = "A game framework meant to make game development fairly easy"
+description   = "A game framework utilizing SDL2, component based, meant to make prototyping extremely easy and quick."
 license       = "Proprietary"
 srcDir        = "src"
 

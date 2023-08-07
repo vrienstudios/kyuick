@@ -20,6 +20,11 @@ var screenObjects*: seq[kyuickObject] = @[]
 var hoverHooked*: seq[kyuickObject] = @[]
 var clickHooked*: seq[kyuickObject] = @[]
 var animatables*: seq[kyuickObject] = @[]
+
+var kinputCallBacks*: seq[proc(key: TextInputEventPtr)]
+var minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
+var mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
+
 var scenes*: seq[scene] = @[]
 var inFocus: kyuickObject
 
@@ -77,9 +82,10 @@ proc mouseMove(e: MouseMotionEventPtr) =
     if inFocus == obj:
       inFocus = nil
     obj.hoverStatus = false
-
 proc textInput(textEvent: TextInputEventPtr) =
   if not (inFocus of textInput.TextInput):
+    for callback in kinputCallBacks:
+      callback(textEvent)
     return
   textInput.TextInput(inFocus).add(textEvent.text[0])
 proc textEdit(textEvent: TextEditingEventPtr) =
@@ -102,7 +108,6 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
   ttfInit()
   # Later we can add error handling for init
   discard image.init()
-
   if onInit != nil:
     onInit()
   # Create the game window.

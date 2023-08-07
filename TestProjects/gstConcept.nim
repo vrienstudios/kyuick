@@ -1,9 +1,12 @@
 import kyuick
 import kyuick/scene
 import kyuick/components/[kyuickObject, label, textInput, button]
+import kyuick/components/imageObject
 
 import sdl2
 import sdl2/ttf
+
+import system, os
 
 var frameRate: Label
 
@@ -26,21 +29,45 @@ proc tOHover(obj: kyuickObject, b: bool) =
 
 let centerX = cint(WinWidth / 2)
 let centerY = cint(WinHeight / 2)
+
 var mainMenu: scene = scene()
 var creditsScene: scene = scene()
 var gameScene: scene = scene()
+
 var backGround = newKyuickObject(0, 0, WinWidth, WinHeight, [25, 25, 25, 255])
 
 proc loadScene(sc: scene) =
+  echo "CLEARING SCENE"
   clearScene()
   screenObjects = sc.elements
   hoverHooked = sc.hoverables
   clickHooked = sc.clickables
 
+proc mapController*(key: TextInputEventPtr) =
+  echo key.text[0]
+  var l = imageObject(gameScene.elements[0])
+  l.renderSaved = false
+  case key.text[0]:
+    of 'd':
+      l.frameBuffer = rect(l.frameBuffer.x + 20, l.frameBuffer.y, 800, 800)
+    of 'a':
+      l.frameBuffer = rect(l.frameBuffer.x - 20, l.frameBuffer.y, 800, 800)
+    of 'w':
+      l.frameBuffer = rect(l.frameBuffer.x, l.frameBuffer.y - 20, 800, 800)
+    of 's':
+      l.frameBuffer = rect(l.frameBuffer.x, l.frameBuffer.y + 20, 800, 800)
+    else:
+      return
+  gameScene.elements[0] = kyuickObject(l)
+
 proc loadCredits(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   loadScene creditsScene
 proc loadMenu(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   loadScene mainMenu
+proc loadGame(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
+  echo "LOADING GAME"
+  kyuick.kinputCallBacks.add mapController
+  loadScene gameScene
 
 proc loadDefaults*() =
   font = ttf.openFont("../src/liberation-sans.ttf", fSize)
@@ -49,7 +76,7 @@ proc loadDefaults*() =
   addObject frameRate
 
   # Build Main Menu Scene
-  var nameLabel: Label = newLabel(0, 50, "Interactive Example", [255, 255, 255, 255], font, fSize)
+  var nameLabel: Label = newLabel(0, 50, "GSG TEST", [255, 255, 255, 255], font, fSize)
   nameLabel.x = centerX - cint(nameLabel.width / 2)
 
   var dummyPlayButton: Button = newButton(centerX - cint(nameLabel.width / 2), 100, nameLabel.width, 50, [25, 100, 100, 255], "Play!",
@@ -58,12 +85,13 @@ proc loadDefaults*() =
     font, fSize, [255, 255, 255, 255])
 
   dummyPlayButton.onHoverStatusChange = tOHover
+  dummyPlayButton.onLeftClick = loadGame
   creditsButton.onHoverStatusChange = tOHover
   creditsButton.onLeftClick = loadCredits
 
   mainMenu.elements = @[background, nameLabel, dummyPlayButton, creditsButton]
   mainMenu.hoverables = @[kyuickObject(dummyPlayButton), kyuickObject(creditsButton)]
-  mainMenu.clickables = @[kyuickObject(creditsButton)]
+  mainMenu.clickables = @[kyuickObject(creditsButton), kyuickObject(dummyPlayButton)]
 
   # Build Credits Scene
   var cnameLabel: Label = newLabel(0, 50, "Engine: Kyuick 0.1", [255, 255, 255, 255], font, fSize)
@@ -80,10 +108,20 @@ proc loadDefaults*() =
   creditsScene.clickables = @[kyuickObject(returnBtn)]
 
 proc buildGameScene*() =
-    return
+    if fileExists("./testimage.png"):
+      echo "Our File Exists"
+    var innerMap = newImageObject(0, 0, kyuick.WinWidth, kyuick.WinHeight, "./testimage.png")
+    innermap.frameBuffer = rect(0, 0, 800, 800)
+    innermap.renderSaved = false
+    gameScene.elements = @[kyuickObject(innerMap)]
+
+#proc(key: TextInputEventPtr)
+
+
 proc init() =
   loadDefaults()
-  loadScene(creditsScene)
+  buildGameScene()
+  loadScene(mainMenu)
 
 proc sRender(renderer: RendererPtr) =
   frameRate.text = $currentFrameRate

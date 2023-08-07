@@ -6,18 +6,20 @@ import std/math
 type
   imageObject* = ref object of kyuickObject
     imagePath: string
+    imageloaded: bool
     frameBuffer*: Rect
 
-# TODO: Render a selected
 proc renderImage*(renderer: RendererPtr, obj: kyuickObject) =
-  var this: animatedObject = imageObject(obj)
-  if this.renderSaved != true:
+  var this: imageObject = imageObject(obj)
+  if this.imageloaded == false:
     var surface = load(this.imagePath)
-    this.tFrames = cint(surface.w / this.width)
     this.texture = renderer.createTextureFromSurface(surface)
-    this.frameBuffer = rect(this.cFrame, 0, this.width, this.height)
+    surface.freeSurface()
+    this.imageloaded = true
+  if this.renderSaved != true:
+    this.rect = rect(this.x, this.y, this.width, this.height)
     this.renderSaved = true
-  renderer.copyEx this.texture, addr this.frameBuffer, addr this.rect, cdouble(0), addr tP
+  renderer.copy this.texture, addr this.frameBuffer, addr this.rect
 
 proc newImageObject*(x, y, width, height: cint, dirOrSheet: string): imageObject =
   return imageObject(x: x, y: y, width: width, height: height, imagePath: dirOrSheet,
