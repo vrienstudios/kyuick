@@ -7,6 +7,8 @@ import sdl2/image
 import kyuick/components/[kyuickObject, label, button, textInput]
 import kyuick/scene
 import std/math
+import std/tables
+import std/sequtils
 
 # Window settings to be set before startGameLoop is called.
 const
@@ -15,19 +17,25 @@ const
   WinWidth* = 980
   WinHeight* = 720
 
+var
+  screenObjects*: seq[kyuickObject] = @[]
+  hoverHooked*: seq[kyuickObject] = @[]
+  clickHooked*: seq[kyuickObject] = @[]
+  animatables*: seq[kyuickObject] = @[]
 
-var screenObjects*: seq[kyuickObject] = @[]
-var hoverHooked*: seq[kyuickObject] = @[]
-var clickHooked*: seq[kyuickObject] = @[]
-var animatables*: seq[kyuickObject] = @[]
+  kinputCallBacks*: seq[proc(key: TextInputEventPtr)]
+  minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
+  mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
 
-var kinputCallBacks*: seq[proc(key: TextInputEventPtr)]
-var minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
-var mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
+  scenes*: seq[scene] = @[]
+  inFocus: kyuickObject
 
-var scenes*: seq[scene] = @[]
-var inFocus: kyuickObject
+  keyDownTracker = initTable[string, bool]()
 
+proc isDown*(key: string): bool =
+  if not keyDownTracker.hasKey(key):
+    return false
+  return keyDownTracker[key]
 proc hookHover*(kyuickObj: kyuickObject,
   funct: proc(obj: kyuickObject, status: bool)) =
     kyuickObj.onHoverStatusChange = funct
@@ -136,7 +144,11 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
         of TextEditing:
           textEdit(event.edit)
         of KeyDown:
-          textEdit(event.key)
+          echo event.key.keysym.scancode
+          keyDownTracker[$event.key.keysym.scancode] = true
+        of KeyUp:
+          echo event.key.keysym.scancode
+          keyDownTracker[$event.key.keysym.scancode] = false
         else:
           continue
     renderer.clear()

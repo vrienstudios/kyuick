@@ -28,7 +28,5 @@ proc renderZ*(renderer: RendererPtr, obj: kyuickObject) =
     z = z + cint(vector[2])
     renderer.drawPoint(x, y)
     
-    
-
 proc newZObject*(x, y, z: cint, vertices: seq[Vector]): zObject =
   return zObject(x: x, y: y, z: z, render: renderZ, vertices: vertices)

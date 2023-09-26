@@ -43,22 +43,28 @@ proc loadScene(sc: scene) =
   hoverHooked = sc.hoverables
   clickHooked = sc.clickables
 
-proc mapController*(key: TextInputEventPtr) =
-  echo key.text[0]
+proc frameBufferController(l: imageObject) =
+  if isDown("SDL_SCANCODE_W") or isDown("SDL_SCANCODE_UP"):
+    l.y = l.y + 10
+  if isDown("SDL_SCANCODE_A") or isDown("SDL_SCANCODE_LEFT"):
+    l.x = l.x + 10
+  if isDown("SDL_SCANCODE_S") or isDown("SDL_SCANCODE_DOWN"):
+    l.y = l.y - 10
+  if isDown("SDL_SCANCODE_D") or isDown("SDL_SCANCODE_RIGHT"):
+    l.x = l.x - 10
+  if isDown("SDL_SCANCODE_EQUALS"):
+    l.width = l.width + 100
+    l.height = l.height + 100
+  if isDown("SDL_SCANCODE_MINUS"):
+    l.width = l.width - 100
+    l.height = l.height - 100
+  gameScene.elements[0] = kyuickObject(l)
+proc mapController*() =
   var l = imageObject(gameScene.elements[0])
   l.renderSaved = false
-  case key.text[0]:
-    of 'd':
-      l.frameBuffer = rect(l.frameBuffer.x + 20, l.frameBuffer.y, 800, 800)
-    of 'a':
-      l.frameBuffer = rect(l.frameBuffer.x - 20, l.frameBuffer.y, 800, 800)
-    of 'w':
-      l.frameBuffer = rect(l.frameBuffer.x, l.frameBuffer.y - 20, 800, 800)
-    of 's':
-      l.frameBuffer = rect(l.frameBuffer.x, l.frameBuffer.y + 20, 800, 800)
-    else:
-      return
-  gameScene.elements[0] = kyuickObject(l)
+  frameBuffercontroller(l)
+  return
+  
 
 proc loadCredits(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   loadScene creditsScene
@@ -66,7 +72,6 @@ proc loadMenu(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   loadScene mainMenu
 proc loadGame(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
   echo "LOADING GAME"
-  kyuick.kinputCallBacks.add mapController
   loadScene gameScene
 
 proc loadDefaults*() =
@@ -110,8 +115,8 @@ proc loadDefaults*() =
 proc buildGameScene*() =
     if fileExists("./testimage.png"):
       echo "Our File Exists"
-    var innerMap = newImageObject(0, 0, kyuick.WinWidth, kyuick.WinHeight, "./testimage.png")
-    innermap.frameBuffer = rect(0, 0, 800, 800)
+    var innerMap = newImageObject(0, 0, 3221, 1777, "./testimage.png")
+    innermap.frameBuffer = rect(0, 0, 3221, 1777)
     innermap.renderSaved = false
     gameScene.elements = @[kyuickObject(innerMap)]
 
@@ -125,5 +130,6 @@ proc init() =
 
 proc sRender(renderer: RendererPtr) =
   frameRate.text = $currentFrameRate
+  mapController()
 
 startGameLoop("GSG | US MAP TEST", init, sRender)
