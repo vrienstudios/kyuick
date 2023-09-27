@@ -16,9 +16,6 @@ var font: FontPtr
 let littleFontSize: cint = 12
 var littleFont: FontPtr
 
-proc clicked(obj: kyuickObject, mouseEvent: MouseButtonEventPtr) =
-  #echo "Clicked object at ($1, $2)" % [$obj.x, $obj.y]
-  addObject newLabel((cint)(obj.x + 20), (cint)obj.y, "pow!", [100, 100, 100, 255], font, fSize)
 proc tOHover(obj: kyuickObject, b: bool) =
   let btn: Button = (Button)obj
   if b:
@@ -36,12 +33,42 @@ var gameScene: scene = scene()
 
 var backGround = newKyuickObject(0, 0, WinWidth, WinHeight, [25, 25, 25, 255])
 
+# Separate UI elements
+proc ui_buildCountryScene(): scene =
+  return nil
+proc ui_buildTechScene(): scene =
+  return nil
+proc ui_buildArmyScene(): scene =
+  return nil
+
+# Grouped UI elements, e.g top bar comprised of manpower, flag, eco, time controls, etc
+proc mui_buildFlagScene(): scene =
+  return nil
+## Should be graph of past 12 months depicting income/deficit
+proc mui_buildEconScene(): scene =
+  return nil
+## Time controls meant, date, +/- for time advancement; upon click, pause.
+### Implement similar system to animation, increase calculations per FPS for advancing days.
+#### Major calculations should be done every month.
+proc mui_buildTimeScene(): scene =
+  return nil
+## Tech icon + # of current techs in categories.
+proc mui_buildTechScene(): scene =
+  return nil
+## Display number of armies / of number that can be supported. On click open ui_buildArmyScene()
+proc mui_buildArmyScene(): scene =
+  return nil
+proc mui_buildTopScene(): scene =
+  return nil
+
+
 proc loadScene(sc: scene) =
   echo "CLEARING SCENE"
   clearScene()
   screenObjects = sc.elements
   hoverHooked = sc.hoverables
   clickHooked = sc.clickables
+  addObject frameRate
 
 proc frameBufferController(l: imageObject) =
   if isDown("SDL_SCANCODE_W") or isDown("SDL_SCANCODE_UP"):
@@ -78,7 +105,6 @@ proc loadDefaults*() =
   font = ttf.openFont("../src/liberation-sans.ttf", fSize)
   littleFont = ttf.openFont("../src/liberation-sans.ttf", littleFontSize)
   frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
-  addObject frameRate
 
   # Build Main Menu Scene
   var nameLabel: Label = newLabel(0, 50, "GSG TEST", [255, 255, 255, 255], font, fSize)
@@ -99,16 +125,23 @@ proc loadDefaults*() =
   mainMenu.clickables = @[kyuickObject(creditsButton), kyuickObject(dummyPlayButton)]
 
   # Build Credits Scene
-  var cnameLabel: Label = newLabel(0, 50, "Engine: Kyuick 0.1", [255, 255, 255, 255], font, fSize)
+  var cnameLabel: Label = newLabel(0, 50, "Credits!", [255, 255, 255, 255], font, fSize)
   cnameLabel.x = centerX - cint(nameLabel.width / 2)
-  var descLabel: Label = newLabel(0, 80, "An Engine by Vrien", [255, 255, 255, 255], littleFont, littleFontSize)
+  var descLabel: Label = newLabel(0, 100, "Lead Developer: ", [255, 255, 255, 255], littleFont, littleFontSize)
   descLabel.x = centerX - cint(nameLabel.width / 2)
-  var returnBtn: Button = newButton(centerX - cint(nameLabel.width / 2), 100, nameLabel.width, 50, [25, 100, 100, 255], "Back",
+  var pgm: Label = newLabel(0, 120, "Programming: ", [255, 255, 255, 255], littleFont, littleFontSize)
+  pgm.x = centerX - cint(nameLabel.width / 2)
+  var dsgn: Label = newLabel(0, 140, "Design: ", [255, 255, 255, 255], littleFont, littleFontSize)
+  dsgn.x = centerX - cint(nameLabel.width / 2)
+  var nD: Label = newLabel(0, WinHeight - 20, "Built with Nim: 1.6.13 | amd64 | 2023-05-22", [255, 255, 255, 255], littleFont, littleFontSize)
+  var nDd: Label = newLabel(0, WinHeight - 20, "Kyuick: Everice", [255, 255, 255, 255], littleFont, littleFontSize)
+  nDd.x = WinWidth - nDd.width
+  var returnBtn: Button = newButton(centerX - cint(nameLabel.width / 2), 500, nameLabel.width, 50, [25, 100, 100, 255], "Back",
     font, fSize, [255, 255, 255, 255])
   returnBtn.onHoverStatusChange = tOHover
   returnBtn.onLeftClick = loadMenu
 
-  creditsScene.elements = @[background, cnameLabel, descLabel, returnBtn]
+  creditsScene.elements = @[background, cnameLabel, pgm, dsgn, descLabel, nD, nDd, returnBtn]
   creditsScene.hoverables = @[kyuickObject(returnBtn)]
   creditsScene.clickables = @[kyuickObject(returnBtn)]
 

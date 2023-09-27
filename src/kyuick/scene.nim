@@ -9,3 +9,4 @@ type scene* = ref object of RootObj
   # When false, this means that the 'scene' acts as a single Object rather than many, so
   #   it will use its own onClick/onHover callbacks, instead of these events being passed.
   isInteractive*: bool
+
