@@ -1,6 +1,6 @@
 import kyuick
 import kyuick/scene
-import kyuick/components/[kyuickObject, label, textInput, button]
+import kyuick/components/[kyuickObject, label, textInput, button, textAlign]
 import kyuick/components/imageObject
 
 import sdl2
@@ -11,9 +11,9 @@ import system, os
 var frameRate: Label
 
 # Load the TTF font 'liberation-sans.ttf' at fontsize 24.
-let fSize: cint = 24
+let fSize: cint = 30
 var font: FontPtr
-let littleFontSize: cint = 12
+let littleFontSize: cint = 20
 var littleFont: FontPtr
 
 proc tOHover(obj: kyuickObject, b: bool) =
@@ -34,6 +34,8 @@ var gameScene: scene = scene()
 var backGround = newKyuickObject(0, 0, WinWidth, WinHeight, [25, 25, 25, 255])
 
 # Separate UI elements
+proc ui_buildProvinceScene(): scene =
+  return nil
 proc ui_buildCountryScene(): scene =
   return nil
 proc ui_buildTechScene(): scene =
@@ -107,13 +109,13 @@ proc loadDefaults*() =
   frameRate = newLabel(10, 10, "FPS: ", [25, 255, 100, 255], font, fSize)
 
   # Build Main Menu Scene
-  var nameLabel: Label = newLabel(0, 50, "GSG TEST", [255, 255, 255, 255], font, fSize)
+  var nameLabel: Label = newLabel(0, 50, "Proj. Everice", [255, 255, 255, 255], font, fSize)
   nameLabel.x = centerX - cint(nameLabel.width / 2)
 
-  var dummyPlayButton: Button = newButton(centerX - cint(nameLabel.width / 2), 100, nameLabel.width, 50, [25, 100, 100, 255], "Play!",
-    font, fSize, [255, 255, 255, 255])
+  var dummyPlayButton: Button = newButton(centerX - cint(nameLabel.width / 2), 100, nameLabel.width, 50, [25, 100, 100, 255], "New Game",
+    font, fSize, [255, 255, 255, 255], textAlignment.center)
   var creditsButton: Button = newButton(centerX - cint(nameLabel.width / 2), 200, nameLabel.width, 50, [25, 100, 100, 255], "Credits",
-    font, fSize, [255, 255, 255, 255])
+    font, fSize, [255, 255, 255, 255], textAlignment.center)
 
   dummyPlayButton.onHoverStatusChange = tOHover
   dummyPlayButton.onLeftClick = loadGame
@@ -146,8 +148,6 @@ proc loadDefaults*() =
   creditsScene.clickables = @[kyuickObject(returnBtn)]
 
 proc buildGameScene*() =
-    if fileExists("./testimage.png"):
-      echo "Our File Exists"
     var innerMap = newImageObject(0, 0, 3221, 1777, "./testimage.png")
     innermap.frameBuffer = rect(0, 0, 3221, 1777)
     innermap.renderSaved = false
@@ -165,4 +165,4 @@ proc sRender(renderer: RendererPtr) =
   frameRate.text = $currentFrameRate
   mapController()
 
-startGameLoop("GSG | US MAP TEST", init, sRender)
+startGameLoop("Everice", init, sRender)

@@ -14,8 +14,8 @@ import std/sequtils
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
-  WinWidth* = 980
-  WinHeight* = 720
+  WinWidth* = 1920
+  WinHeight* = 1080
 
 var
   screenObjects*: seq[kyuickObject] = @[]

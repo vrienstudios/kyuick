@@ -4,11 +4,14 @@ import sdl2/ttf
 
 # kyuick objects
 import kyuickObject
+import textAlign
 import label
 
 type Button* = ref object of kyuickObject
   # Text
   btnLabel*: Label
+  textAlign: textAlignment
+
 
 proc renderButton*(renderer: RendererPtr, obj: kyuickObject) =
   let button: Button = (Button)obj
@@ -27,8 +30,14 @@ proc renderButton*(renderer: RendererPtr, obj: kyuickObject) =
   button.renderSaved = true
 
 proc newButton*(x, y, w, h: cint, bColor: array[4, int], text: string,
-  font: FontPtr, fontSize: cint, tColor: array[4, int]): Button =
+  font: FontPtr, fontSize: cint, tColor: array[4, int], textAlign: textAlignment = textAlignment.left): Button =
   var label = newLabel(x, y, text, tColor, font, fontSize)
   var btn: Button = Button(x: x, y: y, width: w, height: h,
     btnLabel: label, backgroundColor: bColor, render: renderButton, renderSaved: false)
+  if textAlign == textAlignment.right:
+    label.x = (x + w) - label.width
+    return btn
+  if textAlign == textAlignment.center:
+    label.x = (x + cint(w / 2)) - cint(label.width / 2)
+    label.y = (y + cint(h / 2)) - cint(label.height / 2)
   return btn
