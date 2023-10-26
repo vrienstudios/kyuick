@@ -15,6 +15,7 @@ type Label* = ref object of kyuickObject
   font*: FontPtr
   fontSize*: cint
 
+
 proc renderLabel*(renderer: RendererPtr, obj: kyuickObject) =
   let label: Label = (Label)obj
   if label.renderSaved:

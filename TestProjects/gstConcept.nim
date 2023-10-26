@@ -43,26 +43,72 @@ proc ui_buildTechScene(): scene =
 proc ui_buildArmyScene(): scene =
   return nil
 
-# Grouped UI elements, e.g top bar comprised of manpower, flag, eco, time controls, etc
-proc mui_buildFlagScene(): scene =
-  return nil
+var playerIncomePoints: array[12, float] = [10, 7, 0, 10, -4, 0, 0, 0, 0, 0, 0, 0]
+var currentMonth: int = 1
+
+# Changes every month
+var savedRenders_EconomyGraph: seq[(cint, cint, cint, cint)] = @[]
+proc render_RenderGraph(renderer: RendererPtr, graph: kyuickObject) =
+  if graph.renderSaved:
+    for line in savedRenders_EconomyGraph:
+      renderer.drawLine(line[0], line[1], line[2], line[3])
+  var highestPoint: float = 0
+  var idx: int = 0
+  block pointCheckLoop:
+    var currPoint: float = 0
+    while idx < len(playerIncomePoints):
+      currPoint = playerIncomePoints[idx]
+      if currPoint < 0: currPoint = currPoint * -1
+      if currPoint > highestPoint: highestPoint = currPoint
+      inc idx
+    idx = 1
+    echo "high ", $highestPoint
+  # high = 1 ; low = -1 ; scaled based on width/height
+  let widthDelta: float = graph.width / 12
+  while idx < len(playerIncomePoints):
+    let 
+      delta: float = if playerIncomePoints[idx - 1] == 0: 0 else: playerIncomePoints[idx - 1] / highestPoint
+      delta2: float = if playerIncomePoints[idx] == 0: 0 else: playerIncomePoints[idx] / highestPoint
+
+      x1: cint = graph.x + cint widthDelta * float idx - 1
+      y1: cint =  graph.y + cint float -delta * float graph.height
+      x2: cint = graph.x + cint widthDelta * float (idx)
+      y2: cint = graph.y + cint float -delta2 * float graph.height
+    # TODO: Save points, so we don't have to recalculate every frame.
+    echo "1 ", x1, " ", y1, " ", delta
+    echo "2 ", x2, " ", y2, " ", delta2
+    renderer.drawLine(x1, y1, x2, y2)
+    savedRenders_EconomyGraph.add (x1, y1, x2, y2)
+    inc idx
+  graph.renderSaved = true
 ## Should be graph of past 12 months depicting income/deficit
-proc mui_buildEconScene(): scene =
-  return nil
+proc mui_buildEconGraphObject(): kyuickObject =
+  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 100, cint 100, [0, 0, 0, 0])
+  this.render = render_RenderGraph
+  return this
 ## Time controls meant, date, +/- for time advancement; upon click, pause.
 ### Implement similar system to animation, increase calculations per FPS for advancing days.
 #### Major calculations should be done every month.
-proc mui_buildTimeScene(): scene =
+proc mui_buildTimeControlObject(): kyuickObject =
   return nil
 ## Tech icon + # of current techs in categories.
-proc mui_buildTechScene(): scene =
+proc mui_buildTechPreviewObject(): kyuickObject =
   return nil
 ## Display number of armies / of number that can be supported. On click open ui_buildArmyScene()
-proc mui_buildArmyScene(): scene =
-  return nil
-proc mui_buildTopScene(): scene =
+proc mui_armyPreviewObject(): kyuickObject =
   return nil
 
+# Grouped UI elements, e.g top bar comprised of manpower, flag, eco, time controls, etc
+proc buildTopBar(playerFlag: string = ""): scene =
+  var
+    mui_TopBar: scene = scene()
+
+    playerFlag: imageObject = newImageObject(0, 0, 100, 100, playerFlag)
+    playerEcononomyPreview = mui_buildEconGraphObject()
+    playerTechPreview = mui_buildTechPreviewObject()
+    playerArmyPreview = mui_armyPreviewObject()
+    timeControl = mui_buildTimeControlObject()
+  return mui_TopBar
 
 proc loadScene(sc: scene) =
   echo "CLEARING SCENE"
@@ -116,13 +162,14 @@ proc loadDefaults*() =
     font, fSize, [255, 255, 255, 255], textAlignment.center)
   var creditsButton: Button = newButton(centerX - cint(nameLabel.width / 2), 200, nameLabel.width, 50, [25, 100, 100, 255], "Credits",
     font, fSize, [255, 255, 255, 255], textAlignment.center)
+  var testGraph = mui_buildEconGraphObject()
 
   dummyPlayButton.onHoverStatusChange = tOHover
   dummyPlayButton.onLeftClick = loadGame
   creditsButton.onHoverStatusChange = tOHover
   creditsButton.onLeftClick = loadCredits
 
-  mainMenu.elements = @[background, nameLabel, dummyPlayButton, creditsButton]
+  mainMenu.elements = @[background, nameLabel, dummyPlayButton, creditsButton, testGraph]
   mainMenu.hoverables = @[kyuickObject(dummyPlayButton), kyuickObject(creditsButton)]
   mainMenu.clickables = @[kyuickObject(creditsButton), kyuickObject(dummyPlayButton)]
 
