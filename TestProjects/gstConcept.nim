@@ -1,12 +1,12 @@
 import kyuick
 import kyuick/scene
-import kyuick/components/[kyuickObject, label, textInput, button, textAlign]
+import kyuick/components/[kyuickObject, label, textInput, button, textAlign, graphObject]
 import kyuick/components/imageObject
 
 import sdl2
 import sdl2/ttf
 
-import system, os
+import system, os, math
 
 var frameRate: Label
 
@@ -68,10 +68,11 @@ proc render_RenderGraph(renderer: RendererPtr, graph: tuple[x, y, width, height:
     echo "high ", $highestPoint
   # high = 1 ; low = -1 ; scaled based on width/height
   let 
-    widthDelta: float = graph.width / 12
+    widthDelta: float = floor(graph.width / 11)
     midPoint: float = float(graph.y) + graph.height / 2
     heightDelta: float = float(graph.height) / 2
   echo midPoint
+  echo "widthDelta ", $widthDelta
   while idx < len(playerIncomePoints):
     let 
       delta: float = if playerIncomePoints[idx - 1] == 0: 0 else: playerIncomePoints[idx - 1] / highestPoint
@@ -89,12 +90,17 @@ proc render_RenderGraph(renderer: RendererPtr, graph: tuple[x, y, width, height:
 ## Should be graph of past 12 months depicting income/deficit
 proc render_RenderEconomyPreview(renderer: RendererPtr, this: kyuickObject) =
   if this.renderSaved == false: echo "x ", this.x, " y ", this.y, " ", this.width, "x", this.height
-  
+  # Outer Border
   drawRect(renderer, this.rect)
+  var econLabel: Label = 
+    newLabel(0, this.y + 5, "Economy", [255, 255, 255, 255], littleFont, littleFontSize)
+  # Update width with calculated text-width.
+  econLabel.x = this.x + cint((this.width / 2)) - cint(econLabel.width / 2)
+  renderLabel(renderer, econLabel)
   # Boundaries for the graph
   let
     bufferX: cint = 20
-    bufferY: cint = 80
+    bufferY: cint = 40
     rectX: cint = this.x + bufferX
     rectY: cint = this.y + bufferY
     rectWidth: cint = this.width - bufferX * 2
@@ -104,7 +110,7 @@ proc render_RenderEconomyPreview(renderer: RendererPtr, this: kyuickObject) =
   render_RenderGraph(renderer, (rectX, rectY, rectWidth, rectHeight, this.renderSaved))
   this.renderSaved = true
 proc mui_buildEconGraphObject(): kyuickObject =
-  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 300, cint 300, [0, 0, 0, 0])
+  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 384, cint 300, [0, 0, 0, 0])
   this.render = render_RenderEconomyPreview
   return this
 ## Time controls meant, date, +/- for time advancement; upon click, pause.
