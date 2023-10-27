@@ -43,15 +43,18 @@ proc ui_buildTechScene(): scene =
 proc ui_buildArmyScene(): scene =
   return nil
 
-var playerIncomePoints: array[12, float] = [10, 7, 0, 10, -4, 0, 0, 0, 0, 0, 0, 0]
-var currentMonth: int = 1
+var 
+  playerIncomePoints: array[12, float] = [100, 89, 69, 43, -4, -16, -40, 0, 4, 0, -30, 0]
+  currentPlayerBalance: float = 0
+  currentMonth: int = 1
 
 # Changes every month
 var savedRenders_EconomyGraph: seq[(cint, cint, cint, cint)] = @[]
-proc render_RenderGraph(renderer: RendererPtr, graph: kyuickObject) =
+proc render_RenderGraph(renderer: RendererPtr, graph: tuple[x, y, width, height: cint, renderSaved: bool]) =
   if graph.renderSaved:
     for line in savedRenders_EconomyGraph:
       renderer.drawLine(line[0], line[1], line[2], line[3])
+    return
   var highestPoint: float = 0
   var idx: int = 0
   block pointCheckLoop:
@@ -64,27 +67,45 @@ proc render_RenderGraph(renderer: RendererPtr, graph: kyuickObject) =
     idx = 1
     echo "high ", $highestPoint
   # high = 1 ; low = -1 ; scaled based on width/height
-  let widthDelta: float = graph.width / 12
+  let 
+    widthDelta: float = graph.width / 12
+    midPoint: float = float(graph.y) + graph.height / 2
+    heightDelta: float = float(graph.height) / 2
+  echo midPoint
   while idx < len(playerIncomePoints):
     let 
       delta: float = if playerIncomePoints[idx - 1] == 0: 0 else: playerIncomePoints[idx - 1] / highestPoint
       delta2: float = if playerIncomePoints[idx] == 0: 0 else: playerIncomePoints[idx] / highestPoint
 
       x1: cint = graph.x + cint widthDelta * float idx - 1
-      y1: cint =  graph.y + cint float -delta * float graph.height
+      y1: cint = cint(midPoint) - cint(delta * heightDelta)
       x2: cint = graph.x + cint widthDelta * float (idx)
-      y2: cint = graph.y + cint float -delta2 * float graph.height
-    # TODO: Save points, so we don't have to recalculate every frame.
+      y2: cint = cint(midPoint) - cint(delta2 * heightDelta)
     echo "1 ", x1, " ", y1, " ", delta
     echo "2 ", x2, " ", y2, " ", delta2
     renderer.drawLine(x1, y1, x2, y2)
     savedRenders_EconomyGraph.add (x1, y1, x2, y2)
     inc idx
-  graph.renderSaved = true
 ## Should be graph of past 12 months depicting income/deficit
+proc render_RenderEconomyPreview(renderer: RendererPtr, this: kyuickObject) =
+  if this.renderSaved == false: echo "x ", this.x, " y ", this.y, " ", this.width, "x", this.height
+  
+  drawRect(renderer, this.rect)
+  # Boundaries for the graph
+  let
+    bufferX: cint = 20
+    bufferY: cint = 80
+    rectX: cint = this.x + bufferX
+    rectY: cint = this.y + bufferY
+    rectWidth: cint = this.width - bufferX * 2
+    rectHeight: cint = this.height - bufferY * 2
+  var innerRect = rect(rectX, rectY, rectWidth, rectHeight)
+  drawRect(renderer, innerRect)
+  render_RenderGraph(renderer, (rectX, rectY, rectWidth, rectHeight, this.renderSaved))
+  this.renderSaved = true
 proc mui_buildEconGraphObject(): kyuickObject =
-  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 100, cint 100, [0, 0, 0, 0])
-  this.render = render_RenderGraph
+  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 300, cint 300, [0, 0, 0, 0])
+  this.render = render_RenderEconomyPreview
   return this
 ## Time controls meant, date, +/- for time advancement; upon click, pause.
 ### Implement similar system to animation, increase calculations per FPS for advancing days.
