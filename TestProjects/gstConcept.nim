@@ -100,7 +100,7 @@ proc render_RenderEconomyPreview(renderer: RendererPtr, this: kyuickObject) =
   # Boundaries for the graph
   let
     bufferX: cint = 20
-    bufferY: cint = 40
+    bufferY: cint = 30
     rectX: cint = this.x + bufferX
     rectY: cint = this.y + bufferY
     rectWidth: cint = this.width - bufferX * 2
@@ -110,7 +110,7 @@ proc render_RenderEconomyPreview(renderer: RendererPtr, this: kyuickObject) =
   render_RenderGraph(renderer, (rectX, rectY, rectWidth, rectHeight, this.renderSaved))
   this.renderSaved = true
 proc mui_buildEconGraphObject(): kyuickObject =
-  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 384, cint 300, [0, 0, 0, 0])
+  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 240, cint 120, [0, 0, 0, 0])
   this.render = render_RenderEconomyPreview
   return this
 ## Time controls meant, date, +/- for time advancement; upon click, pause.
