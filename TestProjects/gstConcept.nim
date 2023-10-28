@@ -44,74 +44,15 @@ proc ui_buildArmyScene(): scene =
   return nil
 
 var 
-  playerIncomePoints: array[12, float] = [100, 89, 69, 43, -4, -16, -40, 0, 4, 0, -30, 0]
+  playerIncomePoints: seq[float] = @[100, 89, 69, 43, -4, -16, -40, 0, 4, 0, -30, 0]
   currentPlayerBalance: float = 0
   currentMonth: int = 1
 
 # Changes every month
-var savedRenders_EconomyGraph: seq[(cint, cint, cint, cint)] = @[]
-proc render_RenderGraph(renderer: RendererPtr, graph: tuple[x, y, width, height: cint, renderSaved: bool]) =
-  if graph.renderSaved:
-    for line in savedRenders_EconomyGraph:
-      renderer.drawLine(line[0], line[1], line[2], line[3])
-    return
-  var highestPoint: float = 0
-  var idx: int = 0
-  block pointCheckLoop:
-    var currPoint: float = 0
-    while idx < len(playerIncomePoints):
-      currPoint = playerIncomePoints[idx]
-      if currPoint < 0: currPoint = currPoint * -1
-      if currPoint > highestPoint: highestPoint = currPoint
-      inc idx
-    idx = 1
-    echo "high ", $highestPoint
-  # high = 1 ; low = -1 ; scaled based on width/height
-  let 
-    widthDelta: float = floor(graph.width / 11)
-    midPoint: float = float(graph.y) + graph.height / 2
-    heightDelta: float = float(graph.height) / 2
-  echo midPoint
-  echo "widthDelta ", $widthDelta
-  while idx < len(playerIncomePoints):
-    let 
-      delta: float = if playerIncomePoints[idx - 1] == 0: 0 else: playerIncomePoints[idx - 1] / highestPoint
-      delta2: float = if playerIncomePoints[idx] == 0: 0 else: playerIncomePoints[idx] / highestPoint
-
-      x1: cint = graph.x + cint widthDelta * float idx - 1
-      y1: cint = cint(midPoint) - cint(delta * heightDelta)
-      x2: cint = graph.x + cint widthDelta * float (idx)
-      y2: cint = cint(midPoint) - cint(delta2 * heightDelta)
-    echo "1 ", x1, " ", y1, " ", delta
-    echo "2 ", x2, " ", y2, " ", delta2
-    renderer.drawLine(x1, y1, x2, y2)
-    savedRenders_EconomyGraph.add (x1, y1, x2, y2)
-    inc idx
-## Should be graph of past 12 months depicting income/deficit
-proc render_RenderEconomyPreview(renderer: RendererPtr, this: kyuickObject) =
-  if this.renderSaved == false: echo "x ", this.x, " y ", this.y, " ", this.width, "x", this.height
-  # Outer Border
-  drawRect(renderer, this.rect)
-  var econLabel: Label = 
-    newLabel(0, this.y + 5, "Economy", [255, 255, 255, 255], littleFont, littleFontSize)
-  # Update width with calculated text-width.
-  econLabel.x = this.x + cint((this.width / 2)) - cint(econLabel.width / 2)
-  renderLabel(renderer, econLabel)
-  # Boundaries for the graph
-  let
-    bufferX: cint = 20
-    bufferY: cint = 30
-    rectX: cint = this.x + bufferX
-    rectY: cint = this.y + bufferY
-    rectWidth: cint = this.width - bufferX * 2
-    rectHeight: cint = this.height - bufferY * 2
-  var innerRect = rect(rectX, rectY, rectWidth, rectHeight)
-  drawRect(renderer, innerRect)
-  render_RenderGraph(renderer, (rectX, rectY, rectWidth, rectHeight, this.renderSaved))
-  this.renderSaved = true
 proc mui_buildEconGraphObject(): kyuickObject =
-  var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 240, cint 120, [0, 0, 0, 0])
-  this.render = render_RenderEconomyPreview
+  #var this: kyuickObject = newKyuickObject(cint 100, cint 600, cint 240, cint 120, [0, 0, 0, 0])
+  #this.render = render_RenderEconomyPreview
+  var this: Graph = newGraph(100, 600, 240, 120, playerIncomePoints, 20, 30, littleFont, littleFontSize, "Economy")
   return this
 ## Time controls meant, date, +/- for time advancement; upon click, pause.
 ### Implement similar system to animation, increase calculations per FPS for advancing days.
