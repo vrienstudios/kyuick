@@ -29,7 +29,7 @@ var
   minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
   mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
 
-  scenes*: seq[scene] = @[]
+  scenes*: seq[Scene] = @[]
   mainCanvas*: Scene
   canvasZoom: cint
   canvasMovable: bool
@@ -72,7 +72,7 @@ proc loadLevelData(folder: string): bool =
   # TODO: load settings and data from file.
   gameFolder = folder
   # Load the province map
-  mainCanvas = newImageObject(0, 0, 3221, 1777, folder / "provMap.png")
+  mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, folder / "provMap.png")
   mainCanvas.renderSaved = false
   # Load Level Data
   return true
@@ -126,6 +126,8 @@ proc frameBufferController() =
     discard getMouseState(mouseCurrentX, mouseCurrentY)
     newY = mainCanvas.y - (mouseXYTracker.y - mouseCurrentY)
     newX = mainCanvas.x - (mouseXYTracker.x - mouseCurrentX)
+    echo newY
+    echo newX
     if newY <= 0 and newY >= WinHeight - mainCanvas.height:
       mainCanvas.y = newY
     if newX <= 0 and newX >= WinWidth - mainCanvas.width:
@@ -150,14 +152,16 @@ proc frameBufferController() =
   mainCanvas.renderSaved = false
 var currentFrameRate*: int = 0
 # The game loop; everything is rendered and processed here.
-proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr)) =
+proc startGameLoop*(name: string) =
   # Init SDL2 and SDL_TTF
   sdl2.init(INIT_VIDEO or INIT_TIMER or INIT_EVENTS)
   ttfInit()
+  var ffont = ttf.openFont("./liberation-sans.ttf", cint(18))
+  var thisTestLabel = 
+    newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
+  mainCanvas.elements.add thisTestLabel
   # Later we can add error handling for init
   discard image.init()
-  if onInit != nil:
-    onInit()
   # Create the game window.
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
   # Create our renderer with V-Sync
@@ -190,19 +194,11 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
           continue
     renderer.clear()
     frameBufferController()
-    renderer.render(mainCanvas)
-    # Render our objects.
-    for obj in screenObjects:
-      renderer.render(obj)
-    for obj in animatables:
-      renderer.render(obj)
-    if cRender != nil:
-      renderer.cRender()
+    render(mainCanvas, renderer)
     renderer.present()
     endCounter = getPerformanceCounter()
     currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
-
     # Cap
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
@@ -210,5 +206,8 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
 
 when isMainModule:
   canvasZoom = 1
-  mainCanvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
-  startGameLoop("tester", nil, nil)
+  mainCanvas = Scene()
+  mainCanvas.width = 3221
+  mainCanvas.height = 1777
+  mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
+  startGameLoop("tester")

@@ -22,7 +22,6 @@ proc renderImage*(renderer: RendererPtr, obj: kyuickObject) =
     this.imageloaded = true
   if this.renderSaved != true:
     this.rect = rect(this.x, this.y, this.width, this.height)
-    this.renderSaved = true
   renderer.copy this.texture, nil, addr this.rect
   return
 
