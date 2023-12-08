@@ -16,7 +16,7 @@ type
 proc renderAnimated*(renderer: RendererPtr, obj: kyuickObject) =
   var this: animatedObject = animatedObject(obj)
   if this.renderSaved != true:
-    var surface = load(this.animSheetPath)
+    var surface = load(cstring(this.animSheetPath))
     this.tFrames = cint(surface.w / this.width)
     this.texture = renderer.createTextureFromSurface(surface)
     this.frameBuffer = rect(this.cFrame, 0, this.width, this.height)

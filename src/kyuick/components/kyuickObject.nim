@@ -8,6 +8,7 @@ type
     autoFocusable*: bool
     # Fields to save render information to memory for performance.
     backgroundColor*: array[4, int]
+    foregroundColor*: array[4, int]
     rect*: Rect
     texture*: TexturePtr
     renderSaved*: bool

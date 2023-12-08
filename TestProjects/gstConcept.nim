@@ -71,7 +71,7 @@ proc buildTopBar(playerFlag: string = ""): scene =
   var
     mui_TopBar: scene = scene()
 
-    playerFlag: imageObject = newImageObject(0, 0, 100, 100, playerFlag)
+    playerFlag: imageObject = newImageObject(0, 0, 100, 200, playerFlag)
     playerEcononomyPreview = mui_buildEconGraphObject()
     playerTechPreview = mui_buildTechPreviewObject()
     playerArmyPreview = mui_armyPreviewObject()
@@ -165,7 +165,6 @@ proc loadDefaults*() =
 proc buildGameScene*() =
     var innerMap = newImageObject(0, 0, 3221, 1777, "./testimage.png")
     innermap.frameBuffer = rect(0, 0, 3221, 1777)
-    innermap.renderSaved = false
     gameScene.elements = @[kyuickObject(innerMap)]
 
 #proc(key: TextInputEventPtr)

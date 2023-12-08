@@ -1,12 +1,19 @@
 import components/kyuickObject
 
-# This is useful for grouping UI-elements for ease of use.
-type scene* = ref object of RootObj
-  # TODO: simplify this to only use one sequence or one proc to add objects.
+# A grouping of elements, which will sometimes have a custom render proc.
+# In the case of the main Scene in the engine, all elements are relative to the main element.
+type Scene* = ref object of RootObj
+  x, y, width*, height*: cint
+
   elements*: seq[kyuickObject]
   hoverables*: seq[kyuickObject]
   clickables*: seq[kyuickObject]
-  # When false, this means that the 'scene' acts as a single Object rather than many, so
-  #   it will use its own onClick/onHover callbacks, instead of these events being passed.
   isInteractive*: bool
+  renderSaved*: bool
+  render*: proc(renderer: RendererPtr, scene: Scene)
 
+# Methods to enumerate elements and shift their x/y values.
+method `x=`(this: var Scene, x: cint) =
+  return
+method `y=`(this: var Scene, y: cint) =
+  return

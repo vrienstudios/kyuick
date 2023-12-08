@@ -22,7 +22,7 @@ proc renderLabel*(renderer: RendererPtr, obj: kyuickObject) =
     renderer.copy label.texture, nil, addr label.rect   
     return
   let
-    surface = ttf.renderTextBlended(label.font, label.text, color(label.color[0],
+    surface = ttf.renderTextBlended(label.font, cstring(label.text), color(label.color[0],
       label.color[1], label.color[2], label.color[3]))
     texture = renderer.createTextureFromSurface(surface)
   surface.freeSurface()

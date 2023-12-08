@@ -4,11 +4,13 @@ import sdl2/ttf
 import sdl2/image
 
 # Kyuick Components
-import kyuick/components/[kyuickObject, label, button, textInput]
+import kyuick/components/[kyuickObject, label, button, textInput, imageObject, graphObject, animatedObject]
 import kyuick/scene
 import std/math
 import std/tables
 import std/sequtils
+import std/os
+import std/strutils
 
 # Window settings to be set before startGameLoop is called.
 const
@@ -28,9 +30,16 @@ var
   mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
 
   scenes*: seq[scene] = @[]
+  mainCanvas*: Scene
+  canvasZoom: cint
+  canvasMovable: bool
   inFocus: kyuickObject
-
+  fontsLoaded: seq[(string, FontPtr)]
   keyDownTracker = initTable[string, bool]()
+  mouseXYTracker: tuple[x, y: cint] = (0, 0)
+  # Game Content
+  gameFolder*: string
+  wrapMap: bool
 
 proc isDown*(key: string): bool =
   if not keyDownTracker.hasKey(key):
@@ -59,9 +68,27 @@ proc clearScene*() =
   hoverHooked = @[]
   clickHooked = @[]
   inFocus = nil
-
+proc loadLevelData(folder: string): bool =
+  # TODO: load settings and data from file.
+  gameFolder = folder
+  # Load the province map
+  mainCanvas = newImageObject(0, 0, 3221, 1777, folder / "provMap.png")
+  mainCanvas.renderSaved = false
+  # Load Level Data
+  return true
+proc loadFont(fontPath: string, fontSize: cint): FontPtr =
+  var ffont = ttf.openFont(fontPath, fontSize)
+  fontsLoaded.add((path: fontPath, font: ffont))
+  return ffont
 # Process mouse clicks and calculate object clicked.
-proc mousePress(e: MouseButtonEventPtr) =
+proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
+  if e.button == 2:
+    keyDownTracker["SDL_BUTTON_MIDDLE"] = isDown
+    mouseXYTracker.x = e.x
+    mouseXYTracker.y = e.y
+    return
+  if isDown == false:
+    return
   if inFocus != nil:
     inFocus.leftClick(e)
     return
@@ -90,24 +117,37 @@ proc mouseMove(e: MouseMotionEventPtr) =
     if inFocus == obj:
       inFocus = nil
     obj.hoverStatus = false
-proc textInput(textEvent: TextInputEventPtr) =
-  if not (inFocus of textInput.TextInput):
-    for callback in kinputCallBacks:
-      callback(textEvent)
+proc frameBufferController() =
+  #if mainCanvas.x + mainCanvas.width > mainCanvas.width:
+  if isDown("SDL_BUTTON_MIDDLE"):
+    var 
+      mouseCurrentX, mouseCurrentY: cint
+      newX, newY: cint
+    discard getMouseState(mouseCurrentX, mouseCurrentY)
+    newY = mainCanvas.y - (mouseXYTracker.y - mouseCurrentY)
+    newX = mainCanvas.x - (mouseXYTracker.x - mouseCurrentX)
+    if newY <= 0 and newY >= WinHeight - mainCanvas.height:
+      mainCanvas.y = newY
+    if newX <= 0 and newX >= WinWidth - mainCanvas.width:
+      mainCanvas.x = newX
+    mainCanvas.renderSaved = false
+    mouseXYTracker.y = mouseCurrentY
+    mouseXYTracker.x = mouseCurrentX
     return
-  textInput.TextInput(inFocus).add(textEvent.text[0])
-proc textEdit(textEvent: TextEditingEventPtr) =
-  if not (inFocus of textInput.TextInput):
-    return
-  echo "WIP"
-proc textEdit(key: KeyboardEventPtr) =
-  if not (inFocus of textInput.TextInput):
-    return
-  case key.keysym.sym:
-    of cint(8): # BACKSPACE
-      textInput.TextInput(inFocus).remove()
-    else:
-      return
+  if isDown("SDL_SCANCODE_W") or isDown("SDL_SCANCODE_UP"):
+    if mainCanvas.y <= 0:
+      mainCanvas.y = mainCanvas.y + 10
+  if isDown("SDL_SCANCODE_S") or isDown("SDL_SCANCODE_DOWN"):
+    if (mainCanvas.y + mainCanvas.height) >= WinHeight:
+      mainCanvas.y = mainCanvas.y - 10
+  if isDown("SDL_SCANCODE_A") or isDown("SDL_SCANCODE_LEFT"):
+    if mainCanvas.x <= 0:
+      mainCanvas.x = mainCanvas.x + 10
+  if isDown("SDL_SCANCODE_D") or isDown("SDL_SCANCODE_RIGHT"):
+    if mainCanvas.x + mainCanvas.width >= WinWidth:
+      mainCanvas.x = mainCanvas.x - 10
+      
+  mainCanvas.renderSaved = false
 var currentFrameRate*: int = 0
 # The game loop; everything is rendered and processed here.
 proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr)) =
@@ -136,13 +176,10 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
           break
         of MouseButtonDown:
           mousePress(event.button)
+        of MouseButtonUp:
+          mousePress(event.button, false)
         of MouseMotion:
           mouseMove(event.motion)
-        of EventType.TextInput:
-          textInput(event.text)
-        # TODO: Write IME-compatible code.
-        of TextEditing:
-          textEdit(event.edit)
         of KeyDown:
           echo event.key.keysym.scancode
           keyDownTracker[$event.key.keysym.scancode] = true
@@ -152,6 +189,8 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
         else:
           continue
     renderer.clear()
+    frameBufferController()
+    renderer.render(mainCanvas)
     # Render our objects.
     for obj in screenObjects:
       renderer.render(obj)
@@ -160,16 +199,16 @@ proc startGameLoop*(name: string, onInit: proc(), cRender: proc(r: RendererPtr))
     if cRender != nil:
       renderer.cRender()
     renderer.present()
-
     endCounter = getPerformanceCounter()
-
     currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
-    
+
     # Cap
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
     #echo $len(screenObjects)
 
 when isMainModule:
+  canvasZoom = 1
+  mainCanvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
   startGameLoop("tester", nil, nil)

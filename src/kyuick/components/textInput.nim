@@ -33,7 +33,7 @@ proc add*(this: TextInput, chr: char) =
   if this.cursorPosition > len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
   var w, h: cint = 0
-  discard ttf.sizeText(this.textField.font, $chr, addr w, addr h)
+  discard ttf.sizeText(this.textField.font, cstring($chr), addr w, addr h)
   var str: string = this.textField.text
   str.insert($chr, this.cursorPosition)
   this.textField.text = str
@@ -75,6 +75,6 @@ proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: st
   ti.onLeftClick = defaultOnLeftClick
   var w, h: cint = 0
   for chr in defaultText:
-    discard ttf.sizeText(ti.textField.font, $chr, addr w, addr h)
+    discard ttf.sizeText(ti.textField.font, cstring($chr), addr w, addr h)
     ti.cLength.add w
   return ti
