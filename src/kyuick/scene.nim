@@ -9,8 +9,8 @@ type Scene* = ref object of RootObj
   x, y, width*, height*: cint
   canvas*: imageObject
   elements*: seq[kyuickObject]
-  hoverables*: seq[ptr kyuickObject]
-  clickables*: seq[ptr kyuickObject]
+  hoverables*: seq[kyuickObject]
+  clickables*: seq[kyuickObject]
   isInteractive*: bool
   renderSaved*: bool
 
@@ -36,7 +36,6 @@ proc add*(this: Scene, kyuickObj: kyuickObject) =
 proc del*(this: Scene, kyuickObj: kyuickObject) =
   this.elements.delete(this.elements.find(kyuickObj))
 proc render*(this: Scene, renderer: RendererPtr) =
-  renderer.render(this.canvas)
+  if this.canvas != nil: renderer.render(this.canvas)
   for el in this.elements:
-    el.renderSaved = false
     renderer.render(el)

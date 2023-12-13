@@ -20,16 +20,9 @@ const
   WinHeight* = 1080
 
 var
-  screenObjects*: seq[kyuickObject] = @[]
-  hoverHooked*: seq[kyuickObject] = @[]
-  clickHooked*: seq[kyuickObject] = @[]
-  animatables*: seq[kyuickObject] = @[]
-
   kinputCallBacks*: seq[proc(key: TextInputEventPtr)]
   minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
   mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
-
-  scenes*: seq[Scene] = @[]
   mainCanvas*: Scene
   canvasZoom: cint
   canvasMovable: bool
@@ -40,34 +33,14 @@ var
   # Game Content
   gameFolder*: string
   wrapMap: bool
+  # Default Font and size
+  defaultFont: FontPtr
+  defaultSize: cint
 
 proc isDown*(key: string): bool =
   if not keyDownTracker.hasKey(key):
     return false
   return keyDownTracker[key]
-proc hookHover*(kyuickObj: kyuickObject,
-  funct: proc(obj: kyuickObject, status: bool)) =
-    kyuickObj.onHoverStatusChange = funct
-    hoverHooked.add kyuickObj
-proc hookClick*(kyuickObj: kyuickObject,
-  funct: proc(obj: kyuickObject, mouseEvent: MouseButtonEventPtr)) =
-    kyuickObj.onLeftClick = funct
-    clickHooked.add kyuickObj
-proc addObject*(obj: kyuickObject) =
-  screenObjects.add obj
-proc unHookObject*(obj: kyuickObject) =
-  obj.texture.destroy()
-  if obj.onLeftClick != nil:
-    clickHooked.del(find(clickHooked, obj))
-  if obj.onHoverStatusChange != nil:
-    hoverHooked.del(find(hoverHooked, obj))
-proc clearScene*() =
-  screenObjects = @[]
-  for obj in hoverHooked:
-    obj.hoverStatus = false
-  hoverHooked = @[]
-  clickHooked = @[]
-  inFocus = nil
 proc loadLevelData(folder: string): bool =
   # TODO: load settings and data from file.
   gameFolder = folder
@@ -94,7 +67,7 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
     return
   case e.button:
     of 1:
-      for obj in clickHooked:
+      for obj in mainCanvas.clickables:
         #echo ("mouse($1, $2) objX($3, $4) objY($5, $6)" % [$e.x, $e.y, $obj.x, $(obj.x + obj.width), $obj.y, $(obj.y + obj.height)])
         if e.x >= obj.x and e.x <= (obj.x + obj.width):
           if e.y >= obj.y and e.y <= (obj.y + obj.height):
@@ -105,7 +78,7 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
       return
 proc mouseMove(e: MouseMotionEventPtr) =
   var hoverObjFound: bool = false
-  for obj in hoverHooked:
+  for obj in mainCanvas.hoverables:
     if hoverObjFound == false:
       if e.x >= obj.x and e.x <= (obj.x + obj.width):
         if e.y >= obj.y and e.y <= (obj.y + obj.height):
@@ -117,8 +90,14 @@ proc mouseMove(e: MouseMotionEventPtr) =
     if inFocus == obj:
       inFocus = nil
     obj.hoverStatus = false
+proc textInput(e: TextInputEventPtr) =
+  if not (inFocus of textInput.TextInput):
+    return
+  textInput.TextInput(inFocus).add(e.text[0])
 proc frameBufferController() =
   #if mainCanvas.x + mainCanvas.width > mainCanvas.width:
+  if mainCanvas.canvas == nil:
+    return
   if isDown("SDL_BUTTON_MIDDLE"):
     var 
       mouseCurrentX, mouseCurrentY: cint
@@ -152,18 +131,16 @@ proc frameBufferController() =
   mainCanvas.renderSaved = false
 var currentFrameRate*: int = 0
 # The game loop; everything is rendered and processed here.
-proc startGameLoop*(name: string) =
+proc startGameLoop*(name: string, onInit: proc() = nil) =
   # Init SDL2 and SDL_TTF
   sdl2.init(INIT_VIDEO or INIT_TIMER or INIT_EVENTS)
   ttfInit()
-  var ffont = ttf.openFont("./liberation-sans.ttf", cint(18))
-  var thisTestLabel = 
-    newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
-  mainCanvas.elements.add thisTestLabel
   # Later we can add error handling for init
   discard image.init()
+  if onInit != nil:
+    onInit()
   # Create the game window.
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN or SDL_WINDOW_VULKAN)
   # Create our renderer with V-Sync
   let renderer = createRenderer(window = window, index = -1,
     flags = Renderer_Accelerated or Renderer_PresentVSync)
@@ -190,6 +167,8 @@ proc startGameLoop*(name: string) =
         of KeyUp:
           echo event.key.keysym.scancode
           keyDownTracker[$event.key.keysym.scancode] = false
+        of TextInput:
+          textInput(event.text)
         else:
           continue
     renderer.clear()
@@ -203,11 +182,25 @@ proc startGameLoop*(name: string) =
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
     #echo $len(screenObjects)
-
-when isMainModule:
+proc buildCanvasTest*() =
   canvasZoom = 1
-  mainCanvas = Scene()
   mainCanvas.width = 3221
   mainCanvas.height = 1777
   mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
-  startGameLoop("tester")
+  var ffont = ttf.openFont("./liberation-sans.ttf", cint(18))
+  var thisTestLabel = 
+    newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
+  mainCanvas.elements.add thisTestLabel
+proc createTextInput*(x, y, w, h: cint): TextInput =
+  return newTextInput(x, y, w, h, [0, 0, 0, 255], "This is some test text.", [255, 255, 255, 255], defaultFont, defaultSize)
+proc textEditorTest*() =
+  mainCanvas.width = WinWidth
+  mainCanvas.height = WinHeight
+  defaultSize = cint(18)
+  defaultFont = ttf.openFont("./liberation-sans.ttf", defaultSize)
+  var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight)
+  mainCanvas.elements.add thisTextInput
+  mainCanvas.clickables.add(thisTextInput)
+when isMainModule:
+  mainCanvas = Scene()
+  startGameLoop("tester", textEditorTest)
