@@ -1,16 +1,13 @@
 #SDL
 import sdl2
-import sdl2/ttf
-import sdl2/image
+import sdl2/[ttf, image]
 
 # Kyuick Components
-import kyuick/components/[kyuickObject, label, button, textInput, imageObject, graphObject, animatedObject]
-import kyuick/scene
-import std/math
-import std/tables
-import std/sequtils
-import std/os
-import std/strutils
+import kyuick/components/[kyuickObject, scene]
+import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
+
+# Standard Lib
+import std/[math, tables, sequtils, os, strutils]
 
 # Window settings to be set before startGameLoop is called.
 const
@@ -62,16 +59,16 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
     return
   if isDown == false:
     return
-  if inFocus != nil:
-    inFocus.leftClick(e)
-    return
   case e.button:
     of 1:
       for obj in mainCanvas.clickables:
         #echo ("mouse($1, $2) objX($3, $4) objY($5, $6)" % [$e.x, $e.y, $obj.x, $(obj.x + obj.width), $obj.y, $(obj.y + obj.height)])
         if e.x >= obj.x and e.x <= (obj.x + obj.width):
           if e.y >= obj.y and e.y <= (obj.y + obj.height):
+            if inFocus != nil:
+              inFocus.focusChange = false
             inFocus = obj
+            obj.focusChange = true
             obj.leftClick(e)
             return
     else:
@@ -86,10 +83,12 @@ proc mouseMove(e: MouseMotionEventPtr) =
           hoverObjFound = true
           if obj.autoFocusable:
             inFocus = obj
+            obj.focusChange = true
           continue
     if inFocus == obj:
       inFocus = nil
     obj.hoverStatus = false
+    obj.focusChange = false
 proc textInput(e: TextInputEventPtr) =
   if not (inFocus of textInput.TextInput):
     return

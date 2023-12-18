@@ -6,6 +6,7 @@ type
     width*, height*: cint
     hoverStatus: bool
     autoFocusable*: bool
+    focusChange*: bool
     # Fields to save render information to memory for performance.
     backgroundColor*: array[4, int]
     foregroundColor*: array[4, int]
