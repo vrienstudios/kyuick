@@ -162,6 +162,9 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           mouseMove(event.motion)
         of KeyDown:
           echo event.key.keysym.scancode
+          if inFocus of textInput.TextInput:
+            if $event.key.keysym.scancode == "SDL_SCANCODE_BACKSPACE":
+              textInput.TextInput(inFocus).remove()
           keyDownTracker[$event.key.keysym.scancode] = true
         of KeyUp:
           echo event.key.keysym.scancode

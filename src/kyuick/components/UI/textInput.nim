@@ -53,11 +53,11 @@ proc remove*(this: TextInput) =
     return
   if this.cursorPosition == 0:
     return
-  if this.cursorPosition > len(this.textField.text):
+  if this.cursorPosition >= len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
-  this.cLength.delete(this.cursorPosition)
+  this.cLength.delete(this.cursorPosition - 1)
   var str: string = this.textField.text
-  this.calcLength = this.calcLength - sizeText(this.textField.font, $this.textField.text[this.cursorPosition])[0]
+  this.calcLength = this.calcLength - sizeText(this.textField.font, $this.textField.text[this.cursorPosition - 1])[0]
   str.delete(this.cursorPosition - 1..this.cursorPosition - 1)
   this.textField.text = str
   dec this.cursorPosition
