@@ -1,21 +1,17 @@
 #SDL
 import sdl2
 import sdl2/[ttf, image]
-
 # Kyuick Components
 import kyuick/components/[kyuickObject, scene]
 import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
-
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils]
-
 # Window settings to be set before startGameLoop is called.
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
   WinWidth* = 1920
   WinHeight* = 1080
-
 var
   kinputCallBacks*: seq[proc(key: TextInputEventPtr)]
   minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
@@ -31,9 +27,7 @@ var
   gameFolder*: string
   wrapMap: bool
   # Default Font and size
-  defaultFont: FontPtr
-  defaultSize: cint
-
+  fontTracker: array[6, tuple[name: string, font: FontPtr, size: cint]]
 proc isDown*(key: string): bool =
   if not keyDownTracker.hasKey(key):
     return false
@@ -73,6 +67,29 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
             return
     else:
       return
+proc getFont(name: string, size: cint): int8 =
+  var index: int8 = 0
+  while index < len(fontTracker):
+    let currentTrack = fontTracker[index]
+    inc index
+    if currentTrack.font == nil: continue
+    if currentTrack.size == size and currentTrack.name == name:
+      echo "Got font ($1) | ($2) | ($3)pt" % [$index, $currentTrack.name, $size]
+      return index
+  # Look in local directory for fonts of same name.
+  index = 0
+  while index < len(fontTracker):
+    let currentTrack = fontTracker[index]
+    if currentTrack.font == nil:
+      # Loop through *.ttf files in current directory
+      for file in walkFiles("./*.ttf"):
+        if file.split('/')[^1] == name:
+          fontTracker[index] = (name, openFont(file, size), size)
+          echo "Loaded font ($1) | ($2) | ($3)pt" % [$index, $file, $size]
+      return index
+    echo "Fonts Full"
+    return -1
+  echo "Font Not Loaded"
 proc mouseMove(e: MouseMotionEventPtr) =
   var hoverObjFound: bool = false
   for obj in mainCanvas.hoverables:
@@ -126,7 +143,6 @@ proc frameBufferController() =
   if isDown("SDL_SCANCODE_D") or isDown("SDL_SCANCODE_RIGHT"):
     if mainCanvas.x + mainCanvas.width >= WinWidth:
       mainCanvas.x = mainCanvas.x - 10
-      
   mainCanvas.renderSaved = false
 var currentFrameRate*: int = 0
 # The game loop; everything is rendered and processed here.
@@ -189,20 +205,25 @@ proc buildCanvasTest*() =
   mainCanvas.width = 3221
   mainCanvas.height = 1777
   mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
-  var ffont = ttf.openFont("./liberation-sans.ttf", cint(18))
+  var ffont = fontTracker[getFont("liberation-sans.ttf", cint(18))].font
   var thisTestLabel = 
     newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
   mainCanvas.elements.add thisTestLabel
-proc createTextInput*(x, y, w, h: cint): TextInput =
-  return newTextInput(x, y, w, h, [0, 0, 0, 255], "This is some test text.", [255, 255, 255, 255], defaultFont, defaultSize)
+proc createTextInput*(x, y, w, h: cint, font: FontPtr, fSize: cint): TextInput =
+  return newTextInput(x, y, w, h, [0, 0, 0, 255], "This is some test text.", [255, 255, 255, 255], font, fSize)
 proc textEditorTest*() =
   mainCanvas.width = WinWidth
   mainCanvas.height = WinHeight
-  defaultSize = cint(18)
-  defaultFont = ttf.openFont("./liberation-sans.ttf", defaultSize)
-  var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight)
+  var ffont = fontTracker[getFont("liberation-sans.ttf", cint(18))].font
+  var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight, ffont, cint(18))
   mainCanvas.elements.add thisTextInput
   mainCanvas.clickables.add(thisTextInput)
+proc choiceDialogForType*() =
+  mainCanvas.width = WinWidth
+  mainCanvas.height = WinHeight
+  return
+proc gameObjectBuilder*() =
+  return
 when isMainModule:
   mainCanvas = Scene()
   startGameLoop("tester", textEditorTest)
