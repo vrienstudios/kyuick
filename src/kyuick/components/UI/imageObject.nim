@@ -5,13 +5,13 @@ import ../kyuickObject
 import std/math
 import os
 type
-  imageObject* = ref object of kyuickObject
+  ImageObject* = ref object of KyuickObject
     imagePath: string
     imageloaded: bool
     frameBuffer*: Rect
 
-proc renderImage*(renderer: RendererPtr, obj: kyuickObject) =
-  var this: imageObject = imageObject(obj)
+proc renderImage*(renderer: RendererPtr, obj: KyuickObject) =
+  var this: ImageObject = ImageObject(obj)
   if this.imageloaded == false:
     if fileExists(this.imagePath):
       echo "LOADED $1" % [this.imagePath]
@@ -25,6 +25,6 @@ proc renderImage*(renderer: RendererPtr, obj: kyuickObject) =
   renderer.copy this.texture, nil, addr this.rect
   return
 
-proc newImageObject*(x, y, width, height: cint, dirOrSheet: string): imageObject =
-  return imageObject(x: x, y: y, width: width, height: height, imagePath: dirOrSheet,
+proc newImageObject*(x, y, width, height: cint, dirOrSheet: string): ImageObject =
+  return ImageObject(x: x, y: y, width: width, height: height, imagePath: dirOrSheet,
     render: renderImage)

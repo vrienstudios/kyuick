@@ -9,14 +9,14 @@ import sdl2/ttf
 import ../kyuickObject
 
 # A label object for displaying text at a line of text at a x,y coordinate.
-type Label* = ref object of kyuickObject
+type Label* = ref object of KyuickObject
   text: string
   color*: array[4, int]
   font*: FontPtr
   fontSize*: cint
 
 
-proc renderLabel*(renderer: RendererPtr, obj: kyuickObject) =
+proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
   let label: Label = (Label)obj
   if label.renderSaved:
     renderer.copy label.texture, nil, addr label.rect   

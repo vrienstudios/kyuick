@@ -4,7 +4,7 @@ import sdl2/image
 import ../kyuickObject
 import std/math
 type
-  animatedObject* = ref object of kyuickObject
+  AnimatedObject* = ref object of KyuickObject
     animSheetPath: string
     frameBuffer*: Rect
     cFrame*: cint
@@ -13,8 +13,8 @@ type
     lastUpdate: uint32
 
 # TODO: Render a selected
-proc renderAnimated*(renderer: RendererPtr, obj: kyuickObject) =
-  var this: animatedObject = animatedObject(obj)
+proc renderAnimated*(renderer: RendererPtr, obj: KyuickObject) =
+  var this: AnimatedObject = AnimatedObject(obj)
   if this.renderSaved != true:
     var surface = load(cstring(this.animSheetPath))
     this.tFrames = cint(surface.w / this.width)
@@ -36,6 +36,6 @@ proc renderAnimated*(renderer: RendererPtr, obj: kyuickObject) =
     return
   renderer.copyEx this.texture, addr this.frameBuffer, addr this.rect, cdouble(0), addr tP
 
-proc newAnimatedObject*(x, y, width, height: cint, dirOrSheet: string, fps: cint = 20): animatedObject =
-  return animatedObject(x: x, y: y, width: width, height: height, animSheetPath: dirOrSheet,
+proc newAnimatedObject*(x, y, width, height: cint, dirOrSheet: string, fps: cint = 20): AnimatedObject =
+  return AnimatedObject(x: x, y: y, width: width, height: height, animSheetPath: dirOrSheet,
     render: renderAnimated, fps: fps)

@@ -8,7 +8,7 @@ import ../kyuickObject
 import ../../utils/rendererUtils
 import label
 
-type TextInput* = ref object of kyuickObject
+type TextInput* = ref object of KyuickObject
   # Position of cursor in the text sequence.
   cursorPosition: int
   # X-length of where the cursor is | Default is width.
@@ -22,7 +22,7 @@ proc renderIndexLine*(renderer: RendererPtr, textInput: TextInput) =
   if textInput.focusChange == true:
     renderer.setDrawColor(textInput.textField.color)
     renderer.drawLine(cint(textInput.x + textInput.calcLength - 3), cint(textInput.textField.height), cint(textInput.x + textInput.calcLength), cint(textInput.textField.height))
-proc renderTextInput*(renderer: RendererPtr, obj: kyuickObject) =
+proc renderTextInput*(renderer: RendererPtr, obj: KyuickObject) =
   let textInput: TextInput = (TextInput)obj
   renderer.setDrawColor(textInput.backgroundColor)
   if textInput.renderSaved == true:
@@ -61,7 +61,7 @@ proc remove*(this: TextInput) =
   str.delete(this.cursorPosition - 1..this.cursorPosition - 1)
   this.textField.text = str
   dec this.cursorPosition
-proc defaultOnLeftClick*(obj: kyuickObject, mouse: MouseButtonEventPtr) =
+proc defaultOnLeftClick*(obj: KyuickObject, mouse: MouseButtonEventPtr) =
   var
     this = (TextInput)obj
     idx = 0

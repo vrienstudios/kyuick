@@ -7,13 +7,13 @@ import ../kyuickObject
 import textAlign
 import label
 
-type Button* = ref object of kyuickObject
+type Button* = ref object of KyuickObject
   # Text
   btnLabel*: Label
   textAlign: textAlignment
 
 
-proc renderButton*(renderer: RendererPtr, obj: kyuickObject) =
+proc renderButton*(renderer: RendererPtr, obj: KyuickObject) =
   let button: Button = (Button)obj
   if button.renderSaved:
     renderer.setDrawColor(color(button.backgroundColor[0], button.backgroundColor[1],

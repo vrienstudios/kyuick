@@ -7,7 +7,7 @@ import sdl2, sdl2/ttf
 # kyuick objects.
 import ../kyuickObject, textAlign, label
 
-type Graph* = ref object of kyuickObject
+type Graph* = ref object of KyuickObject
   textLabel*: Label
   # How much space between inner and outer borders;
   paddingAlongX*: cint
@@ -18,7 +18,7 @@ type Graph* = ref object of kyuickObject
   savedLines: seq[(cint, cint, cint, cint)]
   graphBounds: Rect
 
-proc renderGraph(renderer: RendererPtr, obj: kyuickObject) =
+proc renderGraph(renderer: RendererPtr, obj: KyuickObject) =
   var graph: Graph = Graph obj
   renderer.setDrawColor(color(graph.foregroundColor[0], graph.foregroundColor[1],
         graph.foregroundColor[2], graph.foregroundColor[3]))
@@ -58,7 +58,7 @@ proc renderGraph(renderer: RendererPtr, obj: kyuickObject) =
     graph.savedLines.add (x1, y1, x2, y2)
     inc idx
 
-proc renderGraphWithText(renderer: RendererPtr, obj: kyuickObject) =
+proc renderGraphWithText(renderer: RendererPtr, obj: KyuickObject) =
   var this: Graph = Graph obj
   # Centered by default for now.
   this.textLabel.x = this.x + cint(this.width / 2 - this.textLabel.width / 2)

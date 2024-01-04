@@ -5,7 +5,7 @@ import kyuickObject
 type VerticalGrid* = ref object of RootObj
   x*, y*: cint
   width*, height*: cint
-  elements*: seq[kyuickObject]
+  elements*: seq[KyuickObject]
 
-proc add*(this: VerticalGrid, obj: kyuickObject) =
+proc add*(this: VerticalGrid, obj: KyuickObject) =
   return

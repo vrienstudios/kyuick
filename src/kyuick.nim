@@ -23,7 +23,7 @@ var
   mainCanvas*: Scene
   canvasZoom: cint
   canvasMovable: bool
-  inFocus: kyuickObject
+  inFocus: KyuickObject
   fontsLoaded: seq[(string, FontPtr)]
   keyDownTracker = initTable[string, bool]()
   mouseXYTracker: tuple[x, y: cint] = (0, 0)

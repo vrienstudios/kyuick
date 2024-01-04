@@ -7,10 +7,10 @@ import sdl2
 # In the case of the main Scene in the engine, all elements are relative to the main element.
 type Scene* = ref object of RootObj
   x, y, width*, height*: cint
-  canvas*: imageObject
-  elements*: seq[kyuickObject]
-  hoverables*: seq[kyuickObject]
-  clickables*: seq[kyuickObject]
+  canvas*: ImageObject
+  elements*: seq[KyuickObject]
+  hoverables*: seq[KyuickObject]
+  clickables*: seq[KyuickObject]
   isInteractive*: bool
   renderSaved*: bool
 
@@ -31,9 +31,9 @@ method x*(this: Scene): cint =
   return this.x
 method y*(this: Scene): cint =
   return this.y
-proc add*(this: Scene, kyuickObj: kyuickObject) =
+proc add*(this: Scene, kyuickObj: KyuickObject) =
   this.elements.add kyuickObj
-proc del*(this: Scene, kyuickObj: kyuickObject) =
+proc del*(this: Scene, kyuickObj: KyuickObject) =
   this.elements.delete(this.elements.find(kyuickObj))
 proc render*(this: Scene, renderer: RendererPtr) =
   if this.canvas != nil: renderer.render(this.canvas)
