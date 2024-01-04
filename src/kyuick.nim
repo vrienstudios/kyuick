@@ -40,10 +40,6 @@ proc loadLevelData(folder: string): bool =
   mainCanvas.renderSaved = false
   # Load Level Data
   return true
-proc loadFont(fontPath: string, fontSize: cint): FontPtr =
-  var ffont = ttf.openFont(fontPath, fontSize)
-  fontsLoaded.add((path: fontPath, font: ffont))
-  return ffont
 # Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
   if e.button == 2:
@@ -178,12 +174,15 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           mouseMove(event.motion)
         of KeyDown:
           echo event.key.keysym.scancode
+          if inFocus != nil and inFocus.onKeyDown != nil:
+            inFocus.onKeyDown(inFocus, $event.key.keysym.scancode)
           if inFocus of textInput.TextInput:
             if $event.key.keysym.scancode == "SDL_SCANCODE_BACKSPACE":
               textInput.TextInput(inFocus).remove()
           keyDownTracker[$event.key.keysym.scancode] = true
         of KeyUp:
-          echo event.key.keysym.scancode
+          if isDown("SDL_SCANCODE_LCTRL") and isDown("SDL_SCANCODE_C"):
+            quit(0)
           keyDownTracker[$event.key.keysym.scancode] = false
         of TextInput:
           textInput(event.text)

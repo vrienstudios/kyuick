@@ -61,6 +61,13 @@ proc remove*(this: TextInput) =
   str.delete(this.cursorPosition - 1..this.cursorPosition - 1)
   this.textField.text = str
   dec this.cursorPosition
+proc updateCalcLength*(this: TextInput) =
+  var c: int = 0
+  var tL: int = 0
+  while c < this.cursorPosition:
+    tL = tL + this.cLength[c]
+    inc c
+  this.calcLength = tL
 proc defaultOnLeftClick*(obj: KyuickObject, mouse: MouseButtonEventPtr) =
   var
     this = (TextInput)obj
@@ -76,6 +83,15 @@ proc defaultOnLeftClick*(obj: KyuickObject, mouse: MouseButtonEventPtr) =
   this.calcLength = calcLength
   this.cursorPosition = idx
   return
+proc keyDown*(obj: KyuickObject, scancode: string) =
+  var this = TextInput(obj)
+  if scancode == "SDL_SCANCODE_LEFT" and this.cursorPosition != 0:
+    dec this.cursorPosition
+    this.updateCalcLength()
+  elif scancode == "SDL_SCANCODE_RIGHT":
+    inc this.cursorPosition
+    this.updateCalcLength()
+  return
 proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: string, color: array[4, int],
   font: FontPtr, fontSize: cint): TextInput =
   var ti: TextInput = TextInput(x: x, y: y, width: width, height: height, backgroundColor: bg, cursorPosition: len(defaultText), multiLine: false,
@@ -84,6 +100,7 @@ proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: st
   ti.textField = tInput
   ti.render = renderTextInput
   ti.onLeftClick = defaultOnLeftClick
+  ti.onKeyDown = keyDown
   var w, h: cint = 0
   for chr in defaultText:
     discard ttf.sizeText(ti.textField.font, cstring($chr), addr w, addr h)

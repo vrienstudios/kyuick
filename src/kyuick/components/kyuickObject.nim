@@ -19,6 +19,7 @@ type
     hoverRender*: proc(renderer: RendererPtr, obj: KyuickObject)
     # Event-related procs.
     onLeftClick*: proc(obj: KyuickObject, mouseEvent: MouseButtonEventPtr)
+    onKeyDown*: proc(obj: KyuickObject, scancode: string)
     # When status is true, the mouse is hovering, when false, the mouse has stopped hovering.
     onHoverStatusChange*: proc(obj: KyuickObject, status: bool)
 proc render*(renderer: RendererPtr, obj: KyuickObject) =
