@@ -89,6 +89,7 @@ proc keyDown*(obj: KyuickObject, scancode: string) =
     dec this.cursorPosition
     this.updateCalcLength()
   elif scancode == "SDL_SCANCODE_RIGHT":
+    if this.cursorPosition == this.cLength.len: return
     inc this.cursorPosition
     this.updateCalcLength()
   return

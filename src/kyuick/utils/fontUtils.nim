@@ -1,8 +1,6 @@
 import sdl2/ttf
 import std/[os, strutils]
 
-
-# fontTracker: array[6, tuple[name: string, font: FontPtr, size: cint]]
 type FontTracker* = array[10, tuple[name: string, font: FontPtr, size: cint]]
 
 proc getFontEx*(this: var FontTracker, name: string, size: cint): int8 =
