@@ -2,8 +2,9 @@
 import sdl2
 import sdl2/[ttf, image]
 # Kyuick Components
-import kyuick/components/[kyuickObject, scene]
+import kyuick/components/[kyuickObject, scene, verticalGrid]
 import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
+import kyuick/utils/fontUtils
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils]
 # Window settings to be set before startGameLoop is called.
@@ -26,8 +27,7 @@ var
   # Game Content
   gameFolder*: string
   wrapMap: bool
-  # Default Font and size
-  fontTracker: array[6, tuple[name: string, font: FontPtr, size: cint]]
+  fontTracker: FontTracker
 proc isDown*(key: string): bool =
   if not keyDownTracker.hasKey(key):
     return false
@@ -63,29 +63,6 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
             return
     else:
       return
-proc getFont(name: string, size: cint): int8 =
-  var index: int8 = 0
-  while index < len(fontTracker):
-    let currentTrack = fontTracker[index]
-    inc index
-    if currentTrack.font == nil: continue
-    if currentTrack.size == size and currentTrack.name == name:
-      echo "Got font ($1) | ($2) | ($3)pt" % [$index, $currentTrack.name, $size]
-      return index
-  # Look in local directory for fonts of same name.
-  index = 0
-  while index < len(fontTracker):
-    let currentTrack = fontTracker[index]
-    if currentTrack.font == nil:
-      # Loop through *.ttf files in current directory
-      for file in walkFiles("./*.ttf"):
-        if file.split('/')[^1] == name:
-          fontTracker[index] = (name, openFont(file, size), size)
-          echo "Loaded font ($1) | ($2) | ($3)pt" % [$index, $file, $size]
-      return index
-    echo "Fonts Full"
-    return -1
-  echo "Font Not Loaded"
 proc mouseMove(e: MouseMotionEventPtr) =
   var hoverObjFound: bool = false
   for obj in mainCanvas.hoverables:
@@ -165,7 +142,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     while pollEvent(event):
       case event.kind:
         of QuitEvent:
-          break
+          quit(0)
         of MouseButtonDown:
           mousePress(event.button)
         of MouseButtonUp:
@@ -195,6 +172,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     endCounter = getPerformanceCounter()
     currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
+    echo currentFrameRate
     # Cap
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
@@ -204,7 +182,7 @@ proc buildCanvasTest*() =
   mainCanvas.width = 3221
   mainCanvas.height = 1777
   mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
-  var ffont = fontTracker[getFont("liberation-sans.ttf", cint(18))].font
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var thisTestLabel = 
     newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
   mainCanvas.elements.add thisTestLabel
@@ -213,7 +191,7 @@ proc createTextInput*(x, y, w, h: cint, font: FontPtr, fSize: cint): TextInput =
 proc textEditorTest*() =
   mainCanvas.width = WinWidth
   mainCanvas.height = WinHeight
-  var ffont = fontTracker[getFont("liberation-sans.ttf", cint(18))].font
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight, ffont, cint(18))
   mainCanvas.elements.add thisTextInput
   mainCanvas.clickables.add(thisTextInput)
