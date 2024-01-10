@@ -210,10 +210,11 @@ proc gameObjectBuilder*() =
   var prvTest = Province(id: 0, ownerID: 0, color: [255, 255, 255, 255])
   var imgSurface = load(cstring("./ff.png"))
   let bpp = imgSurface.format.BytesPerPixel
-  var x, y: uint32 = 0
+  var x: uint32
+  var y: int32 = 0
   while y < 400:
     while x < 400:
-      let pixie: uint32 = cast[ptr uint32](cast[uint](imgSurface.pixels) + cast[uint]((imgSurface.pitch * cast[int32](y) + cast[int32](bpp * x))))[]
+      let pixie: uint32 = cast[ptr uint32](cast[uint](imgSurface.pixels) + cast[uint]((imgSurface.pitch * y + cast[int32](bpp * x))))[]
       var r, g, b: uint8
       getRGB(pixie, imgSurface.format, r, g, b)
       echo "got pixel ($1, $2) ($3, $4, $5)" % [$x, $y, $r, $g, $b]
