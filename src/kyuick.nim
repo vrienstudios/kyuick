@@ -4,6 +4,7 @@ import sdl2/[ttf, image]
 # Kyuick Components
 import kyuick/components/[kyuickObject, scene, verticalGrid]
 import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
+import kyuick/components/Game/gameObjects
 import kyuick/utils/fontUtils
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils]
@@ -127,9 +128,12 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   discard image.init()
   if onInit != nil:
     onInit()
+  #discard vulkanLoadLibrary(nil)
   # Create the game window.
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN or SDL_WINDOW_VULKAN)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN or SDL_WINDOW_OPENGL)
+  #var vlkLib: pointer = vulkanGetVkGetInstanceProcAddr()
   # Create our renderer with V-Sync
+  discard glSetAttribute(GLattr.SDL_GL_DOUBLEBUFFER, 1)
   let renderer = createRenderer(window = window, index = -1,
     flags = Renderer_Accelerated or Renderer_PresentVSync)
   var startCounter = getPerformanceCounter()
@@ -172,7 +176,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     endCounter = getPerformanceCounter()
     currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
-    echo currentFrameRate
+    #echo currentFrameRate
     # Cap
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
@@ -200,7 +204,26 @@ proc choiceDialogForType*() =
   mainCanvas.height = WinHeight
   return
 proc gameObjectBuilder*() =
-  return
+  mainCanvas.width = WinWidth
+  mainCanvas.height = WinHeight
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var prvTest = Province(id: 0, ownerID: 0, color: [255, 255, 255, 255])
+  var imgSurface = load(cstring("./ff.png"))
+  let bpp = imgSurface.format.BytesPerPixel
+  var x, y: uint32 = 0
+  while y < 400:
+    while x < 400:
+      let pixie: uint32 = cast[ptr uint32](cast[uint](imgSurface.pixels) + cast[uint]((imgSurface.pitch * cast[int32](y) + cast[int32](bpp * x))))[]
+      var r, g, b: uint8
+      getRGB(pixie, imgSurface.format, r, g, b)
+      echo "got pixel ($1, $2) ($3, $4, $5)" % [$x, $y, $r, $g, $b]
+      if g == 0 or b == 0:
+        echo "GOTCHA"
+        quit(1)
+      inc x
+    inc y
+    x = 0
+
 when isMainModule:
   mainCanvas = Scene()
-  startGameLoop("tester", textEditorTest)
+  startGameLoop("tester", gameObjectBuilder)
