@@ -14,12 +14,21 @@ type Label* = ref object of KyuickObject
   color*: array[4, int]
   font*: FontPtr
   fontSize*: cint
+  trackNum*: ptr float
 
-
+proc text*(this: Label): string = return this.text
+proc `text=`*(this: var Label, text: string) = 
+  this.text = text
+  var w, h: cint = 0
+  discard ttf.sizeText(this.font, text, addr w, addr h)
+  this.width = w
+  this.height = h
+  this.renderSaved = false
 proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
-  let label: Label = (Label)obj
+  var label: Label = (Label)obj
+  if label.trackNum != nil: `text=`(label, $repr(label.trackNum))
   if label.renderSaved:
-    renderer.copy label.texture, nil, addr label.rect   
+    renderer.copy label.texture, nil, addr label.rect
     return
   let
     surface = ttf.renderTextBlended(label.font, cstring(label.text), color(label.color[0],
@@ -37,12 +46,3 @@ proc newLabel*(x, y: cint, text: string, color: array[4, int], font: FontPtr, fo
   discard ttf.sizeText(font, text, addr w, addr h)
   return Label(x: x, y: y, width: w,
     height: h, text: text, color: color, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
-
-proc text*(this: Label): string = return this.text
-proc `text=`*(this: var Label, text: string) = 
-  this.text = text
-  var w, h: cint = 0
-  discard ttf.sizeText(this.font, text, addr w, addr h)
-  this.width = w
-  this.height = h
-  this.renderSaved = false

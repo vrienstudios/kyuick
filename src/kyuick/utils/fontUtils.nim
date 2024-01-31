@@ -7,11 +7,10 @@ proc getFontEx*(this: var FontTracker, name: string, size: cint): int8 =
   var index: int8 = 0
   while index < len(this):
     let currentTrack = this[index]
-    inc index
-    if currentTrack.font == nil: continue
     if currentTrack.size == size and currentTrack.name == name:
       echo "Got font ($1) | ($2) | ($3)pt" % [$index, $currentTrack.name, $size]
       return index
+    inc index
   # Look in local directory for fonts of same name.
   index = 0
   while index < len(this):

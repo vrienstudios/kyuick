@@ -5,9 +5,9 @@ import sdl2/[ttf, image]
 import kyuick/components/[kyuickObject, scene, verticalGrid]
 import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
 import kyuick/components/Game/gameObjects
-import kyuick/utils/fontUtils
+import kyuick/utils/[fontUtils, rendererUtils]
 # Standard Lib
-import std/[math, tables, sequtils, os, strutils]
+import std/[math, tables, sequtils, os, strutils, times]
 # Window settings to be set before startGameLoop is called.
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
@@ -20,6 +20,8 @@ var
   mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
   mainCanvas*: Scene
   canvasZoom: cint
+  currentFrameRate*: float = 0
+  currentFrameTime*: float = 0
   canvasMovable: bool
   inFocus: KyuickObject
   fontsLoaded: seq[(string, FontPtr)]
@@ -118,7 +120,18 @@ proc frameBufferController() =
     if mainCanvas.x + mainCanvas.width >= WinWidth:
       mainCanvas.x = mainCanvas.x - 10
   mainCanvas.renderSaved = false
-var currentFrameRate*: int = 0
+proc showFPS*() =
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var fpsc = 
+    newLabel(0, 0, "FPSC", [255, 255, 255, 255], ffont, cint(18))
+  fpsc.trackNum = currentFrameRate.addr
+  mainCanvas.elements.add fpsc
+proc showFrameTime*() =
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var fpsc = 
+    newLabel(0, 18, "FPSC", [255, 255, 255, 255], ffont, cint(18))
+  fpsc.trackNum = currentFrameTime.addr
+  mainCanvas.elements.add fpsc
 # The game loop; everything is rendered and processed here.
 proc startGameLoop*(name: string, onInit: proc() = nil) =
   # Init SDL2 and SDL_TTF
@@ -128,16 +141,16 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   discard image.init()
   if onInit != nil:
     onInit()
-  #discard vulkanLoadLibrary(nil)
   # Create the game window.
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, flags = SDL_WINDOW_SHOWN or SDL_WINDOW_OPENGL)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
   #var vlkLib: pointer = vulkanGetVkGetInstanceProcAddr()
   # Create our renderer with V-Sync
-  discard glSetAttribute(GLattr.SDL_GL_DOUBLEBUFFER, 1)
-  let renderer = createRenderer(window = window, index = -1,
-    flags = Renderer_Accelerated or Renderer_PresentVSync)
+  #discard glSetAttribute(GLattr.SDL_GL_DOUBLEBUFFER, 1)
+  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
+  showFPS()
+  showFrameTime()
   # Start the infinite renderer.
   while true:
     startCounter = getPerformanceCounter()
@@ -169,12 +182,14 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           textInput(event.text)
         else:
           continue
+    let cB = cpuTime()
     renderer.clear()
-    frameBufferController()
+    #frameBufferController()
     render(mainCanvas, renderer)
     renderer.present()
+    currentFrameTime = (cpuTime() - cB) * 1000
     endCounter = getPerformanceCounter()
-    currentFrameRate = (int)(1 / ((endCounter - startCounter).float /
+    currentFrameRate = (1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
     #echo currentFrameRate
     # Cap
@@ -193,22 +208,17 @@ proc buildCanvasTest*() =
 proc createTextInput*(x, y, w, h: cint, font: FontPtr, fSize: cint): TextInput =
   return newTextInput(x, y, w, h, [0, 0, 0, 255], "This is some test text.", [255, 255, 255, 255], font, fSize)
 proc textEditorTest*() =
-  mainCanvas.width = WinWidth
-  mainCanvas.height = WinHeight
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight, ffont, cint(18))
   mainCanvas.elements.add thisTextInput
   mainCanvas.clickables.add(thisTextInput)
 proc choiceDialogForType*() =
-  mainCanvas.width = WinWidth
-  mainCanvas.height = WinHeight
   return
 proc gameObjectBuilder*() =
-  mainCanvas.width = WinWidth
-  mainCanvas.height = WinHeight
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var prvTest = Province(id: 0, ownerID: 0, color: [255, 255, 255, 255])
-  var imgSurface = load(cstring("./ff.png"))
+  var imgSurface: SurfacePtr = load(cstring("./ff.png"))
+  var borders: seq[tuple[x, y: int]]
   let bpp = imgSurface.format.BytesPerPixel
   var x: uint32
   var y: int32 = 0
@@ -217,14 +227,27 @@ proc gameObjectBuilder*() =
       let pixie: uint32 = cast[ptr uint32](cast[uint](imgSurface.pixels) + cast[uint]((imgSurface.pitch * y + cast[int32](bpp * x))))[]
       var r, g, b: uint8
       getRGB(pixie, imgSurface.format, r, g, b)
-      echo "got pixel ($1, $2) ($3, $4, $5)" % [$x, $y, $r, $g, $b]
+      #echo "got pixel ($1, $2) ($3, $4, $5)" % [$x, $y, $r, $g, $b]
       if g == 0 or b == 0:
-        echo "GOTCHA"
-        quit(1)
+        for pixel in getColorDirections(imgSurface, x, y):
+          if pixel.g != 0 or pixel.b != 0:
+            borders.add (int(x), int(y))
+            var kObj = newKyuickObject(cint(x), cint(y), 1, 1, [0, 0, 255, 255])
+            mainCanvas.elements.add(kObj)
       inc x
     inc y
     x = 0
-
+proc engineStressTestInputs*() =
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var items: cint = 20000
+  var i: cint = 0
+  while i < items:
+    inc i
+    var thisTestLabel = 
+      newLabel(100 + i, 100 + i, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
+    mainCanvas.elements.add thisTestLabel
 when isMainModule:
   mainCanvas = Scene()
+  mainCanvas.width = WinWidth
+  mainCanvas.height = WinHeight
   startGameLoop("tester", gameObjectBuilder)

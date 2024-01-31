@@ -38,4 +38,5 @@ proc del*(this: Scene, kyuickObj: KyuickObject) =
 proc render*(this: Scene, renderer: RendererPtr) =
   if this.canvas != nil: renderer.render(this.canvas)
   for el in this.elements:
+    renderer.setDrawColor(color(0, 0, 0, 255))
     renderer.render(el)
