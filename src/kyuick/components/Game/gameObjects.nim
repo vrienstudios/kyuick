@@ -1,3 +1,7 @@
+import ../kyuickObject
+import ../../utils/rendererUtils
+import sdl2
+
 type
   ModifierObject* = object
     ver: string
@@ -45,12 +49,10 @@ type
   ClaimObject* = object
     claimerID: int16
     length: int8
-  Point2D* = object
-    x, y: int8
-  Province* = object
+  Province* = ref object of KyuickObject
     id*: int16
     ownerID*: int16
-    color*: array[4, cint]
+    color*: array[4, int]
     cultureID*, religionID*, tradegoodID*: int16
     isHRE*: bool
     # Nations this province is cored by
@@ -59,7 +61,8 @@ type
     claims*: array[10, ClaimObject]
     population*: PopulationObject
     # Province vector directions to determine shape.
-    vectors*: array[100, Point2D]
+    vectors*: array[1000, tuple[x, y: int]]
+    builtGFX: TexturePtr
     neighbors*: array[10, int16]
   Nation* = object
     id, capitalID: int16
@@ -86,3 +89,12 @@ type
 # Load initial province data (id, color, name, etc)
 proc createMap(mapN: string): Map =
   return Map()
+proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
+  #if obj.renderSaved == true:
+  #  return
+  let this: Province = Province(obj)
+  renderer.setDrawColor(this.color)
+  for point in this.vectors:
+    renderer.drawPoint(cint(point.x), cint(point.y))
+  this.renderSaved = true
+  return

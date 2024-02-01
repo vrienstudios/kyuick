@@ -215,28 +215,30 @@ proc textEditorTest*() =
 proc choiceDialogForType*() =
   return
 proc gameObjectBuilder*() =
-  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var prvTest = Province(id: 0, ownerID: 0, color: [255, 255, 255, 255])
   var imgSurface: SurfacePtr = load(cstring("./ff.png"))
-  var borders: seq[tuple[x, y: int]]
-  let bpp = imgSurface.format.BytesPerPixel
-  var x: uint32
-  var y: int32 = 0
+  var vectors: array[1000, tuple[x, y: int]]
+  var index: int = 0
+  var x, y: int
+  var r, g, b: int
   while y < 400:
     while x < 400:
-      let pixie: uint32 = cast[ptr uint32](cast[uint](imgSurface.pixels) + cast[uint]((imgSurface.pitch * y + cast[int32](bpp * x))))[]
-      var r, g, b: uint8
-      getRGB(pixie, imgSurface.format, r, g, b)
-      #echo "got pixel ($1, $2) ($3, $4, $5)" % [$x, $y, $r, $g, $b]
-      if g == 0 or b == 0:
-        for pixel in getColorDirections(imgSurface, x, y):
-          if pixel.g != 0 or pixel.b != 0:
-            borders.add (int(x), int(y))
-            var kObj = newKyuickObject(cint(x), cint(y), 1, 1, [0, 0, 255, 255])
-            mainCanvas.elements.add(kObj)
+      let cPixel = imgSurface.getColorAtPoint(x, y)
+      if cPixel.g == 0:
+        #r = int(cPixel.r)
+        #g = int(cPixel.g)
+        #b = int(cPixel.b)
+        for pixel in imgSurface.getColorDirections(x, y):
+          if pixel.g != 0:
+            vectors[index] = (int(x), int(y))
+            inc index
       inc x
     inc y
     x = 0
+  prvTest.vectors = vectors
+  prvTest.render = renderProvince
+  prvTest.color = [100, 100, 100, 255]
+  mainCanvas.elements.add(prvTest)
 proc engineStressTestInputs*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var items: cint = 20000

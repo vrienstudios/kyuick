@@ -7,8 +7,17 @@ proc sizeText*(font: FontPtr, str: string): tuple[w, h: cint] =
     var w, h: cint = 0
     discard ttf.sizeText(font, cstring(str), addr w, addr h)
     return (w, h)
-proc getColorDirections*(pixelData: SurfacePtr, x: uint32, y: int32): array[4, tuple[r, g, b: uint8]] =
+proc getColorAtPoint*(pixelData: SurfacePtr, xT, yT: int): tuple[r, g, b: uint8] =
+    let x: uint32 = uint32(xT)
+    let y: int32 = int32(yT)
+    let pixel: uint32 = cast[ptr uint32](cast[uint](pixelData.pixels) + cast[uint]((pixelData.pitch * y + cast[int32](pixelData.format.BytesPerPixel * x))))[]
+    var r, g, b: uint8
+    getRGB(pixel, pixelData.format, r, g, b)
+    return (r, g, b)
+proc getColorDirections*(pixelData: SurfacePtr, xT, yT: int): array[4, tuple[r, g, b: uint8]] =
     let bpp = pixelData.format.BytesPerPixel
+    let x: uint32 = uint32(xT)
+    let y: int32 = int32(yT)
     let leftE: uint32 = 
         cast[ptr uint32](cast[uint](pixelData.pixels) + 
         cast[uint]((pixelData.pitch * y + cast[int32](bpp * (x - 1)))))[]
