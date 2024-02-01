@@ -1,6 +1,8 @@
+import os, system
 import ../kyuickObject
 import ../../utils/rendererUtils
 import sdl2
+import sdl2/gfx
 
 type
   ModifierObject* = object
@@ -49,6 +51,8 @@ type
   ClaimObject* = object
     claimerID: int16
     length: int8
+  Point2D* = ref object
+    x*, y*: cint
   Province* = ref object of KyuickObject
     id*: int16
     ownerID*: int16
@@ -61,7 +65,8 @@ type
     claims*: array[10, ClaimObject]
     population*: PopulationObject
     # Province vector directions to determine shape.
-    vectors*: array[1000, tuple[x, y: int]]
+    vectors*: array[1000, Point2D]
+    pointPairs: seq[tuple[p1, p2: Point2D]]
     builtGFX: TexturePtr
     neighbors*: array[10, int16]
   Nation* = object
@@ -94,7 +99,41 @@ proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
   #  return
   let this: Province = Province(obj)
   renderer.setDrawColor(this.color)
+  var xS, yS: seq[int16]
+  var ls: cint = 0
+  while ls < this.vectors.len:
+    let point = this.vectors[ls]
+    if point == nil:
+      break
+    xS.add int16(point.x)
+    yS.add int16(point.y)
+    inc ls
+  renderer.filledPolygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, 255, 255, 255, 255)
+  return
+  
+  
+  
+  
+  
+  
+  
+  
+  var idx: int = 0
   for point in this.vectors:
-    renderer.drawPoint(cint(point.x), cint(point.y))
+    if point == nil:
+      return
+    renderer.drawPoint(point.x, point.y)
+    # Line Draw Algo
+    if this.renderSaved == true:
+      continue
+    for rPoint in this.vectors:
+      if rPoint == nil:
+        break
+      if rPoint.y != point.y: continue
+      if rPoint.x < point.x: continue
+      renderer.setDrawColor([255, 255, 255, 255])
+      renderer.drawLine(point.x, point.y, rPoint.x, rPoint.y)
+  for p in this.pointPairs:
+    renderer.drawLine(p.p1.x, p.p1.y, p.p2.x, p.p2.y)
   this.renderSaved = true
   return

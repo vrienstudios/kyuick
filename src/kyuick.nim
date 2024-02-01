@@ -217,9 +217,8 @@ proc choiceDialogForType*() =
 proc gameObjectBuilder*() =
   var prvTest = Province(id: 0, ownerID: 0, color: [255, 255, 255, 255])
   var imgSurface: SurfacePtr = load(cstring("./ff.png"))
-  var vectors: array[1000, tuple[x, y: int]]
-  var index: int = 0
-  var x, y: int
+  var vectors: seq[tuple[x, y: cint]]
+  var x, y: cint
   var r, g, b: int
   while y < 400:
     while x < 400:
@@ -230,14 +229,32 @@ proc gameObjectBuilder*() =
         #b = int(cPixel.b)
         for pixel in imgSurface.getColorDirections(x, y):
           if pixel.g != 0:
-            vectors[index] = (int(x), int(y))
-            inc index
+            vectors.add (x, y)
       inc x
     inc y
     x = 0
-  prvTest.vectors = vectors
+  var i: int = 0
+  while i < vectors.len:
+    prvTest.vectors[i] = Point2D(x: vectors[i].x, y: vectors[i].y)
+    inc i
   prvTest.render = renderProvince
   prvTest.color = [100, 100, 100, 255]
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
+  mainCanvas.elements.add(prvTest)
   mainCanvas.elements.add(prvTest)
 proc engineStressTestInputs*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
