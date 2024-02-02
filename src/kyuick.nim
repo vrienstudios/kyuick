@@ -244,7 +244,7 @@ proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
 proc usProvinceDetectionTest() =
-  var provinceColorMap: SurfacePtr = load("sssd")
+  var provinceColorMap: SurfacePtr = load("provinces.bmp")
   let pdata = generateProvincesFromColorMap(provinceColorMap)
   var provinces: seq[Province] = getRendererPolys(pdata)
   echo len(provinces)

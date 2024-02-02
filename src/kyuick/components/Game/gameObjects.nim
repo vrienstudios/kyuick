@@ -93,6 +93,48 @@ proc buildExampleProvinces*(num: int = 16): seq[ProvinceData] =
     provinces.add ProvinceData(id: int16(x), ownerID: -1, color: [uint8(100 + x + 10), uint8(100 + x + 4), uint8(100 + x + 2)])
     inc x
   return provinces
+proc mapProvinceBorders*(xd, yd: cint, province: ProvinceData, map: SurfacePtr): seq[Point2D] =
+  # Write algorithm to follow border along x,y coords to map.
+  # Priority -- up -> right -> down -> left --^
+  var x, y: cint
+  var mapData: ptr Surface = (ptr Surface)(map)
+  while x < mapData.w:
+    while y < mapData.h:
+      # Left . Up . Right . Down
+      let data = map.getColorDirections(x, y)
+      if data[1].r == province.color[0] and data[1].g == province.color[1] and data[1].b == province.color[2]:
+        return @[]
+  return @[]
+proc cloneProvinceFull*(xd, yd, xMax, yMax: cint, data: ProvinceData, map: SurfacePtr): seq[Point2D] =
+  var 
+    x: cint = xd - 100 
+    y: cint = xd - 100
+  if x < 0: x = 0
+  if y < 0: y = 0
+  var 
+    xUpper: cint = xd + 100
+    yUpper: cint = yd + 100
+  if xUpper > xMax: xUpper = xMax
+  if yUpper > yMax: yUpper = yMax
+  var mapData: ptr Surface = (ptr Surface)(map)
+  let 
+    r = data.color[0]
+    g = data.color[1]
+    b = data.color[2]
+  var points: seq[Point2D] = @[]
+  while x < xUpper:
+    while y < yUpper:
+      let cPixel = map.getColorAtPoint(x, y)
+      if cPixel.r != r or cPixel.g != g or cPixel.b != b:
+        inc y
+        continue
+      points.add Point2D(x: x, y: y)
+        #if x == 208 and y == 118:
+        #  echo "WHY | $1 $2 $3 | $4 $5 $6" % [$r, $g, $b, $pixel.r, $pixel.g, $pixel.b] 
+      inc y
+    y = 0
+    inc x
+  return points
 proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): seq[Point2D] =
   #echo "getting points for ($1, $2, $3)" % [$color[0], $color[1], $color[2]]
   var x, y: cint
@@ -107,8 +149,6 @@ proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): s
       let cPixel = surfaceX.getColorAtPoint(x, y)
       if cPixel.r != r or cPixel.g != g or cPixel.b != b:
         inc y
-        #if x == 208 and y == 118:
-        #  echo "WHY | $1 $2 $3 | $4" % [$r, $g, $b, $cPixel.r] 
         continue
       var flg: bool = false
       for pixel in surfaceX.getColorDirections(x, y):
@@ -133,8 +173,9 @@ proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
         for data in newProvinces:
           if data.color[0] == pixel.r and data.color[1] == pixel.g and data.color[2] == pixel.b:
             break pCheck
+        echo "built $1($2)|$3" % [$newProvinces.len, "-1", $pixel]
         var nProv = ProvinceData(id: int16(newProvinces.len), ownerID: -1, color: [pixel.r, pixel.g, pixel.b])
-        nProv.vectors = getProvinceVectorsFromMap(nProv.color, colorMap)
+        nProv.vectors = cloneProvinceFull(x, y, surface.w, surface.h, nProv, colorMap)
         newProvinces.add nProv
       inc x
     x = 0
@@ -188,5 +229,5 @@ proc genProvincesAndDumpData*(mapN: string) =
 proc getRendererPolys*(pData: seq[ProvinceData]): seq[Province] =
   var provinces: seq[Province] = @[]
   for pDat in pData:
-    provinces.add Province(pdat: pDat, render: renderProvince)
+    provinces.add Province(pdat: pDat, render: renderProvinceEx)
   return provinces
