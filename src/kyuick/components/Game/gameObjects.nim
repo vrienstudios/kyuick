@@ -107,13 +107,13 @@ proc mapProvinceBorders*(xd, yd: cint, province: ProvinceData, map: SurfacePtr):
   return @[]
 proc cloneProvinceFull*(xd, yd, xMax, yMax: cint, data: ProvinceData, map: SurfacePtr): seq[Point2D] =
   var 
-    x: cint = xd - 100 
-    y: cint = xd - 100
+    x: cint = xd - 400 
+    y: cint = xd - 400
   if x < 0: x = 0
   if y < 0: y = 0
   var 
-    xUpper: cint = xd + 100
-    yUpper: cint = yd + 100
+    xUpper: cint = xd + 600
+    yUpper: cint = yd + 600
   if xUpper > xMax: xUpper = xMax
   if yUpper > yMax: yUpper = yMax
   var mapData: ptr Surface = (ptr Surface)(map)
@@ -134,6 +134,7 @@ proc cloneProvinceFull*(xd, yd, xMax, yMax: cint, data: ProvinceData, map: Surfa
       inc y
     y = 0
     inc x
+  #echo len(points)
   return points
 proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): seq[Point2D] =
   #echo "getting points for ($1, $2, $3)" % [$color[0], $color[1], $color[2]]
@@ -177,6 +178,7 @@ proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
         var nProv = ProvinceData(id: int16(newProvinces.len), ownerID: -1, color: [pixel.r, pixel.g, pixel.b])
         nProv.vectors = cloneProvinceFull(x, y, surface.w, surface.h, nProv, colorMap)
         newProvinces.add nProv
+        if newProvinces.len > 1000: return newProvinces
       inc x
     x = 0
     inc y
@@ -203,19 +205,19 @@ proc renderProvinceEx*(renderer: RendererPtr, obj: KyuickObject) =
   var idx: int = 0
   for point in this.pdat.vectors:
     renderer.drawPoint(point.x, point.y)
-    var xPoints: seq[Point2D] = @[]
-    for rPoint in this.pdat.vectors:
-      block ch:
-        if rPoint.y != point.y: continue
-        if rPoint.x < point.x: continue
+    #var xPoints: seq[Point2D] = @[]
+    #for rPoint in this.pdat.vectors:
+    #  block ch:
+    #    if rPoint.y != point.y: continue
+    #    if rPoint.x < point.x: continue
         # Quick hack that improves performance slightly.
-        for p in xPoints:
-          if rPoint != p and point == p:
-            continue
-          break ch
-        xPoints.add rPoint
-        xPoints.add point
-        renderer.drawLine(rPoint.x, rPoint.y, point.x, point.y)
+    #    for p in xPoints:
+    #      if rPoint != p and point == p:
+    #        continue
+    #      break ch
+    #    xPoints.add rPoint
+    #    xPoints.add point
+    #    renderer.drawLine(rPoint.x, rPoint.y, point.x, point.y)
   return
 proc dumpProvinceDataToFile*(provinces: seq[ProvinceData], fileName: string) =
   echo "Beginning YAML Dump!"
