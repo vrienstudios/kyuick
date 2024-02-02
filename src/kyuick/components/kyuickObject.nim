@@ -4,7 +4,7 @@ type
   KyuickObject* = ref object of RootObj
     x*, y*: cint
     width*, height*: cint
-    hoverStatus: bool
+    hoverStatus*: bool
     autoFocusable*: bool
     focusChange*: bool
     # Fields to save render information to memory for performance.

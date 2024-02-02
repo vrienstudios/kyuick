@@ -3,12 +3,12 @@ import sdl2
 import sdl2/[ttf, image]
 # Kyuick Components
 import kyuick/components/[kyuickObject, scene, verticalGrid]
-import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
 import kyuick/components/Game/gameObjects
+import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject]
 import kyuick/utils/[fontUtils, rendererUtils]
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils, times]
-# Window settings to be set before startGameLoop is called.
+
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
@@ -36,14 +36,10 @@ proc isDown*(key: string): bool =
     return false
   return keyDownTracker[key]
 proc loadLevelData(folder: string): bool =
-  # TODO: load settings and data from file.
   gameFolder = folder
-  # Load the province map
   mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, folder / "provMap.png")
   mainCanvas.renderSaved = false
-  # Load Level Data
   return true
-# Process mouse clicks and calculate object clicked.
 proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
   if e.button == 2:
     keyDownTracker["SDL_BUTTON_MIDDLE"] = isDown
@@ -132,30 +128,23 @@ proc showFrameTime*() =
     newLabel(0, 18, "FPSC", [255, 255, 255, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameTime.addr
   mainCanvas.elements.add fpsc
-# The game loop; everything is rendered and processed here.
 proc startGameLoop*(name: string, onInit: proc() = nil) =
-  # Init SDL2 and SDL_TTF
   sdl2.init(INIT_VIDEO or INIT_TIMER or INIT_EVENTS)
   ttfInit()
-  # Later we can add error handling for init
   discard image.init()
   if onInit != nil:
     onInit()
-  # Create the game window.
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
   #var vlkLib: pointer = vulkanGetVkGetInstanceProcAddr()
-  # Create our renderer with V-Sync
   #discard glSetAttribute(GLattr.SDL_GL_DOUBLEBUFFER, 1)
   let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   showFPS()
   showFrameTime()
-  # Start the infinite renderer.
   while true:
     startCounter = getPerformanceCounter()
     var event = defaultEvent
-    # Check for events.
     while pollEvent(event):
       case event.kind:
         of QuitEvent:
@@ -215,7 +204,7 @@ proc textEditorTest*() =
 proc choiceDialogForType*() =
   return
 proc gameObjectBuilder*() =
-  var prvTest = Province(id: 0, ownerID: 0, color: [255, 255, 255, 255])
+  var prvTest = Province(pdat: ProvinceData(id: 0, ownerID: 0, color: [255, 255, 255]))
   var imgSurface: SurfacePtr = load(cstring("./ff.png"))
   var vectors: seq[tuple[x, y: cint]]
   var x, y: cint
@@ -235,26 +224,12 @@ proc gameObjectBuilder*() =
     x = 0
   var i: int = 0
   while i < vectors.len:
-    prvTest.vectors[i] = Point2D(x: vectors[i].x, y: vectors[i].y)
-    inc i
+    prvTest.pdat.vectors.add Point2D(x: vectors[i].x, y: vectors[i].y)
+    inc i # 388 548
   prvTest.render = renderProvince
-  prvTest.color = [100, 100, 100, 255]
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
-  mainCanvas.elements.add(prvTest)
+  prvTest.pdat.color = [100, 100, 100]
+  var id: int = 0
+  echo $len(prvTest.pdat.vectors)
   mainCanvas.elements.add(prvTest)
 proc engineStressTestInputs*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
@@ -265,8 +240,20 @@ proc engineStressTestInputs*() =
     var thisTestLabel = 
       newLabel(100 + i, 100 + i, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
     mainCanvas.elements.add thisTestLabel
+proc provinceBuilder*() =
+  let data = buildExampleProvinces()
+  dumpProvinceDataToFile(data, "pdat1")
+proc usProvinceDetectionTest() =
+  var provinceColorMap: SurfacePtr = load("sssd")
+  let pdata = generateProvincesFromColorMap(provinceColorMap)
+  var provinces: seq[Province] = getRendererPolys(pdata)
+  echo len(provinces)
+  for n in provinces:
+    mainCanvas.elements.add n
+  #mainCanvas.elements.add provinces[0]
+  #genProvincesAndDumpData("provMap")
 when isMainModule:
   mainCanvas = Scene()
   mainCanvas.width = WinWidth
   mainCanvas.height = WinHeight
-  startGameLoop("tester", gameObjectBuilder)
+  startGameLoop("tester", usProvinceDetectionTest)
