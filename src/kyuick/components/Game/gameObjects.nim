@@ -58,14 +58,16 @@ type
     id*: int16
     ownerID*: int16
     color*: array[3, uint8]
+    provinceHistory*: seq[tuple[year, text: string]]
     cultureID*, religionID*, tradegoodID*: int16
     isHRE*: bool
     cores*: seq[CoreObject]
     claims*: seq[ClaimObject]
     population*: PopulationObject
     vectors*: seq[Point2D]
-    pointPairs*: seq[tuple[p1, p2: Point2D]]
     neighbors*: seq[int16]
+    xOffset*: cint
+    yOffset*: cint
   Province* = ref object of KyuickObject
     pdat*: ProvinceData
     lastUpdate: uint32
@@ -186,10 +188,10 @@ proc orderProvinceBorders*(province: ProvinceData): seq[Point2D] =
           dTrack = 0
           continue
         if lastUpd != orderedBorders.len and edTrack > 10 and idy == orderedVectors.len - 1:
-          inc dTrack
           if dTrack >= orderedBorders.len:
             echo "BAD GEOMETRY"
             return orderedBorders
+          inc dTrack
           start = orderedBorders[^dTrack]
           idy = 0
           break jmp
@@ -296,8 +298,8 @@ proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
   var ls: cint = 0
   while ls < this.pdat.vectors.len:
     let point = this.pdat.vectors[ls]
-    xS.add int16(point.x)
-    yS.add int16(point.y)
+    xS.add int16(this.pdat.xOffset + point.x)
+    yS.add int16(this.pdat.yOffset + point.y)
     inc ls
   renderer.polygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, this.pdat.color[0], this.pdat.color[1], this.pdat.color[2], 255)
   renderer.filledpolygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, this.pdat.color[0], this.pdat.color[1], this.pdat.color[2], 255)
@@ -308,8 +310,8 @@ proc renderProvinceT*(renderer: RendererPtr, obj: KyuickObject) =
   var ls: cint = 0
   while ls < this.pdat.vectors.len:
     let point = this.pdat.vectors[ls]
-    xS.add int16(point.x)
-    yS.add int16(point.y)
+    xS.add int16(this.pdat.xOffset + point.x)
+    yS.add int16(this.pdat.yOffset + point.y)
     inc ls
   var surface = load("image_proxy.jpg")
   renderer.texturedPolygon(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, surface, 0, 0)
@@ -322,7 +324,7 @@ proc renderProvinceTEx*(renderer: RendererPtr, obj: KyuickObject) =
   for point in this.pdat.vectors:
     let rgb = surface.getColorAtPoint(point.x, point.y)
     renderer.setDrawColor(rgb.r, rgb.g, rgb.g)
-    renderer.drawPoint(point.x, point.y)
+    renderer.drawPoint(this.pdat.xOffset + point.x, this.pdat.yOffset + point.y)
   #var surface = load("image_proxy.jpg")
   #renderer.texturedPolygon(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, surface, 0, 0)
   return
@@ -331,7 +333,7 @@ proc renderProvinceEx*(renderer: RendererPtr, obj: KyuickObject) =
   renderer.setDrawColor(this.pdat.color)
   var idx: int = 0
   for point in this.pdat.vectors:
-    renderer.drawPoint(point.x, point.y)
+    renderer.drawPoint(this.pdat.xOffset + point.x, this.pdat.yOffset + point.y)
     #var xPoints: seq[Point2D] = @[]
     #for rPoint in this.pdat.vectors:
     #  block ch:
@@ -357,7 +359,7 @@ proc renderSlow*(renderer: RendererPtr, obj: KyuickObject) =
     inc this.point
   while idx < int(this.point) and idx < this.pdat.vectors.len:
     let point = this.pdat.vectors[idx]
-    renderer.drawPoint(point.x, point.y)
+    renderer.drawPoint(this.pdat.xOffset + point.x, this.pdat.yOffset + point.y)
     inc idx
 proc dumpProvinceDataToFile*(provinces: seq[ProvinceData], fileName: string) =
   echo "Beginning YAML Dump!"
@@ -371,5 +373,5 @@ proc genProvincesAndDumpData*(mapN: string) =
 proc getRendererPolys*(pData: seq[ProvinceData]): seq[Province] =
   var provinces: seq[Province] = @[]
   for pDat in pData:
-    provinces.add Province(pdat: pDat, render: renderProvince)
+    provinces.add Province(pdat: pDat, render: renderSlow)
   return provinces

@@ -174,6 +174,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     let cB = cpuTime()
     renderer.clear()
     #frameBufferController()
+    #renderer.setScale(2, 2)
     render(mainCanvas, renderer)
     renderer.present()
     currentFrameTime = (cpuTime() - cB) * 1000
@@ -244,10 +245,12 @@ proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
 proc usProvinceDetectionTest() =
-  var provinceColorMap: SurfacePtr = load("France_test.png")
+  var provinceColorMap: SurfacePtr = load("testI.png")
   let pdata = generateProvincesFromColorMap(provinceColorMap)
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
+    #n.pdat.xOffset = n.pdat.xOffset + 100
+    #n.pdat.yOffset =  n.pdat.yOffset + 100
     mainCanvas.elements.add n
   #let p = provinces[1]
   #mainCanvas.elements.add p
