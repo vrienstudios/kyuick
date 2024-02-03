@@ -165,7 +165,9 @@ proc orderProvinceBorders*(province: ProvinceData): seq[Point2D] =
     path: seq[Point2D] = @[]
     orderedVectors: seq[Point2D] = province.vectors
     orderedBorders: seq[Point2D] = @[]
-
+  if orderedVectors.len == 0:
+    echo "NO GEOMETRY TO TRACE"
+    return orderedBorders
   orderedBorders.add orderedVectors[0]
   var lastUpd: int = len(orderedBorders)
   var edTrack: int = 0
@@ -173,11 +175,11 @@ proc orderProvinceBorders*(province: ProvinceData): seq[Point2D] =
   while idx < len(orderedVectors):
     var start = orderedBorders[^1]
     while idy < orderedVectors.len:
+      if len(orderedBorders) == len(orderedVectors):
+        echo "length: " & $len(orderedBorders)
+        return orderedBorders
       var current = orderedVectors[idy]
       block jmp:
-        if len(orderedBorders) == len(orderedVectors):
-          echo "length: " & $len(orderedBorders)
-          return orderedBorders
         inc idy
         while seekTrace(orderedBorders, start, current, lastUpd, edTrack):
           edTrack = 0
@@ -185,6 +187,9 @@ proc orderProvinceBorders*(province: ProvinceData): seq[Point2D] =
           continue
         if lastUpd != orderedBorders.len and edTrack > 10 and idy == orderedVectors.len - 1:
           inc dTrack
+          if dTrack >= orderedBorders.len:
+            echo "BAD GEOMETRY"
+            return orderedBorders
           start = orderedBorders[^dTrack]
           idy = 0
           break jmp
@@ -276,7 +281,7 @@ proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
         nProv.vectors = cloneFullBorder(x, y, 1000, 6400, nProv, colorMap)
         nProv.vectors = orderProvinceBorders(nProv)
         newProvinces.add nProv
-        if newProvinces.len > 4: return newProvinces
+        if newProvinces.len > 21: return newProvinces
       inc x
     x = 0
     inc y
@@ -289,7 +294,6 @@ proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
   var xS, yS: seq[int16]
   var ls: cint = 0
-  renderer.setScale(1, 1)
   while ls < this.pdat.vectors.len:
     let point = this.pdat.vectors[ls]
     xS.add int16(point.x)
@@ -297,7 +301,6 @@ proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
     inc ls
   renderer.polygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, this.pdat.color[0], this.pdat.color[1], this.pdat.color[2], 255)
   renderer.filledpolygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, this.pdat.color[0], this.pdat.color[1], this.pdat.color[2], 255)
-  renderer.setScale(1, 1)
   return
 proc renderProvinceT*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
@@ -326,11 +329,9 @@ proc renderProvinceTEx*(renderer: RendererPtr, obj: KyuickObject) =
 proc renderProvinceEx*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
   renderer.setDrawColor(this.pdat.color)
-  renderer.setScale(1, 1)
   var idx: int = 0
   for point in this.pdat.vectors:
     renderer.drawPoint(point.x, point.y)
-  renderer.setScale(1, 1)
     #var xPoints: seq[Point2D] = @[]
     #for rPoint in this.pdat.vectors:
     #  block ch:
@@ -348,7 +349,6 @@ proc renderProvinceEx*(renderer: RendererPtr, obj: KyuickObject) =
 proc renderSlow*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
   renderer.setDrawColor(this.pdat.color)
-  renderer.setScale(2, 2)
   var 
     idx: int = 0
     current = getTicks()
@@ -357,9 +357,8 @@ proc renderSlow*(renderer: RendererPtr, obj: KyuickObject) =
     inc this.point
   while idx < int(this.point) and idx < this.pdat.vectors.len:
     let point = this.pdat.vectors[idx]
-    renderer.drawPoint(200 + point.x, 100 + point.y)
+    renderer.drawPoint(point.x, point.y)
     inc idx
-  renderer.setScale(1, 1)
 proc dumpProvinceDataToFile*(provinces: seq[ProvinceData], fileName: string) =
   echo "Beginning YAML Dump!"
   var fStream = newFileStream(fileName & ".yaml", fmWrite)
@@ -368,7 +367,7 @@ proc dumpProvinceDataToFile*(provinces: seq[ProvinceData], fileName: string) =
 proc genProvincesAndDumpData*(mapN: string) =
   var provinceColorMap: SurfacePtr = load(mapN & ".png")
   var provinces: seq[ProvinceData] = generateProvincesFromColorMap(provinceColorMap)
-  #dumpProvinceDataToFile(provinces, "US_")
+  dumpProvinceDataToFile(provinces, "US_")
 proc getRendererPolys*(pData: seq[ProvinceData]): seq[Province] =
   var provinces: seq[Province] = @[]
   for pDat in pData:

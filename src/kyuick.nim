@@ -244,7 +244,7 @@ proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
 proc usProvinceDetectionTest() =
-  var provinceColorMap: SurfacePtr = load("ss.png")
+  var provinceColorMap: SurfacePtr = load("France_test.png")
   let pdata = generateProvincesFromColorMap(provinceColorMap)
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
@@ -253,7 +253,7 @@ proc usProvinceDetectionTest() =
   #mainCanvas.elements.add p
   #for v in p.pdat.vectors:
   #  echo "($1, $2)" % [$v.x, $v.y]
-  #genProvincesAndDumpData("provMap")
+  #genProvincesAndDumpData("ss")
 when isMainModule:
   mainCanvas = Scene()
   mainCanvas.width = WinWidth
