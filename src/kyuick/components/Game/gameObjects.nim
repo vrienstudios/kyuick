@@ -1,4 +1,4 @@
-import os, system, streams
+import os, system, streams, math
 import ../kyuickObject
 import ../../utils/rendererUtils
 import sdl2, sdl2/image, sdl2/gfx
@@ -52,6 +52,8 @@ type
     length: int8
   Point2D* = ref object
     x*, y*: cint
+    rgb*: tuple[r, g, b: uint8]
+    neighbors*: array[4, tuple[r, g, b, t: uint8]]
   ProvinceData* = object
     id*: int16
     ownerID*: int16
@@ -66,6 +68,8 @@ type
     neighbors*: seq[int16]
   Province* = ref object of KyuickObject
     pdat*: ProvinceData
+    lastUpdate: uint32
+    point: uint32
     builtGFX: TexturePtr
   Nation* = object
     id, capitalID: int16
@@ -86,6 +90,12 @@ type
     buildingObject: array[32766, BuildingObject]
     # Hard-coded.
     wargoalTypes: array[5, WarGoalObject]
+#  echo "WHY | $1 $2 $3 | $4 $5 $6" % [$r, $g, $b, $pixel.r, $pixel.g, $pixel.b] 
+iterator pointNeighbors(points: seq[Point2D], map: SurfacePtr): array[4, tuple[r, g, b, t: uint8]] =
+  var idx: int = 0
+  while idx < len(points):
+    yield map.getColorDirections(points[idx].x, points[idx].y)
+    inc idx
 proc buildExampleProvinces*(num: int = 16): seq[ProvinceData] =
   var x: int = 1
   var provinces: seq[ProvinceData] = @[]
@@ -93,49 +103,136 @@ proc buildExampleProvinces*(num: int = 16): seq[ProvinceData] =
     provinces.add ProvinceData(id: int16(x), ownerID: -1, color: [uint8(100 + x + 10), uint8(100 + x + 4), uint8(100 + x + 2)])
     inc x
   return provinces
-proc mapProvinceBorders*(xd, yd: cint, province: ProvinceData, map: SurfacePtr): seq[Point2D] =
-  # Write algorithm to follow border along x,y coords to map.
-  # Priority -- up -> right -> down -> left --^
-  var x, y: cint
-  var mapData: ptr Surface = (ptr Surface)(map)
-  while x < mapData.w:
-    while y < mapData.h:
-      # Left . Up . Right . Down
-      let data = map.getColorDirections(x, y)
-      if data[1].r == province.color[0] and data[1].g == province.color[1] and data[1].b == province.color[2]:
-        return @[]
-  return @[]
+proc isIn(list: seq[Point2D], a, b: int): bool =
+    for i in list:
+        if i.x == a and i.y == b:
+            return true
+proc seekTrace(orderedBorders: var seq[Point2D], start, current: var Point2D, lastUpd, edTrack: var int): bool =
+  if start.x + 1 == current.x and start.y == current.y and (not orderedBorders.isIn(start.x + 1, start.y)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  if start.x == current.x and start.y + 1 == current.y and (not orderedBorders.isIn(start.x, start.y + 1)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    return true
+  if start.x == current.x and start.y - 1 == current.y and (not orderedBorders.isIn(start.x, start.y - 1)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  if start.x - 1 == current.x and start.y == current.y and (not orderedBorders.isIn(start.x - 1, start.y)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  # Diagnols
+  if start.x + 1 == current.x and start.y + 1 == current.y and (not orderedBorders.isIn(start.x + 1, start.y + 1)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  if start.x - 1 == current.x and start.y + 1 == current.y and (not orderedBorders.isIn(start.x - 1, start.y + 1)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  if start.x + 1 == current.x and start.y - 1 == current.y and (not orderedBorders.isIn(start.x + 1, start.y - 1)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  if start.x - 1 == current.x and start.y - 1 == current.y and (not orderedBorders.isIn(start.x - 1, start.y - 1)):
+    orderedBorders.add current
+    start = current
+    lastUpd = orderedBorders.len
+    edTrack = 0
+    return true
+  return false
+proc orderProvinceBorders*(province: ProvinceData): seq[Point2D] =
+  var
+    idx: cint = 0
+    ydx: cint = 0
+    idy: cint = 0
+    path: seq[Point2D] = @[]
+    orderedVectors: seq[Point2D] = province.vectors
+    orderedBorders: seq[Point2D] = @[]
+
+  orderedBorders.add orderedVectors[0]
+  var lastUpd: int = len(orderedBorders)
+  var edTrack: int = 0
+  var dTrack: int = 0
+  while idx < len(orderedVectors):
+    var start = orderedBorders[^1]
+    while idy < orderedVectors.len:
+      var current = orderedVectors[idy]
+      block jmp:
+        if len(orderedBorders) == len(orderedVectors):
+          echo "length: " & $len(orderedBorders)
+          return orderedBorders
+        inc idy
+        while seekTrace(orderedBorders, start, current, lastUpd, edTrack):
+          edTrack = 0
+          dTrack = 0
+          continue
+        if lastUpd != orderedBorders.len and edTrack > 10 and idy == orderedVectors.len - 1:
+          inc dTrack
+          start = orderedBorders[^dTrack]
+          idy = 0
+          break jmp
+    if idx mod 10 == 0:
+      if lastUpd != orderedBorders.len:
+        inc edTrack
+        var u = orderedBorders[^1]
+        var d = orderedBorders[^2]
+        orderedBorders[^1] = d
+        orderedBorders[^2] = u
+    inc lastUpd
+    inc idx
+    idy = 0
+  return orderedBorders
 proc cloneProvinceFull*(xd, yd, xMax, yMax: cint, data: ProvinceData, map: SurfacePtr): seq[Point2D] =
   var 
-    x: cint = xd - 400 
-    y: cint = xd - 400
+    x: cint = xd - xMax 
+    y: cint = xd - yMax
   if x < 0: x = 0
   if y < 0: y = 0
   var 
-    xUpper: cint = xd + 600
-    yUpper: cint = yd + 600
-  if xUpper > xMax: xUpper = xMax
-  if yUpper > yMax: yUpper = yMax
+    xUpper: cint = xd + xMax
+    yUpper: cint = yd + yMax
   var mapData: ptr Surface = (ptr Surface)(map)
-  let 
-    r = data.color[0]
-    g = data.color[1]
-    b = data.color[2]
+  if xUpper > mapData.w: xUpper = mapData.w
+  if yUpper > mapData.h: yUpper = mapData.h
   var points: seq[Point2D] = @[]
-  while x < xUpper:
-    while y < yUpper:
+  while y < yUpper:
+    while x < xUpper:
       let cPixel = map.getColorAtPoint(x, y)
-      if cPixel.r != r or cPixel.g != g or cPixel.b != b:
-        inc y
-        continue
-      points.add Point2D(x: x, y: y)
-        #if x == 208 and y == 118:
-        #  echo "WHY | $1 $2 $3 | $4 $5 $6" % [$r, $g, $b, $pixel.r, $pixel.g, $pixel.b] 
-      inc y
-    y = 0
-    inc x
-  #echo len(points)
+      if cPixel == data.color:
+        points.add Point2D(x: x, y: y)
+      inc x
+    x = 0
+    inc y
   return points
+proc setPointsNeighbors(points: seq[Point2D], map: SurfacePtr) =
+  for p in points:
+    p.neighbors = map.getColorDirections(p.x, p.y)
+proc cloneFullBorder*(xd, yd, xDeltaMax, yDeltaMax: cint, data: ProvinceData, map: SurfacePtr) : seq[Point2D] =
+  var knownPoints = cloneProvinceFull(xd, yd, xDeltaMax, yDeltaMax, data, map)
+  var borderPoints: seq[Point2D] = @[]
+  var idx: int = 0
+  for neighbor in pointNeighbors(knownPoints, map):
+    if not isUniform(neighbor):
+      borderPoints.add(knownPoints[idx])
+    inc idx
+  return borderPoints
 proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): seq[Point2D] =
   #echo "getting points for ($1, $2, $3)" % [$color[0], $color[1], $color[2]]
   var x, y: cint
@@ -148,12 +245,12 @@ proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): s
   while x < surface.w:
     while y < surface.h:
       let cPixel = surfaceX.getColorAtPoint(x, y)
-      if cPixel.r != r or cPixel.g != g or cPixel.b != b:
+      if isNotEqualSingle(cPixel, color):
         inc y
         continue
       var flg: bool = false
       for pixel in surfaceX.getColorDirections(x, y):
-        if pixel.r != r or pixel.g != g or pixel.b != b:
+        if isNotEqualSingle(pixel, color):
           points.add Point2D(x: x, y: y)
           break
         #if x == 208 and y == 118:
@@ -176,9 +273,10 @@ proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
             break pCheck
         echo "built $1($2)|$3" % [$newProvinces.len, "-1", $pixel]
         var nProv = ProvinceData(id: int16(newProvinces.len), ownerID: -1, color: [pixel.r, pixel.g, pixel.b])
-        nProv.vectors = cloneProvinceFull(x, y, surface.w, surface.h, nProv, colorMap)
+        nProv.vectors = cloneFullBorder(x, y, 1000, 6400, nProv, colorMap)
+        nProv.vectors = orderProvinceBorders(nProv)
         newProvinces.add nProv
-        if newProvinces.len > 1000: return newProvinces
+        if newProvinces.len > 4: return newProvinces
       inc x
     x = 0
     inc y
@@ -191,20 +289,48 @@ proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
   var xS, yS: seq[int16]
   var ls: cint = 0
+  renderer.setScale(1, 1)
   while ls < this.pdat.vectors.len:
     let point = this.pdat.vectors[ls]
     xS.add int16(point.x)
     yS.add int16(point.y)
     inc ls
   renderer.polygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, this.pdat.color[0], this.pdat.color[1], this.pdat.color[2], 255)
+  renderer.filledpolygonRGBA(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, this.pdat.color[0], this.pdat.color[1], this.pdat.color[2], 255)
+  renderer.setScale(1, 1)
   return
-# Fallback
+proc renderProvinceT*(renderer: RendererPtr, obj: KyuickObject) =
+  let this: Province = Province(obj)
+  var xS, yS: seq[int16]
+  var ls: cint = 0
+  while ls < this.pdat.vectors.len:
+    let point = this.pdat.vectors[ls]
+    xS.add int16(point.x)
+    yS.add int16(point.y)
+    inc ls
+  var surface = load("image_proxy.jpg")
+  renderer.texturedPolygon(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, surface, 0, 0)
+  return
+proc renderProvinceTEx*(renderer: RendererPtr, obj: KyuickObject) =
+  let this: Province = Province(obj)
+  renderer.setDrawColor(this.pdat.color)
+  var surface = load("image_proxy.jpg")
+  var idx: int = 0
+  for point in this.pdat.vectors:
+    let rgb = surface.getColorAtPoint(point.x, point.y)
+    renderer.setDrawColor(rgb.r, rgb.g, rgb.g)
+    renderer.drawPoint(point.x, point.y)
+  #var surface = load("image_proxy.jpg")
+  #renderer.texturedPolygon(cast[ptr int16](addr xS[0]), cast[ptr int16](addr yS[0]), ls, surface, 0, 0)
+  return
 proc renderProvinceEx*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
   renderer.setDrawColor(this.pdat.color)
+  renderer.setScale(1, 1)
   var idx: int = 0
   for point in this.pdat.vectors:
     renderer.drawPoint(point.x, point.y)
+  renderer.setScale(1, 1)
     #var xPoints: seq[Point2D] = @[]
     #for rPoint in this.pdat.vectors:
     #  block ch:
@@ -219,6 +345,21 @@ proc renderProvinceEx*(renderer: RendererPtr, obj: KyuickObject) =
     #    xPoints.add point
     #    renderer.drawLine(rPoint.x, rPoint.y, point.x, point.y)
   return
+proc renderSlow*(renderer: RendererPtr, obj: KyuickObject) =
+  let this: Province = Province(obj)
+  renderer.setDrawColor(this.pdat.color)
+  renderer.setScale(2, 2)
+  var 
+    idx: int = 0
+    current = getTicks()
+    fU = floor(((current - this.lastUpdate).float/1000.0f).float / (1.0f/5.0f))
+  if fU > 0:
+    inc this.point
+  while idx < int(this.point) and idx < this.pdat.vectors.len:
+    let point = this.pdat.vectors[idx]
+    renderer.drawPoint(200 + point.x, 100 + point.y)
+    inc idx
+  renderer.setScale(1, 1)
 proc dumpProvinceDataToFile*(provinces: seq[ProvinceData], fileName: string) =
   echo "Beginning YAML Dump!"
   var fStream = newFileStream(fileName & ".yaml", fmWrite)
@@ -231,5 +372,5 @@ proc genProvincesAndDumpData*(mapN: string) =
 proc getRendererPolys*(pData: seq[ProvinceData]): seq[Province] =
   var provinces: seq[Province] = @[]
   for pDat in pData:
-    provinces.add Province(pdat: pDat, render: renderProvinceEx)
+    provinces.add Province(pdat: pDat, render: renderProvince)
   return provinces

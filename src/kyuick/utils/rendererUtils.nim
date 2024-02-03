@@ -2,6 +2,21 @@ import sdl2
 import sdl2/image
 import sdl2/ttf
 
+proc `==`*(a: tuple[r, g, b, t: uint8], b: tuple[r, g, b: uint8]): bool =
+    return (a.r == b.r and a.g == b.g and a.b == b.b)
+proc `==`*(a: (tuple[r, g, b, t: uint8] | tuple[r, g, b: uint8]), b: array[3, uint8]): bool =
+    return (a.r == b[0] and a.g == b[1] and a.b == b[2])
+proc isEqualSingle*(a: (tuple[r, g, b, t: uint8] | tuple[r, g, b: uint8]), b: array[3, uint8]): bool =
+    return (a.r == b[0] or a.g == b[1] or a.b == b[2])
+proc isNotEqualSingle*(a: (tuple[r, g, b, t: uint8] | tuple[r, g, b: uint8]), b: array[3, uint8]): bool =
+    return (a.r != b[0] or a.g != b[1] or a.b != b[2])
+proc isUniform*(a: array[4, tuple[r, g, b, t: uint8]]): bool =
+  var p = a[0]
+  for item in a:
+    if item.r != p.r or item.g != p.g or item.b != p.b:
+      return false
+    p = item
+  return true
 proc setDrawColor*(renderer: RendererPtr, col: array[4, int]) =
     renderer.setDrawColor(color(col[0], col[1], col[2], col[3]))
 proc setDrawColor*(renderer: RendererPtr, col: array[3, int]) =
@@ -57,10 +72,10 @@ proc getColorDirections*(pixelData: SurfacePtr, xT, yT: cint): array[4, tuple[r,
     if rightE == 4294967295'u32: rt = 1'u8
     if downE == 4294967295'u32: dt = 1'u8
     let tpl = [(l1, l2, l3, lt), (u1, u2, u3, ut), (r1, r2, r3, rt), (d1, d2, d3, dt)]
-    if x == 454 and y == 561:
+    when defined(vDebug):
         echo "$1, $2\n\n" % [$x, $y]
         echo $tpl
-        echo "\n\n"
+        echo "-------\n\n"
     return tpl
     #var x: cint = 0
     #var y: cint = 0

@@ -137,7 +137,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
   #var vlkLib: pointer = vulkanGetVkGetInstanceProcAddr()
   #discard glSetAttribute(GLattr.SDL_GL_DOUBLEBUFFER, 1)
-  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated)
+  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   showFPS()
@@ -244,13 +244,15 @@ proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
 proc usProvinceDetectionTest() =
-  var provinceColorMap: SurfacePtr = load("provinces.bmp")
+  var provinceColorMap: SurfacePtr = load("ss.png")
   let pdata = generateProvincesFromColorMap(provinceColorMap)
   var provinces: seq[Province] = getRendererPolys(pdata)
-  echo len(provinces)
   for n in provinces:
     mainCanvas.elements.add n
-  #mainCanvas.elements.add provinces[0]
+  #let p = provinces[1]
+  #mainCanvas.elements.add p
+  #for v in p.pdat.vectors:
+  #  echo "($1, $2)" % [$v.x, $v.y]
   #genProvincesAndDumpData("provMap")
 when isMainModule:
   mainCanvas = Scene()
