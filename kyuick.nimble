@@ -2,11 +2,13 @@
 
 version       = "0.1.0"
 author        = "VrienCo"
-description   = "A game framework utilizing SDL2, component based, meant to make prototyping extremely easy and quick."
+description   = "GSG Game Engine"
 license       = "Proprietary"
 srcDir        = "src"
 
-
-# Dependencies
-
 requires "nim >= 2.0.0"
+requires "sdl2"
+requires "yaml"
+requires "nimffmpeg"
+requires "https://github.com/vrienstudios/zippy"
+requires "https://github.com/ShujianDou/nim-epub"
