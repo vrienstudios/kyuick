@@ -24,3 +24,6 @@
 - Game-Specific UI Objects (e.g Family Tree) [N]
 - Traits [N]
 - Modifiers [N]
+- EPUB Rendering [N]
+
+> possible that I can implement ADLCore for a GUI anime, movie, novel downloader.
