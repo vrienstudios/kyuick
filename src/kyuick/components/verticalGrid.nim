@@ -1,6 +1,7 @@
 # Collection of UI components ordered vertically.
 
 import kyuickObject
+import UI/button
 
 type VerticalGrid* = ref object of RootObj
   x*, y*: cint

@@ -2,7 +2,7 @@ import os, system, streams, math
 import ../kyuickObject
 import ../../utils/rendererUtils
 import sdl2, sdl2/image, sdl2/gfx
-import yaml
+#import yaml
 
 type
   ModifierObject* = object
@@ -364,7 +364,7 @@ proc renderSlow*(renderer: RendererPtr, obj: KyuickObject) =
 proc dumpProvinceDataToFile*(provinces: seq[ProvinceData], fileName: string) =
   echo "Beginning YAML Dump!"
   var fStream = newFileStream(fileName & ".yaml", fmWrite)
-  Dumper().dump(provinces, fStream)
+  #Dumper().dump(provinces, fStream)
   fStream.close()
 proc genProvincesAndDumpData*(mapN: string) =
   var provinceColorMap: SurfacePtr = load(mapN & ".png")
