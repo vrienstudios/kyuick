@@ -10,6 +10,7 @@ import kyuick/utils/[fontUtils, rendererUtils]
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strformat]
 
+
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
@@ -273,45 +274,20 @@ template `[]`*[T](p: ptr T, off: int): T =
 template `[]=`*[T](p: ptr T, off: int, val: T) =
   (p+off)[] = val
 proc videoTest() =
-  var filename: string = "./test2.mp4"
-  var tVideo: Video = Video()
-  var formatCtx: ptr AVFormatContext
-  #av_format_inject_global_side_data(formatCtx)
-  #av_dump_format(formatCtx, 0, fileName, 0)
-  #var 
-  #  videoCodec: ptr AVCodec 
-  #  audioCodec: ptr AVCodec
-  #  parser: AVCodecParserContext
-  #let
-  #  vIdx = av_find_best_stream(formatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, addr videoCodec, 0)
-  #  aIdx = av_find_best_stream(formatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, addr audioCodec, 0)
-  #echo "vIdx: ", vIdx, " | aIdx: ", aIdx
-  #var
-  #  idx: cuint = 0
-  #  videoStream = cast[AVStream](streams[18])
-  #  audioStream = cast[AVStream](streams[19])
-  #  paramOne = cast[AVCodecParameters](videoStream.codecpar)
-  #  paramTwo = cast[AVCodecParameters](audioStream.codecpar)
-  #  videoCtx, audioCtx: ptr AVCodecContext
-  
-  #dump videoCodec[]
-  #dump audioCodec[]
-  quit(0)
-
-  #videoCtx = avcodec_alloc_context3(videoCodec)
-  #echo avcodec_parameters_to_context(videoCtx, addr paramOne)
-  #echo avcodec_open2(videoCtx, videoCodec, nil)
-  #audioCtx = avcodec_alloc_context3(audioCodec)
-  #echo avcodec_parameters_to_context(audioCtx, addr paramTwo)
-  #echo avcodec_open2(audioCtx, audioCodec, nil)
-  #var
-  #  vFrame = av_frame_alloc()
-  #  packet = av_packet_alloc()
-  #  swidth = paramOne.width
-  #  sheight = paramOne.height
-  #echo paramOne.width
-  #echo paramOne.height
-  quit(0)
+  var 
+    filename: cstring = "./test.webm"
+    tVideo: Video = Video()
+    formatCtx: ptr AVFormatContext
+  #echo avOpen(addr formatCtx, fileName)
+  #echo avLoadStreamInfo(addr formatCtx)
+  echo avformat_open_input(addr formatCtx, fileName, nil, nil)
+  echo avformat_find_stream_info(formatCtx, nil)
+  var streamOne = getAVStream(formatCtx, 0)
+  var streamTwo = getAVStream(formatCtx, 1)
+  echo streamOne.id
+  echo streamTwo.id
+  echo streamOne.codecpar.codec_id
+  echo streamTwo.codecpar.codec_id
   mainCanvas.elements.add tVideo
 when isMainModule:
   mainCanvas = Scene()
