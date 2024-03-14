@@ -49,3 +49,10 @@ proc prepareAudioSpec*(spec: var AudioSpec) =
   spec.format = AUDIO_F32
   spec.channels = 2
   spec.samples = 4096
+proc generateVideo*(fileName: string) =
+  var video: Video = Video()
+  assert avformat_open_input(addr video.pFormatCtx, fileName, nil, nil) == 0
+  assert avformat_find_stream_info(video.pFormatCtx, nil) == 0
+  var 
+    videoCtx = getAVStream(video.pFormatCtx, 0)
+    audioCtx = getAVStream(video.pFormatCtx, 1)

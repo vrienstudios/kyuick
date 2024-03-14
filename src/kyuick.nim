@@ -3,9 +3,10 @@ import ffmpeg
 import sdl2
 import sdl2/[ttf, image]
 # Kyuick Components
-import kyuick/components/[kyuickObject, scene, verticalGrid]
+import kyuick/components/[kyuickObject, scene]
 import kyuick/components/Game/gameObjects
 import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject, video]
+import kyuick/components/Grids/[horizontalGrid, verticalGrid]
 import kyuick/utils/[fontUtils, rendererUtils]
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strformat]
@@ -245,34 +246,11 @@ proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
 proc usProvinceDetectionTest() =
-  var provinceColorMap: SurfacePtr = load("testI.png")
+  var provinceColorMap: SurfacePtr = load("France_test.png")
   let pdata = generateProvincesFromColorMap(provinceColorMap)
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
-    #n.pdat.xOffset = n.pdat.xOffset + 100
-    #n.pdat.yOffset =  n.pdat.yOffset + 100
     mainCanvas.elements.add n
-  #let p = provinces[1]
-  #mainCanvas.elements.add p
-  #for v in p.pdat.vectors:
-  #  echo "($1, $2)" % [$v.x, $v.y]
-  #genProvincesAndDumpData("ss")
-template `+`*[T](p: ptr T, off: int): ptr T =
-  cast[ptr type(p[])](cast[ByteAddress](p) +% off * sizeof(p[]))
-
-template `+=`*[T](p: ptr T, off: int) =
-  p = p + off
-
-template `-`*[T](p: ptr T, off: int): ptr T =
-  cast[ptr type(p[])](cast[ByteAddress](p) -% off * sizeof(p[]))
-
-template `-=`*[T](p: ptr T, off: int) =
-  p = p - off
-template `[]`*[T](p: ptr T, off: int): T =
-  (p+off)[]
-
-template `[]=`*[T](p: ptr T, off: int, val: T) =
-  (p+off)[] = val
 proc videoTest() =
   var 
     filename: cstring = "./test.webm"
@@ -289,8 +267,16 @@ proc videoTest() =
   echo streamOne.codecpar.codec_id
   echo streamTwo.codecpar.codec_id
   mainCanvas.elements.add tVideo
+proc mapTest() =
+  var provinceColorMap: SurfacePtr = load("France_test.png")
+  let pdata = generateProvincesFromColorMap(provinceColorMap)
+  var 
+    provinces: seq[Province] = getRendererPolys(pdata)
+    map: Map = Map(provinces: provinces)
+  mainCanvas.renderSaved = false
+  return true
 when isMainModule:
   mainCanvas = Scene()
   mainCanvas.width = WinWidth
   mainCanvas.height = WinHeight
-  startGameLoop("tester", videoTest)
+  startGameLoop("tester", usProvinceDetectionTest)

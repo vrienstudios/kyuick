@@ -1,5 +1,6 @@
 import os, system, streams, math
 import ../kyuickObject
+import ../UI/imageObject
 import ../../utils/rendererUtils
 import sdl2, sdl2/image, sdl2/gfx
 #import yaml
@@ -54,16 +55,18 @@ type
     x*, y*: cint
     rgb*: tuple[r, g, b: uint8]
     neighbors*: array[4, tuple[r, g, b, t: uint8]]
-  ProvinceData* = object
+  TextureData* = ref seq[tuple[dir: int, id: string]]
+  ProvinceData* = ref object
     id*: int16
     ownerID*: int16
     color*: array[3, uint8]
     provinceHistory*: seq[tuple[year, text: string]]
-    cultureID*, religionID*, tradegoodID*: int16
+    cultureID*, religionID*, tradegoodID*, terrainID*: int16
     isHRE*: bool
     cores*: seq[CoreObject]
     claims*: seq[ClaimObject]
     population*: PopulationObject
+    textures*: TextureData
     vectors*: seq[Point2D]
     neighbors*: seq[int16]
     xOffset*: cint
@@ -72,7 +75,6 @@ type
     pdat*: ProvinceData
     lastUpdate: uint32
     point: uint32
-    builtGFX: TexturePtr
   Nation* = object
     id, capitalID: int16
     cultureID, religionID: int8
@@ -80,18 +82,10 @@ type
   Map* = object
     # Map name is the name of the map. All components must be labeled.
     # E.g (mymap_color.png, mymap_data.yml, mymap_localization.yml)
-    mapName: string
-    # Capped for performance reasons.
-    provinces: array[10000, Province]
-    nations: array[1000, Nation]
-    religions: array[100, ReligionObject]
-    cultures: array[100, CultureObject]
-    tradeGoods: array[500, TradeObject]
-    governmentTypes: array[32766, GovernmentObject]
-    technologies: array[32766, TechnologyObject]
-    buildingObject: array[32766, BuildingObject]
-    # Hard-coded.
-    wargoalTypes: array[5, WarGoalObject]
+    mapName*: string
+    mapModes*: seq[tuple[hotkey: char, map: ImageObject]]
+    provinces*: seq[seq[Province]]
+    obj*: seq[TextureData]
 #  echo "WHY | $1 $2 $3 | $4 $5 $6" % [$r, $g, $b, $pixel.r, $pixel.g, $pixel.b] 
 iterator pointNeighbors(points: seq[Point2D], map: SurfacePtr): array[4, tuple[r, g, b, t: uint8]] =
   var idx: int = 0
@@ -267,7 +261,7 @@ proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): s
     inc x
   #echo len(points)
   return points
-proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
+proc generateProvincesFromColorMap*(map: Map, colorMap: SurfacePtr): seq[ProvinceData] =
   var x, y, dI: cint
   var surface: ptr Surface = (ptr Surface)(colorMap)
   var newProvinces: seq[ProvinceData] = @[]
@@ -275,25 +269,26 @@ proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
     while x < surface.w:
       block pCheck:
         let pixel = colorMap.getColorAtPoint(x, y)
-        for data in newProvinces:
-          if data.color[0] == pixel.r and data.color[1] == pixel.g and data.color[2] == pixel.b:
-            break pCheck
         echo "built $1($2)|$3" % [$newProvinces.len, "-1", $pixel]
         var nProv = ProvinceData(id: int16(newProvinces.len), ownerID: -1, color: [pixel.r, pixel.g, pixel.b])
         nProv.vectors = cloneFullBorder(x, y, 1000, 6400, nProv, colorMap)
         nProv.vectors = orderProvinceBorders(nProv)
         newProvinces.add nProv
-        if newProvinces.len > 21: return newProvinces
       inc x
     x = 0
     inc y
-  return newProvinces
+    return newProvinces
+proc createTMapFromFile*(map: Map, name: string, tList: var TextureData) =
+  let mData: string = readFile("./mdat/" & name & ".mpak")
+  let uTx: string = openZipArchive("./tiles.tpak")
 proc createMap(mapN: string) =
   var provinceColorMap: SurfacePtr = load(mapN & ".png")
   let provinceData: string = readFile("./" & mapN & "_PDAT" & ".yaml")
 # SDL_GFX Lib dependent
 proc renderProvince*(renderer: RendererPtr, obj: KyuickObject) =
   let this: Province = Province(obj)
+  if this.pdat.vectors.len <= 1:
+    return
   var xS, yS: seq[int16]
   var ls: cint = 0
   while ls < this.pdat.vectors.len:
@@ -373,5 +368,5 @@ proc genProvincesAndDumpData*(mapN: string) =
 proc getRendererPolys*(pData: seq[ProvinceData]): seq[Province] =
   var provinces: seq[Province] = @[]
   for pDat in pData:
-    provinces.add Province(pdat: pDat, render: renderSlow)
+    provinces.add Province(pdat: pDat, render: renderProvince)
   return provinces
