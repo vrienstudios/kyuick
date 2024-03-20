@@ -46,3 +46,5 @@ proc newLabel*(x, y: cint, text: string, color: array[4, int], font: FontPtr, fo
   discard ttf.sizeText(font, text, addr w, addr h)
   return Label(x: x, y: y, width: w,
     height: h, text: text, color: color, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
+proc clone*(label: Label, x, y: cint, text: string): Label =
+  return newLabel(x, y, text, label.color, label.font, label.fontSize)

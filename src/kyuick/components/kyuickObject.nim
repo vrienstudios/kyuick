@@ -5,6 +5,8 @@ type
     x*, y*: cint
     width*, height*: cint
     hoverStatus*: bool
+    canClick*: bool
+    canHover*: bool
     autoFocusable*: bool
     focusChange*: bool
     # Fields to save render information to memory for performance.
@@ -22,6 +24,7 @@ type
     onKeyDown*: proc(obj: KyuickObject, scancode: string)
     # When status is true, the mouse is hovering, when false, the mouse has stopped hovering.
     onHoverStatusChange*: proc(obj: KyuickObject, status: bool)
+    parent*: KyuickObject
 proc render*(renderer: RendererPtr, obj: KyuickObject) =
   if obj.hoverStatus and obj.hoverRender != nil:
     obj.hoverRender(renderer, obj)

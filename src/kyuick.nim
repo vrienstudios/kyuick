@@ -27,7 +27,6 @@ var
   currentFrameTime*: float = 0
   canvasMovable: bool
   inFocus: KyuickObject
-  fontsLoaded: seq[(string, FontPtr)]
   keyDownTracker = initTable[string, bool]()
   mouseXYTracker: tuple[x, y: cint] = (0, 0)
   # Game Content
@@ -53,7 +52,8 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
     return
   case e.button:
     of 1:
-      for obj in mainCanvas.clickables:
+      for obj in mainCanvas.elements:
+        if obj.canClick == false: continue
         #echo ("mouse($1, $2) objX($3, $4) objY($5, $6)" % [$e.x, $e.y, $obj.x, $(obj.x + obj.width), $obj.y, $(obj.y + obj.height)])
         if e.x >= obj.x and e.x <= (obj.x + obj.width):
           if e.y >= obj.y and e.y <= (obj.y + obj.height):
@@ -67,7 +67,8 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
       return
 proc mouseMove(e: MouseMotionEventPtr) =
   var hoverObjFound: bool = false
-  for obj in mainCanvas.hoverables:
+  for obj in mainCanvas.elements:
+    if obj.canHover == false: continue
     if hoverObjFound == false:
       if e.x >= obj.x and e.x <= (obj.x + obj.width):
         if e.y >= obj.y and e.y <= (obj.y + obj.height):
@@ -268,7 +269,8 @@ proc videoTest() =
   echo streamTwo.codecpar.codec_id
   mainCanvas.elements.add tVideo
 proc mapTest() =
-  var mapC = newMapMaker()
+  var mapC = openMapEditorForTile(fontTracker, WinWidth, WinHeight)
+  mainCanvas = mapC.mainScene
   #var provinceColorMap: SurfacePtr = load("France_test.png")
   #let pdata = generateProvincesFromColorMap(provinceColorMap)
   #var 

@@ -22,8 +22,8 @@ proc getFontEx*(this: var FontTracker, name: string, size: cint): int8 =
           this[index] = (name, openFont(file, size), size)
           echo "Loaded font ($1) | ($2) | ($3)pt" % [$index, $file, $size]
       return index
-    echo "Fonts Full"
-    return -1
-  echo "Font Not Loaded"
+    inc index
+  echo "Fonts Full"
+  return -1
 proc getFont*(this: var FontTracker, name: string, size: cint): FontPtr =
     return this[getFontEx(this, name, size)].font
