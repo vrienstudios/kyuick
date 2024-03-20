@@ -11,4 +11,7 @@ requires "sdl2"
 requires "yaml"
 requires "https://github.com/vrienstudios/zippy"
 requires "https://github.com/ShujianDou/nim-epub"
-requires "https://github.com/mock-up/ffmpeg.nim/"
+
+task buildR "Build and run":
+  withDir "src":
+    exec "nim c --run kyuick.nim"

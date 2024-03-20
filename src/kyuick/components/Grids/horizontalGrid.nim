@@ -14,9 +14,11 @@ proc add*(this: HorizontalGrid, obj: KyuickObject) =
     return # Refuse to accept anymore.
   obj.x = this.totalW
   this.elements.add obj
-proc renderVert*(renderer: RendererPtr, obj: KyuickObject) =
-  renderer.render(obj)
+proc renderHor*(renderer: RendererPtr, obj: KyuickObject) =
+  let hor = HorizontalGrid(obj)
+  for el in hor.elements:
+    renderer.render(el)
 proc newHorizontalGrid*(x, y, width, height: cint): HorizontalGrid =
   var obj: HorizontalGrid = HorizontalGrid(x: x, y: y, width: width, height: height)
-  obj.render = renderVert
+  obj.render = renderHor
   return obj

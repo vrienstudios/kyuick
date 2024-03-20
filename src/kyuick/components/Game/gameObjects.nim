@@ -3,6 +3,7 @@ import ../kyuickObject
 import ../UI/imageObject
 import ../../utils/rendererUtils
 import sdl2, sdl2/image, sdl2/gfx
+import zippy/ziparchives
 #import yaml
 
 type
@@ -261,7 +262,7 @@ proc getProvinceVectorsFromMap*(color: array[3, uint8], surfaceX: SurfacePtr): s
     inc x
   #echo len(points)
   return points
-proc generateProvincesFromColorMap*(map: Map, colorMap: SurfacePtr): seq[ProvinceData] =
+proc generateProvincesFromColorMap*(colorMap: SurfacePtr): seq[ProvinceData] =
   var x, y, dI: cint
   var surface: ptr Surface = (ptr Surface)(colorMap)
   var newProvinces: seq[ProvinceData] = @[]
@@ -280,7 +281,7 @@ proc generateProvincesFromColorMap*(map: Map, colorMap: SurfacePtr): seq[Provinc
     return newProvinces
 proc createTMapFromFile*(map: Map, name: string, tList: var TextureData) =
   let mData: string = readFile("./mdat/" & name & ".mpak")
-  let uTx: string = openZipArchive("./tiles.tpak")
+  let uTx = openZipArchive("./tiles.tpak")
 proc createMap(mapN: string) =
   var provinceColorMap: SurfacePtr = load(mapN & ".png")
   let provinceData: string = readFile("./" & mapN & "_PDAT" & ".yaml")

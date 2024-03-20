@@ -4,7 +4,7 @@ import sdl2
 import sdl2/[ttf, image]
 # Kyuick Components
 import kyuick/components/[kyuickObject, scene]
-import kyuick/components/Game/gameObjects
+import kyuick/components/Game/[gameObjects, mapMaker]
 import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject, video]
 import kyuick/components/Grids/[horizontalGrid, verticalGrid]
 import kyuick/utils/[fontUtils, rendererUtils]
@@ -268,15 +268,15 @@ proc videoTest() =
   echo streamTwo.codecpar.codec_id
   mainCanvas.elements.add tVideo
 proc mapTest() =
-  var provinceColorMap: SurfacePtr = load("France_test.png")
-  let pdata = generateProvincesFromColorMap(provinceColorMap)
-  var 
-    provinces: seq[Province] = getRendererPolys(pdata)
-    map: Map = Map(provinces: provinces)
-  mainCanvas.renderSaved = false
-  return true
+  var mapC = newMapMaker()
+  #var provinceColorMap: SurfacePtr = load("France_test.png")
+  #let pdata = generateProvincesFromColorMap(provinceColorMap)
+  #var 
+  #  provinces: seq[Province] = getRendererPolys(pdata)
+  #  map: Map = Map(provinces: @[provinces])
+  #mainCanvas.renderSaved = false
 when isMainModule:
   mainCanvas = Scene()
   mainCanvas.width = WinWidth
   mainCanvas.height = WinHeight
-  startGameLoop("tester", usProvinceDetectionTest)
+  startGameLoop("tester", mapTest)
