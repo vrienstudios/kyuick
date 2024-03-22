@@ -19,8 +19,8 @@ type TextInput* = ref object of KyuickObject
   cLength: seq[cint]
 
 proc renderIndexLine*(renderer: RendererPtr, textInput: TextInput) =
-  if textInput.focusChange == true:
-    renderer.setDrawColor(textInput.textField.color)
+  if textInput.focused == true:
+    renderer.setDrawColor(textInput.textField.foregroundColor)
     renderer.drawLine(cint(textInput.x + textInput.calcLength - 3), cint(textInput.textField.height), cint(textInput.x + textInput.calcLength), cint(textInput.textField.height))
 proc renderTextInput*(renderer: RendererPtr, obj: KyuickObject) =
   let textInput: TextInput = (TextInput)obj
@@ -107,4 +107,5 @@ proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: st
     discard ttf.sizeText(ti.textField.font, cstring($chr), addr w, addr h)
     ti.cLength.add w
   ti.calcLength = tInput.width
+  ti.canHover = true
   return ti

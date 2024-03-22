@@ -26,7 +26,16 @@ proc renderVert*(renderer: RendererPtr, obj: KyuickObject) =
   renderer.fillRect(vrrr.rect)
   for el in vrrr.elements:
     renderer.render(el)
+proc clicked(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  var 
+    hor = VerticalGrid(obj)
+    el = hor.elements.seekEl(mouseEvent.x, mouseEvent.y)
+  if el == nil: return
+  el.leftClick(mouseEvent)
+  return
 proc newVerticalGrid*(x, y, width, height: cint): VerticalGrid =
   var obj: VerticalGrid = VerticalGrid(x: x, y: y, width: width, height: height)
   obj.render = renderVert
+  obj.canClick = true
+  obj.onLeftClick = clicked
   return obj

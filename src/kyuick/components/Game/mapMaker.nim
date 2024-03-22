@@ -33,39 +33,61 @@ proc renderMapEditor*(renderer: RendererPtr, obj: KyuickObject) =
   return
 proc processOpenning(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   return
+proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  return
 proc openNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  echo "AA"
+  return
   var 
     ourLabel = Label(obj)
-    #dad = MapEditor(ourLabel.parent)
+    dad = MapEditor(ourLabel.parent)
     layout = VerticalGrid()
-  #dad.aux = Scene()
-  for file in walkFiles("./assets/"):
-    echo "err"
+    nScene = Scene()
+  dad.aux = dad.mainScene
+  for file in walkFiles("./assets/kmaps/*.kmap"):
     var labli = ourLabel.clone(0, 0, file)
     labli.onLeftClick = processOpenning
     layout.add labli
+  nScene.add layout
+  dad.mainScene = nScene
   return
 proc saveNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) = 
   return
+proc labelHover(obj: KyuickObject, e: (bool, MouseMotionEventPtr)) =
+  if e[0] == true:
+    obj.foregroundColor = [100, 100, 100, 255]
+    obj.renderSaved = false
+    return
+  obj.foregroundColor = [0, 0, 0, 255]
+  obj.renderSaved = false
+  return
 # Fill Screen
-proc openMapEditorForTile*(fonts: var FontTracker, width, height: cint): MapEditor =
-  echo "1"
-  var editor = MapEditor()
-  editor.render = renderMapEditor
-  editor.tileFolder = "./assets/"
-  editor.menuPanel = newHorizontalGrid(0, 50, width, 50)
-  editor.menuPanel.backgroundColor = [255, 255, 255, 255]
+proc buildMenuBar(fonts: var FontTracker, w, h: cint): HorizontalGrid =
+  var menuPanel = newHorizontalGrid(0, 50, w, 50)
+  menuPanel.backgroundColor = [255, 255, 255, 255]
   let font = fonts.getFont("liberation-sans.ttf", cint(18))
   block menuItems:
     var
-      lOpenNew = newLabel(0, 0, "Open", [0, 0, 0, 255], font, cint(18))
+      lCreate = newLabel(0, 0, "Create", [0, 0, 0, 255], font, cint(18))
+      lOpen = newLabel(0, 0, "Open", [0, 0, 0, 255], font, cint(18))
       lSave = newLabel(0, 0, "Save", [0, 0, 0, 255], font, cint(18))
-    lOpenNew.onLeftClick = openNow
-    lOpenNew.canClick = false
+    lCreate.onLeftClick = createNew
+    lCreate.canClick = true
+    lCreate.onHoverStatusChange = labelHover
+    lCreate.canHover = true
+    lOpen.onLeftClick = openNow
+    lOpen.canClick = true
     lSave.onLeftClick = saveNow
-    lSave.canClick = false
-    editor.menuPanel.add lOpenNew
-    editor.menuPanel.add lSave
+    lSave.canClick = true
+    menuPanel.add lCreate
+    menuPanel.add lOpen
+    menuPanel.add lSave
+  return menuPanel
+proc openMapEditorForTile*(fonts: var FontTracker, width, height: cint): MapEditor =
+  var editor = MapEditor()
+  editor.render = renderMapEditor
+  editor.tileFolder = "./assets/tiles/"
+  editor.menuPanel = buildMenuBar(fonts, width, height)
   editor.mainScene = Scene()
   editor.mainScene.add editor.menuPanel
   #editor.leftPanel = newVerticalGrid(0, 0, 100, height)

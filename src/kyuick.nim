@@ -52,36 +52,23 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
     return
   case e.button:
     of 1:
-      for obj in mainCanvas.elements:
-        if obj.canClick == false: continue
-        #echo ("mouse($1, $2) objX($3, $4) objY($5, $6)" % [$e.x, $e.y, $obj.x, $(obj.x + obj.width), $obj.y, $(obj.y + obj.height)])
-        if e.x >= obj.x and e.x <= (obj.x + obj.width):
-          if e.y >= obj.y and e.y <= (obj.y + obj.height):
-            if inFocus != nil:
-              inFocus.focusChange = false
-            inFocus = obj
-            obj.focusChange = true
-            obj.leftClick(e)
-            return
+      let obj = mainCanvas.elements.seekEl(e.x, e.y)
+      if obj == nil or obj.canClick == false: return
+      inFocus = obj
+      obj.leftClick(e)
+      return
     else:
       return
 proc mouseMove(e: MouseMotionEventPtr) =
-  var hoverObjFound: bool = false
-  for obj in mainCanvas.elements:
-    if obj.canHover == false: continue
-    if hoverObjFound == false:
-      if e.x >= obj.x and e.x <= (obj.x + obj.width):
-        if e.y >= obj.y and e.y <= (obj.y + obj.height):
-          obj.hoverStatus = true
-          hoverObjFound = true
-          if obj.autoFocusable:
-            inFocus = obj
-            obj.focusChange = true
-          continue
-    if inFocus == obj:
-      inFocus = nil
-    obj.hoverStatus = false
-    obj.focusChange = false
+  let obj = mainCanvas.elements.seekEl(e.x, e.y)
+  if obj == nil or obj.canHover == false:
+    if inFocus == nil: return
+    inFocus.hoverStatus = (false, e)
+    inFocus = nil
+    return
+  obj.hoverStatus = (true, e)
+  if obj.autoFocusable:
+    inFocus = obj
 proc textInput(e: TextInputEventPtr) =
   if not (inFocus of textInput.TextInput):
     return

@@ -11,7 +11,6 @@ import ../kyuickObject
 # A label object for displaying text at a line of text at a x,y coordinate.
 type Label* = ref object of KyuickObject
   text: string
-  color*: array[4, int]
   font*: FontPtr
   fontSize*: cint
   trackNum*: ptr float
@@ -31,8 +30,8 @@ proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
     renderer.copy label.texture, nil, addr label.rect
     return
   let
-    surface = ttf.renderTextBlended(label.font, cstring(label.text), color(label.color[0],
-      label.color[1], label.color[2], label.color[3]))
+    surface = ttf.renderTextBlended(label.font, cstring(label.text), color(label.foregroundColor[0],
+      label.foregroundColor[1], label.foregroundColor[2], label.foregroundColor[3]))
     texture = renderer.createTextureFromSurface(surface)
   surface.freeSurface()
   label.texture = texture
@@ -45,6 +44,6 @@ proc newLabel*(x, y: cint, text: string, color: array[4, int], font: FontPtr, fo
   var w, h: cint = 0
   discard ttf.sizeText(font, text, addr w, addr h)
   return Label(x: x, y: y, width: w,
-    height: h, text: text, color: color, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
+    height: h, text: text, foregroundColor: color, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
 proc clone*(label: Label, x, y: cint, text: string): Label =
-  return newLabel(x, y, text, label.color, label.font, label.fontSize)
+  return newLabel(x, y, text, label.foregroundColor, label.font, label.fontSize)

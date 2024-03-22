@@ -4,11 +4,11 @@ type
   KyuickObject* = ref object of RootObj
     x*, y*: cint
     width*, height*: cint
-    hoverStatus*: bool
+    hoverStatus: bool
     canClick*: bool
     canHover*: bool
-    autoFocusable*: bool
-    focusChange*: bool
+    autoFocusable*: bool = true
+    focused*: bool
     # Fields to save render information to memory for performance.
     backgroundColor*: array[4, int]
     foregroundColor*: array[4, int]
@@ -23,8 +23,9 @@ type
     onLeftClick*: proc(obj: KyuickObject, mouseEvent: MouseButtonEventPtr)
     onKeyDown*: proc(obj: KyuickObject, scancode: string)
     # When status is true, the mouse is hovering, when false, the mouse has stopped hovering.
-    onHoverStatusChange*: proc(obj: KyuickObject, status: bool)
+    onHoverStatusChange*: proc(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr])
     parent*: KyuickObject
+    passthrough*: bool
 proc render*(renderer: RendererPtr, obj: KyuickObject) =
   if obj.hoverStatus and obj.hoverRender != nil:
     obj.hoverRender(renderer, obj)
@@ -35,17 +36,18 @@ proc leftClick*(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
     return
   obj.onLeftClick(obj, mouseEvent)
 # Manually trigger the hover function.
-proc hover*(obj: KyuickObject, b: bool) =
-  obj.onHoverStatusChange(obj, b)
+proc hover*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
+  obj.onHoverStatusChange(obj, e)
 proc hoverStatus*(this: KyuickObject): bool = return this.hoverStatus
-proc `hoverStatus=`*(this: KyuickObject, b: bool) =
-  if b == this.hoverStatus:
+proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
+  if e[0] == this.hoverStatus and this.passthrough == false:
     return
   this.renderSaved = false
   this.texture.destroy()
-  this.hoverStatus = b
+  this.hoverStatus = e[0]
+  this.focused = e[0]
   if this.onHoverStatusChange != nil:
-    this.onHoverStatusChange(this, b)
+    this.onHoverStatusChange(this, e)
 proc defaultRender*(renderer: RendererPtr, this: KyuickObject) =
   renderer.setDrawColor(color(this.backgroundColor[0], this.backgroundColor[1],
         this.backgroundColor[2], this.backgroundColor[3]))
@@ -55,3 +57,8 @@ proc newKyuickObject*(x, y, width, height: cint, background: array[4, int]): Kyu
   obj.rect = rect(x, y, width, height)
   obj.render = defaultRender
   return obj
+proc seekEl*(els: seq[KyuickObject], x, y: cint): KyuickObject =
+  for obj in els:
+    if not (x >= obj.x and x <= obj.x + obj.width): continue
+    if not (y >= obj.y and y <= obj.y + obj.height): continue
+    return obj
