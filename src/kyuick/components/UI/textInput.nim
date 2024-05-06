@@ -18,11 +18,11 @@ type TextInput* = ref object of KyuickObject
   characterLimit: int
   cLength: seq[cint]
 
-proc renderIndexLine*(renderer: RendererPtr, textInput: TextInput) =
+proc renderIndexLine(renderer: RendererPtr, textInput: TextInput) =
   if textInput.focused == true:
     renderer.setDrawColor(textInput.textField.foregroundColor)
     renderer.drawLine(cint(textInput.x + textInput.calcLength - 3), cint(textInput.textField.height), cint(textInput.x + textInput.calcLength), cint(textInput.textField.height))
-proc renderTextInput*(renderer: RendererPtr, obj: KyuickObject) =
+proc renderTextInput(renderer: RendererPtr, obj: KyuickObject) =
   let textInput: TextInput = (TextInput)obj
   renderer.setDrawColor(textInput.backgroundColor)
   if textInput.renderSaved == true:
@@ -68,7 +68,7 @@ proc updateCalcLength*(this: TextInput) =
     tL = tL + this.cLength[c]
     inc c
   this.calcLength = tL
-proc defaultOnLeftClick*(obj: KyuickObject, mouse: MouseButtonEventPtr) =
+proc defaultOnLeftClick(obj: KyuickObject, mouse: MouseButtonEventPtr) =
   var
     this = (TextInput)obj
     idx = 0
@@ -93,19 +93,32 @@ proc keyDown*(obj: KyuickObject, scancode: string) =
     inc this.cursorPosition
     this.updateCalcLength()
   return
-proc newTextInput*(x, y, width, height: cint, bg: array[4, int], defaultText: string, color: array[4, int],
-  font: FontPtr, fontSize: cint): TextInput =
-  var ti: TextInput = TextInput(x: x, y: y, width: width, height: height, backgroundColor: bg, cursorPosition: len(defaultText), multiLine: false,
-    characterLimit: 20)
-  var tInput: Label = newLabel(x, y, defaultText, color, font, fontSize)
-  ti.textField = tInput
-  ti.render = renderTextInput
-  ti.onLeftClick = defaultOnLeftClick
-  ti.onKeyDown = keyDown
+
+proc newTextInput*(x, y, width, height: cint, backgroundColor: array[4, int] = [255, 255, 255, 255], 
+    text: string, foregroundColor: array[4, int] = [0, 0, 0, 255],
+    font: FontPtr, fontSize: cint): TextInput =
+  var tInput: Label =
+    uiGen Label:
+      x x
+      y y
+      text text
+      foregroundColor foregroundColor
+      font font
+      fontSize fontSize
+  var obj: TextInput = 
+    uiCon "TextInput":
+      backgroundColor backgroundColor
+      textField tInput
+      render renderTextInput
+      onLeftClick defaultOnLeftClick
+      onKeyDown keyDown
+      cursorPosition len(text)
+      multiLine false
+      characterLimit 20
+      canHover true
   var w, h: cint = 0
-  for chr in defaultText:
-    discard ttf.sizeText(ti.textField.font, cstring($chr), addr w, addr h)
-    ti.cLength.add w
-  ti.calcLength = tInput.width
-  ti.canHover = true
-  return ti
+  for chr in text:
+    discard ttf.sizeText(obj.textField.font, cstring($chr), addr w, addr h)
+    obj.cLength.add w
+  obj.calcLength = tInput.width
+  return obj

@@ -40,10 +40,10 @@ proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
   renderer.copy texture, nil, addr r
   label.renderSaved = true
 
-proc newLabel*(x: cint = 0, y: cint = 0, text: string = "", color: array[4, int] = [0, 0, 0, 255], font: FontPtr = nil, fontSize: cint = 18): Label =
+proc newLabel*(x: cint = 0, y: cint = 0, text: string = "", foregroundColor: array[4, int] = [0, 0, 0, 255], font: FontPtr = nil, fontSize: cint = 18): Label =
   var w, h: cint = 0
   discard ttf.sizeText(font, text, addr w, addr h)
   return Label(x: x, y: y, width: w,
-    height: h, text: text, foregroundColor: color, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
+    height: h, text: text, foregroundColor: foregroundColor, font: font, render: renderLabel, renderSaved: false, fontSize: fontSize)
 proc clone*(label: Label, x, y: cint, text: string): Label =
   return newLabel(x, y, text, label.foregroundColor, label.font, label.fontSize)

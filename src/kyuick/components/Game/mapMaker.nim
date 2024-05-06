@@ -13,8 +13,6 @@ import sdl2/ttf
 import sdl2/image
 # STD
 import os
-import macros
-
 
 type MapEditor* = ref object of KyuickObject
   tileFolder*: string
@@ -65,9 +63,24 @@ proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
   let font = fonts.getFont("liberation-sans.ttf", cint(18))
   block menuItems:
     var
-      lCreate = newLabel(0, 0, "Create", [0, 0, 0, 255], font, cint(18))
-      lOpen = newLabel(0, 0, "Open", [0, 0, 0, 255], font, cint(18))
-      lSave = newLabel(0, 0, "Save", [0, 0, 0, 255], font, cint(18))
+      lCreate =
+        uiGen "Label":
+          text "Create"
+          foregroundColor [0, 0, 0, 255]
+          font font
+          fontSize 18
+      lOpen = 
+        uiGen "Label":
+          text "Open"
+          foregroundColor [0, 0, 0, 255]
+          font font
+          fontSize 18
+      lSave = 
+        uiGen "Label":
+          text "Save"
+          foregroundColor [0, 0, 0, 255]
+          font font
+          fontSize 18
     
     lCreate.onLeftClick = createNew
     lCreate.canClick = true

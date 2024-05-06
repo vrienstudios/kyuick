@@ -38,7 +38,7 @@ proc evp_BytesToKey*(passwordz, saltz: string): tuple[key, iv: string] =
   copyMem(addr iv[0], addr hashes[32], 16)
   return (key, iv)
 # Incomplete
-proc padPKSC7(data: string, padding: byte, paddingLength: int): string
+proc padPKSC7(data: string, padding: byte, paddingLength: int): string =
   var plain: string = newString(1)
   var idx: int = 0
   while idx < paddingLength:
@@ -54,7 +54,7 @@ proc aes256Decrypt(data, password: string): string =
   let salt = dSplit[1][0..7]
   let cipher = dSplit[1][8..^1]
   
-  assert len.dSplait > 1
+  assert len(dSplit) > 1
 
   var dContext: CBC[aes256]
   var decryptedText = newString(len(cipher))
@@ -71,5 +71,7 @@ proc aes256Decrypt(data, key, iv: string): string =
   
   var dContext: CBC[aes256]
   dContext.init(key, iv)
-  dContext.decrypt()
+  var outText: string = newString(data.len)
+  dContext.decrypt(data, outText)
+  return outText
   

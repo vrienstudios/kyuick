@@ -185,7 +185,7 @@ proc buildCanvasTest*() =
     newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
   mainCanvas.elements.add thisTestLabel
 proc createTextInput*(x, y, w, h: cint, font: FontPtr, fSize: cint): TextInput =
-  return newTextInput(x, y, w, h, [0, 0, 0, 255], "This is some test text.", [255, 255, 255, 255], font, fSize)
+  return newTextInput(x = x, y = y, width = w, height = h, foregroundColor = [0, 0, 0, 255], text = "This is some test text.", backgroundColor = [255, 255, 255, 255], font = font, fontSize = fSize)
 proc textEditorTest*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight, ffont, cint(18))
@@ -255,6 +255,7 @@ proc videoTest() =
   echo streamOne.codecpar.codec_id
   echo streamTwo.codecpar.codec_id
   mainCanvas.elements.add tVideo
+import macros
 proc mapTest() =
   var mapC = openMapEditorForTile(fontTracker, WinWidth, WinHeight)
   mainCanvas = mapC.mainScene

@@ -1,6 +1,6 @@
 import sdl2
-import ../utils/rendererUtils
-
+import ../utils/utils
+export macroUtils
 type
   KyuickObject* = ref object of RootObj
     x*, y*: cint
@@ -53,12 +53,19 @@ proc defaultRender*(renderer: RendererPtr, this: KyuickObject) =
   renderer.setDrawColor(this.backgroundColor)
   renderer.fillRect(this.rect)
 proc newKyuickObject*(x: cint = 0, y: cint = 0, width: cint = 0, 
-    height: cint = 0, background: array[4, int]): KyuickObject =
-  var obj: KyuickObject = KyuickObject(x: x, y: y, width: width, height: height, 
-    backgroundColor: background)
-  obj.rect = rect(x, y, width, height)
-  obj.render = defaultRender
+    height: cint = 0, backgroundColor: array[4, int] = [0, 0, 0, 255], 
+    foregroundColor: array[4, int] = [255, 255, 255, 255]): KyuickObject =
+  var obj: KyuickObject =
+    uiCon KyuickObject:
+      x x
+      y y
+      width width
+      height height
+      backgroundColor backgroundColor
+      rect rect(x, y, width, height)
+      render defaultRender
   return obj
+
 proc seekEl*(els: seq[KyuickObject], x, y: cint): KyuickObject =
   for obj in els:
     if not (x >= obj.x and x <= obj.x + obj.width): continue
