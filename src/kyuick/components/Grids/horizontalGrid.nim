@@ -21,18 +21,18 @@ proc add*(this: HorizontalGrid, obj: KyuickObject) =
   this.elements.add obj
 proc renderHor*(renderer: RendererPtr, obj: KyuickObject) =
   let hor = HorizontalGrid(obj)
-  renderer.setDrawColor(hor.backgroundColor)
-  renderer.fillRect(hor.rect)
+  #renderer.setDrawColor(hor.backgroundColor)
+  #renderer.fillRect(hor.rect)
   for el in hor.elements:
     renderer.render(el)
-proc clicked(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+proc clicked*(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var 
     hor = HorizontalGrid(obj)
     el = hor.elements.seekEl(mouseEvent.x, mouseEvent.y)
   if el == nil: return
   el.leftClick(mouseEvent)
   return
-proc hoverme(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
+proc hoverme*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
   var 
     hor = HorizontalGrid(obj)
     el = hor.elements.seekEl(e[1].x, e[1].y)

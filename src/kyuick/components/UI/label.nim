@@ -40,7 +40,7 @@ proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
   renderer.copy texture, nil, addr r
   label.renderSaved = true
 
-proc newLabel*(x, y: cint, text: string, color: array[4, int], font: FontPtr, fontSize: cint): Label =
+proc newLabel*(x: cint = 0, y: cint = 0, text: string = "", color: array[4, int] = [0, 0, 0, 255], font: FontPtr = nil, fontSize: cint = 18): Label =
   var w, h: cint = 0
   discard ttf.sizeText(font, text, addr w, addr h)
   return Label(x: x, y: y, width: w,

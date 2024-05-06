@@ -5,7 +5,7 @@ import sdl2/[ttf, image]
 # Kyuick Components
 import kyuick/components/[kyuickObject, scene]
 import kyuick/components/Game/[gameObjects, mapMaker]
-import kyuick/components/UI/[label, button, textInput, imageObject, graphObject, animatedObject, video]
+import kyuick/components/UI/all
 import kyuick/components/Grids/[horizontalGrid, verticalGrid]
 import kyuick/utils/[fontUtils, rendererUtils]
 # Standard Lib
@@ -70,9 +70,9 @@ proc mouseMove(e: MouseMotionEventPtr) =
   if obj.autoFocusable:
     inFocus = obj
 proc textInput(e: TextInputEventPtr) =
-  if not (inFocus of textInput.TextInput):
+  if not (inFocus of all.TextInput):
     return
-  textInput.TextInput(inFocus).add(e.text[0])
+  all.TextInput(inFocus).add(e.text[0])
 proc frameBufferController() =
   #if mainCanvas.x + mainCanvas.width > mainCanvas.width:
   if mainCanvas.canvas == nil:
@@ -148,9 +148,9 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           echo event.key.keysym.scancode
           if inFocus != nil and inFocus.onKeyDown != nil:
             inFocus.onKeyDown(inFocus, $event.key.keysym.scancode)
-          if inFocus of textInput.TextInput:
+          if inFocus of all.TextInput:
             if $event.key.keysym.scancode == "SDL_SCANCODE_BACKSPACE":
-              textInput.TextInput(inFocus).remove()
+              all.TextInput(inFocus).remove()
           keyDownTracker[$event.key.keysym.scancode] = true
         of KeyUp:
           if isDown("SDL_SCANCODE_LCTRL") and isDown("SDL_SCANCODE_C"):

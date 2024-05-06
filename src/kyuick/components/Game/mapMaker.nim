@@ -1,11 +1,7 @@
 import ./gameObjects
-import ../kyuickObject
-# UI
-import ../UI/label
-import ../UI/button
-import ../UI/textInput
-import ../UI/imageObject
+import ../UI/all
 import ../scene
+import ../kyuickObject
 # Grids
 import ../Grids/verticalGrid
 import ../Grids/horizontalGrid
@@ -17,13 +13,15 @@ import sdl2/ttf
 import sdl2/image
 # STD
 import os
+import macros
+
 
 type MapEditor* = ref object of KyuickObject
   tileFolder*: string
   cMap*: Map
   mainScene*: Scene
   aux*: Scene
-  menuPanel*: HorizontalGrid
+  menuPanel*: Menubar
   leftPanel*: VerticalGrid
   mapPanel*: Scene
 
@@ -62,23 +60,30 @@ proc labelHover(obj: KyuickObject, e: (bool, MouseMotionEventPtr)) =
   obj.renderSaved = false
   return
 # Fill Screen
-proc buildMenuBar(fonts: var FontTracker, w, h: cint): HorizontalGrid =
-  var menuPanel = newHorizontalGrid(0, 50, w, 50)
-  menuPanel.backgroundColor = [255, 255, 255, 255]
+proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
+  var menuPanel: Menubar = newMenubar(x = 0, y = 50, width = w, height = 100)
   let font = fonts.getFont("liberation-sans.ttf", cint(18))
   block menuItems:
     var
       lCreate = newLabel(0, 0, "Create", [0, 0, 0, 255], font, cint(18))
       lOpen = newLabel(0, 0, "Open", [0, 0, 0, 255], font, cint(18))
       lSave = newLabel(0, 0, "Save", [0, 0, 0, 255], font, cint(18))
+    
     lCreate.onLeftClick = createNew
     lCreate.canClick = true
     lCreate.onHoverStatusChange = labelHover
     lCreate.canHover = true
+    
     lOpen.onLeftClick = openNow
     lOpen.canClick = true
+    lOpen.onHoverStatusChange = labelHover
+    lOpen.canHover = true
+
     lSave.onLeftClick = saveNow
     lSave.canClick = true
+    lSave.onHoverStatusChange = labelHover
+    lSave.canHover = true
+
     menuPanel.add lCreate
     menuPanel.add lOpen
     menuPanel.add lSave

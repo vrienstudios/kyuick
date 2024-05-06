@@ -1,4 +1,5 @@
 import sdl2
+import ../utils/rendererUtils
 
 type
   KyuickObject* = ref object of RootObj
@@ -40,7 +41,7 @@ proc hover*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
   obj.onHoverStatusChange(obj, e)
 proc hoverStatus*(this: KyuickObject): bool = return this.hoverStatus
 proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
-  if e[0] == this.hoverStatus and this.passthrough == false:
+  if e[0] == this.hoverStatus and this.passthrough == false or this.canHover == false:
     return
   this.renderSaved = false
   this.texture.destroy()
@@ -49,11 +50,12 @@ proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEve
   if this.onHoverStatusChange != nil:
     this.onHoverStatusChange(this, e)
 proc defaultRender*(renderer: RendererPtr, this: KyuickObject) =
-  renderer.setDrawColor(color(this.backgroundColor[0], this.backgroundColor[1],
-        this.backgroundColor[2], this.backgroundColor[3]))
+  renderer.setDrawColor(this.backgroundColor)
   renderer.fillRect(this.rect)
-proc newKyuickObject*(x, y, width, height: cint, background: array[4, int]): KyuickObject =
-  var obj: KyuickObject = KyuickObject(x: x, y: y, width: width, height: height, backgroundColor: background)
+proc newKyuickObject*(x: cint = 0, y: cint = 0, width: cint = 0, 
+    height: cint = 0, background: array[4, int]): KyuickObject =
+  var obj: KyuickObject = KyuickObject(x: x, y: y, width: width, height: height, 
+    backgroundColor: background)
   obj.rect = rect(x, y, width, height)
   obj.render = defaultRender
   return obj
