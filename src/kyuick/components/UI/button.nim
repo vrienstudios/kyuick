@@ -29,11 +29,11 @@ proc renderButton*(renderer: RendererPtr, obj: KyuickObject) =
   renderLabel(renderer, button.btnLabel)
   button.renderSaved = true
 
-proc newButton*(x, y, w, h: cint, bColor: array[4, int], text: string,
-  font: FontPtr, fontSize: cint, tColor: array[4, int], textAlign: textAlignment = textAlignment.left): Button =
-  var label = newLabel(x, y, text, tColor, font, fontSize)
+proc newButton*(x, y, w, h: cint, backgroundColor: array[4, int], text: string,
+  font: FontPtr, fontSize: cint, foregroundColor: array[4, int], textAlign: textAlignment = textAlignment.left): Button =
+  var label = newLabel(x, y, text, foregroundColor, font, fontSize)
   var btn: Button = Button(x: x, y: y, width: w, height: h,
-    btnLabel: label, backgroundColor: bColor, render: renderButton, renderSaved: false)
+    btnLabel: label, backgroundColor: backgroundColor, render: renderButton, renderSaved: false)
   if textAlign == textAlignment.right:
     label.x = (x + w) - label.width
     return btn

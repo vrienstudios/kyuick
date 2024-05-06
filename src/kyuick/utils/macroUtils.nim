@@ -1,26 +1,6 @@
 import macros
 import strutils
 
-
-
-
-  #obj.x = x
-  #obj.y = y
-  #obj.width = width
-  #obj.height = height
-  #obj.canClick = canClick
-  #obj.canHover = canHover
-  #obj.autoFocusable = autoFocusable
-  #obj.backgroundColor = backgroundColor
-  #obj.foregroundColor = foregroundColor
-  #obj.texture = texture
-  #obj.render = render
-  #obj.hoverRender = hoverRender
-  #obj.onLeftClick = onLeftClick
-  #obj.onKeyDown = onKeyDown
-  #obj.onHoverStatusChange = onHoverStatusChange
-  #obj.parent = parent
-  #obj.passthrough = passthrough
 macro constructKyuickDefaults*(x: typed): untyped =
   echo "------------------------"
   result = newLit(x.getTypeImpl.treeRepr)
