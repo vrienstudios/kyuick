@@ -106,7 +106,7 @@ proc newTextInput*(x, y, width, height: cint, backgroundColor: array[4, int] = [
       font font
       fontSize fontSize
   var obj: TextInput = 
-    uiCon "TextInput":
+    uiCon TextInput:
       backgroundColor backgroundColor
       textField tInput
       render renderTextInput

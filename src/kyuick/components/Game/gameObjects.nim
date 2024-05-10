@@ -42,6 +42,8 @@ type
     name: string
     id: int8
   PopulationObject* = object
+    total: int64
+    # % of Total
     upper, middle, lower: float
   NativeObject* = object
     amount: float 
