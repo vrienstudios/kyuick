@@ -13,7 +13,7 @@ type TextInput* = ref object of KyuickObject
   cursorPosition: int
   # X-length of where the cursor is | Default is width.
   calcLength: int
-  textField: Label
+  textField*: Label
   multiLine: bool
   characterLimit: int
   cLength: seq[cint]
@@ -115,7 +115,6 @@ proc newTextInput*(x, y, width, height: cint, backgroundColor: array[4, int] = [
       cursorPosition len(text)
       multiLine false
       characterLimit 20
-      canHover true
   var w, h: cint = 0
   for chr in text:
     discard ttf.sizeText(obj.textField.font, cstring($chr), addr w, addr h)

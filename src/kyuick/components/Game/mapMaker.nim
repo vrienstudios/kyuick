@@ -25,7 +25,7 @@ type MapEditor* = ref object of KyuickObject
 
 proc renderMapEditor*(renderer: RendererPtr, obj: KyuickObject) =
   let editor = MapEditor(obj)
-  renderHor(renderer, editor.menuPanel)
+  renderer.render(editor.menuPanel)
   return
 proc processOpenning(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   return
@@ -59,7 +59,7 @@ proc labelHover(obj: KyuickObject, e: (bool, MouseMotionEventPtr)) =
   return
 # Fill Screen
 proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
-  var menuPanel: Menubar = newMenubar(x = 0, y = 50, width = w, height = 100)
+  var menuPanel: Menubar = newMenubar(x = 0, y = 50, width = w, height = 40)
   let font = fonts.getFont("liberation-sans.ttf", cint(18))
   block menuItems:
     var
@@ -83,19 +83,13 @@ proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
           fontSize 18
     
     lCreate.onLeftClick = createNew
-    lCreate.canClick = true
     lCreate.onHoverStatusChange = labelHover
-    lCreate.canHover = true
     
     lOpen.onLeftClick = openNow
-    lOpen.canClick = true
     lOpen.onHoverStatusChange = labelHover
-    lOpen.canHover = true
 
     lSave.onLeftClick = saveNow
-    lSave.canClick = true
     lSave.onHoverStatusChange = labelHover
-    lSave.canHover = true
 
     menuPanel.add lCreate
     menuPanel.add lOpen
@@ -107,7 +101,7 @@ proc openMapEditorForTile*(fonts: var FontTracker, width, height: cint): MapEdit
   editor.tileFolder = "./assets/tiles/"
   editor.menuPanel = buildMenuBar(fonts, width, height)
   editor.mainScene = Scene()
-  editor.mainScene.add editor.menuPanel
+  editor.children.add editor.menuPanel
   #editor.leftPanel = newVerticalGrid(0, 0, 100, height)
 
   # Read/Load all assets.

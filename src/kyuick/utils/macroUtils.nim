@@ -40,7 +40,7 @@ macro uiGen*(uiType, body: untyped): untyped =
     expreq.add node[1]
     call.add expreq
   result.add call
-  echo call.astGenRepr()
+  #echo call.astGenRepr()
 macro hGrid*(gridType, body: untyped): untyped =
   result = newStmtList()
   var gridCall = newNimNode(nnkCall)

@@ -18,107 +18,45 @@ const
   WinWidth* = 1920
   WinHeight* = 1080
 var
-  kinputCallBacks*: seq[proc(key: TextInputEventPtr)]
-  minputCallBacks*: seq[proc(mouse: MouseButtonEventPtr)]
-  mMovementCallBack*: seq[proc(mouse: MouseMotionEventPtr)]
-  mainCanvas*: Scene
+  mainScene*: KyuickObject
   canvasZoom: cint
   currentFrameRate*: float = 0
   currentFrameTime*: float = 0
-  canvasMovable: bool
   inFocus: KyuickObject
   keyDownTracker = initTable[string, bool]()
   mouseXYTracker: tuple[x, y: cint] = (0, 0)
-  # Game Content
-  gameFolder*: string
-  wrapMap: bool
   fontTracker: FontTracker
 proc isDown*(key: string): bool =
   if not keyDownTracker.hasKey(key):
     return false
   return keyDownTracker[key]
-proc loadLevelData(folder: string): bool =
-  gameFolder = folder
-  mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, folder / "provMap.png")
-  mainCanvas.renderSaved = false
-  return true
 proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
-  if e.button == 2:
-    keyDownTracker["SDL_BUTTON_MIDDLE"] = isDown
-    mouseXYTracker.x = e.x
-    mouseXYTracker.y = e.y
-    return
-  if isDown == false:
-    return
+  if isDown: return
   case e.button:
     of 1:
-      let obj = mainCanvas.elements.seekEl(e.x, e.y)
-      if obj == nil or obj.canClick == false: return
+      var obj = mainScene.getClickable(e.x, e.y)
+      if obj == nil: return
       inFocus = obj
       obj.leftClick(e)
       return
     else:
       return
-proc mouseMove(e: MouseMotionEventPtr) =
-  let obj = mainCanvas.elements.seekEl(e.x, e.y)
-  if obj == nil or obj.canHover == false:
-    if inFocus == nil: return
-    inFocus.hoverStatus = (false, e)
-    inFocus = nil
-    return
-  obj.hoverStatus = (true, e)
-  if obj.autoFocusable:
-    inFocus = obj
-proc textInput(e: TextInputEventPtr) =
-  if not (inFocus of all.TextInput):
-    return
-  all.TextInput(inFocus).add(e.text[0])
-proc frameBufferController() =
-  #if mainCanvas.x + mainCanvas.width > mainCanvas.width:
-  if mainCanvas.canvas == nil:
-    return
-  if isDown("SDL_BUTTON_MIDDLE"):
-    var 
-      mouseCurrentX, mouseCurrentY: cint
-      newX, newY: cint
-    discard getMouseState(mouseCurrentX, mouseCurrentY)
-    newY = mainCanvas.y - (mouseXYTracker.y - mouseCurrentY)
-    newX = mainCanvas.x - (mouseXYTracker.x - mouseCurrentX)
-    echo newY
-    echo newX
-    if newY <= 0 and newY >= WinHeight - mainCanvas.height:
-      mainCanvas.y = newY
-    if newX <= 0 and newX >= WinWidth - mainCanvas.width:
-      mainCanvas.x = newX
-    mainCanvas.renderSaved = false
-    mouseXYTracker.y = mouseCurrentY
-    mouseXYTracker.x = mouseCurrentX
-    return
-  if isDown("SDL_SCANCODE_W") or isDown("SDL_SCANCODE_UP"):
-    if mainCanvas.y <= 0:
-      mainCanvas.y = mainCanvas.y + 10
-  if isDown("SDL_SCANCODE_S") or isDown("SDL_SCANCODE_DOWN"):
-    if (mainCanvas.y + mainCanvas.height) >= WinHeight:
-      mainCanvas.y = mainCanvas.y - 10
-  if isDown("SDL_SCANCODE_A") or isDown("SDL_SCANCODE_LEFT"):
-    if mainCanvas.x <= 0:
-      mainCanvas.x = mainCanvas.x + 10
-  if isDown("SDL_SCANCODE_D") or isDown("SDL_SCANCODE_RIGHT"):
-    if mainCanvas.x + mainCanvas.width >= WinWidth:
-      mainCanvas.x = mainCanvas.x - 10
-  mainCanvas.renderSaved = false
+proc testClick*(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  echo "AAA"
 proc showFPS*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var fpsc = 
     newLabel(0, 0, "FPSC", [255, 255, 255, 255], ffont, cint(18))
+  fpsc.onLeftClick = testClick
   fpsc.trackNum = currentFrameRate.addr
-  mainCanvas.elements.add fpsc
+  mainScene.children.add fpsc
 proc showFrameTime*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var fpsc = 
     newLabel(0, 18, "FPSC", [255, 255, 255, 255], ffont, cint(18))
+  fpsc.onLeftClick = testClick
   fpsc.trackNum = currentFrameTime.addr
-  mainCanvas.elements.add fpsc
+  mainScene.children.add fpsc
 proc startGameLoop*(name: string, onInit: proc() = nil) =
   sdl2.init(INIT_EVERYTHING)
   ttfInit()
@@ -143,7 +81,8 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
         of MouseButtonUp:
           mousePress(event.button, false)
         of MouseMotion:
-          mouseMove(event.motion)
+          continue
+          #mouseMove(event.motion)
         of KeyDown:
           echo event.key.keysym.scancode
           if inFocus != nil and inFocus.onKeyDown != nil:
@@ -156,15 +95,13 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           if isDown("SDL_SCANCODE_LCTRL") and isDown("SDL_SCANCODE_C"):
             quit(0)
           keyDownTracker[$event.key.keysym.scancode] = false
-        of TextInput:
-          textInput(event.text)
         else:
           continue
     let cB = cpuTime()
     renderer.clear()
     #frameBufferController()
     #renderer.setScale(2, 2)
-    render(mainCanvas, renderer)
+    mainScene.render(renderer, mainScene)
     renderer.present()
     currentFrameTime = (cpuTime() - cB) * 1000
     endCounter = getPerformanceCounter()
@@ -175,61 +112,11 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
     #echo GC_getStatistics()
     #echo $len(screenObjects)
-proc buildCanvasTest*() =
-  canvasZoom = 1
-  mainCanvas.width = 3221
-  mainCanvas.height = 1777
-  mainCanvas.canvas = newImageObject(0, 0, 3221, 1777, "./provMap.png")
-  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var thisTestLabel = 
-    newLabel(100, 100, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
-  mainCanvas.elements.add thisTestLabel
-proc createTextInput*(x, y, w, h: cint, font: FontPtr, fSize: cint): TextInput =
-  return newTextInput(x = x, y = y, width = w, height = h, foregroundColor = [0, 0, 0, 255], text = "This is some test text.", backgroundColor = [255, 255, 255, 255], font = font, fontSize = fSize)
-proc textEditorTest*() =
-  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var thisTextInput = createTextInput(0, 0, WinWidth, WinHeight, ffont, cint(18))
-  mainCanvas.elements.add thisTextInput
-  mainCanvas.clickables.add(thisTextInput)
-proc choiceDialogForType*() =
-  return
-proc gameObjectBuilder*() =
-  var prvTest = Province(pdat: ProvinceData(id: 0, ownerID: 0, color: [255, 255, 255]))
-  var imgSurface: SurfacePtr = load(cstring("./ff.png"))
-  var vectors: seq[tuple[x, y: cint]]
-  var x, y: cint
-  var r, g, b: int
-  while y < 400:
-    while x < 400:
-      let cPixel = imgSurface.getColorAtPoint(x, y)
-      if cPixel.g == 0:
-        #r = int(cPixel.r)
-        #g = int(cPixel.g)
-        #b = int(cPixel.b)
-        for pixel in imgSurface.getColorDirections(x, y):
-          if pixel.g != 0:
-            vectors.add (x, y)
-      inc x
-    inc y
-    x = 0
-  var i: int = 0
-  while i < vectors.len:
-    prvTest.pdat.vectors.add Point2D(x: vectors[i].x, y: vectors[i].y)
-    inc i # 388 548
-  prvTest.render = renderProvince
-  prvTest.pdat.color = [100, 100, 100]
-  var id: int = 0
-  echo $len(prvTest.pdat.vectors)
-  mainCanvas.elements.add(prvTest)
-proc engineStressTestInputs*() =
-  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var items: cint = 20000
-  var i: cint = 0
-  while i < items:
-    inc i
-    var thisTestLabel = 
-      newLabel(100 + i, 100 + i, "This is a test Label for object permanence!", [255, 255, 255, 255], ffont, cint(18))
-    mainCanvas.elements.add thisTestLabel
+import macros
+proc defTest() =
+  var mapC = openMapEditorForTile(fontTracker, WinWidth, WinHeight)
+  mainScene = mapC
+  mapC.render = defaultRender
 proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
@@ -238,7 +125,7 @@ proc usProvinceDetectionTest() =
   let pdata = generateProvincesFromColorMap(provinceColorMap)
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
-    mainCanvas.elements.add n
+    mainScene.children.add n
 proc videoTest() =
   var 
     filename: cstring = "./test.webm"
@@ -254,19 +141,12 @@ proc videoTest() =
   echo streamTwo.id
   echo streamOne.codecpar.codec_id
   echo streamTwo.codecpar.codec_id
-  mainCanvas.elements.add tVideo
-import macros
-proc mapTest() =
-  var mapC = openMapEditorForTile(fontTracker, WinWidth, WinHeight)
-  mainCanvas = mapC.mainScene
-  #var provinceColorMap: SurfacePtr = load("France_test.png")
-  #let pdata = generateProvincesFromColorMap(provinceColorMap)
-  #var 
-  #  provinces: seq[Province] = getRendererPolys(pdata)
-  #  map: Map = Map(provinces: @[provinces])
-  #mainCanvas.renderSaved = false
+  mainScene.children.add tVideo
 when isMainModule:
-  mainCanvas = Scene()
-  mainCanvas.width = WinWidth
-  mainCanvas.height = WinHeight
-  startGameLoop("tester", mapTest)
+  mainScene = 
+    uiCon KyuickObject:
+      width WinWidth
+      height WinHeight
+      backgroundColor [6, 5, 200, 255]
+      render defaultRender
+  startGameLoop("tester", defTest)

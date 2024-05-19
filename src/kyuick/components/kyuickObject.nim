@@ -3,30 +3,30 @@ import ../utils/utils
 export macroUtils
 type
   KyuickObject* = ref object of RootObj
+    parent*: KyuickObject
+    children*: seq[KyuickObject]
+    # Dimensions
     x*, y*: cint
     width*, height*: cint
+    # optionals
     hoverStatus: bool
-    canClick*: bool
-    canHover*: bool
-    autoFocusable*: bool = true
+    enabled: bool = true
+    passthrough*: bool
+    autoFocusable*: bool
     focused*: bool
-    # Fields to save render information to memory for performance.
+    renderSaved*: bool
+    #RenderInfo
     backgroundColor*: array[4, int]
     foregroundColor*: array[4, int]
     rect*: Rect
     texture*: TexturePtr
-    renderSaved*: bool
-    # Render-proc; called every frame.
+    # RENDER
     render*: proc(renderer: RendererPtr, obj: KyuickObject)
-    # A function to render hover-specific content to the control, called every frame when hoverStatus = true
     hoverRender*: proc(renderer: RendererPtr, obj: KyuickObject)
-    # Event-related procs.
+    # EVENTS
     onLeftClick*: proc(obj: KyuickObject, mouseEvent: MouseButtonEventPtr)
     onKeyDown*: proc(obj: KyuickObject, scancode: string)
-    # When status is true, the mouse is hovering, when false, the mouse has stopped hovering.
     onHoverStatusChange*: proc(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr])
-    parent*: KyuickObject
-    passthrough*: bool
 proc render*(renderer: RendererPtr, obj: KyuickObject) =
   if obj.hoverStatus and obj.hoverRender != nil:
     obj.hoverRender(renderer, obj)
@@ -41,7 +41,7 @@ proc hover*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
   obj.onHoverStatusChange(obj, e)
 proc hoverStatus*(this: KyuickObject): bool = return this.hoverStatus
 proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
-  if e[0] == this.hoverStatus and this.passthrough == false or this.canHover == false:
+  if e[0] == this.hoverStatus and this.passthrough == false or this.enabled == false:
     return
   this.renderSaved = false
   this.texture.destroy()
@@ -50,8 +50,9 @@ proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEve
   if this.onHoverStatusChange != nil:
     this.onHoverStatusChange(this, e)
 proc defaultRender*(renderer: RendererPtr, this: KyuickObject) =
-  renderer.setDrawColor(this.backgroundColor)
-  renderer.fillRect(this.rect)
+  for child in this.children:
+    child.render(renderer, child)
+    renderer.setDrawColor(this.backgroundColor)
 proc newKyuickObject*(x: cint = 0, y: cint = 0, width: cint = 0, 
     height: cint = 0, backgroundColor: array[4, int] = [0, 0, 0, 255], 
     foregroundColor: array[4, int] = [255, 255, 255, 255]): KyuickObject =
@@ -64,10 +65,19 @@ proc newKyuickObject*(x: cint = 0, y: cint = 0, width: cint = 0,
       backgroundColor backgroundColor
       rect rect(x, y, width, height)
       render defaultRender
+      autoFocusable true
   return obj
 
-proc seekEl*(els: seq[KyuickObject], x, y: cint): KyuickObject =
-  for obj in els:
-    if not (x >= obj.x and x <= obj.x + obj.width): continue
-    if not (y >= obj.y and y <= obj.y + obj.height): continue
-    return obj
+proc getClickable*(this: KyuickObject, x, y: cint): KyuickObject =
+  #       if obj == nil or obj.enabled == false: return
+  for obj in this.children:
+    let condX = (x >= obj.x and x <= obj.x + obj.width)
+    if not condX: continue
+    let condY = (y >= obj.y and y <= obj.y + obj.height)
+    if not condY: continue
+    if obj.passthrough:
+      var childClickable = getClickable(obj, x, y)
+      if childClickable == nil: continue
+      return childClickable
+    if condX and condY: return obj
+  return nil
