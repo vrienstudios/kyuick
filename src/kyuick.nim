@@ -41,20 +41,16 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
       return
     else:
       return
-proc testClick*(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
-  echo "AAA"
 proc showFPS*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var fpsc = 
-    newLabel(0, 0, "FPSC", [255, 255, 255, 255], ffont, cint(18))
-  fpsc.onLeftClick = testClick
+    newLabel(0, 0, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameRate.addr
   mainScene.children.add fpsc
 proc showFrameTime*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var fpsc = 
-    newLabel(0, 18, "FPSC", [255, 255, 255, 255], ffont, cint(18))
-  fpsc.onLeftClick = testClick
+    newLabel(0, 18, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameTime.addr
   mainScene.children.add fpsc
 proc startGameLoop*(name: string, onInit: proc() = nil) =

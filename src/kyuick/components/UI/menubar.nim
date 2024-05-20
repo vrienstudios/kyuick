@@ -15,7 +15,7 @@ proc renderBar(renderer: RendererPtr, obj: KyuickObject) =
   renderer.fillRect(this.rect)
   renderer.render(this.panel)
 proc newMenubar*(x: cint = 0, y: cint = 0, width: cint = 0, height: cint = 0, 
-    backgroundColor: array[4, int] = [10, 255, 255, 255]): Menubar =
+    backgroundColor: array[4, int] = [255, 255, 255, 255]): Menubar =
   var grid =
     uiGen HorizontalGrid:
       x 0
