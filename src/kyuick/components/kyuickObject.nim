@@ -8,6 +8,7 @@ type
     # Dimensions
     x*, y*: cint
     width*, height*: cint
+    noRen*: bool
     # optionals
     hoverStatus: bool
     enabled: bool = true

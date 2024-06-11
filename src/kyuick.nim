@@ -19,6 +19,7 @@ const
   WinHeight* = 1080
 var
   mainScene*: KyuickObject
+  video*: ptr Video
   canvasZoom: cint
   currentFrameRate*: float = 0
   currentFrameTime*: float = 0
@@ -59,7 +60,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   discard image.init()
   if onInit != nil:
     onInit()
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN or SDL_WINDOW_OPENGL)
   let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
@@ -94,9 +95,9 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
         else:
           continue
     let cB = cpuTime()
-    renderer.clear()
     #frameBufferController()
     #renderer.setScale(2, 2)
+    renderer.clear()
     mainScene.render(renderer, mainScene)
     renderer.present()
     currentFrameTime = (cpuTime() - cB) * 1000
@@ -124,25 +125,16 @@ proc usProvinceDetectionTest() =
     mainScene.children.add n
 proc videoTest() =
   var 
-    filename: cstring = "./test.webm"
+    filename: string = "./HE.mp4"
     tVideo: Video = Video()
-    formatCtx: ptr AVFormatContext
-  #echo avOpen(addr formatCtx, fileName)
-  #echo avLoadStreamInfo(addr formatCtx)
-  echo avformat_open_input(addr formatCtx, fileName, nil, nil)
-  echo avformat_find_stream_info(formatCtx, nil)
-  var streamOne = getAVStream(formatCtx, 0)
-  var streamTwo = getAVStream(formatCtx, 1)
-  echo streamOne.id
-  echo streamTwo.id
-  echo streamOne.codecpar.codec_id
-  echo streamTwo.codecpar.codec_id
+  tVideo = generateVideo(filename)
+  video = tVideo.addr
   mainScene.children.add tVideo
 when isMainModule:
   mainScene = 
     uiCon KyuickObject:
       width WinWidth
       height WinHeight
-      backgroundColor [6, 5, 200, 255]
+      backgroundColor [6, 0, 200, 255]
       render defaultRender
-  startGameLoop("tester", defTest)
+  startGameLoop("tester", videoTest)
