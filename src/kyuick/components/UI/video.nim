@@ -1,7 +1,7 @@
 # https://github.com/mashingan/nimffmpeg/blob/master/examples/fplay.nim
 import ffmpeg
 import sdl2, sdl2/audio
-import os, strformat, times
+import os, strformat, times, math
 import ../kyuickObject
 import sugar
 
@@ -12,8 +12,9 @@ type
     Video* = ref object of KyuickObject
         pFormatCtx*: ptr AVFormatContext
         videoIndex*: int
-        frameNum*: uint32
-        fpsRendering*: float
+        delay*: float
+        endTime*: float
+        vidFPS*: float
         videoCtx*, audioCtx*: ptr AVCodecContext
         videoCodecParams*, audioCodecParams*: ptr AVcodecParameters
         videoCodec*, audioCodec*: ptr AVCodec
@@ -44,6 +45,13 @@ proc prepareAudioSpec*(spec: var AudioSpec) =
   spec.samples = 4096
 proc renderVid(renderer: RendererPtr, obj: KyuickObject) =
   var video = Video(obj)
+  if video.delay >= 1:
+    let 
+      c = cpuTime().float
+    if c > video.endTime:
+      video.delay = 0
+    renderer.copy video.texture, nil, video.rect.addr
+    return
   discard av_read_frame(video.pFormatCtx, video.videoPacket)
   if video.renderSaved == false:
     video.texture = createTexture(renderer, uint32 SDL_PIXELFORMAT_IYUV,
@@ -59,8 +67,13 @@ proc renderVid(renderer: RendererPtr, obj: KyuickObject) =
   let frame = video.videoFrame
   discard updYUVTexture(video.texture, video.rect.addr, frame[].data[0], frame[].linesize[0], frame[].data[1], frame[].linesize[1], frame[].data[2], frame[].linesize[2])
   renderer.copy video.texture, nil, video.rect.addr
-  let endupdate = cpuTime()
-  # TODO: track framerate
+  let 
+    finishTime = cpuTime()
+    diff = finishTime - start
+  if diff < video.vidFPS:
+    let delay = (video.vidFPS - diff)
+    video.delay = delay * 1000
+    video.endTime = finishTime + delay
   av_packet_unref(video.videoPacket)
 proc generateVideo*(fileName: string): Video =
   var video: Video = Video()
@@ -72,7 +85,7 @@ proc generateVideo*(fileName: string): Video =
   let 
     codecParam = videoStream.codecpar
     rational = videoStream.avg_frame_rate
-  video.fpsRendering = 1.0 / (rational.num.float / rational.den.float)
+  video.vidFPS = 1.0 / (rational.num.float / rational.den.float)
   var 
     videoCodec = parseCodec(videoStream)
     audioCodec = parseCodec(audioStream)
@@ -93,6 +106,6 @@ proc generateVideo*(fileName: string): Video =
   video.videoPacket = av_packet_alloc()
   video.audioPacket = av_packet_alloc()
   video.render = renderVid
-  video.rect = rect(20, 0, 720, 720)
+  video.rect = rect(0, 0, 720, 720)
   video.renderSaved = false
   return video

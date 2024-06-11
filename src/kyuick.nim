@@ -61,7 +61,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
     onInit()
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN or SDL_WINDOW_OPENGL)
-  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
+  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   showFPS()
