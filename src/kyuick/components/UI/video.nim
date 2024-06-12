@@ -1,4 +1,6 @@
 # https://github.com/mashingan/nimffmpeg/blob/master/examples/fplay.nim
+# https://github.com/FFmpeg/FFmpeg/blob/master/fftools/ffplay.c
+
 import ffmpeg
 import sdl2, sdl2/audio
 import os, strformat, times, math, asyncdispatch
@@ -10,7 +12,12 @@ type
         params*: AVcodecParameters
         codec*: ptr AVCodec
         idx*: int
+    PQueue = ref object of RootObj
+      list: seq[ptr AVPacket]
+      nb_packets: cint
     Video* = ref object of KyuickObject
+        videoQueue: PQueue
+        audioQueue: PQueue
         pFormatCtx*: ptr AVFormatContext
         videoIndex*: int
         delay*: float
@@ -20,7 +27,7 @@ type
         videoCodecParams*, audioCodecParams*: ptr AVcodecParameters
         videoCodec*, audioCodec*: ptr AVCodec
         videoFrame*, aFrame*, aTFrame: ptr AVFrame
-        videoPacket*, audioPacket*: ptr AVPacket
+        packet*, audioPacket*: ptr AVPacket
         videoInfo*: CodecData
         audioInfo*: CodecData
         audioDevice*: AudioDeviceID
@@ -58,7 +65,7 @@ proc renderVideoFrames(renderer: RendererPtr, video: Video) =
     current = getTicks().float
     deltaT = (current - video.endTime) / 1000.0f
   let ftU = floor(deltaT / (1.0f / 10))
-  if avcodec_send_packet(video.videoCtx, video.videoPacket) < 0: return
+  if avcodec_send_packet(video.videoCtx, video.packet) < 0: return
   if avcodec_receive_frame(video.videoCtx, video.videoFrame) < 0: return
   let frame = video.videoFrame
   discard updYUVTexture(video.texture, video.rect.addr, frame[].data[0], frame[].linesize[0], frame[].data[1], frame[].linesize[1], frame[].data[2], frame[].linesize[2])
@@ -66,21 +73,28 @@ proc renderVideoFrames(renderer: RendererPtr, video: Video) =
   dump video.endTime
     #delay(100)
   return
+proc decodingThread(video: Video) {.thread.} =
+  video.videoQueue = PQueue()
+  video.audioQueue = PQueue()
+  while true:
+    if av_read_frame(video.pFormatCtx, video.packet) < 0:
+      return
+  
 proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
   var video = Video(obj)
-  discard av_read_frame(video.pFormatCtx, video.videoPacket)
+  discard av_read_frame(video.pFormatCtx, video.packet)
   if video.renderSaved == false:
     video.texture = createTexture(renderer, uint32 SDL_PIXELFORMAT_IYUV,
       SDL_TEXTUREACCESS_STREAMING or SDL_TEXTUREACCESS_TARGET,
       cint video.width, cint video.height)
     video.renderSaved = true
-  if video.videoPacket[].stream_index.int != 0:
-    if video.videoPacket[].stream_index.int == video.audioInfo.idx:
-      asyncCheck sample(video.audioCtx, video.videoPacket, video.aFrame, video.aTFrame, video.auddev, video.resampler)
-  if video.videoPacket[].stream_index.int == 0:
+  if video.packet[].stream_index.int != 0:
+    if video.packet[].stream_index.int == video.audioInfo.idx:
+      asyncCheck sample(video.audioCtx, video.packet, video.aFrame, video.aTFrame, video.auddev, video.resampler)
+  if video.packet[].stream_index.int == 0:
     renderVideoFrames(renderer, video)
   renderer.copy video.texture, nil, video.rect.addr
-  av_packet_unref(video.videoPacket)
+  av_packet_unref(video.packet)
 proc generateVideo*(fileName: string): Video =
   var video: Video = Video()
   assert avformat_open_input(addr video.pFormatCtx, fileName, nil, nil) == 0
@@ -119,7 +133,7 @@ proc generateVideo*(fileName: string): Video =
   video.videoFrame = av_frame_alloc()
   video.aFrame = av_frame_alloc()
   video.aTFrame = av_frame_alloc()
-  video.videoPacket = av_packet_alloc()
+  video.packet = av_packet_alloc()
   video.audioPacket = av_packet_alloc()
   video.render = renderVideo
   video.rect = rect(0, 0, video.width, video.height)
