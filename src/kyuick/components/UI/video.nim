@@ -9,6 +9,7 @@ type
     CodecData* = ref object of RootObj
         params*: AVcodecParameters
         codec*: ptr AVCodec
+        idx*: int
     Video* = ref object of KyuickObject
         pFormatCtx*: ptr AVFormatContext
         videoIndex*: int
@@ -26,6 +27,7 @@ type
         want*, have*: AudioSpec
         parser*: ptr AVCodecParserContext
         window: WindowPtr
+        auddev: AudioDeviceID
         onEnd: proc()
 
 proc updYUVTexture*(texture: TexturePtr, rect: ptr Rect, 
@@ -43,6 +45,11 @@ proc prepareAudioSpec*(spec: var AudioSpec) =
   spec.format = AUDIO_F32
   spec.channels = 2
   spec.samples = 4096
+proc sample(ctx: ptr AVCodecContext, pkt: ptr AVPacket, frame: ptr AVFrame;
+  dev: AudioDeviceID): uint32 =
+  if avcodec_send_packet(ctx, pkt) < 0: return
+  if avcodec_receive_frame(ctx, frame) < 0: return
+  discard dev.queueAudio(frame.data[0], uint32 frame.linesize[0]) < 0
 proc renderVid(renderer: RendererPtr, obj: KyuickObject) =
   var video = Video(obj)
   if video.delay >= 1:
@@ -59,6 +66,8 @@ proc renderVid(renderer: RendererPtr, obj: KyuickObject) =
       cint video.width, cint video.height)
   video.renderSaved = true
   if video.videoPacket[].stream_index.int != 0:
+    if video.videoPacket[].stream_index.int == video.audioInfo.idx:
+      discard sample(video.audioCtx, video.videoPacket, video.aFrame, video.auddev)
     renderer.copy video.texture, nil, video.rect.addr
     return
   let start = cpuTime()
@@ -72,9 +81,10 @@ proc renderVid(renderer: RendererPtr, obj: KyuickObject) =
     diff = finishTime - start
   if diff < video.vidFPS:
     let delay = (video.vidFPS - diff)
-    video.delay = delay * 1000
+    video.delay = delay
     video.endTime = finishTime + delay
   av_packet_unref(video.videoPacket)
+  av_packet_unref(video.audioPacket)
 proc generateVideo*(fileName: string): Video =
   var video: Video = Video()
   assert avformat_open_input(addr video.pFormatCtx, fileName, nil, nil) == 0
@@ -100,12 +110,26 @@ proc generateVideo*(fileName: string): Video =
   assert avcodec_parameters_to_context(video.audioCtx, audioCodec.params.addr) >= 0
   assert avcodec_open2(video.videoCtx, videoCodec.codec, nil) >= 0
   assert avcodec_open2(video.audioCtx, audioCodec.codec, nil) >= 0
-  video.parser = av_parser_init(cint videoCodec.codec.id)
+  
+  video.want.prepareAudioSpec()
+  zeroMem(addr video.want, sizeof AudioSpec)
+  zeroMem(addr video.have, sizeof AudioSpec)
+  video.want.freq = (video.audioCtx.sample_rate.float * 0.30).cint
+  echo video.audioCtx.sample_rate
+  video.want.format = AUDIO_F32
+  video.want.channels = video.audioCtx.channels.uint8
+  video.want.silence = 0
+  video.want.samples = 32
+#if (codecCtx->sample_fmt == AV_SAMPLE_FMT_S16P) {
+#codecCtx->request_sample_fmt = AV_SAMPLE_FMT_S16;
+  video.auddev = openAudioDevice(getAudioDeviceName(0, 0), 0, addr video.want, addr video.have, 0)
+  video.auddev.pauseAudioDevice 0
   video.videoFrame = av_frame_alloc()
   video.aFrame = av_frame_alloc()
   video.videoPacket = av_packet_alloc()
   video.audioPacket = av_packet_alloc()
   video.render = renderVid
-  video.rect = rect(0, 0, 720, 720)
+  video.rect = rect(-500, 0, video.width, video.height)
   video.renderSaved = false
+  video.audioInfo = CodecData(idx: 1)
   return video
