@@ -61,7 +61,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
     onInit()
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN or SDL_WINDOW_OPENGL)
-  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated)
+  let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   showFPS()
@@ -96,7 +96,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           continue
     let cB = cpuTime()
     #frameBufferController()
-    renderer.setScale(0.5, 0.5)
+    #renderer.setScale(0.5, 0.5)
     renderer.clear()
     mainScene.render(renderer, mainScene)
     renderer.present()
@@ -125,9 +125,9 @@ proc usProvinceDetectionTest() =
     mainScene.children.add n
 proc videoTest() =
   var 
-    filename: string = "./good.mp4"
+    filename: string = "./good.webm"
     tVideo: Video = Video()
-  tVideo = generateVideo(filename)
+  tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight)
   video = tVideo.addr
   mainScene.children.add tVideo
 when isMainModule:
