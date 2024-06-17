@@ -1,6 +1,3 @@
-# https://github.com/mashingan/nimffmpeg/blob/master/examples/fplay.nim
-# https://github.com/FFmpeg/FFmpeg/blob/master/fftools/ffplay.c
-
 import ffmpeg
 import sdl2, sdl2/audio
 import os, strformat, times, math, asyncdispatch, locks, threadpool, times
@@ -93,7 +90,7 @@ proc videoLoop(video: Video) {.thread.} =
         frame = video.videoQueue.frames[0]
         bets = video.fCounter.float64 * video.vidFPS.float64
         bE = frame.best_effort_timestamp / 10000
-        cTime = epochTime() - video.startTime + (bE - bets)
+        cTime = epochTime() - video.startTime - (bets - bE)
       #video.startTime = epochTime()
       if cTime < bE:
         #dump bets
@@ -101,7 +98,8 @@ proc videoLoop(video: Video) {.thread.} =
         continue
       inc video.fCounter
       dump bets
-      dump frame.best_effort_timestamp / 10000
+      dump bE
+      dump cTime
       acquire(video.videoQueue.lock)
       av_frame_free(frame.addr)
       video.videoQueue.frames.delete(0)
