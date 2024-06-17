@@ -3,7 +3,7 @@
 
 import ffmpeg
 import sdl2, sdl2/audio
-import os, strformat, times, math, asyncdispatch, locks, threadpool
+import os, strformat, times, math, asyncdispatch, locks, threadpool, times
 import ../kyuickObject
 import sugar
 
@@ -14,7 +14,7 @@ type
         idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
-      limit: int = 100
+      limit: int = 10
       lock: Lock
       nb_packets: cint
     Video* = ref object of KyuickObject
@@ -22,8 +22,9 @@ type
         audioQueue: PQueue
         pFormatCtx*: ptr AVFormatContext
         vidFPS*: float
-        audioClock*: float
-        videoClock*: float
+        videoClock*: float64
+        startTime*: float64
+        fCounter*: int64
         videoCtx*, audioCtx*: ptr AVCodecContext
         videoCodec*, audioCodec*: ptr AVCodec
         videoFrame*, audioFrame, aTFrame: ptr AVFrame
@@ -74,25 +75,37 @@ proc drawVideo(video: Video, frame: ptr AVFrame) =
   sleep(10)
 proc audioLoop(video: Video) {.thread.} =
   while true:
-    while video.audioQueue.frames.len != 0:
+    while video.audioQueue.frames.len > 0:
+      acquire(video.audioQueue.lock)
       decodeAudio(video.auddev, video.resampler, video.audioQueue.frames[0][], video.aTFrame)
       discard video.auddev.queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
-      acquire(video.audioQueue.lock)
       av_frame_free(video.audioQueue.frames[0].addr)
       video.audioQueue.frames.delete(0)
       #echo video.audioQueue.frames.len
       release(video.audioQueue.lock)
-      sleep(15)
+      sleep(5)
 proc videoLoop(video: Video) {.thread.} =
   while true:
-    while video.videoQueue.frames.len != 0:
-      #drawVideo(video, video.videoQueue.frames[0])
-      sleep(16) # FPS/SYNC CALCULATE LATER, SLEEPYTIME
+    while video.videoQueue.frames.len > 0:
+      if video.startTime == 0:
+        break
+      let frame = video.videoQueue.frames[0]
+      let bets = video.fCounter.float64 * video.vidFPS.float64
+      let bE = frame.best_effort_timestamp / 10000
+      let cTime = epochTime() - video.startTime + (bE - bets)
+      #video.startTime = epochTime()
+      if cTime < bE:
+        #dump bets
+        #dump frame.best_effort_timestamp / 10000
+        continue
+      inc video.fCounter
+      dump bets
+      dump frame.best_effort_timestamp / 10000
       acquire(video.videoQueue.lock)
-      av_frame_free(video.videoQueue.frames[0].addr)
+      av_frame_free(frame.addr)
       video.videoQueue.frames.delete(0)
-      #echo video.videoQueue.frames.len
       release(video.videoQueue.lock)
+      #echo video.videoQueue.frames.len
 proc fillQueues(video: Video) {.thread.} =
   while av_read_frame(video.pFormatCtx, video.packet) >= 0:
     while true:
@@ -135,18 +148,20 @@ proc fillQueues(video: Video) {.thread.} =
 proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
   var video = Video(obj)
   if video.renderSaved == false:
+    video.videoClock = video.startTime.float64
     video.texture = createTexture(renderer, uint32 SDL_PIXELFORMAT_IYUV,
       SDL_TEXTUREACCESS_STREAMING or SDL_TEXTUREACCESS_TARGET,
       cint video.width, cint video.height)
     video.renderSaved = true
+    video.startTime = epochTime()
+  acquire(video.videoQueue.lock)
   if video.videoQueue.frames.len > 0:
     let frame = video.videoQueue.frames[0]
     discard updYUVTexture(video.texture, video.rect.addr, frame.data[0], frame.linesize[0], frame.data[1], frame.linesize[1], frame.data[2], frame.linesize[2])
+  release(video.videoQueue.lock)
   if video.doResize:
     var p: Point = point(0, 0)
     renderer.copyEx video.texture, video.rect.addr, video.fBuffer.addr, cdouble(0), p.addr
-#renderer.copyEx this.texture, addr this.frameBuffer, addr this.rect, cdouble(0), addr tP
-
     return
   renderer.copy video.texture, nil, video.rect.addr
 proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1): Video =
