@@ -125,7 +125,7 @@ proc usProvinceDetectionTest() =
     mainScene.children.add n
 proc videoTest() =
   var 
-    filename: string = "./HE.mp4"
+    filename: string = "./123.webm"
     tVideo: Video = Video()
   tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight)
   video = tVideo.addr

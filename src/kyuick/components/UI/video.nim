@@ -90,9 +90,9 @@ proc videoLoop(video: Video) {.thread.} =
       if video.startTime == 0:
         break
       let frame = video.videoQueue.frames[0]
-      let bets = video.fCounter.float64 * video.vidFPS.float64
-      let bE = frame.best_effort_timestamp / 10000
-      let cTime = epochTime() - video.startTime + (bE - bets)
+        bets = video.fCounter.float64 * video.vidFPS.float64
+        bE = frame.best_effort_timestamp / 10000
+        cTime = epochTime() - video.startTime + (bE - bets)
       #video.startTime = epochTime()
       if cTime < bE:
         #dump bets
