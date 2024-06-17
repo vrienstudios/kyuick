@@ -125,7 +125,7 @@ proc usProvinceDetectionTest() =
     mainScene.children.add n
 proc videoTest() =
   var 
-    filename: string = "good.webm"
+    filename: string = "/mnt/Two/media/YouTube/Toxic/Damazein - Afterlife (prod. Damazein & kimj) [ShfukOj_Kq0].webm"
     tVideo: Video = Video()
   tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight)
   video = tVideo.addr

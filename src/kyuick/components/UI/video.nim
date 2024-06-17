@@ -11,7 +11,7 @@ type
         idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
-      limit: int = 10
+      limit: int = 100
       lock: Lock
       nb_packets: cint
     Video* = ref object of KyuickObject
@@ -91,15 +91,13 @@ proc videoLoop(video: Video) {.thread.} =
         bets = video.fCounter.float64 * video.vidFPS.float64
         bE = frame.best_effort_timestamp / 10000
         cTime = epochTime() - video.startTime - (bets - bE)
+        diff = if bE < cTime: (cTime - bE) else: (cTime - bE)
       #video.startTime = epochTime()
-      if cTime < bE:
-        #dump bets
-        #dump frame.best_effort_timestamp / 10000
+      if diff < -0.01:
+        dump diff
+        dump bE
         continue
       inc video.fCounter
-      dump bets
-      dump bE
-      dump cTime
       acquire(video.videoQueue.lock)
       av_frame_free(frame.addr)
       video.videoQueue.frames.delete(0)
@@ -225,7 +223,7 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1): V
   initLock(video.audioQueue.lock)
   initLock(video.videoQueue.lock)
   spawn fillQueues(video)
-  sleep(1)
+  sleep(1000)
   spawn audioLoop(video)
   spawn videoLoop(video)
   return video
