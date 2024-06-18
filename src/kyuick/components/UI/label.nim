@@ -29,6 +29,8 @@ proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
   if label.renderSaved:
     renderer.copy label.texture, nil, addr label.rect
     return
+  if label.texture != nil:
+    label.texture.destroyTexture()
   let
     surface = ttf.renderTextBlended(label.font, cstring(label.text), color(label.foregroundColor[0],
       label.foregroundColor[1], label.foregroundColor[2], label.foregroundColor[3]))

@@ -123,11 +123,19 @@ proc usProvinceDetectionTest() =
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
     mainScene.children.add n
+proc videoTest()
+proc onVidEnd(video: Video) =
+  mainScene.children.delete(mainScene.children.len - 1)
+  echo mainScene.children.len
+  echo "deleted video"
+  echo "RESTART"
+  videoTest()
 proc videoTest() =
-  var 
-    filename: string = "/mnt/Two/media/YouTube/Toxic/Damazein - Afterlife (prod. Damazein & kimj) [ShfukOj_Kq0].webm"
+  var
+    filename: string = "/mnt/One/media/CLuBLioNx/Nightcore - Thinking About U [Miky DJ] [KsL_Kzg0Lms].webm"
     tVideo: Video = Video()
   tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight)
+  tVideo.endCallback = onVidEnd
   video = tVideo.addr
   mainScene.children.add tVideo
 when isMainModule:

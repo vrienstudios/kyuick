@@ -52,6 +52,7 @@ proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEve
     this.onHoverStatusChange(this, e)
 proc defaultRender*(renderer: RendererPtr, this: KyuickObject) =
   for child in this.children:
+    if child.render == nil: continue
     child.render(renderer, child)
     renderer.setDrawColor(this.backgroundColor)
 proc newKyuickObject*(x: cint = 0, y: cint = 0, width: cint = 0, 
