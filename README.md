@@ -13,9 +13,9 @@
 - Image Support [X]
 - 'Animatable' Objects [X]
 - Province ColorMap Mapper [X]
+- Video Support [X]
 
 ### WIP:
-- Video Support [WIP]
 - YAML Load/Save System [Continuous]
 
 ### TODO:
