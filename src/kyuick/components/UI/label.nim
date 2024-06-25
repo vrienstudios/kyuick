@@ -23,6 +23,9 @@ proc `text=`*(this: var Label, text: string) =
   this.width = w
   this.height = h
   this.renderSaved = false
+proc destroy*(this: Label) =
+  destroyTexture(this.texture)
+  this.font = nil
 proc renderLabel*(renderer: RendererPtr, obj: KyuickObject) =
   var label: Label = (Label)obj
   if label.trackNum != nil: `text=`(label, $repr(label.trackNum))

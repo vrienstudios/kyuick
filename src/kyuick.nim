@@ -125,14 +125,20 @@ proc usProvinceDetectionTest() =
     mainScene.children.add n
 proc videoTest()
 proc onVidEnd(video: Video) =
-  mainScene.children.delete(mainScene.children.len - 1)
-  echo mainScene.children.len
+  echo video.returned
+  if video.returned == true:
+    return
+  var idx: int = 0
+  while idx < mainScene.children.len:
+    if mainScene.children[idx] == video: break
+    inc idx
+  mainScene.children.delete(idx)
   echo "deleted video"
   echo "RESTART"
   videoTest()
 proc videoTest() =
   var
-    filename: string = "/mnt/One/media/CLuBLioNx/Nightcore - Thinking About U [Miky DJ] [KsL_Kzg0Lms].webm"
+    filename: string = "/mnt/Three/Downloads/Sorted/media/anma.mp4"
     tVideo: Video = Video()
   tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight)
   tVideo.endCallback = onVidEnd

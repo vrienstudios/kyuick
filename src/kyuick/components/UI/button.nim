@@ -12,7 +12,8 @@ type Button* = ref object of KyuickObject
   btnLabel*: Label
   textAlign: textAlignment
 
-
+proc destroy*(this: Button) =
+  destroy(this.btnLabel)
 proc renderButton*(renderer: RendererPtr, obj: KyuickObject) =
   let button: Button = (Button)obj
   if button.renderSaved:

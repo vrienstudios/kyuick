@@ -9,7 +9,8 @@ type
     imagePath: string
     imageloaded: bool
     frameBuffer*: Rect
-
+proc destroy*(this: ImageObject) =
+  this.texture.destroyTexture()
 proc renderImage*(renderer: RendererPtr, obj: KyuickObject) =
   var this: ImageObject = ImageObject(obj)
   if this.imageloaded == false:

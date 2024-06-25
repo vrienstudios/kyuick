@@ -40,6 +40,7 @@ type
       doResize: bool
       isDone: bool
       destroyed: bool
+      returned*: bool
       canWaitThrd: int = 1
       endCallback*: proc(v: Video)
 
@@ -101,11 +102,15 @@ proc audioLoop(video: Video) {.thread.} =
   while video.isDone == false:
     while video.audioQueue.frames.len > 0:
       acquire(video.audioQueue.lock)
+      if video.videoQueue.frames[0] == nil: continue
+      if video.aTFrame == nil: continue
       decodeAudio(video.auddev, video.resampler, video.audioQueue.frames[0][], video.aTFrame)
       discard video.auddev.queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
-      av_frame_free(video.audioQueue.frames[0].addr)
-      av_frame_free(video.aTFrame.addr)
-      video.aTFrame = av_frame_alloc()
+      if video.audioQueue.frames[0] != nil:
+        av_frame_free(video.audioQueue.frames[0].addr)
+      if video.aTFrame != nil:
+        av_frame_free(video.aTFrame.addr)
+        video.aTFrame = av_frame_alloc()
       video.audioQueue.frames.delete(0)
       #echo video.audioQueue.frames.len
       release(video.audioQueue.lock)
@@ -150,11 +155,6 @@ proc videoLoop(video: Video) {.thread.} =
       video.videoQueue.frames.delete(0)
       release(video.videoQueue.lock)
       #echo video.videoQueue.frames.len
-  # Process at the end of video queue.
-  destroy(video)
-  {.cast(gcsafe).}:
-    if video.endCallback != nil:
-      video.endCallback(video)
 proc fillQueues(video: Video) {.thread.} =
   while av_read_frame(video.pFormatCtx, video.packet) >= 0:
     while true:
@@ -170,13 +170,19 @@ proc fillQueues(video: Video) {.thread.} =
         if f == -11:
           # READ MORE
           av_frame_free(vfs.addr)
+          av_packet_free(video.packet.addr)
+          video.packet = av_packet_alloc()
           break
         if f < 0:
           av_frame_free(vfs.addr)
+          av_packet_free(video.packet.addr)
+          video.packet = av_packet_alloc()
           continue
-        #acquire(video.audioQueue.lock)
+        acquire(video.audioQueue.lock)
         video.audioQueue.frames.add(vfs)
-        #release(video.audioQueue.lock)
+        av_packet_free(video.packet.addr)
+        video.packet = av_packet_alloc()
+        release(video.audioQueue.lock)
         break
       # VIDEO
       if video.packet.stream_index.int == video.videoInfo.idx:
@@ -189,15 +195,21 @@ proc fillQueues(video: Video) {.thread.} =
         let f = avcodec_receive_frame(video.videoCtx, vfs)
         if f == -11:
           # READ MORE
+          av_frame_free(vfs.addr)
+          av_packet_free(video.packet.addr)
+          video.packet = av_packet_alloc()
           break
         if f < 0:
+          av_frame_free(vfs.addr)
+          av_packet_free(video.packet.addr)
+          video.packet = av_packet_alloc()
           continue
         #acquire(video.videoQueue.lock)
         video.videoQueue.frames.add(vfs)
+        av_packet_free(video.packet.addr)
+        video.packet = av_packet_alloc()
         #release(video.videoQueue.lock)
       break
-    av_packet_unref(video.packet)
-    #video.packet = av_packet_alloc()
     sleep(video.canWaitThrd)
   video.isDone = true
 proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
@@ -210,6 +222,12 @@ proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
     video.renderSaved = true
     video.startTime = epochTime()
   acquire(video.videoQueue.lock)
+  if video.isDone and video.videoQueue.frames.len == 0:
+    release(video.videoQueue.lock)
+    destroy(video)
+    if video.endCallback != nil: video.endCallback(video)
+    video.returned = true
+    return
   if video.videoQueue.frames.len > 0:
     let frame = video.videoQueue.frames[0]
     discard updYUVTexture(video.texture, video.rect.addr, frame.data[0], frame.linesize[0], frame.data[1], frame.linesize[1], frame.data[2], frame.linesize[2])

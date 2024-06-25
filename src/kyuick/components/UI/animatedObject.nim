@@ -12,6 +12,8 @@ type
     fps*: cint
     lastUpdate: uint32
 
+proc destroy*(this: AnimatedObject) =
+  destroyTexture(this.texture)
 # TODO: Render a selected
 proc renderAnimated*(renderer: RendererPtr, obj: KyuickObject) =
   var this: AnimatedObject = AnimatedObject(obj)
