@@ -1,7 +1,7 @@
 import ffmpeg
 #SDL
 import sdl2
-import sdl2/[ttf, image]
+import sdl2/[ttf, image, audio]
 # Kyuick Components
 import kyuick/components/[kyuickObject, scene]
 import kyuick/components/Game/[gameObjects, mapMaker]
@@ -11,7 +11,6 @@ import kyuick/utils/[fontUtils, rendererUtils]
 # Standard Lib
 import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strformat]
 
-
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
@@ -19,6 +18,9 @@ const
   WinHeight* = 1080
 var
   mainScene*: KyuickObject
+  mainAuddev*: AudioDeviceID
+  numAudioDev*: cint
+  audwant*, audhave*: AudioSpec
   video*: ptr Video
   canvasZoom: cint
   currentFrameRate*: float = 0
@@ -27,6 +29,7 @@ var
   keyDownTracker = initTable[string, bool]()
   mouseXYTracker: tuple[x, y: cint] = (0, 0)
   fontTracker: FontTracker
+const manualVersion: uint8 = 1
 proc isDown*(key: string): bool =
   if not keyDownTracker.hasKey(key):
     return false
@@ -54,10 +57,23 @@ proc showFrameTime*() =
     newLabel(0, 18, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameTime.addr
   mainScene.children.add fpsc
-proc startGameLoop*(name: string, onInit: proc() = nil) =
+proc initEngine*() =
+  echo "Init Kyuick (v." & $manualVersion & ") Engine"
   sdl2.init(INIT_EVERYTHING)
   ttfInit()
   discard image.init()
+  echo "Setting Audio Device"
+  block setupAud:
+    numAudioDev = getNumAudioDevices(0)
+    echo "Audio Devices: " & $numAudioDev
+    zeroMem(addr audwant, sizeof AudioSpec)
+    zeroMem(addr audhave, sizeof AudioSpec)
+    audwant.freq = (44100).cint
+    audwant.format = AUDIO_S32
+    audwant.channels = 2
+    mainAuddev = openAudioDevice(getAudioDeviceName(0, 0), 0, addr audwant, addr audhave, 0)
+    mainAuddev.pauseAudioDevice 0
+proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
     onInit()
   let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
@@ -123,7 +139,7 @@ proc usProvinceDetectionTest() =
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
     mainScene.children.add n
-proc videoTest()
+proc videoTest(file: string)
 proc onVidEnd(video: Video) =
   echo video.returned
   if video.returned == true:
@@ -134,21 +150,34 @@ proc onVidEnd(video: Video) =
     inc idx
   mainScene.children.delete(idx)
   echo "deleted video"
-  echo "RESTART"
-  videoTest()
-proc videoTest() =
+  #videoTest()
+proc videoTest(file: string) =
+  echo "Loading Video Test"
   var
-    filename: string = "/mnt/Three/Downloads/Sorted/media/anma.mp4"
+    filename: string = file
     tVideo: Video = Video()
-  tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight)
+  tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight, addr mainAuddev)
   tVideo.endCallback = onVidEnd
   video = tVideo.addr
   mainScene.children.add tVideo
 when isMainModule:
+  initEngine()
   mainScene = 
     uiCon KyuickObject:
       width WinWidth
       height WinHeight
       backgroundColor [6, 0, 200, 255]
       render defaultRender
-  startGameLoop("tester", videoTest)
+  let paramCount: int = paramCount() + 1
+  # 1 is directory
+  var pidx: int = 0
+  while pidx < paramCount:
+    defer: inc pidx
+    let str = paramStr(pidx)
+    case str:
+      of "video":
+        inc pidx
+        videoTest(paramStr(pidx))
+      else:
+        continue
+  startGameLoop("tester")

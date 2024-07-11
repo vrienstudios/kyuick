@@ -6,9 +6,9 @@ import ../../Grids/horizontalGrid
 # Window meant for selecting files.
 type FileSelector* = ref object of KyuickObject
   path*: string
-  tInput*: TextInput
-  btnSelect*: Button
-  onClick: proc(res: string)
+  tInput: TextInput
+  btnSelect: Button
+  objSelected: proc(res: string)
   #fileList*: VerticalGrid
   #interactives*: HorizontalGrid
   #[
@@ -16,11 +16,15 @@ type FileSelector* = ref object of KyuickObject
     cancel*: Button
     open*: Button
   ]#
+proc onLineHoverTurnBlue*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
+  var me = HorizontalGrid(obj)
+  me.outline = e.b
 proc newFileItem(this: FileSelector, filePath: string): HorizontalGrid =
   var fileInfo: HorizontalGrid =
     uiGen HorizontalGrid:
       height 100
       width this.width
+      onHoverStatusChange onLineHoverTurnBlue
   return
 #proc buildFileList(this: FileSelector) =
 #  for file in walkFiles(this.path):

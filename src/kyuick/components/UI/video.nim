@@ -30,10 +30,7 @@ type
       aTFrame: ptr AVFrame
       packet*: ptr AVPacket
       videoInfo*, audioInfo*: CodecData
-      audioDevice*: AudioDeviceID
-      want*, have*: AudioSpec
       resampler*: ptr SwrContext
-      auddev: AudioDeviceID
       drawLock: Lock
       tSpawnd: bool
       fBuffer: Rect
@@ -43,6 +40,7 @@ type
       returned*: bool
       canWaitThrd: int = 1
       endCallback*: proc(v: Video)
+      auddev: ptr AudioDeviceID
 
 proc destroy*(v: Video) =
   # Stop modifications
@@ -76,7 +74,7 @@ proc destroy*(v: Video) =
   if v.packet != nil:
     av_packet_unref(v.packet)
     av_packet_free(v.packet.addr)
-  v.auddev.closeAudioDevice()
+  v.auddev = nil
   release(v.drawLock)
 proc updYUVTexture*(texture: TexturePtr, rect: ptr Rect, 
     yPlane: ptr uint8, yPitch: cint, 
@@ -102,10 +100,10 @@ proc audioLoop(video: Video) {.thread.} =
   while video.isDone == false:
     while video.audioQueue.frames.len > 0:
       acquire(video.audioQueue.lock)
-      if video.videoQueue.frames[0] == nil: continue
-      if video.aTFrame == nil: continue
-      decodeAudio(video.auddev, video.resampler, video.audioQueue.frames[0][], video.aTFrame)
-      discard video.auddev.queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
+      #if video.videoQueue.frames[0] == nil: continue
+      #if video.aTFrame == nil: continue
+      decodeAudio(video.auddev[], video.resampler, video.audioQueue.frames[0][], video.aTFrame)
+      discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
       if video.audioQueue.frames[0] != nil:
         av_frame_free(video.audioQueue.frames[0].addr)
       if video.aTFrame != nil:
@@ -114,7 +112,7 @@ proc audioLoop(video: Video) {.thread.} =
       video.audioQueue.frames.delete(0)
       #echo video.audioQueue.frames.len
       release(video.audioQueue.lock)
-    sleep(5)
+    sleep(1)
 proc videoLoop(video: Video) {.thread.} =
   var aligns: int = 0
   while video.isDone == false:
@@ -237,8 +235,9 @@ proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
     renderer.copyEx video.texture, video.rect.addr, video.fBuffer.addr, cdouble(0), p.addr
     return
   renderer.copy video.texture, nil, video.rect.addr
-proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1): Video =
+proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, auddev: ptr AudioDeviceID = nil): Video =
   var video: Video = Video()
+  video.auddev = auddev
   assert avformat_open_input(addr video.pFormatCtx, fileName, nil, nil) == 0
   assert avformat_find_stream_info(video.pFormatCtx, nil) == 0
   var 
@@ -252,8 +251,8 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1): V
     videoCodec = parseCodec(videoStream)
     audioCodec = parseCodec(audioStream)
 
-  echo videoCodec.params.width
-  echo videoCodec.params.height
+  #echo videoCodec.params.width
+  #echo videoCodec.params.height
   video.width = videoCodec.params.width
   video.height = videoCodec.params.height
   video.videoCtx = avcodec_alloc_context3(videoCodec.codec)
@@ -263,15 +262,9 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1): V
   assert avcodec_open2(video.videoCtx, videoCodec.codec, nil) >= 0
   assert avcodec_open2(video.audioCtx, audioCodec.codec, nil) >= 0
   
-  zeroMem(addr video.want, sizeof AudioSpec)
-  zeroMem(addr video.have, sizeof AudioSpec)
-  video.want.freq = (44100 * 1).cint
   #(video.audioCtx.sample_rate.float * 1).cint
-  echo video.audioCtx.sample_rate
-  video.want.format = AUDIO_S32
-  video.want.channels = video.audioCtx.channels.uint8
-  video.auddev = openAudioDevice(getAudioDeviceName(0, 0), 0, addr video.want, addr video.have, 0)
-  video.auddev.pauseAudioDevice 0
+  #echo video.audioCtx.sample_rate
+  #echo video.audioCtx.channels.uint8
   video.packet = av_packet_alloc()
   video.render = renderVideo
   video.rect = rect(x, y, video.width, video.height)

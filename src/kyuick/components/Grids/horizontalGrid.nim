@@ -21,7 +21,8 @@ proc add*(this: HorizontalGrid, obj: KyuickObject) =
 proc renderHor*(renderer: RendererPtr, obj: KyuickObject) =
   let hor = HorizontalGrid(obj)
   #renderer.setDrawColor(hor.backgroundColor)
-  #renderer.fillRect(hor.rect)
+  if hor.outline:
+    renderer.drawRect(hor.rect)
   for el in hor.children:
     renderer.render(el)
 proc newHorizontalGrid*(x, y, width, height: cint): HorizontalGrid =
