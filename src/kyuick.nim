@@ -21,7 +21,7 @@ var
   mainAuddev*: AudioDeviceID
   numAudioDev*: cint
   audwant*, audhave*: AudioSpec
-  video*: ptr Video
+  #video*: ptr Video
   canvasZoom: cint
   currentFrameRate*: float = 0
   currentFrameTime*: float = 0

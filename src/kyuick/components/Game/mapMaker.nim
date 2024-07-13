@@ -57,6 +57,8 @@ proc labelHover(obj: KyuickObject, e: (bool, MouseMotionEventPtr)) =
   obj.foregroundColor = [0, 0, 0, 255]
   obj.renderSaved = false
   return
+proc createNewMapPack*(name: string) =
+  return
 # Fill Screen
 proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
   var menuPanel: Menubar = newMenubar(x = 0, y = 50, width = w, height = 40)
@@ -69,6 +71,7 @@ proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
           foregroundColor [0, 0, 0, 255]
           font font
           fontSize 18
+          onLeftClick 
       lOpen = 
         uiGen "Label":
           text "Open"

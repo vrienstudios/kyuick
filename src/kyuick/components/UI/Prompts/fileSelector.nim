@@ -8,6 +8,7 @@ type FileSelector* = ref object of KyuickObject
   path*: string
   tInput: TextInput
   btnSelect: Button
+  font: FontPtr
   objSelected: proc(res: string)
   #fileList*: VerticalGrid
   #interactives*: HorizontalGrid
@@ -19,12 +20,38 @@ type FileSelector* = ref object of KyuickObject
 proc onLineHoverTurnBlue*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
   var me = HorizontalGrid(obj)
   me.outline = e.b
+  #me.backgroundColor = [25, 25, 255]
 proc newFileItem(this: FileSelector, filePath: string): HorizontalGrid =
   var fileInfo: HorizontalGrid =
     uiGen HorizontalGrid:
-      height 100
+      height 30
       width this.width
       onHoverStatusChange onLineHoverTurnBlue
+  var 
+    fileType =
+      uiGen Label:
+        font this.font
+        fontsize 18
+        text case filePath.split('.')[^1]:
+              of ".pck":
+                "ASSET ARCHIVE"
+              of ".mvd":
+                "MAP DATA"
+              of ".natd":
+                "NATL DATA"
+              of ".pdat":
+                "PROV DATA"
+              of ".mpk":
+                "GAME ARCHIVE"
+              else:
+                "UKN"
+    fileName =
+      uiGen Label:
+        font this.font
+        fontSize 18
+        text $filePath.split('.')[0..^1]
+    fileInfo.add fileType
+    fileInfo.add fileName
   return
 #proc buildFileList(this: FileSelector) =
 #  for file in walkFiles(this.path):
@@ -53,7 +80,6 @@ proc newFileSelector*(pstr: string, font: FontPtr, fontSize: cint, onClick: proc
   btn.onLeftClick = defaultOnClick
   var fs = uiCon FileSelector:
     path pstr
-    tInput input
-    btnSelect btn
     passthrough true
+  fs.children.add @[input, btn]
   return fs
