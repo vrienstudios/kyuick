@@ -71,7 +71,6 @@ proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
           foregroundColor [0, 0, 0, 255]
           font font
           fontSize 18
-          onLeftClick 
       lOpen = 
         uiGen "Label":
           text "Open"

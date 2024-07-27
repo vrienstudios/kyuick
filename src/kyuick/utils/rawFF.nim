@@ -1,0 +1,13706 @@
+{.warning[UnusedImport]: off.}
+{.hint[XDeclaredButNotUsed]: off.}
+
+from macros import hint
+import os
+
+#{.passL: "libavcodec.so".}
+#{.passL: "libavdevice.so".}
+#{.passL: "libavfilter.so".}
+#{.passL: "libavformat.so".}
+#{.passL: "libavutil.so".}
+#{.passL: "libswresample.so".}
+
+#when defined(windows):
+#  {.push importc, dynlib: "libavcodec-(61|61.3.100).dll", cdecl.}
+#  {.push importc, dynlib: "libavdevice-(61|61.1.100).dll", cdecl.}
+#  {.push importc, dynlib: "libavfilter-(10|10.1.100).dll", cdecl.}
+#  {.push importc, dynlib: "libavformat-(61|61.1.100).dll", cdecl.}
+#  {.push importc, dynlib: "libavutil-(59|59.8.100).dll", cdecl.}
+#  {.push importc, dynlib: "swresample-(5|5.1).dll", cdecl.}
+#elif defined(macosx):
+#  {.push importc, dynlib: "libavcodec.(61|61.3.100).dylib", cdecl.}
+#  {.push importc, dynlib: "libavdevice.(61|61.1.100).dylib", cdecl.}
+#  {.push importc, dynlib: "libavfilter.(10|10.1.100).dylib", cdecl.}
+#  {.push importc, dynlib: "libavformat.(61|61.1.100).dylib", cdecl.}
+#  {.push importc, dynlib: "libavutil.(59|59.8.100).dylib", cdecl.}
+#  {.push importc, dynlib: "swresample.(5|5.1).dylib", cdecl.}
+#else:
+#  {.push importc, dynlib: "libavcodec.so.(61|61.3.100)", cdecl.}
+#  {.push importc, dynlib: "libavdevice.so.(61|61.1.100)", cdecl.}
+#  {.push importc, dynlib: "libavfilter.so.(10|10.1.100)", cdecl.}
+#  {.push importc, dynlib: "libavformat.so.(61|61.1.100)", cdecl.}
+#  {.push importc, dynlib: "libavutil.so.(59|59.8.100)", cdecl.}
+#  {.push importc, dynlib: "swresample.so.(5|5.1)", cdecl.}
+
+when not declared(AV_OPT_FLAG_IMPLICIT_KEY):
+  const
+    AV_OPT_FLAG_IMPLICIT_KEY* = cuint(1)
+else:
+  static :
+    hint("Declaration of " & "AV_OPT_FLAG_IMPLICIT_KEY" &
+        " already exists, not redeclaring")
+when not declared(AV_FRAME_CROP_UNALIGNED):
+  const
+    AV_FRAME_CROP_UNALIGNED* = cuint(1)
+else:
+  static :
+    hint("Declaration of " & "AV_FRAME_CROP_UNALIGNED" &
+        " already exists, not redeclaring")
+when not declared(AV_HWFRAME_MAP_READ):
+  const
+    AV_HWFRAME_MAP_READ* = cuint(1)
+else:
+  static :
+    hint("Declaration of " & "AV_HWFRAME_MAP_READ" &
+        " already exists, not redeclaring")
+when not declared(AV_HWFRAME_MAP_WRITE):
+  const
+    AV_HWFRAME_MAP_WRITE* = cuint(2)
+else:
+  static :
+    hint("Declaration of " & "AV_HWFRAME_MAP_WRITE" &
+        " already exists, not redeclaring")
+when not declared(AV_HWFRAME_MAP_OVERWRITE):
+  const
+    AV_HWFRAME_MAP_OVERWRITE* = cuint(4)
+else:
+  static :
+    hint("Declaration of " & "AV_HWFRAME_MAP_OVERWRITE" &
+        " already exists, not redeclaring")
+when not declared(AV_HWFRAME_MAP_DIRECT):
+  const
+    AV_HWFRAME_MAP_DIRECT* = cuint(8)
+else:
+  static :
+    hint("Declaration of " & "AV_HWFRAME_MAP_DIRECT" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX):
+  const
+    AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX* = cuint(1)
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_HW_CONFIG_METHOD_HW_FRAMES_CTX):
+  const
+    AV_CODEC_HW_CONFIG_METHOD_HW_FRAMES_CTX* = cuint(2)
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_HW_CONFIG_METHOD_HW_FRAMES_CTX" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_HW_CONFIG_METHOD_INTERNAL):
+  const
+    AV_CODEC_HW_CONFIG_METHOD_INTERNAL* = cuint(4)
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_HW_CONFIG_METHOD_INTERNAL" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_HW_CONFIG_METHOD_AD_HOC):
+  const
+    AV_CODEC_HW_CONFIG_METHOD_AD_HOC* = cuint(8)
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_HW_CONFIG_METHOD_AD_HOC" &
+        " already exists, not redeclaring")
+when not declared(AVFILTER_AUTO_CONVERT_ALL):
+  const
+    AVFILTER_AUTO_CONVERT_ALL* = cint(0)
+else:
+  static :
+    hint("Declaration of " & "AVFILTER_AUTO_CONVERT_ALL" &
+        " already exists, not redeclaring")
+when not declared(AVFILTER_AUTO_CONVERT_NONE):
+  const
+    AVFILTER_AUTO_CONVERT_NONE* = cint(-1)
+else:
+  static :
+    hint("Declaration of " & "AVFILTER_AUTO_CONVERT_NONE" &
+        " already exists, not redeclaring")
+when not declared(AV_BUFFERSRC_FLAG_NO_CHECK_FORMAT):
+  const
+    AV_BUFFERSRC_FLAG_NO_CHECK_FORMAT* = cuint(1)
+else:
+  static :
+    hint("Declaration of " & "AV_BUFFERSRC_FLAG_NO_CHECK_FORMAT" &
+        " already exists, not redeclaring")
+when not declared(AV_BUFFERSRC_FLAG_PUSH):
+  const
+    AV_BUFFERSRC_FLAG_PUSH* = cuint(4)
+else:
+  static :
+    hint("Declaration of " & "AV_BUFFERSRC_FLAG_PUSH" &
+        " already exists, not redeclaring")
+when not declared(AV_BUFFERSRC_FLAG_KEEP_REF):
+  const
+    AV_BUFFERSRC_FLAG_KEEP_REF* = cuint(8)
+else:
+  static :
+    hint("Declaration of " & "AV_BUFFERSRC_FLAG_KEEP_REF" &
+        " already exists, not redeclaring")
+when not declared(enum_AVChannel):
+  type
+    enum_AVChannel* {.size: sizeof(cint).} = enum
+      AV_CHAN_NONE = -1, AV_CHAN_FRONT_LEFT = 0, AV_CHAN_FRONT_RIGHT = 1,
+      AV_CHAN_FRONT_CENTER = 2, AV_CHAN_LOW_FREQUENCY = 3,
+      AV_CHAN_BACK_LEFT = 4, AV_CHAN_BACK_RIGHT = 5,
+      AV_CHAN_FRONT_LEFT_OF_CENTER = 6, AV_CHAN_FRONT_RIGHT_OF_CENTER = 7,
+      AV_CHAN_BACK_CENTER = 8, AV_CHAN_SIDE_LEFT = 9, AV_CHAN_SIDE_RIGHT = 10,
+      AV_CHAN_TOP_CENTER = 11, AV_CHAN_TOP_FRONT_LEFT = 12,
+      AV_CHAN_TOP_FRONT_CENTER = 13, AV_CHAN_TOP_FRONT_RIGHT = 14,
+      AV_CHAN_TOP_BACK_LEFT = 15, AV_CHAN_TOP_BACK_CENTER = 16,
+      AV_CHAN_TOP_BACK_RIGHT = 17, AV_CHAN_STEREO_LEFT = 29,
+      AV_CHAN_STEREO_RIGHT = 30, AV_CHAN_WIDE_LEFT = 31,
+      AV_CHAN_WIDE_RIGHT = 32, AV_CHAN_SURROUND_DIRECT_LEFT = 33,
+      AV_CHAN_SURROUND_DIRECT_RIGHT = 34, AV_CHAN_LOW_FREQUENCY_2 = 35,
+      AV_CHAN_TOP_SIDE_LEFT = 36, AV_CHAN_TOP_SIDE_RIGHT = 37,
+      AV_CHAN_BOTTOM_FRONT_CENTER = 38, AV_CHAN_BOTTOM_FRONT_LEFT = 39,
+      AV_CHAN_BOTTOM_FRONT_RIGHT = 40, AV_CHAN_SIDE_SURROUND_LEFT = 41,
+      AV_CHAN_SIDE_SURROUND_RIGHT = 42, AV_CHAN_TOP_SURROUND_LEFT = 43,
+      AV_CHAN_TOP_SURROUND_RIGHT = 44, AV_CHAN_UNUSED = 512,
+      AV_CHAN_UNKNOWN = 768, AV_CHAN_AMBISONIC_BASE = 1024,
+      AV_CHAN_AMBISONIC_END = 2047
+else:
+  static :
+    hint("Declaration of " & "enum_AVChannel" &
+        " already exists, not redeclaring")
+when not declared(enum_AVChannelOrder):
+  type
+    enum_AVChannelOrder* {.size: sizeof(cuint).} = enum
+      AV_CHANNEL_ORDER_UNSPEC = 0, AV_CHANNEL_ORDER_NATIVE = 1,
+      AV_CHANNEL_ORDER_CUSTOM = 2, AV_CHANNEL_ORDER_AMBISONIC = 3,
+      FF_CHANNEL_ORDER_NB = 4
+else:
+  static :
+    hint("Declaration of " & "enum_AVChannelOrder" &
+        " already exists, not redeclaring")
+when not declared(enum_AVMatrixEncoding):
+  type
+    enum_AVMatrixEncoding* {.size: sizeof(cuint).} = enum
+      AV_MATRIX_ENCODING_NONE = 0, AV_MATRIX_ENCODING_DOLBY = 1,
+      AV_MATRIX_ENCODING_DPLII = 2, AV_MATRIX_ENCODING_DPLIIX = 3,
+      AV_MATRIX_ENCODING_DPLIIZ = 4, AV_MATRIX_ENCODING_DOLBYEX = 5,
+      AV_MATRIX_ENCODING_DOLBYHEADPHONE = 6, AV_MATRIX_ENCODING_NB = 7
+else:
+  static :
+    hint("Declaration of " & "enum_AVMatrixEncoding" &
+        " already exists, not redeclaring")
+when not declared(enum_AVSampleFormat):
+  type
+    enum_AVSampleFormat* {.size: sizeof(cint).} = enum
+      AV_SAMPLE_FMT_NONE = -1, AV_SAMPLE_FMT_U8 = 0, AV_SAMPLE_FMT_S16 = 1,
+      AV_SAMPLE_FMT_S32 = 2, AV_SAMPLE_FMT_FLT = 3, AV_SAMPLE_FMT_DBL = 4,
+      AV_SAMPLE_FMT_U8P = 5, AV_SAMPLE_FMT_S16P = 6, AV_SAMPLE_FMT_S32P = 7,
+      AV_SAMPLE_FMT_FLTP = 8, AV_SAMPLE_FMT_DBLP = 9, AV_SAMPLE_FMT_S64 = 10,
+      AV_SAMPLE_FMT_S64P = 11, AV_SAMPLE_FMT_NB = 12
+else:
+  static :
+    hint("Declaration of " & "enum_AVSampleFormat" &
+        " already exists, not redeclaring")
+when not declared(enum_AVClassCategory):
+  type
+    enum_AVClassCategory* {.size: sizeof(cuint).} = enum
+      AV_CLASS_CATEGORY_NA = 0, AV_CLASS_CATEGORY_INPUT = 1,
+      AV_CLASS_CATEGORY_OUTPUT = 2, AV_CLASS_CATEGORY_MUXER = 3,
+      AV_CLASS_CATEGORY_DEMUXER = 4, AV_CLASS_CATEGORY_ENCODER = 5,
+      AV_CLASS_CATEGORY_DECODER = 6, AV_CLASS_CATEGORY_FILTER = 7,
+      AV_CLASS_CATEGORY_BITSTREAM_FILTER = 8, AV_CLASS_CATEGORY_SWSCALER = 9,
+      AV_CLASS_CATEGORY_SWRESAMPLER = 10,
+      AV_CLASS_CATEGORY_DEVICE_VIDEO_OUTPUT = 40,
+      AV_CLASS_CATEGORY_DEVICE_VIDEO_INPUT = 41,
+      AV_CLASS_CATEGORY_DEVICE_AUDIO_OUTPUT = 42,
+      AV_CLASS_CATEGORY_DEVICE_AUDIO_INPUT = 43,
+      AV_CLASS_CATEGORY_DEVICE_OUTPUT = 44, AV_CLASS_CATEGORY_DEVICE_INPUT = 45,
+      AV_CLASS_CATEGORY_NB = 46
+else:
+  static :
+    hint("Declaration of " & "enum_AVClassCategory" &
+        " already exists, not redeclaring")
+when not declared(enum_AVMediaType):
+  type
+    enum_AVMediaType* {.size: sizeof(cint).} = enum
+      AVMEDIA_TYPE_UNKNOWN = -1, AVMEDIA_TYPE_VIDEO = 0, AVMEDIA_TYPE_AUDIO = 1,
+      AVMEDIA_TYPE_DATA = 2, AVMEDIA_TYPE_SUBTITLE = 3,
+      AVMEDIA_TYPE_ATTACHMENT = 4, AVMEDIA_TYPE_NB = 5
+else:
+  static :
+    hint("Declaration of " & "enum_AVMediaType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVPictureType):
+  type
+    enum_AVPictureType* {.size: sizeof(cuint).} = enum
+      AV_PICTURE_TYPE_NONE = 0, AV_PICTURE_TYPE_I = 1, AV_PICTURE_TYPE_P = 2,
+      AV_PICTURE_TYPE_B = 3, AV_PICTURE_TYPE_S = 4, AV_PICTURE_TYPE_SI = 5,
+      AV_PICTURE_TYPE_SP = 6, AV_PICTURE_TYPE_BI = 7
+else:
+  static :
+    hint("Declaration of " & "enum_AVPictureType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVRounding):
+  type
+    enum_AVRounding* {.size: sizeof(cuint).} = enum
+      AV_ROUND_ZERO = 0, AV_ROUND_INF = 1, AV_ROUND_DOWN = 2, AV_ROUND_UP = 3,
+      AV_ROUND_NEAR_INF = 5, AV_ROUND_PASS_MINMAX = 8192
+else:
+  static :
+    hint("Declaration of " & "enum_AVRounding" &
+        " already exists, not redeclaring")
+when not declared(enum_AVPixelFormat):
+  type
+    enum_AVPixelFormat* {.size: sizeof(cint).} = enum
+      AV_PIX_FMT_NONE = -1, AV_PIX_FMT_YUV420P = 0, AV_PIX_FMT_YUYV422 = 1,
+      AV_PIX_FMT_RGB24 = 2, AV_PIX_FMT_BGR24 = 3, AV_PIX_FMT_YUV422P = 4,
+      AV_PIX_FMT_YUV444P = 5, AV_PIX_FMT_YUV410P = 6, AV_PIX_FMT_YUV411P = 7,
+      AV_PIX_FMT_GRAY8 = 8, AV_PIX_FMT_MONOWHITE = 9, AV_PIX_FMT_MONOBLACK = 10,
+      AV_PIX_FMT_PAL8 = 11, AV_PIX_FMT_YUVJ420P = 12, AV_PIX_FMT_YUVJ422P = 13,
+      AV_PIX_FMT_YUVJ444P = 14, AV_PIX_FMT_UYVY422 = 15,
+      AV_PIX_FMT_UYYVYY411 = 16, AV_PIX_FMT_BGR8 = 17, AV_PIX_FMT_BGR4 = 18,
+      AV_PIX_FMT_BGR4_BYTE = 19, AV_PIX_FMT_RGB8 = 20, AV_PIX_FMT_RGB4 = 21,
+      AV_PIX_FMT_RGB4_BYTE = 22, AV_PIX_FMT_NV12 = 23, AV_PIX_FMT_NV21 = 24,
+      AV_PIX_FMT_ARGB = 25, AV_PIX_FMT_RGBA = 26, AV_PIX_FMT_ABGR = 27,
+      AV_PIX_FMT_BGRA = 28, AV_PIX_FMT_GRAY16BE = 29, AV_PIX_FMT_GRAY16LE = 30,
+      AV_PIX_FMT_YUV440P = 31, AV_PIX_FMT_YUVJ440P = 32,
+      AV_PIX_FMT_YUVA420P = 33, AV_PIX_FMT_RGB48BE = 34,
+      AV_PIX_FMT_RGB48LE = 35, AV_PIX_FMT_RGB565BE = 36,
+      AV_PIX_FMT_RGB565LE = 37, AV_PIX_FMT_RGB555BE = 38,
+      AV_PIX_FMT_RGB555LE = 39, AV_PIX_FMT_BGR565BE = 40,
+      AV_PIX_FMT_BGR565LE = 41, AV_PIX_FMT_BGR555BE = 42,
+      AV_PIX_FMT_BGR555LE = 43, AV_PIX_FMT_VAAPI = 44,
+      AV_PIX_FMT_YUV420P16LE = 45, AV_PIX_FMT_YUV420P16BE = 46,
+      AV_PIX_FMT_YUV422P16LE = 47, AV_PIX_FMT_YUV422P16BE = 48,
+      AV_PIX_FMT_YUV444P16LE = 49, AV_PIX_FMT_YUV444P16BE = 50,
+      AV_PIX_FMT_DXVA2_VLD = 51, AV_PIX_FMT_RGB444LE = 52,
+      AV_PIX_FMT_RGB444BE = 53, AV_PIX_FMT_BGR444LE = 54,
+      AV_PIX_FMT_BGR444BE = 55, AV_PIX_FMT_YA8 = 56, AV_PIX_FMT_BGR48BE = 57,
+      AV_PIX_FMT_BGR48LE = 58, AV_PIX_FMT_YUV420P9BE = 59,
+      AV_PIX_FMT_YUV420P9LE = 60, AV_PIX_FMT_YUV420P10BE = 61,
+      AV_PIX_FMT_YUV420P10LE = 62, AV_PIX_FMT_YUV422P10BE = 63,
+      AV_PIX_FMT_YUV422P10LE = 64, AV_PIX_FMT_YUV444P9BE = 65,
+      AV_PIX_FMT_YUV444P9LE = 66, AV_PIX_FMT_YUV444P10BE = 67,
+      AV_PIX_FMT_YUV444P10LE = 68, AV_PIX_FMT_YUV422P9BE = 69,
+      AV_PIX_FMT_YUV422P9LE = 70, AV_PIX_FMT_GBRP = 71, AV_PIX_FMT_GBRP9BE = 72,
+      AV_PIX_FMT_GBRP9LE = 73, AV_PIX_FMT_GBRP10BE = 74,
+      AV_PIX_FMT_GBRP10LE = 75, AV_PIX_FMT_GBRP16BE = 76,
+      AV_PIX_FMT_GBRP16LE = 77, AV_PIX_FMT_YUVA422P = 78,
+      AV_PIX_FMT_YUVA444P = 79, AV_PIX_FMT_YUVA420P9BE = 80,
+      AV_PIX_FMT_YUVA420P9LE = 81, AV_PIX_FMT_YUVA422P9BE = 82,
+      AV_PIX_FMT_YUVA422P9LE = 83, AV_PIX_FMT_YUVA444P9BE = 84,
+      AV_PIX_FMT_YUVA444P9LE = 85, AV_PIX_FMT_YUVA420P10BE = 86,
+      AV_PIX_FMT_YUVA420P10LE = 87, AV_PIX_FMT_YUVA422P10BE = 88,
+      AV_PIX_FMT_YUVA422P10LE = 89, AV_PIX_FMT_YUVA444P10BE = 90,
+      AV_PIX_FMT_YUVA444P10LE = 91, AV_PIX_FMT_YUVA420P16BE = 92,
+      AV_PIX_FMT_YUVA420P16LE = 93, AV_PIX_FMT_YUVA422P16BE = 94,
+      AV_PIX_FMT_YUVA422P16LE = 95, AV_PIX_FMT_YUVA444P16BE = 96,
+      AV_PIX_FMT_YUVA444P16LE = 97, AV_PIX_FMT_VDPAU = 98,
+      AV_PIX_FMT_XYZ12LE = 99, AV_PIX_FMT_XYZ12BE = 100, AV_PIX_FMT_NV16 = 101,
+      AV_PIX_FMT_NV20LE = 102, AV_PIX_FMT_NV20BE = 103,
+      AV_PIX_FMT_RGBA64BE = 104, AV_PIX_FMT_RGBA64LE = 105,
+      AV_PIX_FMT_BGRA64BE = 106, AV_PIX_FMT_BGRA64LE = 107,
+      AV_PIX_FMT_YVYU422 = 108, AV_PIX_FMT_YA16BE = 109,
+      AV_PIX_FMT_YA16LE = 110, AV_PIX_FMT_GBRAP = 111,
+      AV_PIX_FMT_GBRAP16BE = 112, AV_PIX_FMT_GBRAP16LE = 113,
+      AV_PIX_FMT_QSV = 114, AV_PIX_FMT_MMAL = 115, AV_PIX_FMT_D3D11VA_VLD = 116,
+      AV_PIX_FMT_CUDA = 117, AV_PIX_FMT_0RGB = 118, AV_PIX_FMT_RGB0 = 119,
+      AV_PIX_FMT_0BGR = 120, AV_PIX_FMT_BGR0 = 121,
+      AV_PIX_FMT_YUV420P12BE = 122, AV_PIX_FMT_YUV420P12LE = 123,
+      AV_PIX_FMT_YUV420P14BE = 124, AV_PIX_FMT_YUV420P14LE = 125,
+      AV_PIX_FMT_YUV422P12BE = 126, AV_PIX_FMT_YUV422P12LE = 127,
+      AV_PIX_FMT_YUV422P14BE = 128, AV_PIX_FMT_YUV422P14LE = 129,
+      AV_PIX_FMT_YUV444P12BE = 130, AV_PIX_FMT_YUV444P12LE = 131,
+      AV_PIX_FMT_YUV444P14BE = 132, AV_PIX_FMT_YUV444P14LE = 133,
+      AV_PIX_FMT_GBRP12BE = 134, AV_PIX_FMT_GBRP12LE = 135,
+      AV_PIX_FMT_GBRP14BE = 136, AV_PIX_FMT_GBRP14LE = 137,
+      AV_PIX_FMT_YUVJ411P = 138, AV_PIX_FMT_BAYER_BGGR8 = 139,
+      AV_PIX_FMT_BAYER_RGGB8 = 140, AV_PIX_FMT_BAYER_GBRG8 = 141,
+      AV_PIX_FMT_BAYER_GRBG8 = 142, AV_PIX_FMT_BAYER_BGGR16LE = 143,
+      AV_PIX_FMT_BAYER_BGGR16BE = 144, AV_PIX_FMT_BAYER_RGGB16LE = 145,
+      AV_PIX_FMT_BAYER_RGGB16BE = 146, AV_PIX_FMT_BAYER_GBRG16LE = 147,
+      AV_PIX_FMT_BAYER_GBRG16BE = 148, AV_PIX_FMT_BAYER_GRBG16LE = 149,
+      AV_PIX_FMT_BAYER_GRBG16BE = 150, AV_PIX_FMT_YUV440P10LE = 151,
+      AV_PIX_FMT_YUV440P10BE = 152, AV_PIX_FMT_YUV440P12LE = 153,
+      AV_PIX_FMT_YUV440P12BE = 154, AV_PIX_FMT_AYUV64LE = 155,
+      AV_PIX_FMT_AYUV64BE = 156, AV_PIX_FMT_VIDEOTOOLBOX = 157,
+      AV_PIX_FMT_P010LE = 158, AV_PIX_FMT_P010BE = 159,
+      AV_PIX_FMT_GBRAP12BE = 160, AV_PIX_FMT_GBRAP12LE = 161,
+      AV_PIX_FMT_GBRAP10BE = 162, AV_PIX_FMT_GBRAP10LE = 163,
+      AV_PIX_FMT_MEDIACODEC = 164, AV_PIX_FMT_GRAY12BE = 165,
+      AV_PIX_FMT_GRAY12LE = 166, AV_PIX_FMT_GRAY10BE = 167,
+      AV_PIX_FMT_GRAY10LE = 168, AV_PIX_FMT_P016LE = 169,
+      AV_PIX_FMT_P016BE = 170, AV_PIX_FMT_D3D11 = 171, AV_PIX_FMT_GRAY9BE = 172,
+      AV_PIX_FMT_GRAY9LE = 173, AV_PIX_FMT_GBRPF32BE = 174,
+      AV_PIX_FMT_GBRPF32LE = 175, AV_PIX_FMT_GBRAPF32BE = 176,
+      AV_PIX_FMT_GBRAPF32LE = 177, AV_PIX_FMT_DRM_PRIME = 178,
+      AV_PIX_FMT_OPENCL = 179, AV_PIX_FMT_GRAY14BE = 180,
+      AV_PIX_FMT_GRAY14LE = 181, AV_PIX_FMT_GRAYF32BE = 182,
+      AV_PIX_FMT_GRAYF32LE = 183, AV_PIX_FMT_YUVA422P12BE = 184,
+      AV_PIX_FMT_YUVA422P12LE = 185, AV_PIX_FMT_YUVA444P12BE = 186,
+      AV_PIX_FMT_YUVA444P12LE = 187, AV_PIX_FMT_NV24 = 188,
+      AV_PIX_FMT_NV42 = 189, AV_PIX_FMT_VULKAN = 190, AV_PIX_FMT_Y210BE = 191,
+      AV_PIX_FMT_Y210LE = 192, AV_PIX_FMT_X2RGB10LE = 193,
+      AV_PIX_FMT_X2RGB10BE = 194, AV_PIX_FMT_X2BGR10LE = 195,
+      AV_PIX_FMT_X2BGR10BE = 196, AV_PIX_FMT_P210BE = 197,
+      AV_PIX_FMT_P210LE = 198, AV_PIX_FMT_P410BE = 199, AV_PIX_FMT_P410LE = 200,
+      AV_PIX_FMT_P216BE = 201, AV_PIX_FMT_P216LE = 202, AV_PIX_FMT_P416BE = 203,
+      AV_PIX_FMT_P416LE = 204, AV_PIX_FMT_VUYA = 205,
+      AV_PIX_FMT_RGBAF16BE = 206, AV_PIX_FMT_RGBAF16LE = 207,
+      AV_PIX_FMT_VUYX = 208, AV_PIX_FMT_P012LE = 209, AV_PIX_FMT_P012BE = 210,
+      AV_PIX_FMT_Y212BE = 211, AV_PIX_FMT_Y212LE = 212, AV_PIX_FMT_XV30BE = 213,
+      AV_PIX_FMT_XV30LE = 214, AV_PIX_FMT_XV36BE = 215, AV_PIX_FMT_XV36LE = 216,
+      AV_PIX_FMT_RGBF32BE = 217, AV_PIX_FMT_RGBF32LE = 218,
+      AV_PIX_FMT_RGBAF32BE = 219, AV_PIX_FMT_RGBAF32LE = 220,
+      AV_PIX_FMT_P212BE = 221, AV_PIX_FMT_P212LE = 222, AV_PIX_FMT_P412BE = 223,
+      AV_PIX_FMT_P412LE = 224, AV_PIX_FMT_GBRAP14BE = 225,
+      AV_PIX_FMT_GBRAP14LE = 226, AV_PIX_FMT_D3D12 = 227, AV_PIX_FMT_NB = 228
+else:
+  static :
+    hint("Declaration of " & "enum_AVPixelFormat" &
+        " already exists, not redeclaring")
+when not declared(AV_PIX_FMT_Y400A):
+  const
+    AV_PIX_FMT_Y400A* = enum_AVPixelFormat.AV_PIX_FMT_YA8
+else:
+  static :
+    hint("Declaration of " & "AV_PIX_FMT_Y400A" &
+        " already exists, not redeclaring")
+when not declared(AV_PIX_FMT_GRAY8A):
+  const
+    AV_PIX_FMT_GRAY8A* = enum_AVPixelFormat.AV_PIX_FMT_YA8
+else:
+  static :
+    hint("Declaration of " & "AV_PIX_FMT_GRAY8A" &
+        " already exists, not redeclaring")
+when not declared(AV_PIX_FMT_GBR24P):
+  const
+    AV_PIX_FMT_GBR24P* = enum_AVPixelFormat.AV_PIX_FMT_GBRP
+else:
+  static :
+    hint("Declaration of " & "AV_PIX_FMT_GBR24P" &
+        " already exists, not redeclaring")
+when not declared(enum_AVColorPrimaries):
+  type
+    enum_AVColorPrimaries* {.size: sizeof(cuint).} = enum
+      AVCOL_PRI_RESERVED0 = 0, AVCOL_PRI_BT709 = 1, AVCOL_PRI_UNSPECIFIED = 2,
+      AVCOL_PRI_RESERVED = 3, AVCOL_PRI_BT470M = 4, AVCOL_PRI_BT470BG = 5,
+      AVCOL_PRI_SMPTE170M = 6, AVCOL_PRI_SMPTE240M = 7, AVCOL_PRI_FILM = 8,
+      AVCOL_PRI_BT2020 = 9, AVCOL_PRI_SMPTE428 = 10, AVCOL_PRI_SMPTE431 = 11,
+      AVCOL_PRI_SMPTE432 = 12, AVCOL_PRI_EBU3213 = 22, AVCOL_PRI_NB = 23
+else:
+  static :
+    hint("Declaration of " & "enum_AVColorPrimaries" &
+        " already exists, not redeclaring")
+when not declared(AVCOL_PRI_SMPTEST428_1):
+  const
+    AVCOL_PRI_SMPTEST428_1* = enum_AVColorPrimaries.AVCOL_PRI_SMPTE428
+else:
+  static :
+    hint("Declaration of " & "AVCOL_PRI_SMPTEST428_1" &
+        " already exists, not redeclaring")
+when not declared(AVCOL_PRI_JEDEC_P22):
+  const
+    AVCOL_PRI_JEDEC_P22* = enum_AVColorPrimaries.AVCOL_PRI_EBU3213
+else:
+  static :
+    hint("Declaration of " & "AVCOL_PRI_JEDEC_P22" &
+        " already exists, not redeclaring")
+when not declared(enum_AVColorTransferCharacteristic):
+  type
+    enum_AVColorTransferCharacteristic* {.size: sizeof(cuint).} = enum
+      AVCOL_TRC_RESERVED0 = 0, AVCOL_TRC_BT709 = 1, AVCOL_TRC_UNSPECIFIED = 2,
+      AVCOL_TRC_RESERVED = 3, AVCOL_TRC_GAMMA22 = 4, AVCOL_TRC_GAMMA28 = 5,
+      AVCOL_TRC_SMPTE170M = 6, AVCOL_TRC_SMPTE240M = 7, AVCOL_TRC_LINEAR = 8,
+      AVCOL_TRC_LOG = 9, AVCOL_TRC_LOG_SQRT = 10, AVCOL_TRC_IEC61966_2_4 = 11,
+      AVCOL_TRC_BT1361_ECG = 12, AVCOL_TRC_IEC61966_2_1 = 13,
+      AVCOL_TRC_BT2020_10 = 14, AVCOL_TRC_BT2020_12 = 15,
+      AVCOL_TRC_SMPTE2084 = 16, AVCOL_TRC_SMPTE428 = 17,
+      AVCOL_TRC_ARIB_STD_B67 = 18, AVCOL_TRC_NB = 19
+else:
+  static :
+    hint("Declaration of " & "enum_AVColorTransferCharacteristic" &
+        " already exists, not redeclaring")
+when not declared(AVCOL_TRC_SMPTEST2084):
+  const
+    AVCOL_TRC_SMPTEST2084* = enum_AVColorTransferCharacteristic.AVCOL_TRC_SMPTE2084
+else:
+  static :
+    hint("Declaration of " & "AVCOL_TRC_SMPTEST2084" &
+        " already exists, not redeclaring")
+when not declared(AVCOL_TRC_SMPTEST428_1):
+  const
+    AVCOL_TRC_SMPTEST428_1* = enum_AVColorTransferCharacteristic.AVCOL_TRC_SMPTE428
+else:
+  static :
+    hint("Declaration of " & "AVCOL_TRC_SMPTEST428_1" &
+        " already exists, not redeclaring")
+when not declared(enum_AVColorSpace):
+  type
+    enum_AVColorSpace* {.size: sizeof(cuint).} = enum
+      AVCOL_SPC_RGB = 0, AVCOL_SPC_BT709 = 1, AVCOL_SPC_UNSPECIFIED = 2,
+      AVCOL_SPC_RESERVED = 3, AVCOL_SPC_FCC = 4, AVCOL_SPC_BT470BG = 5,
+      AVCOL_SPC_SMPTE170M = 6, AVCOL_SPC_SMPTE240M = 7, AVCOL_SPC_YCGCO = 8,
+      AVCOL_SPC_BT2020_NCL = 9, AVCOL_SPC_BT2020_CL = 10,
+      AVCOL_SPC_SMPTE2085 = 11, AVCOL_SPC_CHROMA_DERIVED_NCL = 12,
+      AVCOL_SPC_CHROMA_DERIVED_CL = 13, AVCOL_SPC_ICTCP = 14,
+      AVCOL_SPC_IPT_C2 = 15, AVCOL_SPC_YCGCO_RE = 16, AVCOL_SPC_YCGCO_RO = 17,
+      AVCOL_SPC_NB = 18
+else:
+  static :
+    hint("Declaration of " & "enum_AVColorSpace" &
+        " already exists, not redeclaring")
+when not declared(AVCOL_SPC_YCOCG):
+  const
+    AVCOL_SPC_YCOCG* = enum_AVColorSpace.AVCOL_SPC_YCGCO
+else:
+  static :
+    hint("Declaration of " & "AVCOL_SPC_YCOCG" &
+        " already exists, not redeclaring")
+when not declared(enum_AVColorRange):
+  type
+    enum_AVColorRange* {.size: sizeof(cuint).} = enum
+      AVCOL_RANGE_UNSPECIFIED = 0, AVCOL_RANGE_MPEG = 1, AVCOL_RANGE_JPEG = 2,
+      AVCOL_RANGE_NB = 3
+else:
+  static :
+    hint("Declaration of " & "enum_AVColorRange" &
+        " already exists, not redeclaring")
+when not declared(enum_AVChromaLocation):
+  type
+    enum_AVChromaLocation* {.size: sizeof(cuint).} = enum
+      AVCHROMA_LOC_UNSPECIFIED = 0, AVCHROMA_LOC_LEFT = 1,
+      AVCHROMA_LOC_CENTER = 2, AVCHROMA_LOC_TOPLEFT = 3, AVCHROMA_LOC_TOP = 4,
+      AVCHROMA_LOC_BOTTOMLEFT = 5, AVCHROMA_LOC_BOTTOM = 6, AVCHROMA_LOC_NB = 7
+else:
+  static :
+    hint("Declaration of " & "enum_AVChromaLocation" &
+        " already exists, not redeclaring")
+when not declared(enum_AVOptionType):
+  type
+    enum_AVOptionType* {.size: sizeof(cuint).} = enum
+      AV_OPT_TYPE_FLAGS = 1, AV_OPT_TYPE_INT = 2, AV_OPT_TYPE_INT64 = 3,
+      AV_OPT_TYPE_DOUBLE = 4, AV_OPT_TYPE_FLOAT = 5, AV_OPT_TYPE_STRING = 6,
+      AV_OPT_TYPE_RATIONAL = 7, AV_OPT_TYPE_BINARY = 8, AV_OPT_TYPE_DICT = 9,
+      AV_OPT_TYPE_UINT64 = 10, AV_OPT_TYPE_CONST = 11,
+      AV_OPT_TYPE_IMAGE_SIZE = 12, AV_OPT_TYPE_PIXEL_FMT = 13,
+      AV_OPT_TYPE_SAMPLE_FMT = 14, AV_OPT_TYPE_VIDEO_RATE = 15,
+      AV_OPT_TYPE_DURATION = 16, AV_OPT_TYPE_COLOR = 17, AV_OPT_TYPE_BOOL = 18,
+      AV_OPT_TYPE_CHLAYOUT = 19, AV_OPT_TYPE_UINT = 20,
+      AV_OPT_TYPE_FLAG_ARRAY = 65536
+else:
+  static :
+    hint("Declaration of " & "enum_AVOptionType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVFrameSideDataType):
+  type
+    enum_AVFrameSideDataType* {.size: sizeof(cuint).} = enum
+      AV_FRAME_DATA_PANSCAN = 0, AV_FRAME_DATA_A53_CC = 1,
+      AV_FRAME_DATA_STEREO3D = 2, AV_FRAME_DATA_MATRIXENCODING = 3,
+      AV_FRAME_DATA_DOWNMIX_INFO = 4, AV_FRAME_DATA_REPLAYGAIN = 5,
+      AV_FRAME_DATA_DISPLAYMATRIX = 6, AV_FRAME_DATA_AFD = 7,
+      AV_FRAME_DATA_MOTION_VECTORS = 8, AV_FRAME_DATA_SKIP_SAMPLES = 9,
+      AV_FRAME_DATA_AUDIO_SERVICE_TYPE = 10,
+      AV_FRAME_DATA_MASTERING_DISPLAY_METADATA = 11,
+      AV_FRAME_DATA_GOP_TIMECODE = 12, AV_FRAME_DATA_SPHERICAL = 13,
+      AV_FRAME_DATA_CONTENT_LIGHT_LEVEL = 14, AV_FRAME_DATA_ICC_PROFILE = 15,
+      AV_FRAME_DATA_S12M_TIMECODE = 16, AV_FRAME_DATA_DYNAMIC_HDR_PLUS = 17,
+      AV_FRAME_DATA_REGIONS_OF_INTEREST = 18,
+      AV_FRAME_DATA_VIDEO_ENC_PARAMS = 19, AV_FRAME_DATA_SEI_UNREGISTERED = 20,
+      AV_FRAME_DATA_FILM_GRAIN_PARAMS = 21, AV_FRAME_DATA_DETECTION_BBOXES = 22,
+      AV_FRAME_DATA_DOVI_RPU_BUFFER = 23, AV_FRAME_DATA_DOVI_METADATA = 24,
+      AV_FRAME_DATA_DYNAMIC_HDR_VIVID = 25,
+      AV_FRAME_DATA_AMBIENT_VIEWING_ENVIRONMENT = 26,
+      AV_FRAME_DATA_VIDEO_HINT = 27
+else:
+  static :
+    hint("Declaration of " & "enum_AVFrameSideDataType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVActiveFormatDescription):
+  type
+    enum_AVActiveFormatDescription* {.size: sizeof(cuint).} = enum
+      AV_AFD_SAME = 8, AV_AFD_4_3 = 9, AV_AFD_16_9 = 10, AV_AFD_14_9 = 11,
+      AV_AFD_4_3_SP_14_9 = 13, AV_AFD_16_9_SP_14_9 = 14, AV_AFD_SP_4_3 = 15
+else:
+  static :
+    hint("Declaration of " & "enum_AVActiveFormatDescription" &
+        " already exists, not redeclaring")
+when not declared(enum_AVSideDataProps):
+  type
+    enum_AVSideDataProps* {.size: sizeof(cuint).} = enum
+      AV_SIDE_DATA_PROP_GLOBAL = 1, AV_SIDE_DATA_PROP_MULTI = 2
+else:
+  static :
+    hint("Declaration of " & "enum_AVSideDataProps" &
+        " already exists, not redeclaring")
+when not declared(enum_AVHWDeviceType):
+  type
+    enum_AVHWDeviceType* {.size: sizeof(cuint).} = enum
+      AV_HWDEVICE_TYPE_NONE = 0, AV_HWDEVICE_TYPE_VDPAU = 1,
+      AV_HWDEVICE_TYPE_CUDA = 2, AV_HWDEVICE_TYPE_VAAPI = 3,
+      AV_HWDEVICE_TYPE_DXVA2 = 4, AV_HWDEVICE_TYPE_QSV = 5,
+      AV_HWDEVICE_TYPE_VIDEOTOOLBOX = 6, AV_HWDEVICE_TYPE_D3D11VA = 7,
+      AV_HWDEVICE_TYPE_DRM = 8, AV_HWDEVICE_TYPE_OPENCL = 9,
+      AV_HWDEVICE_TYPE_MEDIACODEC = 10, AV_HWDEVICE_TYPE_VULKAN = 11,
+      AV_HWDEVICE_TYPE_D3D12VA = 12
+else:
+  static :
+    hint("Declaration of " & "enum_AVHWDeviceType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVHWFrameTransferDirection):
+  type
+    enum_AVHWFrameTransferDirection* {.size: sizeof(cuint).} = enum
+      AV_HWFRAME_TRANSFER_DIRECTION_FROM = 0,
+      AV_HWFRAME_TRANSFER_DIRECTION_TO = 1
+else:
+  static :
+    hint("Declaration of " & "enum_AVHWFrameTransferDirection" &
+        " already exists, not redeclaring")
+when not declared(enum_AVCodecID):
+  type
+    enum_AVCodecID* {.size: sizeof(cuint).} = enum
+      AV_CODEC_ID_NONE = 0, AV_CODEC_ID_MPEG1VIDEO = 1,
+      AV_CODEC_ID_MPEG2VIDEO = 2, AV_CODEC_ID_H261 = 3, AV_CODEC_ID_H263 = 4,
+      AV_CODEC_ID_RV10 = 5, AV_CODEC_ID_RV20 = 6, AV_CODEC_ID_MJPEG = 7,
+      AV_CODEC_ID_MJPEGB = 8, AV_CODEC_ID_LJPEG = 9, AV_CODEC_ID_SP5X = 10,
+      AV_CODEC_ID_JPEGLS = 11, AV_CODEC_ID_MPEG4 = 12,
+      AV_CODEC_ID_RAWVIDEO = 13, AV_CODEC_ID_MSMPEG4V1 = 14,
+      AV_CODEC_ID_MSMPEG4V2 = 15, AV_CODEC_ID_MSMPEG4V3 = 16,
+      AV_CODEC_ID_WMV1 = 17, AV_CODEC_ID_WMV2 = 18, AV_CODEC_ID_H263P = 19,
+      AV_CODEC_ID_H263I = 20, AV_CODEC_ID_FLV1 = 21, AV_CODEC_ID_SVQ1 = 22,
+      AV_CODEC_ID_SVQ3 = 23, AV_CODEC_ID_DVVIDEO = 24, AV_CODEC_ID_HUFFYUV = 25,
+      AV_CODEC_ID_CYUV = 26, AV_CODEC_ID_H264 = 27, AV_CODEC_ID_INDEO3 = 28,
+      AV_CODEC_ID_VP3 = 29, AV_CODEC_ID_THEORA = 30, AV_CODEC_ID_ASV1 = 31,
+      AV_CODEC_ID_ASV2 = 32, AV_CODEC_ID_FFV1 = 33, AV_CODEC_ID_4XM = 34,
+      AV_CODEC_ID_VCR1 = 35, AV_CODEC_ID_CLJR = 36, AV_CODEC_ID_MDEC = 37,
+      AV_CODEC_ID_ROQ = 38, AV_CODEC_ID_INTERPLAY_VIDEO = 39,
+      AV_CODEC_ID_XAN_WC3 = 40, AV_CODEC_ID_XAN_WC4 = 41, AV_CODEC_ID_RPZA = 42,
+      AV_CODEC_ID_CINEPAK = 43, AV_CODEC_ID_WS_VQA = 44, AV_CODEC_ID_MSRLE = 45,
+      AV_CODEC_ID_MSVIDEO1 = 46, AV_CODEC_ID_IDCIN = 47, AV_CODEC_ID_8BPS = 48,
+      AV_CODEC_ID_SMC = 49, AV_CODEC_ID_FLIC = 50, AV_CODEC_ID_TRUEMOTION1 = 51,
+      AV_CODEC_ID_VMDVIDEO = 52, AV_CODEC_ID_MSZH = 53, AV_CODEC_ID_ZLIB = 54,
+      AV_CODEC_ID_QTRLE = 55, AV_CODEC_ID_TSCC = 56, AV_CODEC_ID_ULTI = 57,
+      AV_CODEC_ID_QDRAW = 58, AV_CODEC_ID_VIXL = 59, AV_CODEC_ID_QPEG = 60,
+      AV_CODEC_ID_PNG = 61, AV_CODEC_ID_PPM = 62, AV_CODEC_ID_PBM = 63,
+      AV_CODEC_ID_PGM = 64, AV_CODEC_ID_PGMYUV = 65, AV_CODEC_ID_PAM = 66,
+      AV_CODEC_ID_FFVHUFF = 67, AV_CODEC_ID_RV30 = 68, AV_CODEC_ID_RV40 = 69,
+      AV_CODEC_ID_VC1 = 70, AV_CODEC_ID_WMV3 = 71, AV_CODEC_ID_LOCO = 72,
+      AV_CODEC_ID_WNV1 = 73, AV_CODEC_ID_AASC = 74, AV_CODEC_ID_INDEO2 = 75,
+      AV_CODEC_ID_FRAPS = 76, AV_CODEC_ID_TRUEMOTION2 = 77,
+      AV_CODEC_ID_BMP = 78, AV_CODEC_ID_CSCD = 79, AV_CODEC_ID_MMVIDEO = 80,
+      AV_CODEC_ID_ZMBV = 81, AV_CODEC_ID_AVS = 82, AV_CODEC_ID_SMACKVIDEO = 83,
+      AV_CODEC_ID_NUV = 84, AV_CODEC_ID_KMVC = 85, AV_CODEC_ID_FLASHSV = 86,
+      AV_CODEC_ID_CAVS = 87, AV_CODEC_ID_JPEG2000 = 88, AV_CODEC_ID_VMNC = 89,
+      AV_CODEC_ID_VP5 = 90, AV_CODEC_ID_VP6 = 91, AV_CODEC_ID_VP6F = 92,
+      AV_CODEC_ID_TARGA = 93, AV_CODEC_ID_DSICINVIDEO = 94,
+      AV_CODEC_ID_TIERTEXSEQVIDEO = 95, AV_CODEC_ID_TIFF = 96,
+      AV_CODEC_ID_GIF = 97, AV_CODEC_ID_DXA = 98, AV_CODEC_ID_DNXHD = 99,
+      AV_CODEC_ID_THP = 100, AV_CODEC_ID_SGI = 101, AV_CODEC_ID_C93 = 102,
+      AV_CODEC_ID_BETHSOFTVID = 103, AV_CODEC_ID_PTX = 104,
+      AV_CODEC_ID_TXD = 105, AV_CODEC_ID_VP6A = 106, AV_CODEC_ID_AMV = 107,
+      AV_CODEC_ID_VB = 108, AV_CODEC_ID_PCX = 109, AV_CODEC_ID_SUNRAST = 110,
+      AV_CODEC_ID_INDEO4 = 111, AV_CODEC_ID_INDEO5 = 112,
+      AV_CODEC_ID_MIMIC = 113, AV_CODEC_ID_RL2 = 114,
+      AV_CODEC_ID_ESCAPE124 = 115, AV_CODEC_ID_DIRAC = 116,
+      AV_CODEC_ID_BFI = 117, AV_CODEC_ID_CMV = 118,
+      AV_CODEC_ID_MOTIONPIXELS = 119, AV_CODEC_ID_TGV = 120,
+      AV_CODEC_ID_TGQ = 121, AV_CODEC_ID_TQI = 122, AV_CODEC_ID_AURA = 123,
+      AV_CODEC_ID_AURA2 = 124, AV_CODEC_ID_V210X = 125, AV_CODEC_ID_TMV = 126,
+      AV_CODEC_ID_V210 = 127, AV_CODEC_ID_DPX = 128, AV_CODEC_ID_MAD = 129,
+      AV_CODEC_ID_FRWU = 130, AV_CODEC_ID_FLASHSV2 = 131,
+      AV_CODEC_ID_CDGRAPHICS = 132, AV_CODEC_ID_R210 = 133,
+      AV_CODEC_ID_ANM = 134, AV_CODEC_ID_BINKVIDEO = 135,
+      AV_CODEC_ID_IFF_ILBM = 136, AV_CODEC_ID_KGV1 = 137, AV_CODEC_ID_YOP = 138,
+      AV_CODEC_ID_VP8 = 139, AV_CODEC_ID_PICTOR = 140, AV_CODEC_ID_ANSI = 141,
+      AV_CODEC_ID_A64_MULTI = 142, AV_CODEC_ID_A64_MULTI5 = 143,
+      AV_CODEC_ID_R10K = 144, AV_CODEC_ID_MXPEG = 145,
+      AV_CODEC_ID_LAGARITH = 146, AV_CODEC_ID_PRORES = 147,
+      AV_CODEC_ID_JV = 148, AV_CODEC_ID_DFA = 149, AV_CODEC_ID_WMV3IMAGE = 150,
+      AV_CODEC_ID_VC1IMAGE = 151, AV_CODEC_ID_UTVIDEO = 152,
+      AV_CODEC_ID_BMV_VIDEO = 153, AV_CODEC_ID_VBLE = 154,
+      AV_CODEC_ID_DXTORY = 155, AV_CODEC_ID_V410 = 156, AV_CODEC_ID_XWD = 157,
+      AV_CODEC_ID_CDXL = 158, AV_CODEC_ID_XBM = 159,
+      AV_CODEC_ID_ZEROCODEC = 160, AV_CODEC_ID_MSS1 = 161,
+      AV_CODEC_ID_MSA1 = 162, AV_CODEC_ID_TSCC2 = 163, AV_CODEC_ID_MTS2 = 164,
+      AV_CODEC_ID_CLLC = 165, AV_CODEC_ID_MSS2 = 166, AV_CODEC_ID_VP9 = 167,
+      AV_CODEC_ID_AIC = 168, AV_CODEC_ID_ESCAPE130 = 169, AV_CODEC_ID_G2M = 170,
+      AV_CODEC_ID_WEBP = 171, AV_CODEC_ID_HNM4_VIDEO = 172,
+      AV_CODEC_ID_HEVC = 173, AV_CODEC_ID_FIC = 174,
+      AV_CODEC_ID_ALIAS_PIX = 175, AV_CODEC_ID_BRENDER_PIX = 176,
+      AV_CODEC_ID_PAF_VIDEO = 177, AV_CODEC_ID_EXR = 178, AV_CODEC_ID_VP7 = 179,
+      AV_CODEC_ID_SANM = 180, AV_CODEC_ID_SGIRLE = 181, AV_CODEC_ID_MVC1 = 182,
+      AV_CODEC_ID_MVC2 = 183, AV_CODEC_ID_HQX = 184, AV_CODEC_ID_TDSC = 185,
+      AV_CODEC_ID_HQ_HQA = 186, AV_CODEC_ID_HAP = 187, AV_CODEC_ID_DDS = 188,
+      AV_CODEC_ID_DXV = 189, AV_CODEC_ID_SCREENPRESSO = 190,
+      AV_CODEC_ID_RSCC = 191, AV_CODEC_ID_AVS2 = 192, AV_CODEC_ID_PGX = 193,
+      AV_CODEC_ID_AVS3 = 194, AV_CODEC_ID_MSP2 = 195, AV_CODEC_ID_VVC = 196,
+      AV_CODEC_ID_Y41P = 197, AV_CODEC_ID_AVRP = 198, AV_CODEC_ID_012V = 199,
+      AV_CODEC_ID_AVUI = 200, AV_CODEC_ID_TARGA_Y216 = 201,
+      AV_CODEC_ID_V308 = 202, AV_CODEC_ID_V408 = 203, AV_CODEC_ID_YUV4 = 204,
+      AV_CODEC_ID_AVRN = 205, AV_CODEC_ID_CPIA = 206, AV_CODEC_ID_XFACE = 207,
+      AV_CODEC_ID_SNOW = 208, AV_CODEC_ID_SMVJPEG = 209, AV_CODEC_ID_APNG = 210,
+      AV_CODEC_ID_DAALA = 211, AV_CODEC_ID_CFHD = 212,
+      AV_CODEC_ID_TRUEMOTION2RT = 213, AV_CODEC_ID_M101 = 214,
+      AV_CODEC_ID_MAGICYUV = 215, AV_CODEC_ID_SHEERVIDEO = 216,
+      AV_CODEC_ID_YLC = 217, AV_CODEC_ID_PSD = 218, AV_CODEC_ID_PIXLET = 219,
+      AV_CODEC_ID_SPEEDHQ = 220, AV_CODEC_ID_FMVC = 221, AV_CODEC_ID_SCPR = 222,
+      AV_CODEC_ID_CLEARVIDEO = 223, AV_CODEC_ID_XPM = 224,
+      AV_CODEC_ID_AV1 = 225, AV_CODEC_ID_BITPACKED = 226,
+      AV_CODEC_ID_MSCC = 227, AV_CODEC_ID_SRGC = 228, AV_CODEC_ID_SVG = 229,
+      AV_CODEC_ID_GDV = 230, AV_CODEC_ID_FITS = 231, AV_CODEC_ID_IMM4 = 232,
+      AV_CODEC_ID_PROSUMER = 233, AV_CODEC_ID_MWSC = 234,
+      AV_CODEC_ID_WCMV = 235, AV_CODEC_ID_RASC = 236, AV_CODEC_ID_HYMT = 237,
+      AV_CODEC_ID_ARBC = 238, AV_CODEC_ID_AGM = 239, AV_CODEC_ID_LSCR = 240,
+      AV_CODEC_ID_VP4 = 241, AV_CODEC_ID_IMM5 = 242, AV_CODEC_ID_MVDV = 243,
+      AV_CODEC_ID_MVHA = 244, AV_CODEC_ID_CDTOONS = 245, AV_CODEC_ID_MV30 = 246,
+      AV_CODEC_ID_NOTCHLC = 247, AV_CODEC_ID_PFM = 248,
+      AV_CODEC_ID_MOBICLIP = 249, AV_CODEC_ID_PHOTOCD = 250,
+      AV_CODEC_ID_IPU = 251, AV_CODEC_ID_ARGO = 252, AV_CODEC_ID_CRI = 253,
+      AV_CODEC_ID_SIMBIOSIS_IMX = 254, AV_CODEC_ID_SGA_VIDEO = 255,
+      AV_CODEC_ID_GEM = 256, AV_CODEC_ID_VBN = 257, AV_CODEC_ID_JPEGXL = 258,
+      AV_CODEC_ID_QOI = 259, AV_CODEC_ID_PHM = 260,
+      AV_CODEC_ID_RADIANCE_HDR = 261, AV_CODEC_ID_WBMP = 262,
+      AV_CODEC_ID_MEDIA100 = 263, AV_CODEC_ID_VQC = 264, AV_CODEC_ID_PDV = 265,
+      AV_CODEC_ID_EVC = 266, AV_CODEC_ID_RTV1 = 267, AV_CODEC_ID_VMIX = 268,
+      AV_CODEC_ID_LEAD = 269, AV_CODEC_ID_FIRST_AUDIO = 65536,
+      AV_CODEC_ID_PCM_S16BE = 65537, AV_CODEC_ID_PCM_U16LE = 65538,
+      AV_CODEC_ID_PCM_U16BE = 65539, AV_CODEC_ID_PCM_S8 = 65540,
+      AV_CODEC_ID_PCM_U8 = 65541, AV_CODEC_ID_PCM_MULAW = 65542,
+      AV_CODEC_ID_PCM_ALAW = 65543, AV_CODEC_ID_PCM_S32LE = 65544,
+      AV_CODEC_ID_PCM_S32BE = 65545, AV_CODEC_ID_PCM_U32LE = 65546,
+      AV_CODEC_ID_PCM_U32BE = 65547, AV_CODEC_ID_PCM_S24LE = 65548,
+      AV_CODEC_ID_PCM_S24BE = 65549, AV_CODEC_ID_PCM_U24LE = 65550,
+      AV_CODEC_ID_PCM_U24BE = 65551, AV_CODEC_ID_PCM_S24DAUD = 65552,
+      AV_CODEC_ID_PCM_ZORK = 65553, AV_CODEC_ID_PCM_S16LE_PLANAR = 65554,
+      AV_CODEC_ID_PCM_DVD = 65555, AV_CODEC_ID_PCM_F32BE = 65556,
+      AV_CODEC_ID_PCM_F32LE = 65557, AV_CODEC_ID_PCM_F64BE = 65558,
+      AV_CODEC_ID_PCM_F64LE = 65559, AV_CODEC_ID_PCM_BLURAY = 65560,
+      AV_CODEC_ID_PCM_LXF = 65561, AV_CODEC_ID_S302M = 65562,
+      AV_CODEC_ID_PCM_S8_PLANAR = 65563, AV_CODEC_ID_PCM_S24LE_PLANAR = 65564,
+      AV_CODEC_ID_PCM_S32LE_PLANAR = 65565,
+      AV_CODEC_ID_PCM_S16BE_PLANAR = 65566, AV_CODEC_ID_PCM_S64LE = 65567,
+      AV_CODEC_ID_PCM_S64BE = 65568, AV_CODEC_ID_PCM_F16LE = 65569,
+      AV_CODEC_ID_PCM_F24LE = 65570, AV_CODEC_ID_PCM_VIDC = 65571,
+      AV_CODEC_ID_PCM_SGA = 65572, AV_CODEC_ID_ADPCM_IMA_QT = 69632,
+      AV_CODEC_ID_ADPCM_IMA_WAV = 69633, AV_CODEC_ID_ADPCM_IMA_DK3 = 69634,
+      AV_CODEC_ID_ADPCM_IMA_DK4 = 69635, AV_CODEC_ID_ADPCM_IMA_WS = 69636,
+      AV_CODEC_ID_ADPCM_IMA_SMJPEG = 69637, AV_CODEC_ID_ADPCM_MS = 69638,
+      AV_CODEC_ID_ADPCM_4XM = 69639, AV_CODEC_ID_ADPCM_XA = 69640,
+      AV_CODEC_ID_ADPCM_ADX = 69641, AV_CODEC_ID_ADPCM_EA = 69642,
+      AV_CODEC_ID_ADPCM_G726 = 69643, AV_CODEC_ID_ADPCM_CT = 69644,
+      AV_CODEC_ID_ADPCM_SWF = 69645, AV_CODEC_ID_ADPCM_YAMAHA = 69646,
+      AV_CODEC_ID_ADPCM_SBPRO_4 = 69647, AV_CODEC_ID_ADPCM_SBPRO_3 = 69648,
+      AV_CODEC_ID_ADPCM_SBPRO_2 = 69649, AV_CODEC_ID_ADPCM_THP = 69650,
+      AV_CODEC_ID_ADPCM_IMA_AMV = 69651, AV_CODEC_ID_ADPCM_EA_R1 = 69652,
+      AV_CODEC_ID_ADPCM_EA_R3 = 69653, AV_CODEC_ID_ADPCM_EA_R2 = 69654,
+      AV_CODEC_ID_ADPCM_IMA_EA_SEAD = 69655,
+      AV_CODEC_ID_ADPCM_IMA_EA_EACS = 69656, AV_CODEC_ID_ADPCM_EA_XAS = 69657,
+      AV_CODEC_ID_ADPCM_EA_MAXIS_XA = 69658, AV_CODEC_ID_ADPCM_IMA_ISS = 69659,
+      AV_CODEC_ID_ADPCM_G722 = 69660, AV_CODEC_ID_ADPCM_IMA_APC = 69661,
+      AV_CODEC_ID_ADPCM_VIMA = 69662, AV_CODEC_ID_ADPCM_AFC = 69663,
+      AV_CODEC_ID_ADPCM_IMA_OKI = 69664, AV_CODEC_ID_ADPCM_DTK = 69665,
+      AV_CODEC_ID_ADPCM_IMA_RAD = 69666, AV_CODEC_ID_ADPCM_G726LE = 69667,
+      AV_CODEC_ID_ADPCM_THP_LE = 69668, AV_CODEC_ID_ADPCM_PSX = 69669,
+      AV_CODEC_ID_ADPCM_AICA = 69670, AV_CODEC_ID_ADPCM_IMA_DAT4 = 69671,
+      AV_CODEC_ID_ADPCM_MTAF = 69672, AV_CODEC_ID_ADPCM_AGM = 69673,
+      AV_CODEC_ID_ADPCM_ARGO = 69674, AV_CODEC_ID_ADPCM_IMA_SSI = 69675,
+      AV_CODEC_ID_ADPCM_ZORK = 69676, AV_CODEC_ID_ADPCM_IMA_APM = 69677,
+      AV_CODEC_ID_ADPCM_IMA_ALP = 69678, AV_CODEC_ID_ADPCM_IMA_MTF = 69679,
+      AV_CODEC_ID_ADPCM_IMA_CUNNING = 69680,
+      AV_CODEC_ID_ADPCM_IMA_MOFLEX = 69681, AV_CODEC_ID_ADPCM_IMA_ACORN = 69682,
+      AV_CODEC_ID_ADPCM_XMD = 69683, AV_CODEC_ID_AMR_NB = 73728,
+      AV_CODEC_ID_AMR_WB = 73729, AV_CODEC_ID_RA_144 = 77824,
+      AV_CODEC_ID_RA_288 = 77825, AV_CODEC_ID_ROQ_DPCM = 81920,
+      AV_CODEC_ID_INTERPLAY_DPCM = 81921, AV_CODEC_ID_XAN_DPCM = 81922,
+      AV_CODEC_ID_SOL_DPCM = 81923, AV_CODEC_ID_SDX2_DPCM = 81924,
+      AV_CODEC_ID_GREMLIN_DPCM = 81925, AV_CODEC_ID_DERF_DPCM = 81926,
+      AV_CODEC_ID_WADY_DPCM = 81927, AV_CODEC_ID_CBD2_DPCM = 81928,
+      AV_CODEC_ID_MP2 = 86016, AV_CODEC_ID_MP3 = 86017, AV_CODEC_ID_AAC = 86018,
+      AV_CODEC_ID_AC3 = 86019, AV_CODEC_ID_DTS = 86020,
+      AV_CODEC_ID_VORBIS = 86021, AV_CODEC_ID_DVAUDIO = 86022,
+      AV_CODEC_ID_WMAV1 = 86023, AV_CODEC_ID_WMAV2 = 86024,
+      AV_CODEC_ID_MACE3 = 86025, AV_CODEC_ID_MACE6 = 86026,
+      AV_CODEC_ID_VMDAUDIO = 86027, AV_CODEC_ID_FLAC = 86028,
+      AV_CODEC_ID_MP3ADU = 86029, AV_CODEC_ID_MP3ON4 = 86030,
+      AV_CODEC_ID_SHORTEN = 86031, AV_CODEC_ID_ALAC = 86032,
+      AV_CODEC_ID_WESTWOOD_SND1 = 86033, AV_CODEC_ID_GSM = 86034,
+      AV_CODEC_ID_QDM2 = 86035, AV_CODEC_ID_COOK = 86036,
+      AV_CODEC_ID_TRUESPEECH = 86037, AV_CODEC_ID_TTA = 86038,
+      AV_CODEC_ID_SMACKAUDIO = 86039, AV_CODEC_ID_QCELP = 86040,
+      AV_CODEC_ID_WAVPACK = 86041, AV_CODEC_ID_DSICINAUDIO = 86042,
+      AV_CODEC_ID_IMC = 86043, AV_CODEC_ID_MUSEPACK7 = 86044,
+      AV_CODEC_ID_MLP = 86045, AV_CODEC_ID_GSM_MS = 86046,
+      AV_CODEC_ID_ATRAC3 = 86047, AV_CODEC_ID_APE = 86048,
+      AV_CODEC_ID_NELLYMOSER = 86049, AV_CODEC_ID_MUSEPACK8 = 86050,
+      AV_CODEC_ID_SPEEX = 86051, AV_CODEC_ID_WMAVOICE = 86052,
+      AV_CODEC_ID_WMAPRO = 86053, AV_CODEC_ID_WMALOSSLESS = 86054,
+      AV_CODEC_ID_ATRAC3P = 86055, AV_CODEC_ID_EAC3 = 86056,
+      AV_CODEC_ID_SIPR = 86057, AV_CODEC_ID_MP1 = 86058,
+      AV_CODEC_ID_TWINVQ = 86059, AV_CODEC_ID_TRUEHD = 86060,
+      AV_CODEC_ID_MP4ALS = 86061, AV_CODEC_ID_ATRAC1 = 86062,
+      AV_CODEC_ID_BINKAUDIO_RDFT = 86063, AV_CODEC_ID_BINKAUDIO_DCT = 86064,
+      AV_CODEC_ID_AAC_LATM = 86065, AV_CODEC_ID_QDMC = 86066,
+      AV_CODEC_ID_CELT = 86067, AV_CODEC_ID_G723_1 = 86068,
+      AV_CODEC_ID_G729 = 86069, AV_CODEC_ID_8SVX_EXP = 86070,
+      AV_CODEC_ID_8SVX_FIB = 86071, AV_CODEC_ID_BMV_AUDIO = 86072,
+      AV_CODEC_ID_RALF = 86073, AV_CODEC_ID_IAC = 86074,
+      AV_CODEC_ID_ILBC = 86075, AV_CODEC_ID_OPUS = 86076,
+      AV_CODEC_ID_COMFORT_NOISE = 86077, AV_CODEC_ID_TAK = 86078,
+      AV_CODEC_ID_METASOUND = 86079, AV_CODEC_ID_PAF_AUDIO = 86080,
+      AV_CODEC_ID_ON2AVC = 86081, AV_CODEC_ID_DSS_SP = 86082,
+      AV_CODEC_ID_CODEC2 = 86083, AV_CODEC_ID_FFWAVESYNTH = 86084,
+      AV_CODEC_ID_SONIC = 86085, AV_CODEC_ID_SONIC_LS = 86086,
+      AV_CODEC_ID_EVRC = 86087, AV_CODEC_ID_SMV = 86088,
+      AV_CODEC_ID_DSD_LSBF = 86089, AV_CODEC_ID_DSD_MSBF = 86090,
+      AV_CODEC_ID_DSD_LSBF_PLANAR = 86091, AV_CODEC_ID_DSD_MSBF_PLANAR = 86092,
+      AV_CODEC_ID_4GV = 86093, AV_CODEC_ID_INTERPLAY_ACM = 86094,
+      AV_CODEC_ID_XMA1 = 86095, AV_CODEC_ID_XMA2 = 86096,
+      AV_CODEC_ID_DST = 86097, AV_CODEC_ID_ATRAC3AL = 86098,
+      AV_CODEC_ID_ATRAC3PAL = 86099, AV_CODEC_ID_DOLBY_E = 86100,
+      AV_CODEC_ID_APTX = 86101, AV_CODEC_ID_APTX_HD = 86102,
+      AV_CODEC_ID_SBC = 86103, AV_CODEC_ID_ATRAC9 = 86104,
+      AV_CODEC_ID_HCOM = 86105, AV_CODEC_ID_ACELP_KELVIN = 86106,
+      AV_CODEC_ID_MPEGH_3D_AUDIO = 86107, AV_CODEC_ID_SIREN = 86108,
+      AV_CODEC_ID_HCA = 86109, AV_CODEC_ID_FASTAUDIO = 86110,
+      AV_CODEC_ID_MSNSIREN = 86111, AV_CODEC_ID_DFPWM = 86112,
+      AV_CODEC_ID_BONK = 86113, AV_CODEC_ID_MISC4 = 86114,
+      AV_CODEC_ID_APAC = 86115, AV_CODEC_ID_FTR = 86116,
+      AV_CODEC_ID_WAVARC = 86117, AV_CODEC_ID_RKA = 86118,
+      AV_CODEC_ID_AC4 = 86119, AV_CODEC_ID_OSQ = 86120, AV_CODEC_ID_QOA = 86121,
+      AV_CODEC_ID_LC3 = 86122, AV_CODEC_ID_FIRST_SUBTITLE = 94208,
+      AV_CODEC_ID_DVB_SUBTITLE = 94209, AV_CODEC_ID_TEXT = 94210,
+      AV_CODEC_ID_XSUB = 94211, AV_CODEC_ID_SSA = 94212,
+      AV_CODEC_ID_MOV_TEXT = 94213, AV_CODEC_ID_HDMV_PGS_SUBTITLE = 94214,
+      AV_CODEC_ID_DVB_TELETEXT = 94215, AV_CODEC_ID_SRT = 94216,
+      AV_CODEC_ID_MICRODVD = 94217, AV_CODEC_ID_EIA_608 = 94218,
+      AV_CODEC_ID_JACOSUB = 94219, AV_CODEC_ID_SAMI = 94220,
+      AV_CODEC_ID_REALTEXT = 94221, AV_CODEC_ID_STL = 94222,
+      AV_CODEC_ID_SUBVIEWER1 = 94223, AV_CODEC_ID_SUBVIEWER = 94224,
+      AV_CODEC_ID_SUBRIP = 94225, AV_CODEC_ID_WEBVTT = 94226,
+      AV_CODEC_ID_MPL2 = 94227, AV_CODEC_ID_VPLAYER = 94228,
+      AV_CODEC_ID_PJS = 94229, AV_CODEC_ID_ASS = 94230,
+      AV_CODEC_ID_HDMV_TEXT_SUBTITLE = 94231, AV_CODEC_ID_TTML = 94232,
+      AV_CODEC_ID_ARIB_CAPTION = 94233, AV_CODEC_ID_FIRST_UNKNOWN = 98304,
+      AV_CODEC_ID_SCTE_35 = 98305, AV_CODEC_ID_EPG = 98306,
+      AV_CODEC_ID_BINTEXT = 98307, AV_CODEC_ID_XBIN = 98308,
+      AV_CODEC_ID_IDF = 98309, AV_CODEC_ID_OTF = 98310,
+      AV_CODEC_ID_SMPTE_KLV = 98311, AV_CODEC_ID_DVD_NAV = 98312,
+      AV_CODEC_ID_TIMED_ID3 = 98313, AV_CODEC_ID_BIN_DATA = 98314,
+      AV_CODEC_ID_SMPTE_2038 = 98315, AV_CODEC_ID_PROBE = 102400,
+      AV_CODEC_ID_MPEG2TS = 131072, AV_CODEC_ID_MPEG4SYSTEMS = 131073,
+      AV_CODEC_ID_FFMETADATA = 135168, AV_CODEC_ID_WRAPPED_AVFRAME = 135169,
+      AV_CODEC_ID_VNULL = 135170, AV_CODEC_ID_ANULL = 135171
+else:
+  static :
+    hint("Declaration of " & "enum_AVCodecID" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_ID_PCM_S16LE):
+  const
+    AV_CODEC_ID_PCM_S16LE* = enum_AVCodecID.AV_CODEC_ID_FIRST_AUDIO
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_ID_PCM_S16LE" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_ID_DVD_SUBTITLE):
+  const
+    AV_CODEC_ID_DVD_SUBTITLE* = enum_AVCodecID.AV_CODEC_ID_FIRST_SUBTITLE
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_ID_DVD_SUBTITLE" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_ID_TTF):
+  const
+    AV_CODEC_ID_TTF* = enum_AVCodecID.AV_CODEC_ID_FIRST_UNKNOWN
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_ID_TTF" &
+        " already exists, not redeclaring")
+when not declared(enum_AVFieldOrder):
+  type
+    enum_AVFieldOrder* {.size: sizeof(cuint).} = enum
+      AV_FIELD_UNKNOWN = 0, AV_FIELD_PROGRESSIVE = 1, AV_FIELD_TT = 2,
+      AV_FIELD_BB = 3, AV_FIELD_TB = 4, AV_FIELD_BT = 5
+else:
+  static :
+    hint("Declaration of " & "enum_AVFieldOrder" &
+        " already exists, not redeclaring")
+when not declared(enum_AVDiscard):
+  type
+    enum_AVDiscard* {.size: sizeof(cint).} = enum
+      AVDISCARD_NONE = -16, AVDISCARD_DEFAULT = 0, AVDISCARD_NONREF = 8,
+      AVDISCARD_BIDIR = 16, AVDISCARD_NONINTRA = 24, AVDISCARD_NONKEY = 32,
+      AVDISCARD_ALL = 48
+else:
+  static :
+    hint("Declaration of " & "enum_AVDiscard" &
+        " already exists, not redeclaring")
+when not declared(enum_AVAudioServiceType):
+  type
+    enum_AVAudioServiceType* {.size: sizeof(cuint).} = enum
+      AV_AUDIO_SERVICE_TYPE_MAIN = 0, AV_AUDIO_SERVICE_TYPE_EFFECTS = 1,
+      AV_AUDIO_SERVICE_TYPE_VISUALLY_IMPAIRED = 2,
+      AV_AUDIO_SERVICE_TYPE_HEARING_IMPAIRED = 3,
+      AV_AUDIO_SERVICE_TYPE_DIALOGUE = 4, AV_AUDIO_SERVICE_TYPE_COMMENTARY = 5,
+      AV_AUDIO_SERVICE_TYPE_EMERGENCY = 6, AV_AUDIO_SERVICE_TYPE_VOICE_OVER = 7,
+      AV_AUDIO_SERVICE_TYPE_KARAOKE = 8, AV_AUDIO_SERVICE_TYPE_NB = 9
+else:
+  static :
+    hint("Declaration of " & "enum_AVAudioServiceType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVPacketSideDataType):
+  type
+    enum_AVPacketSideDataType* {.size: sizeof(cuint).} = enum
+      AV_PKT_DATA_PALETTE = 0, AV_PKT_DATA_NEW_EXTRADATA = 1,
+      AV_PKT_DATA_PARAM_CHANGE = 2, AV_PKT_DATA_H263_MB_INFO = 3,
+      AV_PKT_DATA_REPLAYGAIN = 4, AV_PKT_DATA_DISPLAYMATRIX = 5,
+      AV_PKT_DATA_STEREO3D = 6, AV_PKT_DATA_AUDIO_SERVICE_TYPE = 7,
+      AV_PKT_DATA_QUALITY_STATS = 8, AV_PKT_DATA_FALLBACK_TRACK = 9,
+      AV_PKT_DATA_CPB_PROPERTIES = 10, AV_PKT_DATA_SKIP_SAMPLES = 11,
+      AV_PKT_DATA_JP_DUALMONO = 12, AV_PKT_DATA_STRINGS_METADATA = 13,
+      AV_PKT_DATA_SUBTITLE_POSITION = 14,
+      AV_PKT_DATA_MATROSKA_BLOCKADDITIONAL = 15,
+      AV_PKT_DATA_WEBVTT_IDENTIFIER = 16, AV_PKT_DATA_WEBVTT_SETTINGS = 17,
+      AV_PKT_DATA_METADATA_UPDATE = 18, AV_PKT_DATA_MPEGTS_STREAM_ID = 19,
+      AV_PKT_DATA_MASTERING_DISPLAY_METADATA = 20, AV_PKT_DATA_SPHERICAL = 21,
+      AV_PKT_DATA_CONTENT_LIGHT_LEVEL = 22, AV_PKT_DATA_A53_CC = 23,
+      AV_PKT_DATA_ENCRYPTION_INIT_INFO = 24, AV_PKT_DATA_ENCRYPTION_INFO = 25,
+      AV_PKT_DATA_AFD = 26, AV_PKT_DATA_PRFT = 27, AV_PKT_DATA_ICC_PROFILE = 28,
+      AV_PKT_DATA_DOVI_CONF = 29, AV_PKT_DATA_S12M_TIMECODE = 30,
+      AV_PKT_DATA_DYNAMIC_HDR10_PLUS = 31, AV_PKT_DATA_IAMF_MIX_GAIN_PARAM = 32,
+      AV_PKT_DATA_IAMF_DEMIXING_INFO_PARAM = 33,
+      AV_PKT_DATA_IAMF_RECON_GAIN_INFO_PARAM = 34,
+      AV_PKT_DATA_AMBIENT_VIEWING_ENVIRONMENT = 35,
+      AV_PKT_DATA_FRAME_CROPPING = 36, AV_PKT_DATA_NB = 37
+else:
+  static :
+    hint("Declaration of " & "enum_AVPacketSideDataType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVSideDataParamChangeFlags):
+  type
+    enum_AVSideDataParamChangeFlags* {.size: sizeof(cuint).} = enum
+      AV_SIDE_DATA_PARAM_CHANGE_SAMPLE_RATE = 4,
+      AV_SIDE_DATA_PARAM_CHANGE_DIMENSIONS = 8
+else:
+  static :
+    hint("Declaration of " & "enum_AVSideDataParamChangeFlags" &
+        " already exists, not redeclaring")
+when not declared(enum_AVSubtitleType):
+  type
+    enum_AVSubtitleType* {.size: sizeof(cuint).} = enum
+      SUBTITLE_NONE = 0, SUBTITLE_BITMAP = 1, SUBTITLE_TEXT = 2,
+      SUBTITLE_ASS = 3
+else:
+  static :
+    hint("Declaration of " & "enum_AVSubtitleType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVPictureStructure):
+  type
+    enum_AVPictureStructure* {.size: sizeof(cuint).} = enum
+      AV_PICTURE_STRUCTURE_UNKNOWN = 0, AV_PICTURE_STRUCTURE_TOP_FIELD = 1,
+      AV_PICTURE_STRUCTURE_BOTTOM_FIELD = 2, AV_PICTURE_STRUCTURE_FRAME = 3
+else:
+  static :
+    hint("Declaration of " & "enum_AVPictureStructure" &
+        " already exists, not redeclaring")
+when not declared(enum_AVIODirEntryType):
+  type
+    enum_AVIODirEntryType* {.size: sizeof(cuint).} = enum
+      AVIO_ENTRY_UNKNOWN = 0, AVIO_ENTRY_BLOCK_DEVICE = 1,
+      AVIO_ENTRY_CHARACTER_DEVICE = 2, AVIO_ENTRY_DIRECTORY = 3,
+      AVIO_ENTRY_NAMED_PIPE = 4, AVIO_ENTRY_SYMBOLIC_LINK = 5,
+      AVIO_ENTRY_SOCKET = 6, AVIO_ENTRY_FILE = 7, AVIO_ENTRY_SERVER = 8,
+      AVIO_ENTRY_SHARE = 9, AVIO_ENTRY_WORKGROUP = 10
+else:
+  static :
+    hint("Declaration of " & "enum_AVIODirEntryType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVIODataMarkerType):
+  type
+    enum_AVIODataMarkerType* {.size: sizeof(cuint).} = enum
+      AVIO_DATA_MARKER_HEADER = 0, AVIO_DATA_MARKER_SYNC_POINT = 1,
+      AVIO_DATA_MARKER_BOUNDARY_POINT = 2, AVIO_DATA_MARKER_UNKNOWN = 3,
+      AVIO_DATA_MARKER_TRAILER = 4, AVIO_DATA_MARKER_FLUSH_POINT = 5
+else:
+  static :
+    hint("Declaration of " & "enum_AVIODataMarkerType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVStreamParseType):
+  type
+    enum_AVStreamParseType* {.size: sizeof(cuint).} = enum
+      AVSTREAM_PARSE_NONE = 0, AVSTREAM_PARSE_FULL = 1,
+      AVSTREAM_PARSE_HEADERS = 2, AVSTREAM_PARSE_TIMESTAMPS = 3,
+      AVSTREAM_PARSE_FULL_ONCE = 4, AVSTREAM_PARSE_FULL_RAW = 5
+else:
+  static :
+    hint("Declaration of " & "enum_AVStreamParseType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVStreamGroupParamsType):
+  type
+    enum_AVStreamGroupParamsType* {.size: sizeof(cuint).} = enum
+      AV_STREAM_GROUP_PARAMS_NONE = 0,
+      AV_STREAM_GROUP_PARAMS_IAMF_AUDIO_ELEMENT = 1,
+      AV_STREAM_GROUP_PARAMS_IAMF_MIX_PRESENTATION = 2,
+      AV_STREAM_GROUP_PARAMS_TILE_GRID = 3
+else:
+  static :
+    hint("Declaration of " & "enum_AVStreamGroupParamsType" &
+        " already exists, not redeclaring")
+when not declared(enum_AVDurationEstimationMethod):
+  type
+    enum_AVDurationEstimationMethod* {.size: sizeof(cuint).} = enum
+      AVFMT_DURATION_FROM_PTS = 0, AVFMT_DURATION_FROM_STREAM = 1,
+      AVFMT_DURATION_FROM_BITRATE = 2
+else:
+  static :
+    hint("Declaration of " & "enum_AVDurationEstimationMethod" &
+        " already exists, not redeclaring")
+when not declared(enum_AVTimebaseSource):
+  type
+    enum_AVTimebaseSource* {.size: sizeof(cint).} = enum
+      AVFMT_TBCF_AUTO = -1, AVFMT_TBCF_DECODER = 0, AVFMT_TBCF_DEMUXER = 1,
+      AVFMT_TBCF_R_FRAMERATE = 2
+else:
+  static :
+    hint("Declaration of " & "enum_AVTimebaseSource" &
+        " already exists, not redeclaring")
+when not declared(enum_SwrDitherType):
+  type
+    enum_SwrDitherType* {.size: sizeof(cuint).} = enum
+      SWR_DITHER_NONE = 0, SWR_DITHER_RECTANGULAR = 1,
+      SWR_DITHER_TRIANGULAR = 2, SWR_DITHER_TRIANGULAR_HIGHPASS = 3,
+      SWR_DITHER_NS = 64, SWR_DITHER_NS_LIPSHITZ = 65,
+      SWR_DITHER_NS_F_WEIGHTED = 66, SWR_DITHER_NS_MODIFIED_E_WEIGHTED = 67,
+      SWR_DITHER_NS_IMPROVED_E_WEIGHTED = 68, SWR_DITHER_NS_SHIBATA = 69,
+      SWR_DITHER_NS_LOW_SHIBATA = 70, SWR_DITHER_NS_HIGH_SHIBATA = 71,
+      SWR_DITHER_NB = 72
+else:
+  static :
+    hint("Declaration of " & "enum_SwrDitherType" &
+        " already exists, not redeclaring")
+when not declared(enum_SwrEngine):
+  type
+    enum_SwrEngine* {.size: sizeof(cuint).} = enum
+      SWR_ENGINE_SWR = 0, SWR_ENGINE_SOXR = 1, SWR_ENGINE_NB = 2
+else:
+  static :
+    hint("Declaration of " & "enum_SwrEngine" &
+        " already exists, not redeclaring")
+when not declared(enum_SwrFilterType):
+  type
+    enum_SwrFilterType* {.size: sizeof(cuint).} = enum
+      SWR_FILTER_TYPE_CUBIC = 0, SWR_FILTER_TYPE_BLACKMAN_NUTTALL = 1,
+      SWR_FILTER_TYPE_KAISER = 2
+else:
+  static :
+    hint("Declaration of " & "enum_SwrFilterType" &
+        " already exists, not redeclaring")
+when not declared(LIBAVCODEC_VERSION_INT):
+  type
+    LIBAVCODEC_VERSION_INT* = object
+else:
+  static :
+    hint("Declaration of " & "LIBAVCODEC_VERSION_INT" &
+        " already exists, not redeclaring")
+when not declared(struct_AVDictionary):
+  type
+    struct_AVDictionary* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVDictionary" &
+        " already exists, not redeclaring")
+when not declared(compiler_builtin_constant_p):
+  type
+    compiler_builtin_constant_p* = object
+else:
+  static :
+    hint("Declaration of " & "compiler_builtin_constant_p" &
+        " already exists, not redeclaring")
+when not declared(struct_AVBPrint):
+  type
+    struct_AVBPrint* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVBPrint" &
+        " already exists, not redeclaring")
+when not declared(struct_AVIODirContext):
+  type
+    struct_AVIODirContext* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVIODirContext" &
+        " already exists, not redeclaring")
+when not declared(AV_CH_LAYOUT_5POINT1POINT2_BACK):
+  type
+    AV_CH_LAYOUT_5POINT1POINT2_BACK* = object
+else:
+  static :
+    hint("Declaration of " & "AV_CH_LAYOUT_5POINT1POINT2_BACK" &
+        " already exists, not redeclaring")
+when not declared(struct_SwsContext):
+  type
+    struct_SwsContext* = object
+else:
+  static :
+    hint("Declaration of " & "struct_SwsContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterFormats):
+  type
+    struct_AVFilterFormats* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterFormats" &
+        " already exists, not redeclaring")
+when not declared(AV_CH_FRONT_CENTER):
+  type
+    AV_CH_FRONT_CENTER* = object
+else:
+  static :
+    hint("Declaration of " & "AV_CH_FRONT_CENTER" &
+        " already exists, not redeclaring")
+when not declared(AV_CEIL_RSHIFT):
+  type
+    AV_CEIL_RSHIFT* = object
+else:
+  static :
+    hint("Declaration of " & "AV_CEIL_RSHIFT" &
+        " already exists, not redeclaring")
+when not declared(struct_IO_marker):
+  type
+    struct_IO_marker* = object
+else:
+  static :
+    hint("Declaration of " & "struct_IO_marker" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFORMAT_VERSION_INT):
+  type
+    LIBAVFORMAT_VERSION_INT* = object
+else:
+  static :
+    hint("Declaration of " & "LIBAVFORMAT_VERSION_INT" &
+        " already exists, not redeclaring")
+when not declared(FF_LAMBDA_SCALE):
+  type
+    FF_LAMBDA_SCALE* = object
+else:
+  static :
+    hint("Declaration of " & "FF_LAMBDA_SCALE" &
+        " already exists, not redeclaring")
+when not declared(AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK):
+  type
+    AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK* = object
+else:
+  static :
+    hint("Declaration of " & "AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK" &
+        " already exists, not redeclaring")
+when not declared(struct_AVBuffer):
+  type
+    struct_AVBuffer* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVBuffer" &
+        " already exists, not redeclaring")
+when not declared(struct_AVIAMFAudioElement):
+  type
+    struct_AVIAMFAudioElement* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVIAMFAudioElement" &
+        " already exists, not redeclaring")
+when not declared(struct_IO_wide_data):
+  type
+    struct_IO_wide_data* = object
+else:
+  static :
+    hint("Declaration of " & "struct_IO_wide_data" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecTag):
+  type
+    struct_AVCodecTag* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecTag" &
+        " already exists, not redeclaring")
+when not declared(compiler_builtin_va_list):
+  type
+    compiler_builtin_va_list* = object
+else:
+  static :
+    hint("Declaration of " & "compiler_builtin_va_list" &
+        " already exists, not redeclaring")
+when not declared(struct_AVBufferPool):
+  type
+    struct_AVBufferPool* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVBufferPool" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFILTER_VERSION_INT):
+  type
+    LIBAVFILTER_VERSION_INT* = object
+else:
+  static :
+    hint("Declaration of " & "LIBAVFILTER_VERSION_INT" &
+        " already exists, not redeclaring")
+when not declared(struct_42696):
+  type
+    struct_42696* = object
+else:
+  static :
+    hint("Declaration of " & "struct_42696" & " already exists, not redeclaring")
+when not declared(struct_AVCodecInternal):
+  type
+    struct_AVCodecInternal* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecInternal" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterPad):
+  type
+    struct_AVFilterPad* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterPad" &
+        " already exists, not redeclaring")
+when not declared(LIBSWSCALE_VERSION_INT):
+  type
+    LIBSWSCALE_VERSION_INT* = object
+else:
+  static :
+    hint("Declaration of " & "LIBSWSCALE_VERSION_INT" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterCommand):
+  type
+    struct_AVFilterCommand* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterCommand" &
+        " already exists, not redeclaring")
+when not declared(LIBSWRESAMPLE_VERSION_INT):
+  type
+    LIBSWRESAMPLE_VERSION_INT* = object
+else:
+  static :
+    hint("Declaration of " & "LIBSWRESAMPLE_VERSION_INT" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterChannelLayouts):
+  type
+    struct_AVFilterChannelLayouts* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterChannelLayouts" &
+        " already exists, not redeclaring")
+when not declared(struct_SwrContext):
+  type
+    struct_SwrContext* = object
+else:
+  static :
+    hint("Declaration of " & "struct_SwrContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVIAMFMixPresentation):
+  type
+    struct_AVIAMFMixPresentation* = object
+else:
+  static :
+    hint("Declaration of " & "struct_AVIAMFMixPresentation" &
+        " already exists, not redeclaring")
+when not declared(LIBAVUTIL_VERSION_INT):
+  type
+    LIBAVUTIL_VERSION_INT* = object
+else:
+  static :
+    hint("Declaration of " & "LIBAVUTIL_VERSION_INT" &
+        " already exists, not redeclaring")
+when not declared(struct_IO_codecvt):
+  type
+    struct_IO_codecvt* = object
+else:
+  static :
+    hint("Declaration of " & "struct_IO_codecvt" &
+        " already exists, not redeclaring")
+type
+  struct_AVChannelCustom_1644167642 {.pure, inheritable, bycopy.} = object
+    id*: enum_AVChannel_1644167637 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:275:16
+    name*: array[16'i64, cschar]
+    opaque*: pointer
+  AVChannelCustom_1644167644 = struct_AVChannelCustom_1644167643 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:279:3
+  struct_AVChannelLayout_u_t {.union, bycopy.} = object
+    mask*: uint64
+    map*: ptr AVChannelCustom_1644167645
+  struct_AVChannelLayout_1644167646 {.pure, inheritable, bycopy.} = object
+    order*: enum_AVChannelOrder_1644167639 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:311:16
+    nb_channels*: cint
+    u*: struct_AVChannelLayout_u_t
+    opaque*: pointer
+  AVChannelLayout_1644167648 = struct_AVChannelLayout_1644167647 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:369:3
+  AVClassCategory_1644167654 = enum_AVClassCategory_1644167653 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:47:2
+  struct_AVClass_1644167656 {.pure, inheritable, bycopy.} = object
+    class_name*: cstring     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:66:16
+    item_name*: proc (a0: pointer): cstring {.cdecl.}
+    option*: ptr struct_AVOption_1644167659
+    version*: cint
+    log_level_offset_offset*: cint
+    parent_log_context_offset*: cint
+    category*: AVClassCategory_1644167655
+    get_category*: proc (a0: pointer): AVClassCategory_1644167655 {.cdecl.}
+    query_ranges*: proc (a0: ptr ptr struct_AVOptionRanges_1644167661;
+                         a1: pointer; a2: cstring; a3: cint): cint {.cdecl.}
+    child_next*: proc (a0: pointer; a1: pointer): pointer {.cdecl.}
+    child_class_iterate*: proc (a0: ptr pointer): ptr struct_AVClass_1644167657 {.
+        cdecl.}
+  struct_AVOption_default_val_t {.union, bycopy.} = object
+    i64*: int64
+    dbl*: cdouble
+    str*: cstring
+    q*: AVRational_1644167675
+    arr*: ptr AVOptionArrayDef_1644167710
+  struct_AVOption_1644167658 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:357:16
+    help*: cstring
+    offset*: cint
+    type_field*: enum_AVOptionType_1644167706
+    default_val*: struct_AVOption_default_val_t
+    min*: cdouble
+    max*: cdouble
+    flags*: cint
+    unit*: cstring
+  struct_AVOptionRanges_1644167660 {.pure, inheritable, bycopy.} = object
+    range*: ptr ptr AVOptionRange_1644167716 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:436:16
+    nb_ranges*: cint
+    nb_components*: cint
+  AVClass_1644167662 = struct_AVClass_1644167657 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:147:3
+  va_list_1644167664 = compiler_gnuc_va_list_1644168006 ## Generated based on /usr/include/stdio.h:53:24
+  struct_AVDictionaryEntry_1644167666 {.pure, inheritable, bycopy.} = object
+    key*: cstring            ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:89:16
+    value*: cstring
+  AVDictionaryEntry_1644167668 = struct_AVDictionaryEntry_1644167667 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:92:3
+  AVDictionary_1644167670 = struct_AVDictionary ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:94:29
+  struct_AVRational_1644167672 {.pure, inheritable, bycopy.} = object
+    num*: cint               ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/rational.h:58:16
+    den*: cint
+  AVRational_1644167674 = struct_AVRational_1644167673 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/rational.h:61:3
+  union_av_intfloat32_1644167680 {.union, bycopy.} = object
+    i*: uint32               ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/intfloat.h:27:7
+    f*: cfloat
+  union_av_intfloat64_1644167682 {.union, bycopy.} = object
+    i*: uint64               ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/intfloat.h:32:7
+    f*: cdouble
+  struct_AVOptionArrayDef_1644167707 {.pure, inheritable, bycopy.} = object
+    def*: cstring            ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:323:16
+    size_min*: cuint
+    size_max*: cuint
+    sep*: cschar
+  AVOptionArrayDef_1644167709 = struct_AVOptionArrayDef_1644167708 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:352:3
+  AVOption_1644167711 = struct_AVOption_1644167659 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:408:3
+  struct_AVOptionRange_1644167713 {.pure, inheritable, bycopy.} = object
+    str*: cstring            ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:413:16
+    value_min*: cdouble
+    value_max*: cdouble
+    component_min*: cdouble
+    component_max*: cdouble
+    is_range*: cint
+  AVOptionRange_1644167715 = struct_AVOptionRange_1644167714 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:431:3
+  AVOptionRanges_1644167717 = struct_AVOptionRanges_1644167661 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:476:3
+  struct_AVComponentDescriptor_1644167719 {.pure, inheritable, bycopy.} = object
+    plane*: cint             ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:30:16
+    step*: cint
+    offset*: cint
+    shift*: cint
+    depth*: cint
+  AVComponentDescriptor_1644167721 = struct_AVComponentDescriptor_1644167720 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:58:3
+  struct_AVPixFmtDescriptor_1644167723 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:69:16
+    nb_components*: uint8
+    log2_chroma_w*: uint8
+    log2_chroma_h*: uint8
+    flags*: uint64
+    comp*: array[4'i64, AVComponentDescriptor_1644167722]
+    alias*: cstring
+  AVPixFmtDescriptor_1644167725 = struct_AVPixFmtDescriptor_1644167724 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:111:3
+  ptrdiff_t_1644167727 = clong ## Generated based on /usr/lib/clang/18/include/__stddef_ptrdiff_t.h:18:26
+  AVBuffer_1644167729 = struct_AVBuffer ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/buffer.h:74:25
+  struct_AVBufferRef_1644167731 {.pure, inheritable, bycopy.} = object
+    buffer*: ptr AVBuffer_1644167730 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/buffer.h:82:16
+    data*: ptr uint8
+    size*: csize_t
+  AVBufferRef_1644167733 = struct_AVBufferRef_1644167732 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/buffer.h:95:3
+  AVBufferPool_1644167735 = struct_AVBufferPool ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/buffer.h:255:29
+  struct_AVFrameSideData_1644167741 {.pure, inheritable, bycopy.} = object
+    type_field*: enum_AVFrameSideDataType_1644167738 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:250:16
+    data*: ptr uint8
+    size*: csize_t
+    metadata*: ptr AVDictionary_1644167671
+    buf*: ptr AVBufferRef_1644167734
+  AVFrameSideData_1644167743 = struct_AVFrameSideData_1644167742 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:256:3
+  struct_AVSideDataDescriptor_1644167747 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:277:16
+    props*: cuint
+  AVSideDataDescriptor_1644167749 = struct_AVSideDataDescriptor_1644167748 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:287:3
+  struct_AVRegionOfInterest_1644167751 {.pure, inheritable, bycopy.} = object
+    self_size*: uint32       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:300:16
+    top*: cint
+    bottom*: cint
+    left*: cint
+    right*: cint
+    qoffset*: AVRational_1644167675
+  AVRegionOfInterest_1644167753 = struct_AVRegionOfInterest_1644167752 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:343:3
+  struct_AVFrame_1644167755 {.pure, inheritable, bycopy.} = object
+    data*: array[8'i64, ptr uint8] ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:374:16
+    linesize*: array[8'i64, cint]
+    extended_data*: ptr ptr uint8
+    width*: cint
+    height*: cint
+    nb_samples*: cint
+    format*: cint
+    key_frame*: cint
+    pict_type*: enum_AVPictureType_1644167679
+    sample_aspect_ratio*: AVRational_1644167675
+    pts*: int64
+    pkt_dts*: int64
+    time_base*: AVRational_1644167675
+    quality*: cint
+    opaque*: pointer
+    repeat_pict*: cint
+    interlaced_frame*: cint
+    top_field_first*: cint
+    palette_has_changed*: cint
+    sample_rate*: cint
+    buf*: array[8'i64, ptr AVBufferRef_1644167734]
+    extended_buf*: ptr ptr AVBufferRef_1644167734
+    nb_extended_buf*: cint
+    side_data*: ptr ptr AVFrameSideData_1644167744
+    nb_side_data*: cint
+    flags*: cint
+    color_range*: enum_AVColorRange_1644167702
+    color_primaries*: enum_AVColorPrimaries_1644167696
+    color_trc*: enum_AVColorTransferCharacteristic_1644167698
+    colorspace*: enum_AVColorSpace_1644167700
+    chroma_location*: enum_AVChromaLocation_1644167704
+    best_effort_timestamp*: int64
+    pkt_pos*: int64
+    metadata*: ptr AVDictionary_1644167671
+    decode_error_flags*: cint
+    pkt_size*: cint
+    hw_frames_ctx*: ptr AVBufferRef_1644167734
+    opaque_ref*: ptr AVBufferRef_1644167734
+    crop_top*: csize_t
+    crop_bottom*: csize_t
+    crop_left*: csize_t
+    crop_right*: csize_t
+    private_ref*: ptr AVBufferRef_1644167734
+    ch_layout*: AVChannelLayout_1644167649
+    duration*: int64
+  AVFrame_1644167757 = struct_AVFrame_1644167756 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:781:3
+  struct_AVHWDeviceContext_1644167761 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/hwcontext.h:60:16
+    type_field*: enum_AVHWDeviceType_1644167760
+    hwctx*: pointer
+    free*: proc (a0: ptr struct_AVHWDeviceContext_1644167762): void {.cdecl.}
+    user_opaque*: pointer
+  AVHWDeviceContext_1644167763 = struct_AVHWDeviceContext_1644167762 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/hwcontext.h:103:3
+  struct_AVHWFramesContext_1644167765 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/hwcontext.h:115:16
+    device_ref*: ptr AVBufferRef_1644167734
+    device_ctx*: ptr AVHWDeviceContext_1644167764
+    hwctx*: pointer
+    free*: proc (a0: ptr struct_AVHWFramesContext_1644167766): void {.cdecl.}
+    user_opaque*: pointer
+    pool*: ptr AVBufferPool_1644167736
+    initial_pool_size*: cint
+    format*: enum_AVPixelFormat_1644167687
+    sw_format*: enum_AVPixelFormat_1644167687
+    width*: cint
+    height*: cint
+  AVHWFramesContext_1644167767 = struct_AVHWFramesContext_1644167766 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/hwcontext.h:218:3
+  struct_AVHWFramesConstraints_1644167771 {.pure, inheritable, bycopy.} = object
+    valid_hw_formats*: ptr enum_AVPixelFormat_1644167687 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/hwcontext.h:441:16
+    valid_sw_formats*: ptr enum_AVPixelFormat_1644167687
+    min_width*: cint
+    min_height*: cint
+    max_width*: cint
+    max_height*: cint
+  AVHWFramesConstraints_1644167773 = struct_AVHWFramesConstraints_1644167772 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/hwcontext.h:468:3
+  struct_AVProfile_1644167777 {.pure, inheritable, bycopy.} = object
+    profile*: cint           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec.h:179:16
+    name*: cstring
+  AVProfile_1644167779 = struct_AVProfile_1644167778 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec.h:182:3
+  struct_AVCodec_1644167781 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec.h:187:16
+    long_name*: cstring
+    type_field*: enum_AVMediaType_1644167677
+    id*: enum_AVCodecID_1644167776
+    capabilities*: cint
+    max_lowres*: uint8
+    supported_framerates*: ptr AVRational_1644167675
+    pix_fmts*: ptr enum_AVPixelFormat_1644167687
+    supported_samplerates*: ptr cint
+    sample_fmts*: ptr enum_AVSampleFormat_1644167651
+    priv_class*: ptr AVClass_1644167663
+    profiles*: ptr AVProfile_1644167780
+    wrapper_name*: cstring
+    ch_layouts*: ptr AVChannelLayout_1644167649
+  AVCodec_1644167783 = struct_AVCodec_1644167782 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec.h:231:3
+  struct_AVCodecHWConfig_1644167785 {.pure, inheritable, bycopy.} = object
+    pix_fmt*: enum_AVPixelFormat_1644167687 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec.h:334:16
+    methods*: cint
+    device_type*: enum_AVHWDeviceType_1644167760
+  AVCodecHWConfig_1644167787 = struct_AVCodecHWConfig_1644167786 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec.h:356:3
+  struct_AVPanScan_1644167795 {.pure, inheritable, bycopy.} = object
+    id*: cint                ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:241:16
+    width*: cint
+    height*: cint
+    position*: array[3'i64, array[2'i64, int16]]
+  AVPanScan_1644167797 = struct_AVPanScan_1644167796 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:263:3
+  struct_AVCPBProperties_1644167799 {.pure, inheritable, bycopy.} = object
+    max_bitrate*: int64      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:270:16
+    min_bitrate*: int64
+    avg_bitrate*: int64
+    buffer_size*: int64
+    vbv_delay*: uint64
+  AVCPBProperties_1644167801 = struct_AVCPBProperties_1644167800 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:301:3
+  struct_AVProducerReferenceTime_1644167803 {.pure, inheritable, bycopy.} = object
+    wallclock*: int64        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:319:16
+    flags*: cint
+  AVProducerReferenceTime_1644167805 = struct_AVProducerReferenceTime_1644167804 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:325:3
+  struct_AVPacketSideData_1644167809 {.pure, inheritable, bycopy.} = object
+    data*: ptr uint8         ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:384:16
+    size*: csize_t
+    type_field*: enum_AVPacketSideDataType_1644167808
+  AVPacketSideData_1644167811 = struct_AVPacketSideData_1644167810 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:388:3
+  struct_AVPacket_1644167813 {.pure, inheritable, bycopy.} = object
+    buf*: ptr AVBufferRef_1644167734 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:510:16
+    pts*: int64
+    dts*: int64
+    data*: ptr uint8
+    size*: cint
+    stream_index*: cint
+    flags*: cint
+    side_data*: ptr AVPacketSideData_1644167812
+    side_data_elems*: cint
+    duration*: int64
+    pos*: int64
+    opaque*: pointer
+    opaque_ref*: ptr AVBufferRef_1644167734
+    time_base*: AVRational_1644167675
+  AVPacket_1644167815 = struct_AVPacket_1644167814 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:578:3
+  struct_AVPacketList_1644167817 {.pure, inheritable, bycopy.} = object
+    pkt*: AVPacket_1644167816 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:582:16
+    next*: ptr struct_AVPacketList_1644167818
+  AVPacketList_1644167819 = struct_AVPacketList_1644167818 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:585:3
+  struct_AVCodecDescriptor_1644167823 {.pure, inheritable, bycopy.} = object
+    id*: enum_AVCodecID_1644167776 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_desc.h:38:16
+    type_field*: enum_AVMediaType_1644167677
+    name*: cstring
+    long_name*: cstring
+    props*: cint
+    mime_types*: ptr cstring
+    profiles*: ptr struct_AVProfile_1644167778
+  AVCodecDescriptor_1644167825 = struct_AVCodecDescriptor_1644167824 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_desc.h:66:3
+  struct_AVCodecParameters_1644167827 {.pure, inheritable, bycopy.} = object
+    codec_type*: enum_AVMediaType_1644167677 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_par.h:47:16
+    codec_id*: enum_AVCodecID_1644167776
+    codec_tag*: uint32
+    extradata*: ptr uint8
+    extradata_size*: cint
+    coded_side_data*: ptr AVPacketSideData_1644167812
+    nb_coded_side_data*: cint
+    format*: cint
+    bit_rate*: int64
+    bits_per_coded_sample*: cint
+    bits_per_raw_sample*: cint
+    profile*: cint
+    level*: cint
+    width*: cint
+    height*: cint
+    sample_aspect_ratio*: AVRational_1644167675
+    framerate*: AVRational_1644167675
+    field_order*: enum_AVFieldOrder_1644167790
+    color_range*: enum_AVColorRange_1644167702
+    color_primaries*: enum_AVColorPrimaries_1644167696
+    color_trc*: enum_AVColorTransferCharacteristic_1644167698
+    color_space*: enum_AVColorSpace_1644167700
+    chroma_location*: enum_AVChromaLocation_1644167704
+    video_delay*: cint
+    ch_layout*: AVChannelLayout_1644167649
+    sample_rate*: cint
+    block_align*: cint
+    frame_size*: cint
+    initial_padding*: cint
+    trailing_padding*: cint
+    seek_preroll*: cint
+  AVCodecParameters_1644167829 = struct_AVCodecParameters_1644167828 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_par.h:215:3
+  struct_RcOverride_1644167831 {.pure, inheritable, bycopy.} = object
+    start_frame*: cint       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:204:16
+    end_frame*: cint
+    qscale*: cint
+    quality_factor*: cfloat
+  RcOverride_1644167833 = struct_RcOverride_1644167832 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:209:3
+  struct_AVCodecContext_1644167835 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:445:16
+    log_level_offset*: cint
+    codec_type*: enum_AVMediaType_1644167677
+    codec*: ptr struct_AVCodec_1644167782
+    codec_id*: enum_AVCodecID_1644167776
+    codec_tag*: cuint
+    priv_data*: pointer
+    internal*: ptr struct_AVCodecInternal
+    opaque*: pointer
+    bit_rate*: int64
+    flags*: cint
+    flags2*: cint
+    extradata*: ptr uint8
+    extradata_size*: cint
+    time_base*: AVRational_1644167675
+    pkt_timebase*: AVRational_1644167675
+    framerate*: AVRational_1644167675
+    ticks_per_frame*: cint
+    delay*: cint
+    width*: cint
+    height*: cint
+    coded_width*: cint
+    coded_height*: cint
+    sample_aspect_ratio*: AVRational_1644167675
+    pix_fmt*: enum_AVPixelFormat_1644167687
+    sw_pix_fmt*: enum_AVPixelFormat_1644167687
+    color_primaries*: enum_AVColorPrimaries_1644167696
+    color_trc*: enum_AVColorTransferCharacteristic_1644167698
+    colorspace*: enum_AVColorSpace_1644167700
+    color_range*: enum_AVColorRange_1644167702
+    chroma_sample_location*: enum_AVChromaLocation_1644167704
+    field_order*: enum_AVFieldOrder_1644167790
+    refs*: cint
+    has_b_frames*: cint
+    slice_flags*: cint
+    draw_horiz_band*: proc (a0: ptr struct_AVCodecContext_1644167836;
+                            a1: ptr AVFrame_1644167758; a2: array[8'i64, cint];
+                            a3: cint; a4: cint; a5: cint): void {.cdecl.}
+    get_format*: proc (a0: ptr struct_AVCodecContext_1644167836;
+                       a1: ptr enum_AVPixelFormat_1644167687): enum_AVPixelFormat_1644167687 {.
+        cdecl.}
+    max_b_frames*: cint
+    b_quant_factor*: cfloat
+    b_quant_offset*: cfloat
+    i_quant_factor*: cfloat
+    i_quant_offset*: cfloat
+    lumi_masking*: cfloat
+    temporal_cplx_masking*: cfloat
+    spatial_cplx_masking*: cfloat
+    p_masking*: cfloat
+    dark_masking*: cfloat
+    nsse_weight*: cint
+    me_cmp*: cint
+    me_sub_cmp*: cint
+    mb_cmp*: cint
+    ildct_cmp*: cint
+    dia_size*: cint
+    last_predictor_count*: cint
+    me_pre_cmp*: cint
+    pre_dia_size*: cint
+    me_subpel_quality*: cint
+    me_range*: cint
+    mb_decision*: cint
+    intra_matrix*: ptr uint16
+    inter_matrix*: ptr uint16
+    chroma_intra_matrix*: ptr uint16
+    intra_dc_precision*: cint
+    mb_lmin*: cint
+    mb_lmax*: cint
+    bidir_refine*: cint
+    keyint_min*: cint
+    gop_size*: cint
+    mv0_threshold*: cint
+    slices*: cint
+    sample_rate*: cint
+    sample_fmt*: enum_AVSampleFormat_1644167651
+    ch_layout*: AVChannelLayout_1644167649
+    frame_size*: cint
+    block_align*: cint
+    cutoff*: cint
+    audio_service_type*: enum_AVAudioServiceType_1644167794
+    request_sample_fmt*: enum_AVSampleFormat_1644167651
+    initial_padding*: cint
+    trailing_padding*: cint
+    seek_preroll*: cint
+    get_buffer2*: proc (a0: ptr struct_AVCodecContext_1644167836;
+                        a1: ptr AVFrame_1644167758; a2: cint): cint {.cdecl.}
+    bit_rate_tolerance*: cint
+    global_quality*: cint
+    compression_level*: cint
+    qcompress*: cfloat
+    qblur*: cfloat
+    qmin*: cint
+    qmax*: cint
+    max_qdiff*: cint
+    rc_buffer_size*: cint
+    rc_override_count*: cint
+    rc_override*: ptr RcOverride_1644167834
+    rc_max_rate*: int64
+    rc_min_rate*: int64
+    rc_max_available_vbv_use*: cfloat
+    rc_min_vbv_overflow_use*: cfloat
+    rc_initial_buffer_occupancy*: cint
+    trellis*: cint
+    stats_out*: cstring
+    stats_in*: cstring
+    workaround_bugs*: cint
+    strict_std_compliance*: cint
+    error_concealment*: cint
+    debug*: cint
+    err_recognition*: cint
+    hwaccel*: ptr struct_AVHWAccel_1644167838
+    hwaccel_context*: pointer
+    hw_frames_ctx*: ptr AVBufferRef_1644167734
+    hw_device_ctx*: ptr AVBufferRef_1644167734
+    hwaccel_flags*: cint
+    extra_hw_frames*: cint
+    error*: array[8'i64, uint64]
+    dct_algo*: cint
+    idct_algo*: cint
+    bits_per_coded_sample*: cint
+    bits_per_raw_sample*: cint
+    thread_count*: cint
+    thread_type*: cint
+    active_thread_type*: cint
+    execute*: proc (a0: ptr struct_AVCodecContext_1644167836; a1: proc (
+        a0: ptr struct_AVCodecContext_1644167836; a1: pointer): cint {.cdecl.};
+                    a2: pointer; a3: ptr cint; a4: cint; a5: cint): cint {.cdecl.}
+    execute2*: proc (a0: ptr struct_AVCodecContext_1644167836; a1: proc (
+        a0: ptr struct_AVCodecContext_1644167836; a1: pointer; a2: cint;
+        a3: cint): cint {.cdecl.}; a2: pointer; a3: ptr cint; a4: cint): cint {.
+        cdecl.}
+    profile*: cint
+    level*: cint
+    properties*: cuint
+    skip_loop_filter*: enum_AVDiscard_1644167792
+    skip_idct*: enum_AVDiscard_1644167792
+    skip_frame*: enum_AVDiscard_1644167792
+    skip_alpha*: cint
+    skip_top*: cint
+    skip_bottom*: cint
+    lowres*: cint
+    codec_descriptor*: ptr struct_AVCodecDescriptor_1644167824
+    sub_charenc*: cstring
+    sub_charenc_mode*: cint
+    subtitle_header_size*: cint
+    subtitle_header*: ptr uint8
+    dump_separator*: ptr uint8
+    codec_whitelist*: cstring
+    coded_side_data*: ptr AVPacketSideData_1644167812
+    nb_coded_side_data*: cint
+    export_side_data*: cint
+    max_pixels*: int64
+    apply_cropping*: cint
+    discard_damaged_percentage*: cint
+    max_samples*: int64
+    get_encode_buffer*: proc (a0: ptr struct_AVCodecContext_1644167836;
+                              a1: ptr AVPacket_1644167816; a2: cint): cint {.
+        cdecl.}
+    frame_num*: int64
+    side_data_prefer_packet*: ptr cint
+    nb_side_data_prefer_packet*: cuint
+    decoded_side_data*: ptr ptr AVFrameSideData_1644167744
+    nb_decoded_side_data*: cint
+  struct_AVHWAccel_1644167837 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2089:16
+    type_field*: enum_AVMediaType_1644167677
+    id*: enum_AVCodecID_1644167776
+    pix_fmt*: enum_AVPixelFormat_1644167687
+    capabilities*: cint
+  AVCodecContext_1644167839 = struct_AVCodecContext_1644167836 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2079:3
+  AVHWAccel_1644167841 = struct_AVHWAccel_1644167838 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2123:3
+  struct_AVSubtitleRect_1644167845 {.pure, inheritable, bycopy.} = object
+    x*: cint                 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2201:16
+    y*: cint
+    w*: cint
+    h*: cint
+    nb_colors*: cint
+    data*: array[4'i64, ptr uint8]
+    linesize*: array[4'i64, cint]
+    flags*: cint
+    type_field*: enum_AVSubtitleType_1644167844
+    text*: cstring
+    ass*: cstring
+  AVSubtitleRect_1644167847 = struct_AVSubtitleRect_1644167846 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2226:3
+  struct_AVSubtitle_1644167849 {.pure, inheritable, bycopy.} = object
+    format*: uint16          ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2228:16
+    start_display_time*: uint32
+    end_display_time*: uint32
+    num_rects*: cuint
+    rects*: ptr ptr AVSubtitleRect_1644167848
+    pts*: int64
+  AVSubtitle_1644167851 = struct_AVSubtitle_1644167850 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2235:3
+  struct_AVCodecParserContext_1644167855 {.pure, inheritable, bycopy.} = object
+    priv_data*: pointer      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2708:16
+    parser*: ptr struct_AVCodecParser_1644167858
+    frame_offset*: int64
+    cur_offset*: int64
+    next_frame_offset*: int64
+    pict_type*: cint
+    repeat_pict*: cint
+    pts*: int64
+    dts*: int64
+    last_pts*: int64
+    last_dts*: int64
+    fetch_timestamp*: cint
+    cur_frame_start_index*: cint
+    cur_frame_offset*: array[4'i64, int64]
+    cur_frame_pts*: array[4'i64, int64]
+    cur_frame_dts*: array[4'i64, int64]
+    flags*: cint
+    offset*: int64
+    cur_frame_end*: array[4'i64, int64]
+    key_frame*: cint
+    dts_sync_point*: cint
+    dts_ref_dts_delta*: cint
+    pts_dts_delta*: cint
+    cur_frame_pos*: array[4'i64, int64]
+    pos*: int64
+    last_pos*: int64
+    duration*: cint
+    field_order*: enum_AVFieldOrder_1644167790
+    picture_structure*: enum_AVPictureStructure_1644167854
+    output_picture_number*: cint
+    width*: cint
+    height*: cint
+    coded_width*: cint
+    coded_height*: cint
+    format*: cint
+  struct_AVCodecParser_1644167857 {.pure, inheritable, bycopy.} = object
+    codec_ids*: array[7'i64, cint] ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2867:16
+    priv_data_size*: cint
+    parser_init*: proc (a0: ptr AVCodecParserContext_1644167860): cint {.cdecl.}
+    parser_parse*: proc (a0: ptr AVCodecParserContext_1644167860;
+                         a1: ptr AVCodecContext_1644167840; a2: ptr ptr uint8;
+                         a3: ptr cint; a4: ptr uint8; a5: cint): cint {.cdecl.}
+    parser_close*: proc (a0: ptr AVCodecParserContext_1644167860): void {.cdecl.}
+    split*: proc (a0: ptr AVCodecContext_1644167840; a1: ptr uint8; a2: cint): cint {.
+        cdecl.}
+  AVCodecParserContext_1644167859 = struct_AVCodecParserContext_1644167856 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2865:3
+  AVCodecParser_1644167861 = struct_AVCodecParser_1644167858 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2879:3
+  struct_AVIOInterruptCB_1644167863 {.pure, inheritable, bycopy.} = object
+    callback*: proc (a0: pointer): cint {.cdecl.} ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:59:16
+    opaque*: pointer
+  AVIOInterruptCB_1644167865 = struct_AVIOInterruptCB_1644167864 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:62:3
+  struct_AVIODirEntry_1644167869 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:87:16
+    type_field*: cint
+    utf8*: cint
+    size*: int64
+    modification_timestamp*: int64
+    access_timestamp*: int64
+    status_change_timestamp*: int64
+    user_id*: int64
+    group_id*: int64
+    filemode*: int64
+  AVIODirEntry_1644167871 = struct_AVIODirEntry_1644167870 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:102:3
+  AVIODirContext_1644167873 = struct_AVIODirContext ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:104:31
+  struct_AVIOContext_1644167877 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:160:16
+    buffer*: ptr uint8
+    buffer_size*: cint
+    buf_ptr*: ptr uint8
+    buf_end*: ptr uint8
+    opaque*: pointer
+    read_packet*: proc (a0: pointer; a1: ptr uint8; a2: cint): cint {.cdecl.}
+    write_packet*: proc (a0: pointer; a1: ptr uint8; a2: cint): cint {.cdecl.}
+    seek*: proc (a0: pointer; a1: int64; a2: cint): int64 {.cdecl.}
+    pos*: int64
+    eof_reached*: cint
+    error*: cint
+    write_flag*: cint
+    max_packet_size*: cint
+    min_packet_size*: cint
+    checksum*: culong
+    checksum_ptr*: ptr uint8
+    update_checksum*: proc (a0: culong; a1: ptr uint8; a2: cuint): culong {.
+        cdecl.}
+    read_pause*: proc (a0: pointer; a1: cint): cint {.cdecl.}
+    read_seek*: proc (a0: pointer; a1: cint; a2: int64; a3: cint): int64 {.cdecl.}
+    seekable*: cint
+    direct*: cint
+    protocol_whitelist*: cstring
+    protocol_blacklist*: cstring
+    write_data_type*: proc (a0: pointer; a1: ptr uint8; a2: cint;
+                            a3: enum_AVIODataMarkerType_1644167876; a4: int64): cint {.
+        cdecl.}
+    ignore_boundary_point*: cint
+    buf_ptr_max*: ptr uint8
+    bytes_read*: int64
+    bytes_written*: int64
+  AVIOContext_1644167879 = struct_AVIOContext_1644167878 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:307:3
+  struct_AVProbeData_1644167881 {.pure, inheritable, bycopy.} = object
+    filename*: cstring       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:451:16
+    buf*: ptr uint8
+    buf_size*: cint
+    mime_type*: cstring
+  AVProbeData_1644167883 = struct_AVProbeData_1644167882 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:456:3
+  struct_AVOutputFormat_1644167885 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:509:16
+    long_name*: cstring
+    mime_type*: cstring
+    extensions*: cstring
+    audio_codec*: enum_AVCodecID_1644167776
+    video_codec*: enum_AVCodecID_1644167776
+    subtitle_codec*: enum_AVCodecID_1644167776
+    flags*: cint
+    codec_tag*: ptr ptr struct_AVCodecTag
+    priv_class*: ptr AVClass_1644167663
+  AVOutputFormat_1644167887 = struct_AVOutputFormat_1644167886 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:539:3
+  struct_AVInputFormat_1644167889 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:548:16
+    long_name*: cstring
+    flags*: cint
+    extensions*: cstring
+    codec_tag*: ptr ptr struct_AVCodecTag
+    priv_class*: ptr AVClass_1644167663
+    mime_type*: cstring
+  AVInputFormat_1644167891 = struct_AVInputFormat_1644167890 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:586:3
+  struct_AVIndexEntry_1644167895 {.pure, inheritable, bycopy.} = object
+    pos*: int64              ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:602:16
+    timestamp*: int64
+    flags* {.bitsize: 2'i64.}: cint
+    size* {.bitsize: 30'i64.}: cint
+    min_distance*: cint
+  AVIndexEntry_1644167897 = struct_AVIndexEntry_1644167896 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:617:3
+  struct_AVStream_1644167899 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:750:16
+    index*: cint
+    id*: cint
+    codecpar*: ptr AVCodecParameters_1644167830
+    priv_data*: pointer
+    time_base*: AVRational_1644167675
+    start_time*: int64
+    duration*: int64
+    nb_frames*: int64
+    disposition*: cint
+    discard_field*: enum_AVDiscard_1644167792
+    sample_aspect_ratio*: AVRational_1644167675
+    metadata*: ptr AVDictionary_1644167671
+    avg_frame_rate*: AVRational_1644167675
+    attached_pic*: AVPacket_1644167816
+    side_data*: ptr AVPacketSideData_1644167812
+    nb_side_data*: cint
+    event_flags*: cint
+    r_frame_rate*: AVRational_1644167675
+    pts_wrap_bits*: cint
+  AVStream_1644167901 = struct_AVStream_1644167900 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:926:3
+  struct_AVStreamGroupTileGrid_anon0_t {.pure, inheritable, bycopy.} = object
+    idx*: cuint
+    horizontal*: cint
+    vertical*: cint
+  struct_AVStreamGroupTileGrid_1644167903 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:989:16
+    nb_tiles*: cuint
+    coded_width*: cint
+    coded_height*: cint
+    anon0*: struct_AVStreamGroupTileGrid_anon0_t
+    offsets*: ptr struct_42696
+    background*: array[4'i64, uint8]
+    horizontal_offset*: cint
+    vertical_offset*: cint
+    width*: cint
+    height*: cint
+  AVStreamGroupTileGrid_1644167905 = struct_AVStreamGroupTileGrid_1644167904 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1085:3
+  struct_AVStreamGroup_params_t {.union, bycopy.} = object
+    iamf_audio_element*: ptr struct_AVIAMFAudioElement
+    iamf_mix_presentation*: ptr struct_AVIAMFMixPresentation
+    tile_grid*: ptr struct_AVStreamGroupTileGrid_1644167904
+  struct_AVStreamGroup_1644167909 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1097:16
+    priv_data*: pointer
+    index*: cuint
+    id*: int64
+    type_field*: enum_AVStreamGroupParamsType_1644167908
+    params*: struct_AVStreamGroup_params_t
+    metadata*: ptr AVDictionary_1644167671
+    nb_streams*: cuint
+    streams*: ptr ptr AVStream_1644167902
+    disposition*: cint
+  AVStreamGroup_1644167911 = struct_AVStreamGroup_1644167910 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1174:3
+  struct_AVProgram_1644167913 {.pure, inheritable, bycopy.} = object
+    id*: cint                ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1186:16
+    flags*: cint
+    discard_field*: enum_AVDiscard_1644167792
+    stream_index*: ptr cuint
+    nb_stream_indexes*: cuint
+    metadata*: ptr AVDictionary_1644167671
+    program_num*: cint
+    pmt_pid*: cint
+    pcr_pid*: cint
+    pmt_version*: cint
+    start_time*: int64
+    end_time*: int64
+    pts_wrap_reference*: int64
+    pts_wrap_behavior*: cint
+  AVProgram_1644167915 = struct_AVProgram_1644167914 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1211:3
+  struct_AVChapter_1644167917 {.pure, inheritable, bycopy.} = object
+    id*: int64               ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1221:16
+    time_base*: AVRational_1644167675
+    start*: int64
+    end_field*: int64
+    metadata*: ptr AVDictionary_1644167671
+  AVChapter_1644167919 = struct_AVChapter_1644167918 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1226:3
+  av_format_control_message_1644167921 = proc (a0: ptr struct_AVFormatContext_1644167924;
+      a1: cint; a2: pointer; a3: csize_t): cint {.cdecl.} ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1232:15
+  struct_AVFormatContext_1644167923 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1262:16
+    iformat*: ptr struct_AVInputFormat_1644167890
+    oformat*: ptr struct_AVOutputFormat_1644167886
+    priv_data*: pointer
+    pb*: ptr AVIOContext_1644167880
+    ctx_flags*: cint
+    nb_streams*: cuint
+    streams*: ptr ptr AVStream_1644167902
+    nb_stream_groups*: cuint
+    stream_groups*: ptr ptr AVStreamGroup_1644167912
+    nb_chapters*: cuint
+    chapters*: ptr ptr AVChapter_1644167920
+    url*: cstring
+    start_time*: int64
+    duration*: int64
+    bit_rate*: int64
+    packet_size*: cuint
+    max_delay*: cint
+    flags*: cint
+    probesize*: int64
+    max_analyze_duration*: int64
+    key*: ptr uint8
+    keylen*: cint
+    nb_programs*: cuint
+    programs*: ptr ptr AVProgram_1644167916
+    video_codec_id*: enum_AVCodecID_1644167776
+    audio_codec_id*: enum_AVCodecID_1644167776
+    subtitle_codec_id*: enum_AVCodecID_1644167776
+    data_codec_id*: enum_AVCodecID_1644167776
+    metadata*: ptr AVDictionary_1644167671
+    start_time_realtime*: int64
+    fps_probe_size*: cint
+    error_recognition*: cint
+    interrupt_callback*: AVIOInterruptCB_1644167866
+    debug*: cint
+    max_streams*: cint
+    max_index_size*: cuint
+    max_picture_buffer*: cuint
+    max_interleave_delta*: int64
+    max_ts_probe*: cint
+    max_chunk_duration*: cint
+    max_chunk_size*: cint
+    max_probe_packets*: cint
+    strict_std_compliance*: cint
+    event_flags*: cint
+    avoid_negative_ts*: cint
+    audio_preload*: cint
+    use_wallclock_as_timestamps*: cint
+    skip_estimate_duration_from_pts*: cint
+    avio_flags*: cint
+    duration_estimation_method*: enum_AVDurationEstimationMethod_1644167928
+    skip_initial_bytes*: int64
+    correct_ts_overflow*: cuint
+    seek2any*: cint
+    flush_packets*: cint
+    probe_score*: cint
+    format_probesize*: cint
+    codec_whitelist*: cstring
+    format_whitelist*: cstring
+    protocol_whitelist*: cstring
+    protocol_blacklist*: cstring
+    io_repositioned*: cint
+    video_codec*: ptr struct_AVCodec_1644167782
+    audio_codec*: ptr struct_AVCodec_1644167782
+    subtitle_codec*: ptr struct_AVCodec_1644167782
+    data_codec*: ptr struct_AVCodec_1644167782
+    metadata_header_padding*: cint
+    opaque*: pointer
+    control_message_cb*: av_format_control_message_1644167922
+    output_ts_offset*: int64
+    dump_separator*: ptr uint8
+    io_open*: proc (a0: ptr struct_AVFormatContext_1644167924;
+                    a1: ptr ptr AVIOContext_1644167880; a2: cstring; a3: cint;
+                    a4: ptr ptr AVDictionary_1644167671): cint {.cdecl.}
+    io_close2*: proc (a0: ptr struct_AVFormatContext_1644167924;
+                      a1: ptr AVIOContext_1644167880): cint {.cdecl.}
+    duration_probesize*: int64
+  AVOpenCallback_1644167925 = proc (a0: ptr struct_AVFormatContext_1644167924;
+                                    a1: ptr ptr AVIOContext_1644167880;
+                                    a2: cstring; a3: cint;
+                                    a4: ptr AVIOInterruptCB_1644167866;
+                                    a5: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl.}                ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1235:15
+  AVFormatContext_1644167929 = struct_AVFormatContext_1644167924 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1890:3
+  FILE_1644167931 = struct_IO_FILE_1644168008 ## Generated based on /usr/include/bits/types/FILE.h:7:25
+  struct_SwsVector_1644167935 {.pure, inheritable, bycopy.} = object
+    coeff*: ptr cdouble      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:116:16
+    length*: cint
+  SwsVector_1644167937 = struct_SwsVector_1644167936 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:119:3
+  struct_SwsFilter_1644167939 {.pure, inheritable, bycopy.} = object
+    lumH*: ptr SwsVector_1644167938 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:122:16
+    lumV*: ptr SwsVector_1644167938
+    chrH*: ptr SwsVector_1644167938
+    chrV*: ptr SwsVector_1644167938
+  SwsFilter_1644167941 = struct_SwsFilter_1644167940 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:127:3
+  SwrContext_1644167949 = struct_SwrContext ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/swresample.h:189:27
+  AVFilterContext_1644167951 = struct_AVFilterContext_1644167954 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:73:32
+  struct_AVFilterContext_1644167953 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:407:8
+    filter*: ptr AVFilter_1644167968
+    name*: cstring
+    input_pads*: ptr AVFilterPad_1644167960
+    inputs*: ptr ptr AVFilterLink_1644167956
+    nb_inputs*: cuint
+    output_pads*: ptr AVFilterPad_1644167960
+    outputs*: ptr ptr AVFilterLink_1644167956
+    nb_outputs*: cuint
+    priv*: pointer
+    graph*: ptr struct_AVFilterGraph_1644167970
+    thread_type*: cint
+    nb_threads*: cint
+    command_queue*: ptr struct_AVFilterCommand
+    enable_str*: cstring
+    enable*: pointer
+    var_values*: ptr cdouble
+    is_disabled*: cint
+    hw_device_ctx*: ptr AVBufferRef_1644167734
+    ready*: cuint
+    extra_hw_frames*: cint
+  AVFilterLink_1644167955 = struct_AVFilterLink_1644167958 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:74:32
+  struct_AVFilterLink_1644167957 {.pure, inheritable, bycopy.} = object
+    src*: ptr AVFilterContext_1644167952 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:542:8
+    srcpad*: ptr AVFilterPad_1644167960
+    dst*: ptr AVFilterContext_1644167952
+    dstpad*: ptr AVFilterPad_1644167960
+    type_field*: enum_AVMediaType_1644167677
+    format*: cint
+    w*: cint
+    h*: cint
+    sample_aspect_ratio*: AVRational_1644167675
+    colorspace*: enum_AVColorSpace_1644167700
+    color_range*: enum_AVColorRange_1644167702
+    sample_rate*: cint
+    ch_layout*: AVChannelLayout_1644167649
+    time_base*: AVRational_1644167675
+    incfg*: AVFilterFormatsConfig_1644167974
+    outcfg*: AVFilterFormatsConfig_1644167974
+    graph*: ptr struct_AVFilterGraph_1644167970
+    current_pts*: int64
+    current_pts_us*: int64
+    frame_rate*: AVRational_1644167675
+    min_samples*: cint
+    max_samples*: cint
+    frame_count_in*: int64
+    frame_count_out*: int64
+    sample_count_in*: int64
+    sample_count_out*: int64
+    frame_wanted_out*: cint
+    hw_frames_ctx*: ptr AVBufferRef_1644167734
+  AVFilterPad_1644167959 = struct_AVFilterPad ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:75:32
+  AVFilterFormats_1644167961 = struct_AVFilterFormats ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:76:32
+  AVFilterChannelLayouts_1644167963 = struct_AVFilterChannelLayouts ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:77:39
+  struct_AVFilter_formats_t {.union, bycopy.} = object
+    query_func*: proc (a0: ptr AVFilterContext_1644167952): cint {.cdecl.}
+    pixels_list*: ptr enum_AVPixelFormat_1644167687
+    samples_list*: ptr enum_AVSampleFormat_1644167651
+    pix_fmt*: enum_AVPixelFormat_1644167687
+    sample_fmt*: enum_AVSampleFormat_1644167651
+  struct_AVFilter_1644167965 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:166:16
+    description*: cstring
+    inputs*: ptr AVFilterPad_1644167960
+    outputs*: ptr AVFilterPad_1644167960
+    priv_class*: ptr AVClass_1644167663
+    flags*: cint
+    nb_inputs*: uint8
+    nb_outputs*: uint8
+    formats_state*: uint8
+    preinit*: proc (a0: ptr AVFilterContext_1644167952): cint {.cdecl.}
+    init*: proc (a0: ptr AVFilterContext_1644167952): cint {.cdecl.}
+    uninit*: proc (a0: ptr AVFilterContext_1644167952): void {.cdecl.}
+    formats*: struct_AVFilter_formats_t
+    priv_size*: cint
+    flags_internal*: cint
+    process_command*: proc (a0: ptr AVFilterContext_1644167952; a1: cstring;
+                            a2: cstring; a3: cstring; a4: cint; a5: cint): cint {.
+        cdecl.}
+    activate*: proc (a0: ptr AVFilterContext_1644167952): cint {.cdecl.}
+  AVFilter_1644167967 = struct_AVFilter_1644167966 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:394:3
+  struct_AVFilterGraph_1644167969 {.pure, inheritable, bycopy.} = object
+    av_class*: ptr AVClass_1644167663 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:813:16
+    filters*: ptr ptr AVFilterContext_1644167952
+    nb_filters*: cuint
+    scale_sws_opts*: cstring
+    thread_type*: cint
+    nb_threads*: cint
+    opaque*: pointer
+    execute*: avfilter_execute_func_1644167978
+    aresample_swr_opts*: cstring
+  struct_AVFilterFormatsConfig_1644167971 {.pure, inheritable, bycopy.} = object
+    formats*: ptr AVFilterFormats_1644167962 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:505:16
+    samplerates*: ptr AVFilterFormats_1644167962
+    channel_layouts*: ptr AVFilterChannelLayouts_1644167964
+    color_spaces*: ptr AVFilterFormats_1644167962
+    color_ranges*: ptr AVFilterFormats_1644167962
+  AVFilterFormatsConfig_1644167973 = struct_AVFilterFormatsConfig_1644167972 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:528:3
+  avfilter_action_func_1644167975 = proc (a0: ptr AVFilterContext_1644167952;
+      a1: pointer; a2: cint; a3: cint): cint {.cdecl.} ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:796:14
+  avfilter_execute_func_1644167977 = proc (a0: ptr AVFilterContext_1644167952;
+      a1: avfilter_action_func_1644167976; a2: pointer; a3: ptr cint; a4: cint): cint {.
+      cdecl.}                ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:810:14
+  AVFilterGraph_1644167979 = struct_AVFilterGraph_1644167970 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:863:3
+  struct_AVFilterInOut_1644167981 {.pure, inheritable, bycopy.} = object
+    name*: cstring           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:956:16
+    filter_ctx*: ptr AVFilterContext_1644167952
+    pad_idx*: cint
+    next*: ptr struct_AVFilterInOut_1644167982
+  AVFilterInOut_1644167983 = struct_AVFilterInOut_1644167982 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:968:3
+  struct_AVFilterPadParams_1644167985 {.pure, inheritable, bycopy.} = object
+    label*: cstring          ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1058:16
+  AVFilterPadParams_1644167987 = struct_AVFilterPadParams_1644167986 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1067:3
+  struct_AVFilterParams_1644167989 {.pure, inheritable, bycopy.} = object
+    filter*: ptr AVFilterContext_1644167952 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1075:16
+    filter_name*: cstring
+    instance_name*: cstring
+    opts*: ptr AVDictionary_1644167671
+    inputs*: ptr ptr AVFilterPadParams_1644167988
+    nb_inputs*: cuint
+    outputs*: ptr ptr AVFilterPadParams_1644167988
+    nb_outputs*: cuint
+  AVFilterParams_1644167991 = struct_AVFilterParams_1644167990 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1134:3
+  struct_AVFilterChain_1644167993 {.pure, inheritable, bycopy.} = object
+    filters*: ptr ptr AVFilterParams_1644167992 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1142:16
+    nb_filters*: csize_t
+  AVFilterChain_1644167995 = struct_AVFilterChain_1644167994 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1145:3
+  struct_AVFilterGraphSegment_1644167997 {.pure, inheritable, bycopy.} = object
+    graph*: ptr AVFilterGraph_1644167980 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1156:16
+    chains*: ptr ptr AVFilterChain_1644167996
+    nb_chains*: csize_t
+    scale_sws_opts*: cstring
+  AVFilterGraphSegment_1644167999 = struct_AVFilterGraphSegment_1644167998 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:1179:3
+  struct_AVBufferSrcParameters_1644168001 {.pure, inheritable, bycopy.} = object
+    format*: cint            ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/buffersrc.h:73:16
+    time_base*: AVRational_1644167675
+    width*: cint
+    height*: cint
+    sample_aspect_ratio*: AVRational_1644167675
+    frame_rate*: AVRational_1644167675
+    hw_frames_ctx*: ptr AVBufferRef_1644167734
+    sample_rate*: cint
+    ch_layout*: AVChannelLayout_1644167649
+    color_space*: enum_AVColorSpace_1644167700
+    color_range*: enum_AVColorRange_1644167702
+  AVBufferSrcParameters_1644168003 = struct_AVBufferSrcParameters_1644168002 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/buffersrc.h:123:3
+  compiler_gnuc_va_list_1644168005 = compiler_builtin_va_list ## Generated based on /usr/lib/clang/18/include/__stdarg___gnuc_va_list.h:12:27
+  struct_IO_FILE_1644168007 {.pure, inheritable, bycopy.} = object
+    internal_flags*: cint    ## Generated based on /usr/include/bits/types/struct_FILE.h:49:8
+    internal_IO_read_ptr*: cstring
+    internal_IO_read_end*: cstring
+    internal_IO_read_base*: cstring
+    internal_IO_write_base*: cstring
+    internal_IO_write_ptr*: cstring
+    internal_IO_write_end*: cstring
+    internal_IO_buf_base*: cstring
+    internal_IO_buf_end*: cstring
+    internal_IO_save_base*: cstring
+    internal_IO_backup_base*: cstring
+    internal_IO_save_end*: cstring
+    internal_markers*: ptr struct_IO_marker
+    internal_chain*: ptr struct_IO_FILE_1644168008
+    internal_fileno*: cint
+    internal_flags2*: cint
+    internal_old_offset*: compiler_off_t_1644168010
+    internal_cur_column*: cushort
+    internal_vtable_offset*: cschar
+    internal_shortbuf*: array[1'i64, cschar]
+    internal_lock*: pointer
+    internal_offset*: compiler_off64_t_1644168014
+    internal_codecvt*: ptr struct_IO_codecvt
+    internal_wide_data*: ptr struct_IO_wide_data
+    internal_freeres_list*: ptr struct_IO_FILE_1644168008
+    internal_freeres_buf*: pointer
+    compiler_pad5*: csize_t
+    internal_mode*: cint
+    internal_unused2*: array[20'i64, cschar]
+  compiler_off_t_1644168009 = clong ## Generated based on /usr/include/bits/types.h:152:25
+  compiler_off64_t_1644168013 = clong ## Generated based on /usr/include/bits/types.h:153:27
+  enum_AVDurationEstimationMethod_1644167928 = (when declared(
+      enum_AVDurationEstimationMethod):
+    enum_AVDurationEstimationMethod
+   else:
+    enum_AVDurationEstimationMethod_1644167927)
+  enum_AVIODataMarkerType_1644167876 = (when declared(enum_AVIODataMarkerType):
+    enum_AVIODataMarkerType
+   else:
+    enum_AVIODataMarkerType_1644167875)
+  SwrContext_1644167950 = (when declared(SwrContext):
+    SwrContext
+   else:
+    SwrContext_1644167949)
+  struct_AVFilterLink_1644167958 = (when declared(struct_AVFilterLink):
+    struct_AVFilterLink
+   else:
+    struct_AVFilterLink_1644167957)
+  SwsFilter_1644167942 = (when declared(SwsFilter):
+    SwsFilter
+   else:
+    SwsFilter_1644167941)
+  AVIOContext_1644167880 = (when declared(AVIOContext):
+    AVIOContext
+   else:
+    AVIOContext_1644167879)
+  enum_SwrFilterType_1644167948 = (when declared(enum_SwrFilterType):
+    enum_SwrFilterType
+   else:
+    enum_SwrFilterType_1644167947)
+  struct_AVInputFormat_1644167890 = (when declared(struct_AVInputFormat):
+    struct_AVInputFormat
+   else:
+    struct_AVInputFormat_1644167889)
+  AVFilterChain_1644167996 = (when declared(AVFilterChain):
+    AVFilterChain
+   else:
+    AVFilterChain_1644167995)
+  struct_AVFilterParams_1644167990 = (when declared(struct_AVFilterParams):
+    struct_AVFilterParams
+   else:
+    struct_AVFilterParams_1644167989)
+  AVFilterFormats_1644167962 = (when declared(AVFilterFormats):
+    AVFilterFormats
+   else:
+    AVFilterFormats_1644167961)
+  enum_SwrEngine_1644167946 = (when declared(enum_SwrEngine):
+    enum_SwrEngine
+   else:
+    enum_SwrEngine_1644167945)
+  AVBufferPool_1644167736 = (when declared(AVBufferPool):
+    AVBufferPool
+   else:
+    AVBufferPool_1644167735)
+  struct_AVFilterInOut_1644167982 = (when declared(struct_AVFilterInOut):
+    struct_AVFilterInOut
+   else:
+    struct_AVFilterInOut_1644167981)
+  struct_AVPacketSideData_1644167810 = (when declared(struct_AVPacketSideData):
+    struct_AVPacketSideData
+   else:
+    struct_AVPacketSideData_1644167809)
+  AVIndexEntry_1644167898 = (when declared(AVIndexEntry):
+    AVIndexEntry
+   else:
+    AVIndexEntry_1644167897)
+  struct_AVSubtitleRect_1644167846 = (when declared(struct_AVSubtitleRect):
+    struct_AVSubtitleRect
+   else:
+    struct_AVSubtitleRect_1644167845)
+  AVProfile_1644167780 = (when declared(AVProfile):
+    AVProfile
+   else:
+    AVProfile_1644167779)
+  enum_AVCodecID_1644167776 = (when declared(enum_AVCodecID):
+    enum_AVCodecID
+   else:
+    enum_AVCodecID_1644167775)
+  compiler_off64_t_1644168014 = (when declared(compiler_off64_t):
+    compiler_off64_t
+   else:
+    compiler_off64_t_1644168013)
+  AVRational_1644167675 = (when declared(AVRational):
+    AVRational
+   else:
+    AVRational_1644167674)
+  AVCodecDescriptor_1644167826 = (when declared(AVCodecDescriptor):
+    AVCodecDescriptor
+   else:
+    AVCodecDescriptor_1644167825)
+  AVChapter_1644167920 = (when declared(AVChapter):
+    AVChapter
+   else:
+    AVChapter_1644167919)
+  enum_AVChannel_1644167637 = (when declared(enum_AVChannel):
+    enum_AVChannel
+   else:
+    enum_AVChannel_1644167636)
+  enum_AVSideDataParamChangeFlags_1644167822 = (when declared(
+      enum_AVSideDataParamChangeFlags):
+    enum_AVSideDataParamChangeFlags
+   else:
+    enum_AVSideDataParamChangeFlags_1644167821)
+  struct_AVBufferSrcParameters_1644168002 = (when declared(
+      struct_AVBufferSrcParameters):
+    struct_AVBufferSrcParameters
+   else:
+    struct_AVBufferSrcParameters_1644168001)
+  struct_AVProgram_1644167914 = (when declared(struct_AVProgram):
+    struct_AVProgram
+   else:
+    struct_AVProgram_1644167913)
+  struct_AVFormatContext_1644167924 = (when declared(struct_AVFormatContext):
+    struct_AVFormatContext
+   else:
+    struct_AVFormatContext_1644167923)
+  enum_AVColorRange_1644167702 = (when declared(enum_AVColorRange):
+    enum_AVColorRange
+   else:
+    enum_AVColorRange_1644167701)
+  AVStreamGroup_1644167912 = (when declared(AVStreamGroup):
+    AVStreamGroup
+   else:
+    AVStreamGroup_1644167911)
+  struct_AVChannelCustom_1644167643 = (when declared(struct_AVChannelCustom):
+    struct_AVChannelCustom
+   else:
+    struct_AVChannelCustom_1644167642)
+  AVFilterLink_1644167956 = (when declared(AVFilterLink):
+    AVFilterLink
+   else:
+    AVFilterLink_1644167955)
+  AVProducerReferenceTime_1644167806 = (when declared(AVProducerReferenceTime):
+    AVProducerReferenceTime
+   else:
+    AVProducerReferenceTime_1644167805)
+  union_av_intfloat32_1644167681 = (when declared(union_av_intfloat32):
+    union_av_intfloat32
+   else:
+    union_av_intfloat32_1644167680)
+  enum_AVFrameSideDataType_1644167738 = (when declared(enum_AVFrameSideDataType):
+    enum_AVFrameSideDataType
+   else:
+    enum_AVFrameSideDataType_1644167737)
+  struct_AVIndexEntry_1644167896 = (when declared(struct_AVIndexEntry):
+    struct_AVIndexEntry
+   else:
+    struct_AVIndexEntry_1644167895)
+  AVFilterPad_1644167960 = (when declared(AVFilterPad):
+    AVFilterPad
+   else:
+    AVFilterPad_1644167959)
+  struct_AVHWFramesContext_1644167766 = (when declared(struct_AVHWFramesContext):
+    struct_AVHWFramesContext
+   else:
+    struct_AVHWFramesContext_1644167765)
+  enum_AVStreamParseType_1644167894 = (when declared(enum_AVStreamParseType):
+    enum_AVStreamParseType
+   else:
+    enum_AVStreamParseType_1644167893)
+  struct_AVRational_1644167673 = (when declared(struct_AVRational):
+    struct_AVRational
+   else:
+    struct_AVRational_1644167672)
+  struct_AVIOContext_1644167878 = (when declared(struct_AVIOContext):
+    struct_AVIOContext
+   else:
+    struct_AVIOContext_1644167877)
+  struct_AVOption_1644167659 = (when declared(struct_AVOption):
+    struct_AVOption
+   else:
+    struct_AVOption_1644167658)
+  enum_AVRounding_1644167685 = (when declared(enum_AVRounding):
+    enum_AVRounding
+   else:
+    enum_AVRounding_1644167684)
+  AVFilterChannelLayouts_1644167964 = (when declared(AVFilterChannelLayouts):
+    AVFilterChannelLayouts
+   else:
+    AVFilterChannelLayouts_1644167963)
+  struct_IO_FILE_1644168008 = (when declared(struct_IO_FILE):
+    struct_IO_FILE
+   else:
+    struct_IO_FILE_1644168007)
+  AVFilterGraphSegment_1644168000 = (when declared(AVFilterGraphSegment):
+    AVFilterGraphSegment
+   else:
+    AVFilterGraphSegment_1644167999)
+  AVFilterPadParams_1644167988 = (when declared(AVFilterPadParams):
+    AVFilterPadParams
+   else:
+    AVFilterPadParams_1644167987)
+  AVChannelCustom_1644167645 = (when declared(AVChannelCustom):
+    AVChannelCustom
+   else:
+    AVChannelCustom_1644167644)
+  AVOptionRange_1644167716 = (when declared(AVOptionRange):
+    AVOptionRange
+   else:
+    AVOptionRange_1644167715)
+  struct_AVCodecParser_1644167858 = (when declared(struct_AVCodecParser):
+    struct_AVCodecParser
+   else:
+    struct_AVCodecParser_1644167857)
+  struct_AVDictionaryEntry_1644167667 = (when declared(struct_AVDictionaryEntry):
+    struct_AVDictionaryEntry
+   else:
+    struct_AVDictionaryEntry_1644167666)
+  AVBufferRef_1644167734 = (when declared(AVBufferRef):
+    AVBufferRef
+   else:
+    AVBufferRef_1644167733)
+  struct_AVRegionOfInterest_1644167752 = (when declared(
+      struct_AVRegionOfInterest):
+    struct_AVRegionOfInterest
+   else:
+    struct_AVRegionOfInterest_1644167751)
+  struct_AVHWAccel_1644167838 = (when declared(struct_AVHWAccel):
+    struct_AVHWAccel
+   else:
+    struct_AVHWAccel_1644167837)
+  AVClass_1644167663 = (when declared(AVClass):
+    AVClass
+   else:
+    AVClass_1644167662)
+  struct_AVStream_1644167900 = (when declared(struct_AVStream):
+    struct_AVStream
+   else:
+    struct_AVStream_1644167899)
+  enum_AVColorTransferCharacteristic_1644167698 = (when declared(
+      enum_AVColorTransferCharacteristic):
+    enum_AVColorTransferCharacteristic
+   else:
+    enum_AVColorTransferCharacteristic_1644167697)
+  enum_AVPacketSideDataType_1644167808 = (when declared(
+      enum_AVPacketSideDataType):
+    enum_AVPacketSideDataType
+   else:
+    enum_AVPacketSideDataType_1644167807)
+  enum_AVClassCategory_1644167653 = (when declared(enum_AVClassCategory):
+    enum_AVClassCategory
+   else:
+    enum_AVClassCategory_1644167652)
+  AVIOInterruptCB_1644167866 = (when declared(AVIOInterruptCB):
+    AVIOInterruptCB
+   else:
+    AVIOInterruptCB_1644167865)
+  AVChannelLayout_1644167649 = (when declared(AVChannelLayout):
+    AVChannelLayout
+   else:
+    AVChannelLayout_1644167648)
+  AVOption_1644167712 = (when declared(AVOption):
+    AVOption
+   else:
+    AVOption_1644167711)
+  AVHWFramesContext_1644167768 = (when declared(AVHWFramesContext):
+    AVHWFramesContext
+   else:
+    AVHWFramesContext_1644167767)
+  enum_AVFieldOrder_1644167790 = (when declared(enum_AVFieldOrder):
+    enum_AVFieldOrder
+   else:
+    enum_AVFieldOrder_1644167789)
+  AVCPBProperties_1644167802 = (when declared(AVCPBProperties):
+    AVCPBProperties
+   else:
+    AVCPBProperties_1644167801)
+  struct_AVHWDeviceContext_1644167762 = (when declared(struct_AVHWDeviceContext):
+    struct_AVHWDeviceContext
+   else:
+    struct_AVHWDeviceContext_1644167761)
+  AVFilterParams_1644167992 = (when declared(AVFilterParams):
+    AVFilterParams
+   else:
+    AVFilterParams_1644167991)
+  struct_AVCodecHWConfig_1644167786 = (when declared(struct_AVCodecHWConfig):
+    struct_AVCodecHWConfig
+   else:
+    struct_AVCodecHWConfig_1644167785)
+  enum_AVMediaType_1644167677 = (when declared(enum_AVMediaType):
+    enum_AVMediaType
+   else:
+    enum_AVMediaType_1644167676)
+  enum_AVColorPrimaries_1644167696 = (when declared(enum_AVColorPrimaries):
+    enum_AVColorPrimaries
+   else:
+    enum_AVColorPrimaries_1644167695)
+  SwsVector_1644167938 = (when declared(SwsVector):
+    SwsVector
+   else:
+    SwsVector_1644167937)
+  AVFilterFormatsConfig_1644167974 = (when declared(AVFilterFormatsConfig):
+    AVFilterFormatsConfig
+   else:
+    AVFilterFormatsConfig_1644167973)
+  AVSubtitle_1644167852 = (when declared(AVSubtitle):
+    AVSubtitle
+   else:
+    AVSubtitle_1644167851)
+  struct_RcOverride_1644167832 = (when declared(struct_RcOverride):
+    struct_RcOverride
+   else:
+    struct_RcOverride_1644167831)
+  enum_AVPixelFormat_1644167687 = (when declared(enum_AVPixelFormat):
+    enum_AVPixelFormat
+   else:
+    enum_AVPixelFormat_1644167686)
+  enum_AVOptionType_1644167706 = (when declared(enum_AVOptionType):
+    enum_AVOptionType
+   else:
+    enum_AVOptionType_1644167705)
+  struct_AVOptionRange_1644167714 = (when declared(struct_AVOptionRange):
+    struct_AVOptionRange
+   else:
+    struct_AVOptionRange_1644167713)
+  union_av_intfloat64_1644167683 = (when declared(union_av_intfloat64):
+    union_av_intfloat64
+   else:
+    union_av_intfloat64_1644167682)
+  struct_AVProbeData_1644167882 = (when declared(struct_AVProbeData):
+    struct_AVProbeData
+   else:
+    struct_AVProbeData_1644167881)
+  avfilter_execute_func_1644167978 = (when declared(avfilter_execute_func):
+    avfilter_execute_func
+   else:
+    avfilter_execute_func_1644167977)
+  struct_AVCodecParserContext_1644167856 = (when declared(
+      struct_AVCodecParserContext):
+    struct_AVCodecParserContext
+   else:
+    struct_AVCodecParserContext_1644167855)
+  AVIODirEntry_1644167872 = (when declared(AVIODirEntry):
+    AVIODirEntry
+   else:
+    AVIODirEntry_1644167871)
+  enum_AVDiscard_1644167792 = (when declared(enum_AVDiscard):
+    enum_AVDiscard
+   else:
+    enum_AVDiscard_1644167791)
+  struct_AVPacketList_1644167818 = (when declared(struct_AVPacketList):
+    struct_AVPacketList
+   else:
+    struct_AVPacketList_1644167817)
+  AVSideDataDescriptor_1644167750 = (when declared(AVSideDataDescriptor):
+    AVSideDataDescriptor
+   else:
+    AVSideDataDescriptor_1644167749)
+  AVInputFormat_1644167892 = (when declared(AVInputFormat):
+    AVInputFormat
+   else:
+    AVInputFormat_1644167891)
+  AVCodec_1644167784 = (when declared(AVCodec):
+    AVCodec
+   else:
+    AVCodec_1644167783)
+  AVClassCategory_1644167655 = (when declared(AVClassCategory):
+    AVClassCategory
+   else:
+    AVClassCategory_1644167654)
+  struct_AVFrameSideData_1644167742 = (when declared(struct_AVFrameSideData):
+    struct_AVFrameSideData
+   else:
+    struct_AVFrameSideData_1644167741)
+  struct_AVFilterGraph_1644167970 = (when declared(struct_AVFilterGraph):
+    struct_AVFilterGraph
+   else:
+    struct_AVFilterGraph_1644167969)
+  enum_SwrDitherType_1644167944 = (when declared(enum_SwrDitherType):
+    enum_SwrDitherType
+   else:
+    enum_SwrDitherType_1644167943)
+  AVCodecParserContext_1644167860 = (when declared(AVCodecParserContext):
+    AVCodecParserContext
+   else:
+    AVCodecParserContext_1644167859)
+  struct_AVStreamGroup_1644167910 = (when declared(struct_AVStreamGroup):
+    struct_AVStreamGroup
+   else:
+    struct_AVStreamGroup_1644167909)
+  enum_AVIODirEntryType_1644167868 = (when declared(enum_AVIODirEntryType):
+    enum_AVIODirEntryType
+   else:
+    enum_AVIODirEntryType_1644167867)
+  AVFilterInOut_1644167984 = (when declared(AVFilterInOut):
+    AVFilterInOut
+   else:
+    AVFilterInOut_1644167983)
+  AVCodecHWConfig_1644167788 = (when declared(AVCodecHWConfig):
+    AVCodecHWConfig
+   else:
+    AVCodecHWConfig_1644167787)
+  struct_AVCodecDescriptor_1644167824 = (when declared(struct_AVCodecDescriptor):
+    struct_AVCodecDescriptor
+   else:
+    struct_AVCodecDescriptor_1644167823)
+  struct_AVFilterPadParams_1644167986 = (when declared(struct_AVFilterPadParams):
+    struct_AVFilterPadParams
+   else:
+    struct_AVFilterPadParams_1644167985)
+  AVDictionary_1644167671 = (when declared(AVDictionary):
+    AVDictionary
+   else:
+    AVDictionary_1644167670)
+  enum_AVSubtitleType_1644167844 = (when declared(enum_AVSubtitleType):
+    enum_AVSubtitleType
+   else:
+    enum_AVSubtitleType_1644167843)
+  enum_AVAudioServiceType_1644167794 = (when declared(enum_AVAudioServiceType):
+    enum_AVAudioServiceType
+   else:
+    enum_AVAudioServiceType_1644167793)
+  av_format_control_message_1644167922 = (when declared(
+      av_format_control_message):
+    av_format_control_message
+   else:
+    av_format_control_message_1644167921)
+  FILE_1644167932 = (when declared(FILE):
+    FILE
+   else:
+    FILE_1644167931)
+  struct_AVFrame_1644167756 = (when declared(struct_AVFrame):
+    struct_AVFrame
+   else:
+    struct_AVFrame_1644167755)
+  enum_AVChromaLocation_1644167704 = (when declared(enum_AVChromaLocation):
+    enum_AVChromaLocation
+   else:
+    enum_AVChromaLocation_1644167703)
+  struct_AVCodecParameters_1644167828 = (when declared(struct_AVCodecParameters):
+    struct_AVCodecParameters
+   else:
+    struct_AVCodecParameters_1644167827)
+  AVSubtitleRect_1644167848 = (when declared(AVSubtitleRect):
+    AVSubtitleRect
+   else:
+    AVSubtitleRect_1644167847)
+  struct_AVStreamGroupTileGrid_1644167904 = (when declared(
+      struct_AVStreamGroupTileGrid):
+    struct_AVStreamGroupTileGrid
+   else:
+    struct_AVStreamGroupTileGrid_1644167903)
+  AVFilter_1644167968 = (when declared(AVFilter):
+    AVFilter
+   else:
+    AVFilter_1644167967)
+  AVCodecParser_1644167862 = (when declared(AVCodecParser):
+    AVCodecParser
+   else:
+    AVCodecParser_1644167861)
+  compiler_gnuc_va_list_1644168006 = (when declared(compiler_gnuc_va_list):
+    compiler_gnuc_va_list
+   else:
+    compiler_gnuc_va_list_1644168005)
+  enum_AVSideDataProps_1644167746 = (when declared(enum_AVSideDataProps):
+    enum_AVSideDataProps
+   else:
+    enum_AVSideDataProps_1644167745)
+  AVDictionaryEntry_1644167669 = (when declared(AVDictionaryEntry):
+    AVDictionaryEntry
+   else:
+    AVDictionaryEntry_1644167668)
+  AVBufferSrcParameters_1644168004 = (when declared(AVBufferSrcParameters):
+    AVBufferSrcParameters
+   else:
+    AVBufferSrcParameters_1644168003)
+  avfilter_action_func_1644167976 = (when declared(avfilter_action_func):
+    avfilter_action_func
+   else:
+    avfilter_action_func_1644167975)
+  struct_AVSideDataDescriptor_1644167748 = (when declared(
+      struct_AVSideDataDescriptor):
+    struct_AVSideDataDescriptor
+   else:
+    struct_AVSideDataDescriptor_1644167747)
+  AVPacketList_1644167820 = (when declared(AVPacketList):
+    AVPacketList
+   else:
+    AVPacketList_1644167819)
+  struct_AVOptionRanges_1644167661 = (when declared(struct_AVOptionRanges):
+    struct_AVOptionRanges
+   else:
+    struct_AVOptionRanges_1644167660)
+  AVFilterGraph_1644167980 = (when declared(AVFilterGraph):
+    AVFilterGraph
+   else:
+    AVFilterGraph_1644167979)
+  struct_AVChapter_1644167918 = (when declared(struct_AVChapter):
+    struct_AVChapter
+   else:
+    struct_AVChapter_1644167917)
+  AVOptionRanges_1644167718 = (when declared(AVOptionRanges):
+    AVOptionRanges
+   else:
+    AVOptionRanges_1644167717)
+  AVHWFramesConstraints_1644167774 = (when declared(AVHWFramesConstraints):
+    AVHWFramesConstraints
+   else:
+    AVHWFramesConstraints_1644167773)
+  enum_AVMatrixEncoding_1644167641 = (when declared(enum_AVMatrixEncoding):
+    enum_AVMatrixEncoding
+   else:
+    enum_AVMatrixEncoding_1644167640)
+  AVCodecContext_1644167840 = (when declared(AVCodecContext):
+    AVCodecContext
+   else:
+    AVCodecContext_1644167839)
+  AVFrame_1644167758 = (when declared(AVFrame):
+    AVFrame
+   else:
+    AVFrame_1644167757)
+  enum_AVTimebaseSource_1644167934 = (when declared(enum_AVTimebaseSource):
+    enum_AVTimebaseSource
+   else:
+    enum_AVTimebaseSource_1644167933)
+  enum_AVSampleFormat_1644167651 = (when declared(enum_AVSampleFormat):
+    enum_AVSampleFormat
+   else:
+    enum_AVSampleFormat_1644167650)
+  AVRegionOfInterest_1644167754 = (when declared(AVRegionOfInterest):
+    AVRegionOfInterest
+   else:
+    AVRegionOfInterest_1644167753)
+  AVFormatContext_1644167930 = (when declared(AVFormatContext):
+    AVFormatContext
+   else:
+    AVFormatContext_1644167929)
+  AVHWDeviceContext_1644167764 = (when declared(AVHWDeviceContext):
+    AVHWDeviceContext
+   else:
+    AVHWDeviceContext_1644167763)
+  struct_SwsFilter_1644167940 = (when declared(struct_SwsFilter):
+    struct_SwsFilter
+   else:
+    struct_SwsFilter_1644167939)
+  struct_AVPacket_1644167814 = (when declared(struct_AVPacket):
+    struct_AVPacket
+   else:
+    struct_AVPacket_1644167813)
+  AVIODirContext_1644167874 = (when declared(AVIODirContext):
+    AVIODirContext
+   else:
+    AVIODirContext_1644167873)
+  struct_AVFilterFormatsConfig_1644167972 = (when declared(
+      struct_AVFilterFormatsConfig):
+    struct_AVFilterFormatsConfig
+   else:
+    struct_AVFilterFormatsConfig_1644167971)
+  AVPacketSideData_1644167812 = (when declared(AVPacketSideData):
+    AVPacketSideData
+   else:
+    AVPacketSideData_1644167811)
+  AVCodecParameters_1644167830 = (when declared(AVCodecParameters):
+    AVCodecParameters
+   else:
+    AVCodecParameters_1644167829)
+  enum_AVPictureType_1644167679 = (when declared(enum_AVPictureType):
+    enum_AVPictureType
+   else:
+    enum_AVPictureType_1644167678)
+  AVPixFmtDescriptor_1644167726 = (when declared(AVPixFmtDescriptor):
+    AVPixFmtDescriptor
+   else:
+    AVPixFmtDescriptor_1644167725)
+  struct_AVBufferRef_1644167732 = (when declared(struct_AVBufferRef):
+    struct_AVBufferRef
+   else:
+    struct_AVBufferRef_1644167731)
+  struct_AVChannelLayout_1644167647 = (when declared(struct_AVChannelLayout):
+    struct_AVChannelLayout
+   else:
+    struct_AVChannelLayout_1644167646)
+  struct_AVSubtitle_1644167850 = (when declared(struct_AVSubtitle):
+    struct_AVSubtitle
+   else:
+    struct_AVSubtitle_1644167849)
+  enum_AVColorSpace_1644167700 = (when declared(enum_AVColorSpace):
+    enum_AVColorSpace
+   else:
+    enum_AVColorSpace_1644167699)
+  struct_AVHWFramesConstraints_1644167772 = (when declared(
+      struct_AVHWFramesConstraints):
+    struct_AVHWFramesConstraints
+   else:
+    struct_AVHWFramesConstraints_1644167771)
+  struct_AVOptionArrayDef_1644167708 = (when declared(struct_AVOptionArrayDef):
+    struct_AVOptionArrayDef
+   else:
+    struct_AVOptionArrayDef_1644167707)
+  AVOptionArrayDef_1644167710 = (when declared(AVOptionArrayDef):
+    AVOptionArrayDef
+   else:
+    AVOptionArrayDef_1644167709)
+  struct_AVOutputFormat_1644167886 = (when declared(struct_AVOutputFormat):
+    struct_AVOutputFormat
+   else:
+    struct_AVOutputFormat_1644167885)
+  struct_SwsVector_1644167936 = (when declared(struct_SwsVector):
+    struct_SwsVector
+   else:
+    struct_SwsVector_1644167935)
+  AVPacket_1644167816 = (when declared(AVPacket):
+    AVPacket
+   else:
+    AVPacket_1644167815)
+  struct_AVIOInterruptCB_1644167864 = (when declared(struct_AVIOInterruptCB):
+    struct_AVIOInterruptCB
+   else:
+    struct_AVIOInterruptCB_1644167863)
+  compiler_off_t_1644168010 = (when declared(compiler_off_t):
+    compiler_off_t
+   else:
+    compiler_off_t_1644168009)
+  struct_AVPanScan_1644167796 = (when declared(struct_AVPanScan):
+    struct_AVPanScan
+   else:
+    struct_AVPanScan_1644167795)
+  struct_AVCodec_1644167782 = (when declared(struct_AVCodec):
+    struct_AVCodec
+   else:
+    struct_AVCodec_1644167781)
+  struct_AVCodecContext_1644167836 = (when declared(struct_AVCodecContext):
+    struct_AVCodecContext
+   else:
+    struct_AVCodecContext_1644167835)
+  enum_AVChannelOrder_1644167639 = (when declared(enum_AVChannelOrder):
+    enum_AVChannelOrder
+   else:
+    enum_AVChannelOrder_1644167638)
+  AVPanScan_1644167798 = (when declared(AVPanScan):
+    AVPanScan
+   else:
+    AVPanScan_1644167797)
+  AVHWAccel_1644167842 = (when declared(AVHWAccel):
+    AVHWAccel
+   else:
+    AVHWAccel_1644167841)
+  struct_AVClass_1644167657 = (when declared(struct_AVClass):
+    struct_AVClass
+   else:
+    struct_AVClass_1644167656)
+  enum_AVPictureStructure_1644167854 = (when declared(enum_AVPictureStructure):
+    enum_AVPictureStructure
+   else:
+    enum_AVPictureStructure_1644167853)
+  ptrdiff_t_1644167728 = (when declared(ptrdiff_t):
+    ptrdiff_t
+   else:
+    ptrdiff_t_1644167727)
+  AVFilterContext_1644167952 = (when declared(AVFilterContext):
+    AVFilterContext
+   else:
+    AVFilterContext_1644167951)
+  struct_AVIODirEntry_1644167870 = (when declared(struct_AVIODirEntry):
+    struct_AVIODirEntry
+   else:
+    struct_AVIODirEntry_1644167869)
+  enum_AVActiveFormatDescription_1644167740 = (when declared(
+      enum_AVActiveFormatDescription):
+    enum_AVActiveFormatDescription
+   else:
+    enum_AVActiveFormatDescription_1644167739)
+  va_list_1644167665 = (when declared(va_list):
+    va_list
+   else:
+    va_list_1644167664)
+  AVFrameSideData_1644167744 = (when declared(AVFrameSideData):
+    AVFrameSideData
+   else:
+    AVFrameSideData_1644167743)
+  struct_AVComponentDescriptor_1644167720 = (when declared(
+      struct_AVComponentDescriptor):
+    struct_AVComponentDescriptor
+   else:
+    struct_AVComponentDescriptor_1644167719)
+  struct_AVFilterGraphSegment_1644167998 = (when declared(
+      struct_AVFilterGraphSegment):
+    struct_AVFilterGraphSegment
+   else:
+    struct_AVFilterGraphSegment_1644167997)
+  AVProbeData_1644167884 = (when declared(AVProbeData):
+    AVProbeData
+   else:
+    AVProbeData_1644167883)
+  enum_AVStreamGroupParamsType_1644167908 = (when declared(
+      enum_AVStreamGroupParamsType):
+    enum_AVStreamGroupParamsType
+   else:
+    enum_AVStreamGroupParamsType_1644167907)
+  RcOverride_1644167834 = (when declared(RcOverride):
+    RcOverride
+   else:
+    RcOverride_1644167833)
+  AVOutputFormat_1644167888 = (when declared(AVOutputFormat):
+    AVOutputFormat
+   else:
+    AVOutputFormat_1644167887)
+  struct_AVProfile_1644167778 = (when declared(struct_AVProfile):
+    struct_AVProfile
+   else:
+    struct_AVProfile_1644167777)
+  struct_AVPixFmtDescriptor_1644167724 = (when declared(
+      struct_AVPixFmtDescriptor):
+    struct_AVPixFmtDescriptor
+   else:
+    struct_AVPixFmtDescriptor_1644167723)
+  struct_AVFilterChain_1644167994 = (when declared(struct_AVFilterChain):
+    struct_AVFilterChain
+   else:
+    struct_AVFilterChain_1644167993)
+  struct_AVFilterContext_1644167954 = (when declared(struct_AVFilterContext):
+    struct_AVFilterContext
+   else:
+    struct_AVFilterContext_1644167953)
+  AVComponentDescriptor_1644167722 = (when declared(AVComponentDescriptor):
+    AVComponentDescriptor
+   else:
+    AVComponentDescriptor_1644167721)
+  AVBuffer_1644167730 = (when declared(AVBuffer):
+    AVBuffer
+   else:
+    AVBuffer_1644167729)
+  struct_AVFilter_1644167966 = (when declared(struct_AVFilter):
+    struct_AVFilter
+   else:
+    struct_AVFilter_1644167965)
+  enum_AVHWDeviceType_1644167760 = (when declared(enum_AVHWDeviceType):
+    enum_AVHWDeviceType
+   else:
+    enum_AVHWDeviceType_1644167759)
+  struct_AVProducerReferenceTime_1644167804 = (when declared(
+      struct_AVProducerReferenceTime):
+    struct_AVProducerReferenceTime
+   else:
+    struct_AVProducerReferenceTime_1644167803)
+  AVStreamGroupTileGrid_1644167906 = (when declared(AVStreamGroupTileGrid):
+    AVStreamGroupTileGrid
+   else:
+    AVStreamGroupTileGrid_1644167905)
+  AVProgram_1644167916 = (when declared(AVProgram):
+    AVProgram
+   else:
+    AVProgram_1644167915)
+  enum_AVHWFrameTransferDirection_1644167770 = (when declared(
+      enum_AVHWFrameTransferDirection):
+    enum_AVHWFrameTransferDirection
+   else:
+    enum_AVHWFrameTransferDirection_1644167769)
+  AVStream_1644167902 = (when declared(AVStream):
+    AVStream
+   else:
+    AVStream_1644167901)
+  struct_AVCPBProperties_1644167800 = (when declared(struct_AVCPBProperties):
+    struct_AVCPBProperties
+   else:
+    struct_AVCPBProperties_1644167799)
+  AVOpenCallback_1644167926 = (when declared(AVOpenCallback):
+    AVOpenCallback
+   else:
+    AVOpenCallback_1644167925)
+when not declared(SwrContext):
+  type
+    SwrContext* = SwrContext_1644167949
+else:
+  static :
+    hint("Declaration of " & "SwrContext" & " already exists, not redeclaring")
+when not declared(struct_AVFilterLink):
+  type
+    struct_AVFilterLink* = struct_AVFilterLink_1644167957
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterLink" &
+        " already exists, not redeclaring")
+when not declared(SwsFilter):
+  type
+    SwsFilter* = SwsFilter_1644167941
+else:
+  static :
+    hint("Declaration of " & "SwsFilter" & " already exists, not redeclaring")
+when not declared(AVIOContext):
+  type
+    AVIOContext* = AVIOContext_1644167879
+else:
+  static :
+    hint("Declaration of " & "AVIOContext" & " already exists, not redeclaring")
+when not declared(struct_AVInputFormat):
+  type
+    struct_AVInputFormat* = struct_AVInputFormat_1644167889
+else:
+  static :
+    hint("Declaration of " & "struct_AVInputFormat" &
+        " already exists, not redeclaring")
+when not declared(AVFilterChain):
+  type
+    AVFilterChain* = AVFilterChain_1644167995
+else:
+  static :
+    hint("Declaration of " & "AVFilterChain" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterParams):
+  type
+    struct_AVFilterParams* = struct_AVFilterParams_1644167989
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterParams" &
+        " already exists, not redeclaring")
+when not declared(AVFilterFormats):
+  type
+    AVFilterFormats* = AVFilterFormats_1644167961
+else:
+  static :
+    hint("Declaration of " & "AVFilterFormats" &
+        " already exists, not redeclaring")
+when not declared(AVBufferPool):
+  type
+    AVBufferPool* = AVBufferPool_1644167735
+else:
+  static :
+    hint("Declaration of " & "AVBufferPool" & " already exists, not redeclaring")
+when not declared(struct_AVFilterInOut):
+  type
+    struct_AVFilterInOut* = struct_AVFilterInOut_1644167981
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterInOut" &
+        " already exists, not redeclaring")
+when not declared(struct_AVPacketSideData):
+  type
+    struct_AVPacketSideData* = struct_AVPacketSideData_1644167809
+else:
+  static :
+    hint("Declaration of " & "struct_AVPacketSideData" &
+        " already exists, not redeclaring")
+when not declared(AVIndexEntry):
+  type
+    AVIndexEntry* = AVIndexEntry_1644167897
+else:
+  static :
+    hint("Declaration of " & "AVIndexEntry" & " already exists, not redeclaring")
+when not declared(struct_AVSubtitleRect):
+  type
+    struct_AVSubtitleRect* = struct_AVSubtitleRect_1644167845
+else:
+  static :
+    hint("Declaration of " & "struct_AVSubtitleRect" &
+        " already exists, not redeclaring")
+when not declared(AVProfile):
+  type
+    AVProfile* = AVProfile_1644167779
+else:
+  static :
+    hint("Declaration of " & "AVProfile" & " already exists, not redeclaring")
+when not declared(compiler_off64_t):
+  type
+    compiler_off64_t* = compiler_off64_t_1644168013
+else:
+  static :
+    hint("Declaration of " & "compiler_off64_t" &
+        " already exists, not redeclaring")
+when not declared(AVRational):
+  type
+    AVRational* = AVRational_1644167674
+else:
+  static :
+    hint("Declaration of " & "AVRational" & " already exists, not redeclaring")
+when not declared(AVCodecDescriptor):
+  type
+    AVCodecDescriptor* = AVCodecDescriptor_1644167825
+else:
+  static :
+    hint("Declaration of " & "AVCodecDescriptor" &
+        " already exists, not redeclaring")
+when not declared(AVChapter):
+  type
+    AVChapter* = AVChapter_1644167919
+else:
+  static :
+    hint("Declaration of " & "AVChapter" & " already exists, not redeclaring")
+when not declared(struct_AVBufferSrcParameters):
+  type
+    struct_AVBufferSrcParameters* = struct_AVBufferSrcParameters_1644168001
+else:
+  static :
+    hint("Declaration of " & "struct_AVBufferSrcParameters" &
+        " already exists, not redeclaring")
+when not declared(struct_AVProgram):
+  type
+    struct_AVProgram* = struct_AVProgram_1644167913
+else:
+  static :
+    hint("Declaration of " & "struct_AVProgram" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFormatContext):
+  type
+    struct_AVFormatContext* = struct_AVFormatContext_1644167923
+else:
+  static :
+    hint("Declaration of " & "struct_AVFormatContext" &
+        " already exists, not redeclaring")
+when not declared(AVStreamGroup):
+  type
+    AVStreamGroup* = AVStreamGroup_1644167911
+else:
+  static :
+    hint("Declaration of " & "AVStreamGroup" &
+        " already exists, not redeclaring")
+when not declared(struct_AVChannelCustom):
+  type
+    struct_AVChannelCustom* = struct_AVChannelCustom_1644167642
+else:
+  static :
+    hint("Declaration of " & "struct_AVChannelCustom" &
+        " already exists, not redeclaring")
+when not declared(AVFilterLink):
+  type
+    AVFilterLink* = AVFilterLink_1644167955
+else:
+  static :
+    hint("Declaration of " & "AVFilterLink" & " already exists, not redeclaring")
+when not declared(AVProducerReferenceTime):
+  type
+    AVProducerReferenceTime* = AVProducerReferenceTime_1644167805
+else:
+  static :
+    hint("Declaration of " & "AVProducerReferenceTime" &
+        " already exists, not redeclaring")
+when not declared(union_av_intfloat32):
+  type
+    union_av_intfloat32* = union_av_intfloat32_1644167680
+else:
+  static :
+    hint("Declaration of " & "union_av_intfloat32" &
+        " already exists, not redeclaring")
+when not declared(struct_AVIndexEntry):
+  type
+    struct_AVIndexEntry* = struct_AVIndexEntry_1644167895
+else:
+  static :
+    hint("Declaration of " & "struct_AVIndexEntry" &
+        " already exists, not redeclaring")
+when not declared(AVFilterPad):
+  type
+    AVFilterPad* = AVFilterPad_1644167959
+else:
+  static :
+    hint("Declaration of " & "AVFilterPad" & " already exists, not redeclaring")
+when not declared(struct_AVHWFramesContext):
+  type
+    struct_AVHWFramesContext* = struct_AVHWFramesContext_1644167765
+else:
+  static :
+    hint("Declaration of " & "struct_AVHWFramesContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVRational):
+  type
+    struct_AVRational* = struct_AVRational_1644167672
+else:
+  static :
+    hint("Declaration of " & "struct_AVRational" &
+        " already exists, not redeclaring")
+when not declared(struct_AVIOContext):
+  type
+    struct_AVIOContext* = struct_AVIOContext_1644167877
+else:
+  static :
+    hint("Declaration of " & "struct_AVIOContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVOption):
+  type
+    struct_AVOption* = struct_AVOption_1644167658
+else:
+  static :
+    hint("Declaration of " & "struct_AVOption" &
+        " already exists, not redeclaring")
+when not declared(AVFilterChannelLayouts):
+  type
+    AVFilterChannelLayouts* = AVFilterChannelLayouts_1644167963
+else:
+  static :
+    hint("Declaration of " & "AVFilterChannelLayouts" &
+        " already exists, not redeclaring")
+when not declared(struct_IO_FILE):
+  type
+    struct_IO_FILE* = struct_IO_FILE_1644168007
+else:
+  static :
+    hint("Declaration of " & "struct_IO_FILE" &
+        " already exists, not redeclaring")
+when not declared(AVFilterGraphSegment):
+  type
+    AVFilterGraphSegment* = AVFilterGraphSegment_1644167999
+else:
+  static :
+    hint("Declaration of " & "AVFilterGraphSegment" &
+        " already exists, not redeclaring")
+when not declared(AVFilterPadParams):
+  type
+    AVFilterPadParams* = AVFilterPadParams_1644167987
+else:
+  static :
+    hint("Declaration of " & "AVFilterPadParams" &
+        " already exists, not redeclaring")
+when not declared(AVChannelCustom):
+  type
+    AVChannelCustom* = AVChannelCustom_1644167644
+else:
+  static :
+    hint("Declaration of " & "AVChannelCustom" &
+        " already exists, not redeclaring")
+when not declared(AVOptionRange):
+  type
+    AVOptionRange* = AVOptionRange_1644167715
+else:
+  static :
+    hint("Declaration of " & "AVOptionRange" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecParser):
+  type
+    struct_AVCodecParser* = struct_AVCodecParser_1644167857
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecParser" &
+        " already exists, not redeclaring")
+when not declared(struct_AVDictionaryEntry):
+  type
+    struct_AVDictionaryEntry* = struct_AVDictionaryEntry_1644167666
+else:
+  static :
+    hint("Declaration of " & "struct_AVDictionaryEntry" &
+        " already exists, not redeclaring")
+when not declared(AVBufferRef):
+  type
+    AVBufferRef* = AVBufferRef_1644167733
+else:
+  static :
+    hint("Declaration of " & "AVBufferRef" & " already exists, not redeclaring")
+when not declared(struct_AVRegionOfInterest):
+  type
+    struct_AVRegionOfInterest* = struct_AVRegionOfInterest_1644167751
+else:
+  static :
+    hint("Declaration of " & "struct_AVRegionOfInterest" &
+        " already exists, not redeclaring")
+when not declared(struct_AVHWAccel):
+  type
+    struct_AVHWAccel* = struct_AVHWAccel_1644167837
+else:
+  static :
+    hint("Declaration of " & "struct_AVHWAccel" &
+        " already exists, not redeclaring")
+when not declared(AVClass):
+  type
+    AVClass* = AVClass_1644167662
+else:
+  static :
+    hint("Declaration of " & "AVClass" & " already exists, not redeclaring")
+when not declared(struct_AVStream):
+  type
+    struct_AVStream* = struct_AVStream_1644167899
+else:
+  static :
+    hint("Declaration of " & "struct_AVStream" &
+        " already exists, not redeclaring")
+when not declared(AVIOInterruptCB):
+  type
+    AVIOInterruptCB* = AVIOInterruptCB_1644167865
+else:
+  static :
+    hint("Declaration of " & "AVIOInterruptCB" &
+        " already exists, not redeclaring")
+when not declared(AVChannelLayout):
+  type
+    AVChannelLayout* = AVChannelLayout_1644167648
+else:
+  static :
+    hint("Declaration of " & "AVChannelLayout" &
+        " already exists, not redeclaring")
+when not declared(AVOption):
+  type
+    AVOption* = AVOption_1644167711
+else:
+  static :
+    hint("Declaration of " & "AVOption" & " already exists, not redeclaring")
+when not declared(AVHWFramesContext):
+  type
+    AVHWFramesContext* = AVHWFramesContext_1644167767
+else:
+  static :
+    hint("Declaration of " & "AVHWFramesContext" &
+        " already exists, not redeclaring")
+when not declared(AVCPBProperties):
+  type
+    AVCPBProperties* = AVCPBProperties_1644167801
+else:
+  static :
+    hint("Declaration of " & "AVCPBProperties" &
+        " already exists, not redeclaring")
+when not declared(struct_AVHWDeviceContext):
+  type
+    struct_AVHWDeviceContext* = struct_AVHWDeviceContext_1644167761
+else:
+  static :
+    hint("Declaration of " & "struct_AVHWDeviceContext" &
+        " already exists, not redeclaring")
+when not declared(AVFilterParams):
+  type
+    AVFilterParams* = AVFilterParams_1644167991
+else:
+  static :
+    hint("Declaration of " & "AVFilterParams" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecHWConfig):
+  type
+    struct_AVCodecHWConfig* = struct_AVCodecHWConfig_1644167785
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecHWConfig" &
+        " already exists, not redeclaring")
+when not declared(SwsVector):
+  type
+    SwsVector* = SwsVector_1644167937
+else:
+  static :
+    hint("Declaration of " & "SwsVector" & " already exists, not redeclaring")
+when not declared(AVFilterFormatsConfig):
+  type
+    AVFilterFormatsConfig* = AVFilterFormatsConfig_1644167973
+else:
+  static :
+    hint("Declaration of " & "AVFilterFormatsConfig" &
+        " already exists, not redeclaring")
+when not declared(AVSubtitle):
+  type
+    AVSubtitle* = AVSubtitle_1644167851
+else:
+  static :
+    hint("Declaration of " & "AVSubtitle" & " already exists, not redeclaring")
+when not declared(struct_RcOverride):
+  type
+    struct_RcOverride* = struct_RcOverride_1644167831
+else:
+  static :
+    hint("Declaration of " & "struct_RcOverride" &
+        " already exists, not redeclaring")
+when not declared(struct_AVOptionRange):
+  type
+    struct_AVOptionRange* = struct_AVOptionRange_1644167713
+else:
+  static :
+    hint("Declaration of " & "struct_AVOptionRange" &
+        " already exists, not redeclaring")
+when not declared(union_av_intfloat64):
+  type
+    union_av_intfloat64* = union_av_intfloat64_1644167682
+else:
+  static :
+    hint("Declaration of " & "union_av_intfloat64" &
+        " already exists, not redeclaring")
+when not declared(struct_AVProbeData):
+  type
+    struct_AVProbeData* = struct_AVProbeData_1644167881
+else:
+  static :
+    hint("Declaration of " & "struct_AVProbeData" &
+        " already exists, not redeclaring")
+when not declared(avfilter_execute_func):
+  type
+    avfilter_execute_func* = avfilter_execute_func_1644167977
+else:
+  static :
+    hint("Declaration of " & "avfilter_execute_func" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecParserContext):
+  type
+    struct_AVCodecParserContext* = struct_AVCodecParserContext_1644167855
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecParserContext" &
+        " already exists, not redeclaring")
+when not declared(AVIODirEntry):
+  type
+    AVIODirEntry* = AVIODirEntry_1644167871
+else:
+  static :
+    hint("Declaration of " & "AVIODirEntry" & " already exists, not redeclaring")
+when not declared(struct_AVPacketList):
+  type
+    struct_AVPacketList* = struct_AVPacketList_1644167817
+else:
+  static :
+    hint("Declaration of " & "struct_AVPacketList" &
+        " already exists, not redeclaring")
+when not declared(AVSideDataDescriptor):
+  type
+    AVSideDataDescriptor* = AVSideDataDescriptor_1644167749
+else:
+  static :
+    hint("Declaration of " & "AVSideDataDescriptor" &
+        " already exists, not redeclaring")
+when not declared(AVInputFormat):
+  type
+    AVInputFormat* = AVInputFormat_1644167891
+else:
+  static :
+    hint("Declaration of " & "AVInputFormat" &
+        " already exists, not redeclaring")
+when not declared(AVCodec):
+  type
+    AVCodec* = AVCodec_1644167783
+else:
+  static :
+    hint("Declaration of " & "AVCodec" & " already exists, not redeclaring")
+when not declared(AVClassCategory):
+  type
+    AVClassCategory* = AVClassCategory_1644167654
+else:
+  static :
+    hint("Declaration of " & "AVClassCategory" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFrameSideData):
+  type
+    struct_AVFrameSideData* = struct_AVFrameSideData_1644167741
+else:
+  static :
+    hint("Declaration of " & "struct_AVFrameSideData" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterGraph):
+  type
+    struct_AVFilterGraph* = struct_AVFilterGraph_1644167969
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterGraph" &
+        " already exists, not redeclaring")
+when not declared(AVCodecParserContext):
+  type
+    AVCodecParserContext* = AVCodecParserContext_1644167859
+else:
+  static :
+    hint("Declaration of " & "AVCodecParserContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVStreamGroup):
+  type
+    struct_AVStreamGroup* = struct_AVStreamGroup_1644167909
+else:
+  static :
+    hint("Declaration of " & "struct_AVStreamGroup" &
+        " already exists, not redeclaring")
+when not declared(AVFilterInOut):
+  type
+    AVFilterInOut* = AVFilterInOut_1644167983
+else:
+  static :
+    hint("Declaration of " & "AVFilterInOut" &
+        " already exists, not redeclaring")
+when not declared(AVCodecHWConfig):
+  type
+    AVCodecHWConfig* = AVCodecHWConfig_1644167787
+else:
+  static :
+    hint("Declaration of " & "AVCodecHWConfig" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecDescriptor):
+  type
+    struct_AVCodecDescriptor* = struct_AVCodecDescriptor_1644167823
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecDescriptor" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterPadParams):
+  type
+    struct_AVFilterPadParams* = struct_AVFilterPadParams_1644167985
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterPadParams" &
+        " already exists, not redeclaring")
+when not declared(AVDictionary):
+  type
+    AVDictionary* = AVDictionary_1644167670
+else:
+  static :
+    hint("Declaration of " & "AVDictionary" & " already exists, not redeclaring")
+when not declared(av_format_control_message):
+  type
+    av_format_control_message* = av_format_control_message_1644167921
+else:
+  static :
+    hint("Declaration of " & "av_format_control_message" &
+        " already exists, not redeclaring")
+when not declared(FILE):
+  type
+    FILE* = FILE_1644167931
+else:
+  static :
+    hint("Declaration of " & "FILE" & " already exists, not redeclaring")
+when not declared(struct_AVFrame):
+  type
+    struct_AVFrame* = struct_AVFrame_1644167755
+else:
+  static :
+    hint("Declaration of " & "struct_AVFrame" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecParameters):
+  type
+    struct_AVCodecParameters* = struct_AVCodecParameters_1644167827
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecParameters" &
+        " already exists, not redeclaring")
+when not declared(AVSubtitleRect):
+  type
+    AVSubtitleRect* = AVSubtitleRect_1644167847
+else:
+  static :
+    hint("Declaration of " & "AVSubtitleRect" &
+        " already exists, not redeclaring")
+when not declared(struct_AVStreamGroupTileGrid):
+  type
+    struct_AVStreamGroupTileGrid* = struct_AVStreamGroupTileGrid_1644167903
+else:
+  static :
+    hint("Declaration of " & "struct_AVStreamGroupTileGrid" &
+        " already exists, not redeclaring")
+when not declared(AVFilter):
+  type
+    AVFilter* = AVFilter_1644167967
+else:
+  static :
+    hint("Declaration of " & "AVFilter" & " already exists, not redeclaring")
+when not declared(AVCodecParser):
+  type
+    AVCodecParser* = AVCodecParser_1644167861
+else:
+  static :
+    hint("Declaration of " & "AVCodecParser" &
+        " already exists, not redeclaring")
+when not declared(compiler_gnuc_va_list):
+  type
+    compiler_gnuc_va_list* = compiler_gnuc_va_list_1644168005
+else:
+  static :
+    hint("Declaration of " & "compiler_gnuc_va_list" &
+        " already exists, not redeclaring")
+when not declared(AVDictionaryEntry):
+  type
+    AVDictionaryEntry* = AVDictionaryEntry_1644167668
+else:
+  static :
+    hint("Declaration of " & "AVDictionaryEntry" &
+        " already exists, not redeclaring")
+when not declared(AVBufferSrcParameters):
+  type
+    AVBufferSrcParameters* = AVBufferSrcParameters_1644168003
+else:
+  static :
+    hint("Declaration of " & "AVBufferSrcParameters" &
+        " already exists, not redeclaring")
+when not declared(avfilter_action_func):
+  type
+    avfilter_action_func* = avfilter_action_func_1644167975
+else:
+  static :
+    hint("Declaration of " & "avfilter_action_func" &
+        " already exists, not redeclaring")
+when not declared(struct_AVSideDataDescriptor):
+  type
+    struct_AVSideDataDescriptor* = struct_AVSideDataDescriptor_1644167747
+else:
+  static :
+    hint("Declaration of " & "struct_AVSideDataDescriptor" &
+        " already exists, not redeclaring")
+when not declared(AVPacketList):
+  type
+    AVPacketList* = AVPacketList_1644167819
+else:
+  static :
+    hint("Declaration of " & "AVPacketList" & " already exists, not redeclaring")
+when not declared(struct_AVOptionRanges):
+  type
+    struct_AVOptionRanges* = struct_AVOptionRanges_1644167660
+else:
+  static :
+    hint("Declaration of " & "struct_AVOptionRanges" &
+        " already exists, not redeclaring")
+when not declared(AVFilterGraph):
+  type
+    AVFilterGraph* = AVFilterGraph_1644167979
+else:
+  static :
+    hint("Declaration of " & "AVFilterGraph" &
+        " already exists, not redeclaring")
+when not declared(struct_AVChapter):
+  type
+    struct_AVChapter* = struct_AVChapter_1644167917
+else:
+  static :
+    hint("Declaration of " & "struct_AVChapter" &
+        " already exists, not redeclaring")
+when not declared(AVOptionRanges):
+  type
+    AVOptionRanges* = AVOptionRanges_1644167717
+else:
+  static :
+    hint("Declaration of " & "AVOptionRanges" &
+        " already exists, not redeclaring")
+when not declared(AVHWFramesConstraints):
+  type
+    AVHWFramesConstraints* = AVHWFramesConstraints_1644167773
+else:
+  static :
+    hint("Declaration of " & "AVHWFramesConstraints" &
+        " already exists, not redeclaring")
+when not declared(AVCodecContext):
+  type
+    AVCodecContext* = AVCodecContext_1644167839
+else:
+  static :
+    hint("Declaration of " & "AVCodecContext" &
+        " already exists, not redeclaring")
+when not declared(AVFrame):
+  type
+    AVFrame* = AVFrame_1644167757
+else:
+  static :
+    hint("Declaration of " & "AVFrame" & " already exists, not redeclaring")
+when not declared(AVRegionOfInterest):
+  type
+    AVRegionOfInterest* = AVRegionOfInterest_1644167753
+else:
+  static :
+    hint("Declaration of " & "AVRegionOfInterest" &
+        " already exists, not redeclaring")
+when not declared(AVFormatContext):
+  type
+    AVFormatContext* = AVFormatContext_1644167929
+else:
+  static :
+    hint("Declaration of " & "AVFormatContext" &
+        " already exists, not redeclaring")
+when not declared(AVHWDeviceContext):
+  type
+    AVHWDeviceContext* = AVHWDeviceContext_1644167763
+else:
+  static :
+    hint("Declaration of " & "AVHWDeviceContext" &
+        " already exists, not redeclaring")
+when not declared(struct_SwsFilter):
+  type
+    struct_SwsFilter* = struct_SwsFilter_1644167939
+else:
+  static :
+    hint("Declaration of " & "struct_SwsFilter" &
+        " already exists, not redeclaring")
+when not declared(struct_AVPacket):
+  type
+    struct_AVPacket* = struct_AVPacket_1644167813
+else:
+  static :
+    hint("Declaration of " & "struct_AVPacket" &
+        " already exists, not redeclaring")
+when not declared(AVIODirContext):
+  type
+    AVIODirContext* = AVIODirContext_1644167873
+else:
+  static :
+    hint("Declaration of " & "AVIODirContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterFormatsConfig):
+  type
+    struct_AVFilterFormatsConfig* = struct_AVFilterFormatsConfig_1644167971
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterFormatsConfig" &
+        " already exists, not redeclaring")
+when not declared(AVPacketSideData):
+  type
+    AVPacketSideData* = AVPacketSideData_1644167811
+else:
+  static :
+    hint("Declaration of " & "AVPacketSideData" &
+        " already exists, not redeclaring")
+when not declared(AVCodecParameters):
+  type
+    AVCodecParameters* = AVCodecParameters_1644167829
+else:
+  static :
+    hint("Declaration of " & "AVCodecParameters" &
+        " already exists, not redeclaring")
+when not declared(AVPixFmtDescriptor):
+  type
+    AVPixFmtDescriptor* = AVPixFmtDescriptor_1644167725
+else:
+  static :
+    hint("Declaration of " & "AVPixFmtDescriptor" &
+        " already exists, not redeclaring")
+when not declared(struct_AVBufferRef):
+  type
+    struct_AVBufferRef* = struct_AVBufferRef_1644167731
+else:
+  static :
+    hint("Declaration of " & "struct_AVBufferRef" &
+        " already exists, not redeclaring")
+when not declared(struct_AVChannelLayout):
+  type
+    struct_AVChannelLayout* = struct_AVChannelLayout_1644167646
+else:
+  static :
+    hint("Declaration of " & "struct_AVChannelLayout" &
+        " already exists, not redeclaring")
+when not declared(struct_AVSubtitle):
+  type
+    struct_AVSubtitle* = struct_AVSubtitle_1644167849
+else:
+  static :
+    hint("Declaration of " & "struct_AVSubtitle" &
+        " already exists, not redeclaring")
+when not declared(struct_AVHWFramesConstraints):
+  type
+    struct_AVHWFramesConstraints* = struct_AVHWFramesConstraints_1644167771
+else:
+  static :
+    hint("Declaration of " & "struct_AVHWFramesConstraints" &
+        " already exists, not redeclaring")
+when not declared(struct_AVOptionArrayDef):
+  type
+    struct_AVOptionArrayDef* = struct_AVOptionArrayDef_1644167707
+else:
+  static :
+    hint("Declaration of " & "struct_AVOptionArrayDef" &
+        " already exists, not redeclaring")
+when not declared(AVOptionArrayDef):
+  type
+    AVOptionArrayDef* = AVOptionArrayDef_1644167709
+else:
+  static :
+    hint("Declaration of " & "AVOptionArrayDef" &
+        " already exists, not redeclaring")
+when not declared(struct_AVOutputFormat):
+  type
+    struct_AVOutputFormat* = struct_AVOutputFormat_1644167885
+else:
+  static :
+    hint("Declaration of " & "struct_AVOutputFormat" &
+        " already exists, not redeclaring")
+when not declared(struct_SwsVector):
+  type
+    struct_SwsVector* = struct_SwsVector_1644167935
+else:
+  static :
+    hint("Declaration of " & "struct_SwsVector" &
+        " already exists, not redeclaring")
+when not declared(AVPacket):
+  type
+    AVPacket* = AVPacket_1644167815
+else:
+  static :
+    hint("Declaration of " & "AVPacket" & " already exists, not redeclaring")
+when not declared(struct_AVIOInterruptCB):
+  type
+    struct_AVIOInterruptCB* = struct_AVIOInterruptCB_1644167863
+else:
+  static :
+    hint("Declaration of " & "struct_AVIOInterruptCB" &
+        " already exists, not redeclaring")
+when not declared(compiler_off_t):
+  type
+    compiler_off_t* = compiler_off_t_1644168009
+else:
+  static :
+    hint("Declaration of " & "compiler_off_t" &
+        " already exists, not redeclaring")
+when not declared(struct_AVPanScan):
+  type
+    struct_AVPanScan* = struct_AVPanScan_1644167795
+else:
+  static :
+    hint("Declaration of " & "struct_AVPanScan" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodec):
+  type
+    struct_AVCodec* = struct_AVCodec_1644167781
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodec" &
+        " already exists, not redeclaring")
+when not declared(struct_AVCodecContext):
+  type
+    struct_AVCodecContext* = struct_AVCodecContext_1644167835
+else:
+  static :
+    hint("Declaration of " & "struct_AVCodecContext" &
+        " already exists, not redeclaring")
+when not declared(AVPanScan):
+  type
+    AVPanScan* = AVPanScan_1644167797
+else:
+  static :
+    hint("Declaration of " & "AVPanScan" & " already exists, not redeclaring")
+when not declared(AVHWAccel):
+  type
+    AVHWAccel* = AVHWAccel_1644167841
+else:
+  static :
+    hint("Declaration of " & "AVHWAccel" & " already exists, not redeclaring")
+when not declared(struct_AVClass):
+  type
+    struct_AVClass* = struct_AVClass_1644167656
+else:
+  static :
+    hint("Declaration of " & "struct_AVClass" &
+        " already exists, not redeclaring")
+when not declared(ptrdiff_t):
+  type
+    ptrdiff_t* = ptrdiff_t_1644167727
+else:
+  static :
+    hint("Declaration of " & "ptrdiff_t" & " already exists, not redeclaring")
+when not declared(AVFilterContext):
+  type
+    AVFilterContext* = AVFilterContext_1644167951
+else:
+  static :
+    hint("Declaration of " & "AVFilterContext" &
+        " already exists, not redeclaring")
+when not declared(struct_AVIODirEntry):
+  type
+    struct_AVIODirEntry* = struct_AVIODirEntry_1644167869
+else:
+  static :
+    hint("Declaration of " & "struct_AVIODirEntry" &
+        " already exists, not redeclaring")
+when not declared(va_list):
+  type
+    va_list* = va_list_1644167664
+else:
+  static :
+    hint("Declaration of " & "va_list" & " already exists, not redeclaring")
+when not declared(AVFrameSideData):
+  type
+    AVFrameSideData* = AVFrameSideData_1644167743
+else:
+  static :
+    hint("Declaration of " & "AVFrameSideData" &
+        " already exists, not redeclaring")
+when not declared(struct_AVComponentDescriptor):
+  type
+    struct_AVComponentDescriptor* = struct_AVComponentDescriptor_1644167719
+else:
+  static :
+    hint("Declaration of " & "struct_AVComponentDescriptor" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterGraphSegment):
+  type
+    struct_AVFilterGraphSegment* = struct_AVFilterGraphSegment_1644167997
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterGraphSegment" &
+        " already exists, not redeclaring")
+when not declared(AVProbeData):
+  type
+    AVProbeData* = AVProbeData_1644167883
+else:
+  static :
+    hint("Declaration of " & "AVProbeData" & " already exists, not redeclaring")
+when not declared(RcOverride):
+  type
+    RcOverride* = RcOverride_1644167833
+else:
+  static :
+    hint("Declaration of " & "RcOverride" & " already exists, not redeclaring")
+when not declared(AVOutputFormat):
+  type
+    AVOutputFormat* = AVOutputFormat_1644167887
+else:
+  static :
+    hint("Declaration of " & "AVOutputFormat" &
+        " already exists, not redeclaring")
+when not declared(struct_AVProfile):
+  type
+    struct_AVProfile* = struct_AVProfile_1644167777
+else:
+  static :
+    hint("Declaration of " & "struct_AVProfile" &
+        " already exists, not redeclaring")
+when not declared(struct_AVPixFmtDescriptor):
+  type
+    struct_AVPixFmtDescriptor* = struct_AVPixFmtDescriptor_1644167723
+else:
+  static :
+    hint("Declaration of " & "struct_AVPixFmtDescriptor" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterChain):
+  type
+    struct_AVFilterChain* = struct_AVFilterChain_1644167993
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterChain" &
+        " already exists, not redeclaring")
+when not declared(struct_AVFilterContext):
+  type
+    struct_AVFilterContext* = struct_AVFilterContext_1644167953
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilterContext" &
+        " already exists, not redeclaring")
+when not declared(AVComponentDescriptor):
+  type
+    AVComponentDescriptor* = AVComponentDescriptor_1644167721
+else:
+  static :
+    hint("Declaration of " & "AVComponentDescriptor" &
+        " already exists, not redeclaring")
+when not declared(AVBuffer):
+  type
+    AVBuffer* = AVBuffer_1644167729
+else:
+  static :
+    hint("Declaration of " & "AVBuffer" & " already exists, not redeclaring")
+when not declared(struct_AVFilter):
+  type
+    struct_AVFilter* = struct_AVFilter_1644167965
+else:
+  static :
+    hint("Declaration of " & "struct_AVFilter" &
+        " already exists, not redeclaring")
+when not declared(struct_AVProducerReferenceTime):
+  type
+    struct_AVProducerReferenceTime* = struct_AVProducerReferenceTime_1644167803
+else:
+  static :
+    hint("Declaration of " & "struct_AVProducerReferenceTime" &
+        " already exists, not redeclaring")
+when not declared(AVStreamGroupTileGrid):
+  type
+    AVStreamGroupTileGrid* = AVStreamGroupTileGrid_1644167905
+else:
+  static :
+    hint("Declaration of " & "AVStreamGroupTileGrid" &
+        " already exists, not redeclaring")
+when not declared(AVProgram):
+  type
+    AVProgram* = AVProgram_1644167915
+else:
+  static :
+    hint("Declaration of " & "AVProgram" & " already exists, not redeclaring")
+when not declared(AVStream):
+  type
+    AVStream* = AVStream_1644167901
+else:
+  static :
+    hint("Declaration of " & "AVStream" & " already exists, not redeclaring")
+when not declared(struct_AVCPBProperties):
+  type
+    struct_AVCPBProperties* = struct_AVCPBProperties_1644167799
+else:
+  static :
+    hint("Declaration of " & "struct_AVCPBProperties" &
+        " already exists, not redeclaring")
+when not declared(AVOpenCallback):
+  type
+    AVOpenCallback* = AVOpenCallback_1644167925
+else:
+  static :
+    hint("Declaration of " & "AVOpenCallback" &
+        " already exists, not redeclaring")
+when not declared(AV_ERROR_MAX_STRING_SIZE):
+  when 64 is static:
+    const
+      AV_ERROR_MAX_STRING_SIZE* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/error.h:86:9
+  else:
+    let AV_ERROR_MAX_STRING_SIZE* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/error.h:86:9
+else:
+  static :
+    hint("Declaration of " & "AV_ERROR_MAX_STRING_SIZE" &
+        " already exists, not redeclaring")
+when not declared(LIBAVUTIL_VERSION_MAJOR):
+  when 59 is static:
+    const
+      LIBAVUTIL_VERSION_MAJOR* = 59 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:81:9
+  else:
+    let LIBAVUTIL_VERSION_MAJOR* = 59 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:81:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVUTIL_VERSION_MAJOR" &
+        " already exists, not redeclaring")
+when not declared(LIBAVUTIL_VERSION_MINOR):
+  when 29 is static:
+    const
+      LIBAVUTIL_VERSION_MINOR* = 29 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:82:9
+  else:
+    let LIBAVUTIL_VERSION_MINOR* = 29 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:82:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVUTIL_VERSION_MINOR" &
+        " already exists, not redeclaring")
+when not declared(LIBAVUTIL_VERSION_MICRO):
+  when 100 is static:
+    const
+      LIBAVUTIL_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:83:9
+  else:
+    let LIBAVUTIL_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:83:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVUTIL_VERSION_MICRO" &
+        " already exists, not redeclaring")
+when not declared(LIBAVUTIL_BUILD):
+  when LIBAVUTIL_VERSION_INT is typedesc:
+    type
+      LIBAVUTIL_BUILD* = LIBAVUTIL_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:91:9
+  else:
+    when LIBAVUTIL_VERSION_INT is static:
+      const
+        LIBAVUTIL_BUILD* = LIBAVUTIL_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:91:9
+    else:
+      let LIBAVUTIL_BUILD* = LIBAVUTIL_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/version.h:91:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVUTIL_BUILD" &
+        " already exists, not redeclaring")
+when not declared(AV_CH_LAYOUT_MONO):
+  when AV_CH_FRONT_CENTER is typedesc:
+    type
+      AV_CH_LAYOUT_MONO* = AV_CH_FRONT_CENTER ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:212:9
+  else:
+    when AV_CH_FRONT_CENTER is static:
+      const
+        AV_CH_LAYOUT_MONO* = AV_CH_FRONT_CENTER ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:212:9
+    else:
+      let AV_CH_LAYOUT_MONO* = AV_CH_FRONT_CENTER ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:212:9
+else:
+  static :
+    hint("Declaration of " & "AV_CH_LAYOUT_MONO" &
+        " already exists, not redeclaring")
+when not declared(AV_CH_LAYOUT_7POINT1_TOP_BACK):
+  when AV_CH_LAYOUT_5POINT1POINT2_BACK is typedesc:
+    type
+      AV_CH_LAYOUT_7POINT1_TOP_BACK* = AV_CH_LAYOUT_5POINT1POINT2_BACK ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:250:9
+  else:
+    when AV_CH_LAYOUT_5POINT1POINT2_BACK is static:
+      const
+        AV_CH_LAYOUT_7POINT1_TOP_BACK* = AV_CH_LAYOUT_5POINT1POINT2_BACK ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:250:9
+    else:
+      let AV_CH_LAYOUT_7POINT1_TOP_BACK* = AV_CH_LAYOUT_5POINT1POINT2_BACK ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:250:9
+else:
+  static :
+    hint("Declaration of " & "AV_CH_LAYOUT_7POINT1_TOP_BACK" &
+        " already exists, not redeclaring")
+when not declared(AV_CHANNEL_LAYOUT_7POINT1_TOP_BACK):
+  when AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK is typedesc:
+    type
+      AV_CHANNEL_LAYOUT_7POINT1_TOP_BACK* = AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:424:9
+  else:
+    when AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK is static:
+      const
+        AV_CHANNEL_LAYOUT_7POINT1_TOP_BACK* = AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:424:9
+    else:
+      let AV_CHANNEL_LAYOUT_7POINT1_TOP_BACK* = AV_CHANNEL_LAYOUT_5POINT1POINT2_BACK ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/channel_layout.h:424:9
+else:
+  static :
+    hint("Declaration of " & "AV_CHANNEL_LAYOUT_7POINT1_TOP_BACK" &
+        " already exists, not redeclaring")
+when not declared(AV_LOG_QUIET):
+  when -8 is static:
+    const
+      AV_LOG_QUIET* = -8     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:162:9
+  else:
+    let AV_LOG_QUIET* = -8   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:162:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_QUIET" & " already exists, not redeclaring")
+when not declared(AV_LOG_PANIC):
+  when 0 is static:
+    const
+      AV_LOG_PANIC* = 0      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:167:9
+  else:
+    let AV_LOG_PANIC* = 0    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:167:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_PANIC" & " already exists, not redeclaring")
+when not declared(AV_LOG_FATAL):
+  when 8 is static:
+    const
+      AV_LOG_FATAL* = 8      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:174:9
+  else:
+    let AV_LOG_FATAL* = 8    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:174:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_FATAL" & " already exists, not redeclaring")
+when not declared(AV_LOG_ERROR):
+  when 16 is static:
+    const
+      AV_LOG_ERROR* = 16     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:180:9
+  else:
+    let AV_LOG_ERROR* = 16   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:180:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_ERROR" & " already exists, not redeclaring")
+when not declared(AV_LOG_WARNING):
+  when 24 is static:
+    const
+      AV_LOG_WARNING* = 24   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:186:9
+  else:
+    let AV_LOG_WARNING* = 24 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:186:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_WARNING" &
+        " already exists, not redeclaring")
+when not declared(AV_LOG_INFO):
+  when 32 is static:
+    const
+      AV_LOG_INFO* = 32      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:191:9
+  else:
+    let AV_LOG_INFO* = 32    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:191:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_INFO" & " already exists, not redeclaring")
+when not declared(AV_LOG_VERBOSE):
+  when 40 is static:
+    const
+      AV_LOG_VERBOSE* = 40   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:196:9
+  else:
+    let AV_LOG_VERBOSE* = 40 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:196:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_VERBOSE" &
+        " already exists, not redeclaring")
+when not declared(AV_LOG_DEBUG):
+  when 48 is static:
+    const
+      AV_LOG_DEBUG* = 48     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:201:9
+  else:
+    let AV_LOG_DEBUG* = 48   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:201:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_DEBUG" & " already exists, not redeclaring")
+when not declared(AV_LOG_TRACE):
+  when 56 is static:
+    const
+      AV_LOG_TRACE* = 56     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:206:9
+  else:
+    let AV_LOG_TRACE* = 56   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:206:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_TRACE" & " already exists, not redeclaring")
+when not declared(AV_LOG_SKIP_REPEATED):
+  when 1 is static:
+    const
+      AV_LOG_SKIP_REPEATED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:370:9
+  else:
+    let AV_LOG_SKIP_REPEATED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:370:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_SKIP_REPEATED" &
+        " already exists, not redeclaring")
+when not declared(AV_LOG_PRINT_LEVEL):
+  when 2 is static:
+    const
+      AV_LOG_PRINT_LEVEL* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:378:9
+  else:
+    let AV_LOG_PRINT_LEVEL* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/log.h:378:9
+else:
+  static :
+    hint("Declaration of " & "AV_LOG_PRINT_LEVEL" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_MATCH_CASE):
+  when 1 is static:
+    const
+      AV_DICT_MATCH_CASE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:74:9
+  else:
+    let AV_DICT_MATCH_CASE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:74:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_MATCH_CASE" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_IGNORE_SUFFIX):
+  when 2 is static:
+    const
+      AV_DICT_IGNORE_SUFFIX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:75:9
+  else:
+    let AV_DICT_IGNORE_SUFFIX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:75:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_IGNORE_SUFFIX" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_DONT_STRDUP_KEY):
+  when 4 is static:
+    const
+      AV_DICT_DONT_STRDUP_KEY* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:77:9
+  else:
+    let AV_DICT_DONT_STRDUP_KEY* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:77:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_DONT_STRDUP_KEY" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_DONT_STRDUP_VAL):
+  when 8 is static:
+    const
+      AV_DICT_DONT_STRDUP_VAL* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:79:9
+  else:
+    let AV_DICT_DONT_STRDUP_VAL* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:79:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_DONT_STRDUP_VAL" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_DONT_OVERWRITE):
+  when 16 is static:
+    const
+      AV_DICT_DONT_OVERWRITE* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:81:9
+  else:
+    let AV_DICT_DONT_OVERWRITE* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:81:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_DONT_OVERWRITE" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_APPEND):
+  when 32 is static:
+    const
+      AV_DICT_APPEND* = 32   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:82:9
+  else:
+    let AV_DICT_APPEND* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:82:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_APPEND" &
+        " already exists, not redeclaring")
+when not declared(AV_DICT_MULTIKEY):
+  when 64 is static:
+    const
+      AV_DICT_MULTIKEY* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:84:9
+  else:
+    let AV_DICT_MULTIKEY* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/dict.h:84:9
+else:
+  static :
+    hint("Declaration of " & "AV_DICT_MULTIKEY" &
+        " already exists, not redeclaring")
+when not declared(FF_LAMBDA_SHIFT):
+  when 7 is static:
+    const
+      FF_LAMBDA_SHIFT* = 7   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:225:9
+  else:
+    let FF_LAMBDA_SHIFT* = 7 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:225:9
+else:
+  static :
+    hint("Declaration of " & "FF_LAMBDA_SHIFT" &
+        " already exists, not redeclaring")
+when not declared(FF_QP2LAMBDA):
+  when 118 is static:
+    const
+      FF_QP2LAMBDA* = 118    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:227:9
+  else:
+    let FF_QP2LAMBDA* = 118  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:227:9
+else:
+  static :
+    hint("Declaration of " & "FF_QP2LAMBDA" & " already exists, not redeclaring")
+when not declared(FF_QUALITY_SCALE):
+  when FF_LAMBDA_SCALE is typedesc:
+    type
+      FF_QUALITY_SCALE* = FF_LAMBDA_SCALE ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:230:9
+  else:
+    when FF_LAMBDA_SCALE is static:
+      const
+        FF_QUALITY_SCALE* = FF_LAMBDA_SCALE ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:230:9
+    else:
+      let FF_QUALITY_SCALE* = FF_LAMBDA_SCALE ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:230:9
+else:
+  static :
+    hint("Declaration of " & "FF_QUALITY_SCALE" &
+        " already exists, not redeclaring")
+when not declared(AV_TIME_BASE):
+  when 1000000 is static:
+    const
+      AV_TIME_BASE* = 1000000 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:254:9
+  else:
+    let AV_TIME_BASE* = 1000000 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:254:9
+else:
+  static :
+    hint("Declaration of " & "AV_TIME_BASE" & " already exists, not redeclaring")
+when not declared(FF_CEIL_RSHIFT):
+  when AV_CEIL_RSHIFT is typedesc:
+    type
+      FF_CEIL_RSHIFT* = AV_CEIL_RSHIFT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/common.h:63:9
+  else:
+    when AV_CEIL_RSHIFT is static:
+      const
+        FF_CEIL_RSHIFT* = AV_CEIL_RSHIFT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/common.h:63:9
+    else:
+      let FF_CEIL_RSHIFT* = AV_CEIL_RSHIFT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/common.h:63:9
+else:
+  static :
+    hint("Declaration of " & "FF_CEIL_RSHIFT" &
+        " already exists, not redeclaring")
+when not declared(M_Ef):
+  when 2.718281828459045 is static:
+    const
+      M_Ef* = 2.718281828459045 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:40:9
+  else:
+    let M_Ef* = 2.718281828459045 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:40:9
+else:
+  static :
+    hint("Declaration of " & "M_Ef" & " already exists, not redeclaring")
+when not declared(M_LN2f):
+  when 0.6931471805599453 is static:
+    const
+      M_LN2f* = 0.6931471805599453 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:46:9
+  else:
+    let M_LN2f* = 0.6931471805599453 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:46:9
+else:
+  static :
+    hint("Declaration of " & "M_LN2f" & " already exists, not redeclaring")
+when not declared(M_LN10f):
+  when 2.302585092994046 is static:
+    const
+      M_LN10f* = 2.302585092994046 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:52:9
+  else:
+    let M_LN10f* = 2.302585092994046 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:52:9
+else:
+  static :
+    hint("Declaration of " & "M_LN10f" & " already exists, not redeclaring")
+when not declared(M_LOG2_10):
+  when 3.321928094887362 is static:
+    const
+      M_LOG2_10* = 3.321928094887362 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:55:9
+  else:
+    let M_LOG2_10* = 3.321928094887362 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:55:9
+else:
+  static :
+    hint("Declaration of " & "M_LOG2_10" & " already exists, not redeclaring")
+when not declared(M_LOG2_10f):
+  when 3.321928094887362 is static:
+    const
+      M_LOG2_10f* = 3.321928094887362 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:58:9
+  else:
+    let M_LOG2_10f* = 3.321928094887362 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:58:9
+else:
+  static :
+    hint("Declaration of " & "M_LOG2_10f" & " already exists, not redeclaring")
+when not declared(M_PHI):
+  when 1.618033988749895 is static:
+    const
+      M_PHI* = 1.618033988749895 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:61:9
+  else:
+    let M_PHI* = 1.618033988749895 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:61:9
+else:
+  static :
+    hint("Declaration of " & "M_PHI" & " already exists, not redeclaring")
+when not declared(M_PHIf):
+  when 1.618033988749895 is static:
+    const
+      M_PHIf* = 1.618033988749895 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:64:9
+  else:
+    let M_PHIf* = 1.618033988749895 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:64:9
+else:
+  static :
+    hint("Declaration of " & "M_PHIf" & " already exists, not redeclaring")
+when not declared(M_PIf):
+  when 3.141592653589793 is static:
+    const
+      M_PIf* = 3.141592653589793 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:70:9
+  else:
+    let M_PIf* = 3.141592653589793 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:70:9
+else:
+  static :
+    hint("Declaration of " & "M_PIf" & " already exists, not redeclaring")
+when not declared(M_PI_2f):
+  when 1.570796326794897 is static:
+    const
+      M_PI_2f* = 1.570796326794897 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:76:9
+  else:
+    let M_PI_2f* = 1.570796326794897 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:76:9
+else:
+  static :
+    hint("Declaration of " & "M_PI_2f" & " already exists, not redeclaring")
+when not declared(M_PI_4f):
+  when 0.7853981633974483 is static:
+    const
+      M_PI_4f* = 0.7853981633974483 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:82:9
+  else:
+    let M_PI_4f* = 0.7853981633974483 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:82:9
+else:
+  static :
+    hint("Declaration of " & "M_PI_4f" & " already exists, not redeclaring")
+when not declared(M_1_PIf):
+  when 0.3183098861837907 is static:
+    const
+      M_1_PIf* = 0.3183098861837907 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:88:9
+  else:
+    let M_1_PIf* = 0.3183098861837907 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:88:9
+else:
+  static :
+    hint("Declaration of " & "M_1_PIf" & " already exists, not redeclaring")
+when not declared(M_2_PIf):
+  when 0.6366197723675814 is static:
+    const
+      M_2_PIf* = 0.6366197723675814 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:94:9
+  else:
+    let M_2_PIf* = 0.6366197723675814 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:94:9
+else:
+  static :
+    hint("Declaration of " & "M_2_PIf" & " already exists, not redeclaring")
+when not declared(M_2_SQRTPIf):
+  when 1.128379167095513 is static:
+    const
+      M_2_SQRTPIf* = 1.128379167095513 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:100:9
+  else:
+    let M_2_SQRTPIf* = 1.128379167095513 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:100:9
+else:
+  static :
+    hint("Declaration of " & "M_2_SQRTPIf" & " already exists, not redeclaring")
+when not declared(M_SQRT1_2f):
+  when 0.7071067811865476 is static:
+    const
+      M_SQRT1_2f* = 0.7071067811865476 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:106:9
+  else:
+    let M_SQRT1_2f* = 0.7071067811865476 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:106:9
+else:
+  static :
+    hint("Declaration of " & "M_SQRT1_2f" & " already exists, not redeclaring")
+when not declared(M_SQRT2f):
+  when 1.414213562373095 is static:
+    const
+      M_SQRT2f* = 1.414213562373095 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:112:9
+  else:
+    let M_SQRT2f* = 1.414213562373095 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/mathematics.h:112:9
+else:
+  static :
+    hint("Declaration of " & "M_SQRT2f" & " already exists, not redeclaring")
+when not declared(AVPALETTE_SIZE):
+  when 1024 is static:
+    const
+      AVPALETTE_SIZE* = 1024 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixfmt.h:32:9
+  else:
+    let AVPALETTE_SIZE* = 1024 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixfmt.h:32:9
+else:
+  static :
+    hint("Declaration of " & "AVPALETTE_SIZE" &
+        " already exists, not redeclaring")
+when not declared(AVPALETTE_COUNT):
+  when 256 is static:
+    const
+      AVPALETTE_COUNT* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixfmt.h:33:9
+  else:
+    let AVPALETTE_COUNT* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixfmt.h:33:9
+else:
+  static :
+    hint("Declaration of " & "AVPALETTE_COUNT" &
+        " already exists, not redeclaring")
+when not declared(AV_VIDEO_MAX_PLANES):
+  when 4 is static:
+    const
+      AV_VIDEO_MAX_PLANES* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixfmt.h:40:9
+  else:
+    let AV_VIDEO_MAX_PLANES* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixfmt.h:40:9
+else:
+  static :
+    hint("Declaration of " & "AV_VIDEO_MAX_PLANES" &
+        " already exists, not redeclaring")
+when not declared(AV_FOURCC_MAX_STRING_SIZE):
+  when 32 is static:
+    const
+      AV_FOURCC_MAX_STRING_SIZE* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:343:9
+  else:
+    let AV_FOURCC_MAX_STRING_SIZE* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/avutil.h:343:9
+else:
+  static :
+    hint("Declaration of " & "AV_FOURCC_MAX_STRING_SIZE" &
+        " already exists, not redeclaring")
+when not declared(AV_OPT_SERIALIZE_SKIP_DEFAULTS):
+  when 1 is static:
+    const
+      AV_OPT_SERIALIZE_SKIP_DEFAULTS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:950:9
+  else:
+    let AV_OPT_SERIALIZE_SKIP_DEFAULTS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:950:9
+else:
+  static :
+    hint("Declaration of " & "AV_OPT_SERIALIZE_SKIP_DEFAULTS" &
+        " already exists, not redeclaring")
+when not declared(AV_OPT_SERIALIZE_OPT_FLAGS_EXACT):
+  when 2 is static:
+    const
+      AV_OPT_SERIALIZE_OPT_FLAGS_EXACT* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:951:9
+  else:
+    let AV_OPT_SERIALIZE_OPT_FLAGS_EXACT* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:951:9
+else:
+  static :
+    hint("Declaration of " & "AV_OPT_SERIALIZE_OPT_FLAGS_EXACT" &
+        " already exists, not redeclaring")
+when not declared(AV_OPT_SERIALIZE_SEARCH_CHILDREN):
+  when 4 is static:
+    const
+      AV_OPT_SERIALIZE_SEARCH_CHILDREN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:952:9
+  else:
+    let AV_OPT_SERIALIZE_SEARCH_CHILDREN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/opt.h:952:9
+else:
+  static :
+    hint("Declaration of " & "AV_OPT_SERIALIZE_SEARCH_CHILDREN" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_RESOLUTION):
+  when 1 is static:
+    const
+      FF_LOSS_RESOLUTION* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:387:9
+  else:
+    let FF_LOSS_RESOLUTION* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:387:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_RESOLUTION" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_DEPTH):
+  when 2 is static:
+    const
+      FF_LOSS_DEPTH* = 2     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:388:9
+  else:
+    let FF_LOSS_DEPTH* = 2   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:388:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_DEPTH" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_COLORSPACE):
+  when 4 is static:
+    const
+      FF_LOSS_COLORSPACE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:389:9
+  else:
+    let FF_LOSS_COLORSPACE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:389:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_COLORSPACE" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_ALPHA):
+  when 8 is static:
+    const
+      FF_LOSS_ALPHA* = 8     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:390:9
+  else:
+    let FF_LOSS_ALPHA* = 8   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:390:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_ALPHA" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_COLORQUANT):
+  when 16 is static:
+    const
+      FF_LOSS_COLORQUANT* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:391:9
+  else:
+    let FF_LOSS_COLORQUANT* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:391:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_COLORQUANT" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_CHROMA):
+  when 32 is static:
+    const
+      FF_LOSS_CHROMA* = 32   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:392:9
+  else:
+    let FF_LOSS_CHROMA* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:392:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_CHROMA" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_EXCESS_RESOLUTION):
+  when 64 is static:
+    const
+      FF_LOSS_EXCESS_RESOLUTION* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:393:9
+  else:
+    let FF_LOSS_EXCESS_RESOLUTION* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:393:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_EXCESS_RESOLUTION" &
+        " already exists, not redeclaring")
+when not declared(FF_LOSS_EXCESS_DEPTH):
+  when 128 is static:
+    const
+      FF_LOSS_EXCESS_DEPTH* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:394:9
+  else:
+    let FF_LOSS_EXCESS_DEPTH* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/pixdesc.h:394:9
+else:
+  static :
+    hint("Declaration of " & "FF_LOSS_EXCESS_DEPTH" &
+        " already exists, not redeclaring")
+when not declared(AV_NUM_DATA_POINTERS):
+  when 8 is static:
+    const
+      AV_NUM_DATA_POINTERS* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:375:9
+  else:
+    let AV_NUM_DATA_POINTERS* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:375:9
+else:
+  static :
+    hint("Declaration of " & "AV_NUM_DATA_POINTERS" &
+        " already exists, not redeclaring")
+when not declared(FF_DECODE_ERROR_INVALID_BITSTREAM):
+  when 1 is static:
+    const
+      FF_DECODE_ERROR_INVALID_BITSTREAM* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:702:9
+  else:
+    let FF_DECODE_ERROR_INVALID_BITSTREAM* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:702:9
+else:
+  static :
+    hint("Declaration of " & "FF_DECODE_ERROR_INVALID_BITSTREAM" &
+        " already exists, not redeclaring")
+when not declared(FF_DECODE_ERROR_MISSING_REFERENCE):
+  when 2 is static:
+    const
+      FF_DECODE_ERROR_MISSING_REFERENCE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:703:9
+  else:
+    let FF_DECODE_ERROR_MISSING_REFERENCE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:703:9
+else:
+  static :
+    hint("Declaration of " & "FF_DECODE_ERROR_MISSING_REFERENCE" &
+        " already exists, not redeclaring")
+when not declared(FF_DECODE_ERROR_CONCEALMENT_ACTIVE):
+  when 4 is static:
+    const
+      FF_DECODE_ERROR_CONCEALMENT_ACTIVE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:704:9
+  else:
+    let FF_DECODE_ERROR_CONCEALMENT_ACTIVE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:704:9
+else:
+  static :
+    hint("Declaration of " & "FF_DECODE_ERROR_CONCEALMENT_ACTIVE" &
+        " already exists, not redeclaring")
+when not declared(FF_DECODE_ERROR_DECODE_SLICES):
+  when 8 is static:
+    const
+      FF_DECODE_ERROR_DECODE_SLICES* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:705:9
+  else:
+    let FF_DECODE_ERROR_DECODE_SLICES* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavutil/frame.h:705:9
+else:
+  static :
+    hint("Declaration of " & "FF_DECODE_ERROR_DECODE_SLICES" &
+        " already exists, not redeclaring")
+when not declared(LIBAVCODEC_VERSION_MAJOR):
+  when 61 is static:
+    const
+      LIBAVCODEC_VERSION_MAJOR* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version_major.h:28:9
+  else:
+    let LIBAVCODEC_VERSION_MAJOR* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version_major.h:28:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVCODEC_VERSION_MAJOR" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_ID_IFF_BYTERUN1):
+  when AV_CODEC_ID_IFF_ILBM is typedesc:
+    type
+      AV_CODEC_ID_IFF_BYTERUN1* = AV_CODEC_ID_IFF_ILBM ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:189:9
+  else:
+    when AV_CODEC_ID_IFF_ILBM is static:
+      const
+        AV_CODEC_ID_IFF_BYTERUN1* = AV_CODEC_ID_IFF_ILBM ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:189:9
+    else:
+      let AV_CODEC_ID_IFF_BYTERUN1* = AV_CODEC_ID_IFF_ILBM ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:189:9
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_ID_IFF_BYTERUN1" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_ID_H265):
+  when AV_CODEC_ID_HEVC is typedesc:
+    type
+      AV_CODEC_ID_H265* = AV_CODEC_ID_HEVC ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:227:9
+  else:
+    when AV_CODEC_ID_HEVC is static:
+      const
+        AV_CODEC_ID_H265* = AV_CODEC_ID_HEVC ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:227:9
+    else:
+      let AV_CODEC_ID_H265* = AV_CODEC_ID_HEVC ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:227:9
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_ID_H265" &
+        " already exists, not redeclaring")
+when not declared(AV_CODEC_ID_H266):
+  when AV_CODEC_ID_VVC is typedesc:
+    type
+      AV_CODEC_ID_H266* = AV_CODEC_ID_VVC ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:251:9
+  else:
+    when AV_CODEC_ID_VVC is static:
+      const
+        AV_CODEC_ID_H266* = AV_CODEC_ID_VVC ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:251:9
+    else:
+      let AV_CODEC_ID_H266* = AV_CODEC_ID_VVC ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/codec_id.h:251:9
+else:
+  static :
+    hint("Declaration of " & "AV_CODEC_ID_H266" &
+        " already exists, not redeclaring")
+when not declared(AV_INPUT_BUFFER_PADDING_SIZE):
+  when 64 is static:
+    const
+      AV_INPUT_BUFFER_PADDING_SIZE* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:40:9
+  else:
+    let AV_INPUT_BUFFER_PADDING_SIZE* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:40:9
+else:
+  static :
+    hint("Declaration of " & "AV_INPUT_BUFFER_PADDING_SIZE" &
+        " already exists, not redeclaring")
+when not declared(FF_COMPLIANCE_VERY_STRICT):
+  when 2 is static:
+    const
+      FF_COMPLIANCE_VERY_STRICT* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:58:9
+  else:
+    let FF_COMPLIANCE_VERY_STRICT* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:58:9
+else:
+  static :
+    hint("Declaration of " & "FF_COMPLIANCE_VERY_STRICT" &
+        " already exists, not redeclaring")
+when not declared(FF_COMPLIANCE_STRICT):
+  when 1 is static:
+    const
+      FF_COMPLIANCE_STRICT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:59:9
+  else:
+    let FF_COMPLIANCE_STRICT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:59:9
+else:
+  static :
+    hint("Declaration of " & "FF_COMPLIANCE_STRICT" &
+        " already exists, not redeclaring")
+when not declared(FF_COMPLIANCE_NORMAL):
+  when 0 is static:
+    const
+      FF_COMPLIANCE_NORMAL* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:60:9
+  else:
+    let FF_COMPLIANCE_NORMAL* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:60:9
+else:
+  static :
+    hint("Declaration of " & "FF_COMPLIANCE_NORMAL" &
+        " already exists, not redeclaring")
+when not declared(FF_COMPLIANCE_UNOFFICIAL):
+  when -1 is static:
+    const
+      FF_COMPLIANCE_UNOFFICIAL* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:61:9
+  else:
+    let FF_COMPLIANCE_UNOFFICIAL* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:61:9
+else:
+  static :
+    hint("Declaration of " & "FF_COMPLIANCE_UNOFFICIAL" &
+        " already exists, not redeclaring")
+when not declared(FF_COMPLIANCE_EXPERIMENTAL):
+  when -2 is static:
+    const
+      FF_COMPLIANCE_EXPERIMENTAL* = -2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:62:9
+  else:
+    let FF_COMPLIANCE_EXPERIMENTAL* = -2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:62:9
+else:
+  static :
+    hint("Declaration of " & "FF_COMPLIANCE_EXPERIMENTAL" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_UNKNOWN):
+  when -99 is static:
+    const
+      AV_PROFILE_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:65:9
+  else:
+    let AV_PROFILE_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:65:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_UNKNOWN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_RESERVED):
+  when -100 is static:
+    const
+      AV_PROFILE_RESERVED* = -100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:66:9
+  else:
+    let AV_PROFILE_RESERVED* = -100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:66:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_RESERVED" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_MAIN):
+  when 0 is static:
+    const
+      AV_PROFILE_AAC_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:68:9
+  else:
+    let AV_PROFILE_AAC_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:68:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_LOW):
+  when 1 is static:
+    const
+      AV_PROFILE_AAC_LOW* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:69:9
+  else:
+    let AV_PROFILE_AAC_LOW* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:69:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_LOW" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_SSR):
+  when 2 is static:
+    const
+      AV_PROFILE_AAC_SSR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:70:9
+  else:
+    let AV_PROFILE_AAC_SSR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:70:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_SSR" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_LTP):
+  when 3 is static:
+    const
+      AV_PROFILE_AAC_LTP* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:71:9
+  else:
+    let AV_PROFILE_AAC_LTP* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:71:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_LTP" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_HE):
+  when 4 is static:
+    const
+      AV_PROFILE_AAC_HE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:72:9
+  else:
+    let AV_PROFILE_AAC_HE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:72:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_HE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_HE_V2):
+  when 28 is static:
+    const
+      AV_PROFILE_AAC_HE_V2* = 28 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:73:9
+  else:
+    let AV_PROFILE_AAC_HE_V2* = 28 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:73:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_HE_V2" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_LD):
+  when 22 is static:
+    const
+      AV_PROFILE_AAC_LD* = 22 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:74:9
+  else:
+    let AV_PROFILE_AAC_LD* = 22 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:74:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_LD" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_ELD):
+  when 38 is static:
+    const
+      AV_PROFILE_AAC_ELD* = 38 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:75:9
+  else:
+    let AV_PROFILE_AAC_ELD* = 38 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:75:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_ELD" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AAC_USAC):
+  when 41 is static:
+    const
+      AV_PROFILE_AAC_USAC* = 41 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:76:9
+  else:
+    let AV_PROFILE_AAC_USAC* = 41 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:76:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AAC_USAC" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_AAC_LOW):
+  when 128 is static:
+    const
+      AV_PROFILE_MPEG2_AAC_LOW* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:77:9
+  else:
+    let AV_PROFILE_MPEG2_AAC_LOW* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:77:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_AAC_LOW" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_AAC_HE):
+  when 131 is static:
+    const
+      AV_PROFILE_MPEG2_AAC_HE* = 131 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:78:9
+  else:
+    let AV_PROFILE_MPEG2_AAC_HE* = 131 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:78:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_AAC_HE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DNXHD):
+  when 0 is static:
+    const
+      AV_PROFILE_DNXHD* = 0  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:80:9
+  else:
+    let AV_PROFILE_DNXHD* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:80:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DNXHD" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DNXHR_LB):
+  when 1 is static:
+    const
+      AV_PROFILE_DNXHR_LB* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:81:9
+  else:
+    let AV_PROFILE_DNXHR_LB* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:81:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DNXHR_LB" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DNXHR_SQ):
+  when 2 is static:
+    const
+      AV_PROFILE_DNXHR_SQ* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:82:9
+  else:
+    let AV_PROFILE_DNXHR_SQ* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:82:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DNXHR_SQ" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DNXHR_HQ):
+  when 3 is static:
+    const
+      AV_PROFILE_DNXHR_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:83:9
+  else:
+    let AV_PROFILE_DNXHR_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:83:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DNXHR_HQ" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DNXHR_HQX):
+  when 4 is static:
+    const
+      AV_PROFILE_DNXHR_HQX* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:84:9
+  else:
+    let AV_PROFILE_DNXHR_HQX* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:84:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DNXHR_HQX" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DNXHR_444):
+  when 5 is static:
+    const
+      AV_PROFILE_DNXHR_444* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:85:9
+  else:
+    let AV_PROFILE_DNXHR_444* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:85:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DNXHR_444" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS):
+  when 20 is static:
+    const
+      AV_PROFILE_DTS* = 20   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:87:9
+  else:
+    let AV_PROFILE_DTS* = 20 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:87:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_ES):
+  when 30 is static:
+    const
+      AV_PROFILE_DTS_ES* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:88:9
+  else:
+    let AV_PROFILE_DTS_ES* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:88:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_ES" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_96_24):
+  when 40 is static:
+    const
+      AV_PROFILE_DTS_96_24* = 40 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:89:9
+  else:
+    let AV_PROFILE_DTS_96_24* = 40 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:89:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_96_24" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_HD_HRA):
+  when 50 is static:
+    const
+      AV_PROFILE_DTS_HD_HRA* = 50 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:90:9
+  else:
+    let AV_PROFILE_DTS_HD_HRA* = 50 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:90:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_HD_HRA" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_HD_MA):
+  when 60 is static:
+    const
+      AV_PROFILE_DTS_HD_MA* = 60 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:91:9
+  else:
+    let AV_PROFILE_DTS_HD_MA* = 60 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:91:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_HD_MA" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_EXPRESS):
+  when 70 is static:
+    const
+      AV_PROFILE_DTS_EXPRESS* = 70 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:92:9
+  else:
+    let AV_PROFILE_DTS_EXPRESS* = 70 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:92:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_EXPRESS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_HD_MA_X):
+  when 61 is static:
+    const
+      AV_PROFILE_DTS_HD_MA_X* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:93:9
+  else:
+    let AV_PROFILE_DTS_HD_MA_X* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:93:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_HD_MA_X" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_DTS_HD_MA_X_IMAX):
+  when 62 is static:
+    const
+      AV_PROFILE_DTS_HD_MA_X_IMAX* = 62 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:94:9
+  else:
+    let AV_PROFILE_DTS_HD_MA_X_IMAX* = 62 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:94:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_DTS_HD_MA_X_IMAX" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_EAC3_DDP_ATMOS):
+  when 30 is static:
+    const
+      AV_PROFILE_EAC3_DDP_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:96:9
+  else:
+    let AV_PROFILE_EAC3_DDP_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:96:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_EAC3_DDP_ATMOS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_TRUEHD_ATMOS):
+  when 30 is static:
+    const
+      AV_PROFILE_TRUEHD_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:98:9
+  else:
+    let AV_PROFILE_TRUEHD_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:98:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_TRUEHD_ATMOS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_422):
+  when 0 is static:
+    const
+      AV_PROFILE_MPEG2_422* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:100:9
+  else:
+    let AV_PROFILE_MPEG2_422* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:100:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_422" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_HIGH):
+  when 1 is static:
+    const
+      AV_PROFILE_MPEG2_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:101:9
+  else:
+    let AV_PROFILE_MPEG2_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:101:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_HIGH" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_SS):
+  when 2 is static:
+    const
+      AV_PROFILE_MPEG2_SS* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:102:9
+  else:
+    let AV_PROFILE_MPEG2_SS* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:102:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_SS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_SNR_SCALABLE):
+  when 3 is static:
+    const
+      AV_PROFILE_MPEG2_SNR_SCALABLE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:103:9
+  else:
+    let AV_PROFILE_MPEG2_SNR_SCALABLE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:103:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_SNR_SCALABLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_MAIN):
+  when 4 is static:
+    const
+      AV_PROFILE_MPEG2_MAIN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:104:9
+  else:
+    let AV_PROFILE_MPEG2_MAIN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:104:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG2_SIMPLE):
+  when 5 is static:
+    const
+      AV_PROFILE_MPEG2_SIMPLE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:105:9
+  else:
+    let AV_PROFILE_MPEG2_SIMPLE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:105:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG2_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_BASELINE):
+  when 66 is static:
+    const
+      AV_PROFILE_H264_BASELINE* = 66 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:110:9
+  else:
+    let AV_PROFILE_H264_BASELINE* = 66 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:110:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_BASELINE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_MAIN):
+  when 77 is static:
+    const
+      AV_PROFILE_H264_MAIN* = 77 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:112:9
+  else:
+    let AV_PROFILE_H264_MAIN* = 77 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:112:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_EXTENDED):
+  when 88 is static:
+    const
+      AV_PROFILE_H264_EXTENDED* = 88 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:113:9
+  else:
+    let AV_PROFILE_H264_EXTENDED* = 88 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:113:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_EXTENDED" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_HIGH):
+  when 100 is static:
+    const
+      AV_PROFILE_H264_HIGH* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:114:9
+  else:
+    let AV_PROFILE_H264_HIGH* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:114:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_HIGH" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_HIGH_10):
+  when 110 is static:
+    const
+      AV_PROFILE_H264_HIGH_10* = 110 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:115:9
+  else:
+    let AV_PROFILE_H264_HIGH_10* = 110 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:115:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_HIGH_10" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_MULTIVIEW_HIGH):
+  when 118 is static:
+    const
+      AV_PROFILE_H264_MULTIVIEW_HIGH* = 118 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:117:9
+  else:
+    let AV_PROFILE_H264_MULTIVIEW_HIGH* = 118 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:117:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_MULTIVIEW_HIGH" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_HIGH_422):
+  when 122 is static:
+    const
+      AV_PROFILE_H264_HIGH_422* = 122 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:118:9
+  else:
+    let AV_PROFILE_H264_HIGH_422* = 122 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:118:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_HIGH_422" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_STEREO_HIGH):
+  when 128 is static:
+    const
+      AV_PROFILE_H264_STEREO_HIGH* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:120:9
+  else:
+    let AV_PROFILE_H264_STEREO_HIGH* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:120:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_STEREO_HIGH" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_HIGH_444):
+  when 144 is static:
+    const
+      AV_PROFILE_H264_HIGH_444* = 144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:121:9
+  else:
+    let AV_PROFILE_H264_HIGH_444* = 144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:121:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_HIGH_444" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_HIGH_444_PREDICTIVE):
+  when 244 is static:
+    const
+      AV_PROFILE_H264_HIGH_444_PREDICTIVE* = 244 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:122:9
+  else:
+    let AV_PROFILE_H264_HIGH_444_PREDICTIVE* = 244 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:122:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_HIGH_444_PREDICTIVE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_H264_CAVLC_444):
+  when 44 is static:
+    const
+      AV_PROFILE_H264_CAVLC_444* = 44 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:124:9
+  else:
+    let AV_PROFILE_H264_CAVLC_444* = 44 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:124:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_H264_CAVLC_444" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VC1_SIMPLE):
+  when 0 is static:
+    const
+      AV_PROFILE_VC1_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:126:9
+  else:
+    let AV_PROFILE_VC1_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:126:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VC1_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VC1_MAIN):
+  when 1 is static:
+    const
+      AV_PROFILE_VC1_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:127:9
+  else:
+    let AV_PROFILE_VC1_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:127:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VC1_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VC1_COMPLEX):
+  when 2 is static:
+    const
+      AV_PROFILE_VC1_COMPLEX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:128:9
+  else:
+    let AV_PROFILE_VC1_COMPLEX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:128:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VC1_COMPLEX" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VC1_ADVANCED):
+  when 3 is static:
+    const
+      AV_PROFILE_VC1_ADVANCED* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:129:9
+  else:
+    let AV_PROFILE_VC1_ADVANCED* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:129:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VC1_ADVANCED" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_SIMPLE):
+  when 0 is static:
+    const
+      AV_PROFILE_MPEG4_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:131:9
+  else:
+    let AV_PROFILE_MPEG4_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:131:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_SIMPLE_SCALABLE):
+  when 1 is static:
+    const
+      AV_PROFILE_MPEG4_SIMPLE_SCALABLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:132:9
+  else:
+    let AV_PROFILE_MPEG4_SIMPLE_SCALABLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:132:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_SIMPLE_SCALABLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_CORE):
+  when 2 is static:
+    const
+      AV_PROFILE_MPEG4_CORE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:133:9
+  else:
+    let AV_PROFILE_MPEG4_CORE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:133:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_CORE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_MAIN):
+  when 3 is static:
+    const
+      AV_PROFILE_MPEG4_MAIN* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:134:9
+  else:
+    let AV_PROFILE_MPEG4_MAIN* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:134:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_N_BIT):
+  when 4 is static:
+    const
+      AV_PROFILE_MPEG4_N_BIT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:135:9
+  else:
+    let AV_PROFILE_MPEG4_N_BIT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:135:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_N_BIT" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_SCALABLE_TEXTURE):
+  when 5 is static:
+    const
+      AV_PROFILE_MPEG4_SCALABLE_TEXTURE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:136:9
+  else:
+    let AV_PROFILE_MPEG4_SCALABLE_TEXTURE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:136:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_SCALABLE_TEXTURE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION):
+  when 6 is static:
+    const
+      AV_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION* = 6 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:137:9
+  else:
+    let AV_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION* = 6 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:137:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE):
+  when 7 is static:
+    const
+      AV_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE* = 7 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:138:9
+  else:
+    let AV_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE* = 7 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:138:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_HYBRID):
+  when 8 is static:
+    const
+      AV_PROFILE_MPEG4_HYBRID* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:139:9
+  else:
+    let AV_PROFILE_MPEG4_HYBRID* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:139:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_HYBRID" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_ADVANCED_REAL_TIME):
+  when 9 is static:
+    const
+      AV_PROFILE_MPEG4_ADVANCED_REAL_TIME* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:140:9
+  else:
+    let AV_PROFILE_MPEG4_ADVANCED_REAL_TIME* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:140:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_ADVANCED_REAL_TIME" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_CORE_SCALABLE):
+  when 10 is static:
+    const
+      AV_PROFILE_MPEG4_CORE_SCALABLE* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:141:9
+  else:
+    let AV_PROFILE_MPEG4_CORE_SCALABLE* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:141:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_CORE_SCALABLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_ADVANCED_CODING):
+  when 11 is static:
+    const
+      AV_PROFILE_MPEG4_ADVANCED_CODING* = 11 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:142:9
+  else:
+    let AV_PROFILE_MPEG4_ADVANCED_CODING* = 11 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:142:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_ADVANCED_CODING" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_ADVANCED_CORE):
+  when 12 is static:
+    const
+      AV_PROFILE_MPEG4_ADVANCED_CORE* = 12 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:143:9
+  else:
+    let AV_PROFILE_MPEG4_ADVANCED_CORE* = 12 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:143:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_ADVANCED_CORE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE):
+  when 13 is static:
+    const
+      AV_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE* = 13 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:144:9
+  else:
+    let AV_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE* = 13 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:144:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_SIMPLE_STUDIO):
+  when 14 is static:
+    const
+      AV_PROFILE_MPEG4_SIMPLE_STUDIO* = 14 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:145:9
+  else:
+    let AV_PROFILE_MPEG4_SIMPLE_STUDIO* = 14 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:145:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_SIMPLE_STUDIO" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MPEG4_ADVANCED_SIMPLE):
+  when 15 is static:
+    const
+      AV_PROFILE_MPEG4_ADVANCED_SIMPLE* = 15 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:146:9
+  else:
+    let AV_PROFILE_MPEG4_ADVANCED_SIMPLE* = 15 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:146:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MPEG4_ADVANCED_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0):
+  when 1 is static:
+    const
+      AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:148:9
+  else:
+    let AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:148:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1):
+  when 2 is static:
+    const
+      AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:149:9
+  else:
+    let AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:149:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION):
+  when 32768 is static:
+    const
+      AV_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:150:9
+  else:
+    let AV_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:150:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_JPEG2000_DCINEMA_2K):
+  when 3 is static:
+    const
+      AV_PROFILE_JPEG2000_DCINEMA_2K* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:151:9
+  else:
+    let AV_PROFILE_JPEG2000_DCINEMA_2K* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:151:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_JPEG2000_DCINEMA_2K" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_JPEG2000_DCINEMA_4K):
+  when 4 is static:
+    const
+      AV_PROFILE_JPEG2000_DCINEMA_4K* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:152:9
+  else:
+    let AV_PROFILE_JPEG2000_DCINEMA_4K* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:152:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_JPEG2000_DCINEMA_4K" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VP9_0):
+  when 0 is static:
+    const
+      AV_PROFILE_VP9_0* = 0  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:154:9
+  else:
+    let AV_PROFILE_VP9_0* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:154:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VP9_0" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VP9_1):
+  when 1 is static:
+    const
+      AV_PROFILE_VP9_1* = 1  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:155:9
+  else:
+    let AV_PROFILE_VP9_1* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:155:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VP9_1" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VP9_2):
+  when 2 is static:
+    const
+      AV_PROFILE_VP9_2* = 2  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:156:9
+  else:
+    let AV_PROFILE_VP9_2* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:156:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VP9_2" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VP9_3):
+  when 3 is static:
+    const
+      AV_PROFILE_VP9_3* = 3  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:157:9
+  else:
+    let AV_PROFILE_VP9_3* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:157:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VP9_3" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_HEVC_MAIN):
+  when 1 is static:
+    const
+      AV_PROFILE_HEVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:159:9
+  else:
+    let AV_PROFILE_HEVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:159:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_HEVC_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_HEVC_MAIN_10):
+  when 2 is static:
+    const
+      AV_PROFILE_HEVC_MAIN_10* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:160:9
+  else:
+    let AV_PROFILE_HEVC_MAIN_10* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:160:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_HEVC_MAIN_10" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_HEVC_MAIN_STILL_PICTURE):
+  when 3 is static:
+    const
+      AV_PROFILE_HEVC_MAIN_STILL_PICTURE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:161:9
+  else:
+    let AV_PROFILE_HEVC_MAIN_STILL_PICTURE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:161:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_HEVC_MAIN_STILL_PICTURE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_HEVC_REXT):
+  when 4 is static:
+    const
+      AV_PROFILE_HEVC_REXT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:162:9
+  else:
+    let AV_PROFILE_HEVC_REXT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:162:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_HEVC_REXT" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_HEVC_SCC):
+  when 9 is static:
+    const
+      AV_PROFILE_HEVC_SCC* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:163:9
+  else:
+    let AV_PROFILE_HEVC_SCC* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:163:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_HEVC_SCC" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VVC_MAIN_10):
+  when 1 is static:
+    const
+      AV_PROFILE_VVC_MAIN_10* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:165:9
+  else:
+    let AV_PROFILE_VVC_MAIN_10* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:165:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VVC_MAIN_10" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_VVC_MAIN_10_444):
+  when 33 is static:
+    const
+      AV_PROFILE_VVC_MAIN_10_444* = 33 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:166:9
+  else:
+    let AV_PROFILE_VVC_MAIN_10_444* = 33 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:166:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_VVC_MAIN_10_444" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AV1_MAIN):
+  when 0 is static:
+    const
+      AV_PROFILE_AV1_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:168:9
+  else:
+    let AV_PROFILE_AV1_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:168:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AV1_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AV1_HIGH):
+  when 1 is static:
+    const
+      AV_PROFILE_AV1_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:169:9
+  else:
+    let AV_PROFILE_AV1_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:169:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AV1_HIGH" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_AV1_PROFESSIONAL):
+  when 2 is static:
+    const
+      AV_PROFILE_AV1_PROFESSIONAL* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:170:9
+  else:
+    let AV_PROFILE_AV1_PROFESSIONAL* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:170:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_AV1_PROFESSIONAL" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT):
+  when 192 is static:
+    const
+      AV_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT* = 192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:172:9
+  else:
+    let AV_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT* = 192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:172:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT):
+  when 193 is static:
+    const
+      AV_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT* = 193 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:173:9
+  else:
+    let AV_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT* = 193 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:173:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT):
+  when 194 is static:
+    const
+      AV_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT* = 194 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:174:9
+  else:
+    let AV_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT* = 194 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:174:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MJPEG_HUFFMAN_LOSSLESS):
+  when 195 is static:
+    const
+      AV_PROFILE_MJPEG_HUFFMAN_LOSSLESS* = 195 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:175:9
+  else:
+    let AV_PROFILE_MJPEG_HUFFMAN_LOSSLESS* = 195 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:175:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MJPEG_HUFFMAN_LOSSLESS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_MJPEG_JPEG_LS):
+  when 247 is static:
+    const
+      AV_PROFILE_MJPEG_JPEG_LS* = 247 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:176:9
+  else:
+    let AV_PROFILE_MJPEG_JPEG_LS* = 247 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:176:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_MJPEG_JPEG_LS" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_SBC_MSBC):
+  when 1 is static:
+    const
+      AV_PROFILE_SBC_MSBC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:178:9
+  else:
+    let AV_PROFILE_SBC_MSBC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:178:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_SBC_MSBC" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_PRORES_PROXY):
+  when 0 is static:
+    const
+      AV_PROFILE_PRORES_PROXY* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:180:9
+  else:
+    let AV_PROFILE_PRORES_PROXY* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:180:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_PRORES_PROXY" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_PRORES_LT):
+  when 1 is static:
+    const
+      AV_PROFILE_PRORES_LT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:181:9
+  else:
+    let AV_PROFILE_PRORES_LT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:181:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_PRORES_LT" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_PRORES_STANDARD):
+  when 2 is static:
+    const
+      AV_PROFILE_PRORES_STANDARD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:182:9
+  else:
+    let AV_PROFILE_PRORES_STANDARD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:182:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_PRORES_STANDARD" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_PRORES_HQ):
+  when 3 is static:
+    const
+      AV_PROFILE_PRORES_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:183:9
+  else:
+    let AV_PROFILE_PRORES_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:183:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_PRORES_HQ" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_PRORES_4444):
+  when 4 is static:
+    const
+      AV_PROFILE_PRORES_4444* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:184:9
+  else:
+    let AV_PROFILE_PRORES_4444* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:184:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_PRORES_4444" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_PRORES_XQ):
+  when 5 is static:
+    const
+      AV_PROFILE_PRORES_XQ* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:185:9
+  else:
+    let AV_PROFILE_PRORES_XQ* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:185:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_PRORES_XQ" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_ARIB_PROFILE_A):
+  when 0 is static:
+    const
+      AV_PROFILE_ARIB_PROFILE_A* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:187:9
+  else:
+    let AV_PROFILE_ARIB_PROFILE_A* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:187:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_ARIB_PROFILE_A" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_ARIB_PROFILE_C):
+  when 1 is static:
+    const
+      AV_PROFILE_ARIB_PROFILE_C* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:188:9
+  else:
+    let AV_PROFILE_ARIB_PROFILE_C* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:188:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_ARIB_PROFILE_C" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_KLVA_SYNC):
+  when 0 is static:
+    const
+      AV_PROFILE_KLVA_SYNC* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:190:9
+  else:
+    let AV_PROFILE_KLVA_SYNC* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:190:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_KLVA_SYNC" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_KLVA_ASYNC):
+  when 1 is static:
+    const
+      AV_PROFILE_KLVA_ASYNC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:191:9
+  else:
+    let AV_PROFILE_KLVA_ASYNC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:191:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_KLVA_ASYNC" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_EVC_BASELINE):
+  when 0 is static:
+    const
+      AV_PROFILE_EVC_BASELINE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:193:9
+  else:
+    let AV_PROFILE_EVC_BASELINE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:193:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_EVC_BASELINE" &
+        " already exists, not redeclaring")
+when not declared(AV_PROFILE_EVC_MAIN):
+  when 1 is static:
+    const
+      AV_PROFILE_EVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:194:9
+  else:
+    let AV_PROFILE_EVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:194:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROFILE_EVC_MAIN" &
+        " already exists, not redeclaring")
+when not declared(AV_LEVEL_UNKNOWN):
+  when -99 is static:
+    const
+      AV_LEVEL_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:197:9
+  else:
+    let AV_LEVEL_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/defs.h:197:9
+else:
+  static :
+    hint("Declaration of " & "AV_LEVEL_UNKNOWN" &
+        " already exists, not redeclaring")
+when not declared(AV_PKT_DATA_QUALITY_FACTOR):
+  when AV_PKT_DATA_QUALITY_STATS is typedesc:
+    type
+      AV_PKT_DATA_QUALITY_FACTOR* = AV_PKT_DATA_QUALITY_STATS ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:354:9
+  else:
+    when AV_PKT_DATA_QUALITY_STATS is static:
+      const
+        AV_PKT_DATA_QUALITY_FACTOR* = AV_PKT_DATA_QUALITY_STATS ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:354:9
+    else:
+      let AV_PKT_DATA_QUALITY_FACTOR* = AV_PKT_DATA_QUALITY_STATS ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:354:9
+else:
+  static :
+    hint("Declaration of " & "AV_PKT_DATA_QUALITY_FACTOR" &
+        " already exists, not redeclaring")
+when not declared(AV_PKT_FLAG_KEY):
+  when 1 is static:
+    const
+      AV_PKT_FLAG_KEY* = 1   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:588:9
+  else:
+    let AV_PKT_FLAG_KEY* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:588:9
+else:
+  static :
+    hint("Declaration of " & "AV_PKT_FLAG_KEY" &
+        " already exists, not redeclaring")
+when not declared(AV_PKT_FLAG_CORRUPT):
+  when 2 is static:
+    const
+      AV_PKT_FLAG_CORRUPT* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:589:9
+  else:
+    let AV_PKT_FLAG_CORRUPT* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:589:9
+else:
+  static :
+    hint("Declaration of " & "AV_PKT_FLAG_CORRUPT" &
+        " already exists, not redeclaring")
+when not declared(AV_PKT_FLAG_DISCARD):
+  when 4 is static:
+    const
+      AV_PKT_FLAG_DISCARD* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:595:9
+  else:
+    let AV_PKT_FLAG_DISCARD* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:595:9
+else:
+  static :
+    hint("Declaration of " & "AV_PKT_FLAG_DISCARD" &
+        " already exists, not redeclaring")
+when not declared(AV_PKT_FLAG_TRUSTED):
+  when 8 is static:
+    const
+      AV_PKT_FLAG_TRUSTED* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:602:9
+  else:
+    let AV_PKT_FLAG_TRUSTED* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:602:9
+else:
+  static :
+    hint("Declaration of " & "AV_PKT_FLAG_TRUSTED" &
+        " already exists, not redeclaring")
+when not declared(AV_PKT_FLAG_DISPOSABLE):
+  when 16 is static:
+    const
+      AV_PKT_FLAG_DISPOSABLE* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:607:9
+  else:
+    let AV_PKT_FLAG_DISPOSABLE* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/packet.h:607:9
+else:
+  static :
+    hint("Declaration of " & "AV_PKT_FLAG_DISPOSABLE" &
+        " already exists, not redeclaring")
+when not declared(LIBAVCODEC_VERSION_MINOR):
+  when 10 is static:
+    const
+      LIBAVCODEC_VERSION_MINOR* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:32:9
+  else:
+    let LIBAVCODEC_VERSION_MINOR* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:32:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVCODEC_VERSION_MINOR" &
+        " already exists, not redeclaring")
+when not declared(LIBAVCODEC_VERSION_MICRO):
+  when 100 is static:
+    const
+      LIBAVCODEC_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:33:9
+  else:
+    let LIBAVCODEC_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:33:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVCODEC_VERSION_MICRO" &
+        " already exists, not redeclaring")
+when not declared(LIBAVCODEC_BUILD):
+  when LIBAVCODEC_VERSION_INT is typedesc:
+    type
+      LIBAVCODEC_BUILD* = LIBAVCODEC_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:41:9
+  else:
+    when LIBAVCODEC_VERSION_INT is static:
+      const
+        LIBAVCODEC_BUILD* = LIBAVCODEC_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:41:9
+    else:
+      let LIBAVCODEC_BUILD* = LIBAVCODEC_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/version.h:41:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVCODEC_BUILD" &
+        " already exists, not redeclaring")
+when not declared(AV_INPUT_BUFFER_MIN_SIZE):
+  when 16384 is static:
+    const
+      AV_INPUT_BUFFER_MIN_SIZE* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:198:9
+  else:
+    let AV_INPUT_BUFFER_MIN_SIZE* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:198:9
+else:
+  static :
+    hint("Declaration of " & "AV_INPUT_BUFFER_MIN_SIZE" &
+        " already exists, not redeclaring")
+when not declared(SLICE_FLAG_CODED_ORDER):
+  when 1 is static:
+    const
+      SLICE_FLAG_CODED_ORDER* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:731:9
+  else:
+    let SLICE_FLAG_CODED_ORDER* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:731:9
+else:
+  static :
+    hint("Declaration of " & "SLICE_FLAG_CODED_ORDER" &
+        " already exists, not redeclaring")
+when not declared(SLICE_FLAG_ALLOW_FIELD):
+  when 2 is static:
+    const
+      SLICE_FLAG_ALLOW_FIELD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:732:9
+  else:
+    let SLICE_FLAG_ALLOW_FIELD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:732:9
+else:
+  static :
+    hint("Declaration of " & "SLICE_FLAG_ALLOW_FIELD" &
+        " already exists, not redeclaring")
+when not declared(SLICE_FLAG_ALLOW_PLANE):
+  when 4 is static:
+    const
+      SLICE_FLAG_ALLOW_PLANE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:733:9
+  else:
+    let SLICE_FLAG_ALLOW_PLANE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:733:9
+else:
+  static :
+    hint("Declaration of " & "SLICE_FLAG_ALLOW_PLANE" &
+        " already exists, not redeclaring")
+when not declared(FF_CMP_SAD):
+  when 0 is static:
+    const
+      FF_CMP_SAD* = 0        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:895:9
+  else:
+    let FF_CMP_SAD* = 0      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:895:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_SAD" & " already exists, not redeclaring")
+when not declared(FF_CMP_SSE):
+  when 1 is static:
+    const
+      FF_CMP_SSE* = 1        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:896:9
+  else:
+    let FF_CMP_SSE* = 1      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:896:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_SSE" & " already exists, not redeclaring")
+when not declared(FF_CMP_SATD):
+  when 2 is static:
+    const
+      FF_CMP_SATD* = 2       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:897:9
+  else:
+    let FF_CMP_SATD* = 2     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:897:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_SATD" & " already exists, not redeclaring")
+when not declared(FF_CMP_DCT):
+  when 3 is static:
+    const
+      FF_CMP_DCT* = 3        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:898:9
+  else:
+    let FF_CMP_DCT* = 3      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:898:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_DCT" & " already exists, not redeclaring")
+when not declared(FF_CMP_PSNR):
+  when 4 is static:
+    const
+      FF_CMP_PSNR* = 4       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:899:9
+  else:
+    let FF_CMP_PSNR* = 4     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:899:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_PSNR" & " already exists, not redeclaring")
+when not declared(FF_CMP_BIT):
+  when 5 is static:
+    const
+      FF_CMP_BIT* = 5        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:900:9
+  else:
+    let FF_CMP_BIT* = 5      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:900:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_BIT" & " already exists, not redeclaring")
+when not declared(FF_CMP_RD):
+  when 6 is static:
+    const
+      FF_CMP_RD* = 6         ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:901:9
+  else:
+    let FF_CMP_RD* = 6       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:901:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_RD" & " already exists, not redeclaring")
+when not declared(FF_CMP_ZERO):
+  when 7 is static:
+    const
+      FF_CMP_ZERO* = 7       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:902:9
+  else:
+    let FF_CMP_ZERO* = 7     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:902:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_ZERO" & " already exists, not redeclaring")
+when not declared(FF_CMP_VSAD):
+  when 8 is static:
+    const
+      FF_CMP_VSAD* = 8       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:903:9
+  else:
+    let FF_CMP_VSAD* = 8     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:903:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_VSAD" & " already exists, not redeclaring")
+when not declared(FF_CMP_VSSE):
+  when 9 is static:
+    const
+      FF_CMP_VSSE* = 9       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:904:9
+  else:
+    let FF_CMP_VSSE* = 9     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:904:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_VSSE" & " already exists, not redeclaring")
+when not declared(FF_CMP_NSSE):
+  when 10 is static:
+    const
+      FF_CMP_NSSE* = 10      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:905:9
+  else:
+    let FF_CMP_NSSE* = 10    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:905:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_NSSE" & " already exists, not redeclaring")
+when not declared(FF_CMP_W53):
+  when 11 is static:
+    const
+      FF_CMP_W53* = 11       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:906:9
+  else:
+    let FF_CMP_W53* = 11     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:906:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_W53" & " already exists, not redeclaring")
+when not declared(FF_CMP_W97):
+  when 12 is static:
+    const
+      FF_CMP_W97* = 12       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:907:9
+  else:
+    let FF_CMP_W97* = 12     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:907:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_W97" & " already exists, not redeclaring")
+when not declared(FF_CMP_DCTMAX):
+  when 13 is static:
+    const
+      FF_CMP_DCTMAX* = 13    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:908:9
+  else:
+    let FF_CMP_DCTMAX* = 13  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:908:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_DCTMAX" &
+        " already exists, not redeclaring")
+when not declared(FF_CMP_DCT264):
+  when 14 is static:
+    const
+      FF_CMP_DCT264* = 14    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:909:9
+  else:
+    let FF_CMP_DCT264* = 14  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:909:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_DCT264" &
+        " already exists, not redeclaring")
+when not declared(FF_CMP_MEDIAN_SAD):
+  when 15 is static:
+    const
+      FF_CMP_MEDIAN_SAD* = 15 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:910:9
+  else:
+    let FF_CMP_MEDIAN_SAD* = 15 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:910:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_MEDIAN_SAD" &
+        " already exists, not redeclaring")
+when not declared(FF_CMP_CHROMA):
+  when 256 is static:
+    const
+      FF_CMP_CHROMA* = 256   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:911:9
+  else:
+    let FF_CMP_CHROMA* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:911:9
+else:
+  static :
+    hint("Declaration of " & "FF_CMP_CHROMA" &
+        " already exists, not redeclaring")
+when not declared(FF_MB_DECISION_SIMPLE):
+  when 0 is static:
+    const
+      FF_MB_DECISION_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:963:9
+  else:
+    let FF_MB_DECISION_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:963:9
+else:
+  static :
+    hint("Declaration of " & "FF_MB_DECISION_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(FF_MB_DECISION_BITS):
+  when 1 is static:
+    const
+      FF_MB_DECISION_BITS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:964:9
+  else:
+    let FF_MB_DECISION_BITS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:964:9
+else:
+  static :
+    hint("Declaration of " & "FF_MB_DECISION_BITS" &
+        " already exists, not redeclaring")
+when not declared(FF_MB_DECISION_RD):
+  when 2 is static:
+    const
+      FF_MB_DECISION_RD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:965:9
+  else:
+    let FF_MB_DECISION_RD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:965:9
+else:
+  static :
+    hint("Declaration of " & "FF_MB_DECISION_RD" &
+        " already exists, not redeclaring")
+when not declared(FF_COMPRESSION_DEFAULT):
+  when -1 is static:
+    const
+      FF_COMPRESSION_DEFAULT* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1246:9
+  else:
+    let FF_COMPRESSION_DEFAULT* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1246:9
+else:
+  static :
+    hint("Declaration of " & "FF_COMPRESSION_DEFAULT" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_AUTODETECT):
+  when 1 is static:
+    const
+      FF_BUG_AUTODETECT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1350:9
+  else:
+    let FF_BUG_AUTODETECT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1350:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_AUTODETECT" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_XVID_ILACE):
+  when 4 is static:
+    const
+      FF_BUG_XVID_ILACE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1351:9
+  else:
+    let FF_BUG_XVID_ILACE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1351:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_XVID_ILACE" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_UMP4):
+  when 8 is static:
+    const
+      FF_BUG_UMP4* = 8       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1352:9
+  else:
+    let FF_BUG_UMP4* = 8     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1352:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_UMP4" & " already exists, not redeclaring")
+when not declared(FF_BUG_NO_PADDING):
+  when 16 is static:
+    const
+      FF_BUG_NO_PADDING* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1353:9
+  else:
+    let FF_BUG_NO_PADDING* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1353:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_NO_PADDING" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_AMV):
+  when 32 is static:
+    const
+      FF_BUG_AMV* = 32       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1354:9
+  else:
+    let FF_BUG_AMV* = 32     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1354:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_AMV" & " already exists, not redeclaring")
+when not declared(FF_BUG_QPEL_CHROMA):
+  when 64 is static:
+    const
+      FF_BUG_QPEL_CHROMA* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1355:9
+  else:
+    let FF_BUG_QPEL_CHROMA* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1355:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_QPEL_CHROMA" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_STD_QPEL):
+  when 128 is static:
+    const
+      FF_BUG_STD_QPEL* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1356:9
+  else:
+    let FF_BUG_STD_QPEL* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1356:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_STD_QPEL" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_QPEL_CHROMA2):
+  when 256 is static:
+    const
+      FF_BUG_QPEL_CHROMA2* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1357:9
+  else:
+    let FF_BUG_QPEL_CHROMA2* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1357:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_QPEL_CHROMA2" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_DIRECT_BLOCKSIZE):
+  when 512 is static:
+    const
+      FF_BUG_DIRECT_BLOCKSIZE* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1358:9
+  else:
+    let FF_BUG_DIRECT_BLOCKSIZE* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1358:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_DIRECT_BLOCKSIZE" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_EDGE):
+  when 1024 is static:
+    const
+      FF_BUG_EDGE* = 1024    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1359:9
+  else:
+    let FF_BUG_EDGE* = 1024  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1359:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_EDGE" & " already exists, not redeclaring")
+when not declared(FF_BUG_HPEL_CHROMA):
+  when 2048 is static:
+    const
+      FF_BUG_HPEL_CHROMA* = 2048 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1360:9
+  else:
+    let FF_BUG_HPEL_CHROMA* = 2048 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1360:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_HPEL_CHROMA" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_DC_CLIP):
+  when 4096 is static:
+    const
+      FF_BUG_DC_CLIP* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1361:9
+  else:
+    let FF_BUG_DC_CLIP* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1361:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_DC_CLIP" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_MS):
+  when 8192 is static:
+    const
+      FF_BUG_MS* = 8192      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1362:9
+  else:
+    let FF_BUG_MS* = 8192    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1362:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_MS" & " already exists, not redeclaring")
+when not declared(FF_BUG_TRUNCATED):
+  when 16384 is static:
+    const
+      FF_BUG_TRUNCATED* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1363:9
+  else:
+    let FF_BUG_TRUNCATED* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1363:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_TRUNCATED" &
+        " already exists, not redeclaring")
+when not declared(FF_BUG_IEDGE):
+  when 32768 is static:
+    const
+      FF_BUG_IEDGE* = 32768  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1364:9
+  else:
+    let FF_BUG_IEDGE* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1364:9
+else:
+  static :
+    hint("Declaration of " & "FF_BUG_IEDGE" & " already exists, not redeclaring")
+when not declared(FF_EC_GUESS_MVS):
+  when 1 is static:
+    const
+      FF_EC_GUESS_MVS* = 1   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1387:9
+  else:
+    let FF_EC_GUESS_MVS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1387:9
+else:
+  static :
+    hint("Declaration of " & "FF_EC_GUESS_MVS" &
+        " already exists, not redeclaring")
+when not declared(FF_EC_DEBLOCK):
+  when 2 is static:
+    const
+      FF_EC_DEBLOCK* = 2     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1388:9
+  else:
+    let FF_EC_DEBLOCK* = 2   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1388:9
+else:
+  static :
+    hint("Declaration of " & "FF_EC_DEBLOCK" &
+        " already exists, not redeclaring")
+when not declared(FF_EC_FAVOR_INTER):
+  when 256 is static:
+    const
+      FF_EC_FAVOR_INTER* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1389:9
+  else:
+    let FF_EC_FAVOR_INTER* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1389:9
+else:
+  static :
+    hint("Declaration of " & "FF_EC_FAVOR_INTER" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_PICT_INFO):
+  when 1 is static:
+    const
+      FF_DEBUG_PICT_INFO* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1397:9
+  else:
+    let FF_DEBUG_PICT_INFO* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1397:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_PICT_INFO" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_RC):
+  when 2 is static:
+    const
+      FF_DEBUG_RC* = 2       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1398:9
+  else:
+    let FF_DEBUG_RC* = 2     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1398:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_RC" & " already exists, not redeclaring")
+when not declared(FF_DEBUG_BITSTREAM):
+  when 4 is static:
+    const
+      FF_DEBUG_BITSTREAM* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1399:9
+  else:
+    let FF_DEBUG_BITSTREAM* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1399:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_BITSTREAM" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_MB_TYPE):
+  when 8 is static:
+    const
+      FF_DEBUG_MB_TYPE* = 8  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1400:9
+  else:
+    let FF_DEBUG_MB_TYPE* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1400:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_MB_TYPE" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_QP):
+  when 16 is static:
+    const
+      FF_DEBUG_QP* = 16      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1401:9
+  else:
+    let FF_DEBUG_QP* = 16    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1401:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_QP" & " already exists, not redeclaring")
+when not declared(FF_DEBUG_DCT_COEFF):
+  when 64 is static:
+    const
+      FF_DEBUG_DCT_COEFF* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1402:9
+  else:
+    let FF_DEBUG_DCT_COEFF* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1402:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_DCT_COEFF" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_SKIP):
+  when 128 is static:
+    const
+      FF_DEBUG_SKIP* = 128   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1403:9
+  else:
+    let FF_DEBUG_SKIP* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1403:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_SKIP" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_STARTCODE):
+  when 256 is static:
+    const
+      FF_DEBUG_STARTCODE* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1404:9
+  else:
+    let FF_DEBUG_STARTCODE* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1404:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_STARTCODE" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_ER):
+  when 1024 is static:
+    const
+      FF_DEBUG_ER* = 1024    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1405:9
+  else:
+    let FF_DEBUG_ER* = 1024  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1405:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_ER" & " already exists, not redeclaring")
+when not declared(FF_DEBUG_MMCO):
+  when 2048 is static:
+    const
+      FF_DEBUG_MMCO* = 2048  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1406:9
+  else:
+    let FF_DEBUG_MMCO* = 2048 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1406:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_MMCO" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_BUGS):
+  when 4096 is static:
+    const
+      FF_DEBUG_BUGS* = 4096  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1407:9
+  else:
+    let FF_DEBUG_BUGS* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1407:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_BUGS" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_BUFFERS):
+  when 32768 is static:
+    const
+      FF_DEBUG_BUFFERS* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1408:9
+  else:
+    let FF_DEBUG_BUFFERS* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1408:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_BUFFERS" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_THREADS):
+  when 65536 is static:
+    const
+      FF_DEBUG_THREADS* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1409:9
+  else:
+    let FF_DEBUG_THREADS* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1409:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_THREADS" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_GREEN_MD):
+  when 8388608 is static:
+    const
+      FF_DEBUG_GREEN_MD* = 8388608 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1410:9
+  else:
+    let FF_DEBUG_GREEN_MD* = 8388608 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1410:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_GREEN_MD" &
+        " already exists, not redeclaring")
+when not declared(FF_DEBUG_NOMC):
+  when 16777216 is static:
+    const
+      FF_DEBUG_NOMC* = 16777216 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1411:9
+  else:
+    let FF_DEBUG_NOMC* = 16777216 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1411:9
+else:
+  static :
+    hint("Declaration of " & "FF_DEBUG_NOMC" &
+        " already exists, not redeclaring")
+when not declared(FF_DCT_AUTO):
+  when 0 is static:
+    const
+      FF_DCT_AUTO* = 0       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1535:9
+  else:
+    let FF_DCT_AUTO* = 0     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1535:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_AUTO" & " already exists, not redeclaring")
+when not declared(FF_DCT_FASTINT):
+  when 1 is static:
+    const
+      FF_DCT_FASTINT* = 1    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1536:9
+  else:
+    let FF_DCT_FASTINT* = 1  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1536:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_FASTINT" &
+        " already exists, not redeclaring")
+when not declared(FF_DCT_INT):
+  when 2 is static:
+    const
+      FF_DCT_INT* = 2        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1537:9
+  else:
+    let FF_DCT_INT* = 2      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1537:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_INT" & " already exists, not redeclaring")
+when not declared(FF_DCT_MMX):
+  when 3 is static:
+    const
+      FF_DCT_MMX* = 3        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1538:9
+  else:
+    let FF_DCT_MMX* = 3      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1538:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_MMX" & " already exists, not redeclaring")
+when not declared(FF_DCT_ALTIVEC):
+  when 5 is static:
+    const
+      FF_DCT_ALTIVEC* = 5    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1539:9
+  else:
+    let FF_DCT_ALTIVEC* = 5  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1539:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_ALTIVEC" &
+        " already exists, not redeclaring")
+when not declared(FF_DCT_FAAN):
+  when 6 is static:
+    const
+      FF_DCT_FAAN* = 6       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1540:9
+  else:
+    let FF_DCT_FAAN* = 6     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1540:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_FAAN" & " already exists, not redeclaring")
+when not declared(FF_DCT_NEON):
+  when 7 is static:
+    const
+      FF_DCT_NEON* = 7       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1541:9
+  else:
+    let FF_DCT_NEON* = 7     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1541:9
+else:
+  static :
+    hint("Declaration of " & "FF_DCT_NEON" & " already exists, not redeclaring")
+when not declared(FF_IDCT_AUTO):
+  when 0 is static:
+    const
+      FF_IDCT_AUTO* = 0      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1549:9
+  else:
+    let FF_IDCT_AUTO* = 0    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1549:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_AUTO" & " already exists, not redeclaring")
+when not declared(FF_IDCT_INT):
+  when 1 is static:
+    const
+      FF_IDCT_INT* = 1       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1550:9
+  else:
+    let FF_IDCT_INT* = 1     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1550:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_INT" & " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLE):
+  when 2 is static:
+    const
+      FF_IDCT_SIMPLE* = 2    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1551:9
+  else:
+    let FF_IDCT_SIMPLE* = 2  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1551:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLEMMX):
+  when 3 is static:
+    const
+      FF_IDCT_SIMPLEMMX* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1552:9
+  else:
+    let FF_IDCT_SIMPLEMMX* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1552:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLEMMX" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_ARM):
+  when 7 is static:
+    const
+      FF_IDCT_ARM* = 7       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1553:9
+  else:
+    let FF_IDCT_ARM* = 7     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1553:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_ARM" & " already exists, not redeclaring")
+when not declared(FF_IDCT_ALTIVEC):
+  when 8 is static:
+    const
+      FF_IDCT_ALTIVEC* = 8   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1554:9
+  else:
+    let FF_IDCT_ALTIVEC* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1554:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_ALTIVEC" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLEARM):
+  when 10 is static:
+    const
+      FF_IDCT_SIMPLEARM* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1555:9
+  else:
+    let FF_IDCT_SIMPLEARM* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1555:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLEARM" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_XVID):
+  when 14 is static:
+    const
+      FF_IDCT_XVID* = 14     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1556:9
+  else:
+    let FF_IDCT_XVID* = 14   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1556:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_XVID" & " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLEARMV5TE):
+  when 16 is static:
+    const
+      FF_IDCT_SIMPLEARMV5TE* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1557:9
+  else:
+    let FF_IDCT_SIMPLEARMV5TE* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1557:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLEARMV5TE" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLEARMV6):
+  when 17 is static:
+    const
+      FF_IDCT_SIMPLEARMV6* = 17 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1558:9
+  else:
+    let FF_IDCT_SIMPLEARMV6* = 17 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1558:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLEARMV6" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_FAAN):
+  when 20 is static:
+    const
+      FF_IDCT_FAAN* = 20     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1559:9
+  else:
+    let FF_IDCT_FAAN* = 20   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1559:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_FAAN" & " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLENEON):
+  when 22 is static:
+    const
+      FF_IDCT_SIMPLENEON* = 22 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1560:9
+  else:
+    let FF_IDCT_SIMPLENEON* = 22 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1560:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLENEON" &
+        " already exists, not redeclaring")
+when not declared(FF_IDCT_SIMPLEAUTO):
+  when 128 is static:
+    const
+      FF_IDCT_SIMPLEAUTO* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1561:9
+  else:
+    let FF_IDCT_SIMPLEAUTO* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1561:9
+else:
+  static :
+    hint("Declaration of " & "FF_IDCT_SIMPLEAUTO" &
+        " already exists, not redeclaring")
+when not declared(FF_THREAD_FRAME):
+  when 1 is static:
+    const
+      FF_THREAD_FRAME* = 1   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1594:9
+  else:
+    let FF_THREAD_FRAME* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1594:9
+else:
+  static :
+    hint("Declaration of " & "FF_THREAD_FRAME" &
+        " already exists, not redeclaring")
+when not declared(FF_THREAD_SLICE):
+  when 2 is static:
+    const
+      FF_THREAD_SLICE* = 2   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1595:9
+  else:
+    let FF_THREAD_SLICE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1595:9
+else:
+  static :
+    hint("Declaration of " & "FF_THREAD_SLICE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_UNKNOWN):
+  when -99 is static:
+    const
+      FF_PROFILE_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1644:9
+  else:
+    let FF_PROFILE_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1644:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_UNKNOWN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_RESERVED):
+  when -100 is static:
+    const
+      FF_PROFILE_RESERVED* = -100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1645:9
+  else:
+    let FF_PROFILE_RESERVED* = -100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1645:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_RESERVED" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_MAIN):
+  when 0 is static:
+    const
+      FF_PROFILE_AAC_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1647:9
+  else:
+    let FF_PROFILE_AAC_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1647:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_LOW):
+  when 1 is static:
+    const
+      FF_PROFILE_AAC_LOW* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1648:9
+  else:
+    let FF_PROFILE_AAC_LOW* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1648:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_LOW" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_SSR):
+  when 2 is static:
+    const
+      FF_PROFILE_AAC_SSR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1649:9
+  else:
+    let FF_PROFILE_AAC_SSR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1649:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_SSR" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_LTP):
+  when 3 is static:
+    const
+      FF_PROFILE_AAC_LTP* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1650:9
+  else:
+    let FF_PROFILE_AAC_LTP* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1650:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_LTP" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_HE):
+  when 4 is static:
+    const
+      FF_PROFILE_AAC_HE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1651:9
+  else:
+    let FF_PROFILE_AAC_HE* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1651:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_HE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_HE_V2):
+  when 28 is static:
+    const
+      FF_PROFILE_AAC_HE_V2* = 28 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1652:9
+  else:
+    let FF_PROFILE_AAC_HE_V2* = 28 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1652:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_HE_V2" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_LD):
+  when 22 is static:
+    const
+      FF_PROFILE_AAC_LD* = 22 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1653:9
+  else:
+    let FF_PROFILE_AAC_LD* = 22 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1653:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_LD" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AAC_ELD):
+  when 38 is static:
+    const
+      FF_PROFILE_AAC_ELD* = 38 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1654:9
+  else:
+    let FF_PROFILE_AAC_ELD* = 38 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1654:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AAC_ELD" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_AAC_LOW):
+  when 128 is static:
+    const
+      FF_PROFILE_MPEG2_AAC_LOW* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1655:9
+  else:
+    let FF_PROFILE_MPEG2_AAC_LOW* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1655:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_AAC_LOW" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_AAC_HE):
+  when 131 is static:
+    const
+      FF_PROFILE_MPEG2_AAC_HE* = 131 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1656:9
+  else:
+    let FF_PROFILE_MPEG2_AAC_HE* = 131 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1656:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_AAC_HE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DNXHD):
+  when 0 is static:
+    const
+      FF_PROFILE_DNXHD* = 0  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1658:9
+  else:
+    let FF_PROFILE_DNXHD* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1658:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DNXHD" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DNXHR_LB):
+  when 1 is static:
+    const
+      FF_PROFILE_DNXHR_LB* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1659:9
+  else:
+    let FF_PROFILE_DNXHR_LB* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1659:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DNXHR_LB" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DNXHR_SQ):
+  when 2 is static:
+    const
+      FF_PROFILE_DNXHR_SQ* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1660:9
+  else:
+    let FF_PROFILE_DNXHR_SQ* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1660:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DNXHR_SQ" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DNXHR_HQ):
+  when 3 is static:
+    const
+      FF_PROFILE_DNXHR_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1661:9
+  else:
+    let FF_PROFILE_DNXHR_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1661:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DNXHR_HQ" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DNXHR_HQX):
+  when 4 is static:
+    const
+      FF_PROFILE_DNXHR_HQX* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1662:9
+  else:
+    let FF_PROFILE_DNXHR_HQX* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1662:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DNXHR_HQX" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DNXHR_444):
+  when 5 is static:
+    const
+      FF_PROFILE_DNXHR_444* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1663:9
+  else:
+    let FF_PROFILE_DNXHR_444* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1663:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DNXHR_444" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS):
+  when 20 is static:
+    const
+      FF_PROFILE_DTS* = 20   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1665:9
+  else:
+    let FF_PROFILE_DTS* = 20 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1665:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_ES):
+  when 30 is static:
+    const
+      FF_PROFILE_DTS_ES* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1666:9
+  else:
+    let FF_PROFILE_DTS_ES* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1666:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_ES" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_96_24):
+  when 40 is static:
+    const
+      FF_PROFILE_DTS_96_24* = 40 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1667:9
+  else:
+    let FF_PROFILE_DTS_96_24* = 40 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1667:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_96_24" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_HD_HRA):
+  when 50 is static:
+    const
+      FF_PROFILE_DTS_HD_HRA* = 50 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1668:9
+  else:
+    let FF_PROFILE_DTS_HD_HRA* = 50 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1668:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_HD_HRA" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_HD_MA):
+  when 60 is static:
+    const
+      FF_PROFILE_DTS_HD_MA* = 60 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1669:9
+  else:
+    let FF_PROFILE_DTS_HD_MA* = 60 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1669:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_HD_MA" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_EXPRESS):
+  when 70 is static:
+    const
+      FF_PROFILE_DTS_EXPRESS* = 70 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1670:9
+  else:
+    let FF_PROFILE_DTS_EXPRESS* = 70 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1670:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_EXPRESS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_HD_MA_X):
+  when 61 is static:
+    const
+      FF_PROFILE_DTS_HD_MA_X* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1671:9
+  else:
+    let FF_PROFILE_DTS_HD_MA_X* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1671:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_HD_MA_X" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_DTS_HD_MA_X_IMAX):
+  when 62 is static:
+    const
+      FF_PROFILE_DTS_HD_MA_X_IMAX* = 62 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1672:9
+  else:
+    let FF_PROFILE_DTS_HD_MA_X_IMAX* = 62 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1672:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_DTS_HD_MA_X_IMAX" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_EAC3_DDP_ATMOS):
+  when 30 is static:
+    const
+      FF_PROFILE_EAC3_DDP_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1675:9
+  else:
+    let FF_PROFILE_EAC3_DDP_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1675:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_EAC3_DDP_ATMOS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_TRUEHD_ATMOS):
+  when 30 is static:
+    const
+      FF_PROFILE_TRUEHD_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1677:9
+  else:
+    let FF_PROFILE_TRUEHD_ATMOS* = 30 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1677:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_TRUEHD_ATMOS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_422):
+  when 0 is static:
+    const
+      FF_PROFILE_MPEG2_422* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1679:9
+  else:
+    let FF_PROFILE_MPEG2_422* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1679:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_422" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_HIGH):
+  when 1 is static:
+    const
+      FF_PROFILE_MPEG2_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1680:9
+  else:
+    let FF_PROFILE_MPEG2_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1680:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_HIGH" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_SS):
+  when 2 is static:
+    const
+      FF_PROFILE_MPEG2_SS* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1681:9
+  else:
+    let FF_PROFILE_MPEG2_SS* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1681:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_SS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_SNR_SCALABLE):
+  when 3 is static:
+    const
+      FF_PROFILE_MPEG2_SNR_SCALABLE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1682:9
+  else:
+    let FF_PROFILE_MPEG2_SNR_SCALABLE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1682:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_SNR_SCALABLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_MAIN):
+  when 4 is static:
+    const
+      FF_PROFILE_MPEG2_MAIN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1683:9
+  else:
+    let FF_PROFILE_MPEG2_MAIN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1683:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG2_SIMPLE):
+  when 5 is static:
+    const
+      FF_PROFILE_MPEG2_SIMPLE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1684:9
+  else:
+    let FF_PROFILE_MPEG2_SIMPLE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1684:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG2_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_BASELINE):
+  when 66 is static:
+    const
+      FF_PROFILE_H264_BASELINE* = 66 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1689:9
+  else:
+    let FF_PROFILE_H264_BASELINE* = 66 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1689:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_BASELINE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_MAIN):
+  when 77 is static:
+    const
+      FF_PROFILE_H264_MAIN* = 77 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1691:9
+  else:
+    let FF_PROFILE_H264_MAIN* = 77 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1691:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_EXTENDED):
+  when 88 is static:
+    const
+      FF_PROFILE_H264_EXTENDED* = 88 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1692:9
+  else:
+    let FF_PROFILE_H264_EXTENDED* = 88 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1692:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_EXTENDED" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_HIGH):
+  when 100 is static:
+    const
+      FF_PROFILE_H264_HIGH* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1693:9
+  else:
+    let FF_PROFILE_H264_HIGH* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1693:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_HIGH" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_HIGH_10):
+  when 110 is static:
+    const
+      FF_PROFILE_H264_HIGH_10* = 110 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1694:9
+  else:
+    let FF_PROFILE_H264_HIGH_10* = 110 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1694:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_HIGH_10" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_MULTIVIEW_HIGH):
+  when 118 is static:
+    const
+      FF_PROFILE_H264_MULTIVIEW_HIGH* = 118 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1696:9
+  else:
+    let FF_PROFILE_H264_MULTIVIEW_HIGH* = 118 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1696:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_MULTIVIEW_HIGH" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_HIGH_422):
+  when 122 is static:
+    const
+      FF_PROFILE_H264_HIGH_422* = 122 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1697:9
+  else:
+    let FF_PROFILE_H264_HIGH_422* = 122 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1697:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_HIGH_422" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_STEREO_HIGH):
+  when 128 is static:
+    const
+      FF_PROFILE_H264_STEREO_HIGH* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1699:9
+  else:
+    let FF_PROFILE_H264_STEREO_HIGH* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1699:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_STEREO_HIGH" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_HIGH_444):
+  when 144 is static:
+    const
+      FF_PROFILE_H264_HIGH_444* = 144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1700:9
+  else:
+    let FF_PROFILE_H264_HIGH_444* = 144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1700:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_HIGH_444" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_HIGH_444_PREDICTIVE):
+  when 244 is static:
+    const
+      FF_PROFILE_H264_HIGH_444_PREDICTIVE* = 244 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1701:9
+  else:
+    let FF_PROFILE_H264_HIGH_444_PREDICTIVE* = 244 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1701:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_HIGH_444_PREDICTIVE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_H264_CAVLC_444):
+  when 44 is static:
+    const
+      FF_PROFILE_H264_CAVLC_444* = 44 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1703:9
+  else:
+    let FF_PROFILE_H264_CAVLC_444* = 44 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1703:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_H264_CAVLC_444" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VC1_SIMPLE):
+  when 0 is static:
+    const
+      FF_PROFILE_VC1_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1705:9
+  else:
+    let FF_PROFILE_VC1_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1705:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VC1_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VC1_MAIN):
+  when 1 is static:
+    const
+      FF_PROFILE_VC1_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1706:9
+  else:
+    let FF_PROFILE_VC1_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1706:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VC1_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VC1_COMPLEX):
+  when 2 is static:
+    const
+      FF_PROFILE_VC1_COMPLEX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1707:9
+  else:
+    let FF_PROFILE_VC1_COMPLEX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1707:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VC1_COMPLEX" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VC1_ADVANCED):
+  when 3 is static:
+    const
+      FF_PROFILE_VC1_ADVANCED* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1708:9
+  else:
+    let FF_PROFILE_VC1_ADVANCED* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1708:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VC1_ADVANCED" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_SIMPLE):
+  when 0 is static:
+    const
+      FF_PROFILE_MPEG4_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1710:9
+  else:
+    let FF_PROFILE_MPEG4_SIMPLE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1710:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_SIMPLE_SCALABLE):
+  when 1 is static:
+    const
+      FF_PROFILE_MPEG4_SIMPLE_SCALABLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1711:9
+  else:
+    let FF_PROFILE_MPEG4_SIMPLE_SCALABLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1711:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_SIMPLE_SCALABLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_CORE):
+  when 2 is static:
+    const
+      FF_PROFILE_MPEG4_CORE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1712:9
+  else:
+    let FF_PROFILE_MPEG4_CORE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1712:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_CORE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_MAIN):
+  when 3 is static:
+    const
+      FF_PROFILE_MPEG4_MAIN* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1713:9
+  else:
+    let FF_PROFILE_MPEG4_MAIN* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1713:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_N_BIT):
+  when 4 is static:
+    const
+      FF_PROFILE_MPEG4_N_BIT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1714:9
+  else:
+    let FF_PROFILE_MPEG4_N_BIT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1714:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_N_BIT" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_SCALABLE_TEXTURE):
+  when 5 is static:
+    const
+      FF_PROFILE_MPEG4_SCALABLE_TEXTURE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1715:9
+  else:
+    let FF_PROFILE_MPEG4_SCALABLE_TEXTURE* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1715:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_SCALABLE_TEXTURE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION):
+  when 6 is static:
+    const
+      FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION* = 6 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1716:9
+  else:
+    let FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION* = 6 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1716:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE):
+  when 7 is static:
+    const
+      FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE* = 7 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1717:9
+  else:
+    let FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE* = 7 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1717:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_HYBRID):
+  when 8 is static:
+    const
+      FF_PROFILE_MPEG4_HYBRID* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1718:9
+  else:
+    let FF_PROFILE_MPEG4_HYBRID* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1718:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_HYBRID" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_ADVANCED_REAL_TIME):
+  when 9 is static:
+    const
+      FF_PROFILE_MPEG4_ADVANCED_REAL_TIME* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1719:9
+  else:
+    let FF_PROFILE_MPEG4_ADVANCED_REAL_TIME* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1719:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_ADVANCED_REAL_TIME" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_CORE_SCALABLE):
+  when 10 is static:
+    const
+      FF_PROFILE_MPEG4_CORE_SCALABLE* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1720:9
+  else:
+    let FF_PROFILE_MPEG4_CORE_SCALABLE* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1720:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_CORE_SCALABLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_ADVANCED_CODING):
+  when 11 is static:
+    const
+      FF_PROFILE_MPEG4_ADVANCED_CODING* = 11 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1721:9
+  else:
+    let FF_PROFILE_MPEG4_ADVANCED_CODING* = 11 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1721:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_ADVANCED_CODING" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_ADVANCED_CORE):
+  when 12 is static:
+    const
+      FF_PROFILE_MPEG4_ADVANCED_CORE* = 12 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1722:9
+  else:
+    let FF_PROFILE_MPEG4_ADVANCED_CORE* = 12 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1722:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_ADVANCED_CORE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE):
+  when 13 is static:
+    const
+      FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE* = 13 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1723:9
+  else:
+    let FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE* = 13 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1723:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_SIMPLE_STUDIO):
+  when 14 is static:
+    const
+      FF_PROFILE_MPEG4_SIMPLE_STUDIO* = 14 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1724:9
+  else:
+    let FF_PROFILE_MPEG4_SIMPLE_STUDIO* = 14 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1724:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_SIMPLE_STUDIO" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MPEG4_ADVANCED_SIMPLE):
+  when 15 is static:
+    const
+      FF_PROFILE_MPEG4_ADVANCED_SIMPLE* = 15 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1725:9
+  else:
+    let FF_PROFILE_MPEG4_ADVANCED_SIMPLE* = 15 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1725:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MPEG4_ADVANCED_SIMPLE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0):
+  when 1 is static:
+    const
+      FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1727:9
+  else:
+    let FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1727:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1):
+  when 2 is static:
+    const
+      FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1728:9
+  else:
+    let FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1728:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION):
+  when 32768 is static:
+    const
+      FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1729:9
+  else:
+    let FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1729:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_JPEG2000_DCINEMA_2K):
+  when 3 is static:
+    const
+      FF_PROFILE_JPEG2000_DCINEMA_2K* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1730:9
+  else:
+    let FF_PROFILE_JPEG2000_DCINEMA_2K* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1730:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_JPEG2000_DCINEMA_2K" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_JPEG2000_DCINEMA_4K):
+  when 4 is static:
+    const
+      FF_PROFILE_JPEG2000_DCINEMA_4K* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1731:9
+  else:
+    let FF_PROFILE_JPEG2000_DCINEMA_4K* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1731:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_JPEG2000_DCINEMA_4K" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VP9_0):
+  when 0 is static:
+    const
+      FF_PROFILE_VP9_0* = 0  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1733:9
+  else:
+    let FF_PROFILE_VP9_0* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1733:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VP9_0" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VP9_1):
+  when 1 is static:
+    const
+      FF_PROFILE_VP9_1* = 1  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1734:9
+  else:
+    let FF_PROFILE_VP9_1* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1734:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VP9_1" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VP9_2):
+  when 2 is static:
+    const
+      FF_PROFILE_VP9_2* = 2  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1735:9
+  else:
+    let FF_PROFILE_VP9_2* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1735:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VP9_2" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VP9_3):
+  when 3 is static:
+    const
+      FF_PROFILE_VP9_3* = 3  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1736:9
+  else:
+    let FF_PROFILE_VP9_3* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1736:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VP9_3" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_HEVC_MAIN):
+  when 1 is static:
+    const
+      FF_PROFILE_HEVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1738:9
+  else:
+    let FF_PROFILE_HEVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1738:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_HEVC_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_HEVC_MAIN_10):
+  when 2 is static:
+    const
+      FF_PROFILE_HEVC_MAIN_10* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1739:9
+  else:
+    let FF_PROFILE_HEVC_MAIN_10* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1739:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_HEVC_MAIN_10" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_HEVC_MAIN_STILL_PICTURE):
+  when 3 is static:
+    const
+      FF_PROFILE_HEVC_MAIN_STILL_PICTURE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1740:9
+  else:
+    let FF_PROFILE_HEVC_MAIN_STILL_PICTURE* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1740:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_HEVC_MAIN_STILL_PICTURE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_HEVC_REXT):
+  when 4 is static:
+    const
+      FF_PROFILE_HEVC_REXT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1741:9
+  else:
+    let FF_PROFILE_HEVC_REXT* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1741:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_HEVC_REXT" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_HEVC_SCC):
+  when 9 is static:
+    const
+      FF_PROFILE_HEVC_SCC* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1742:9
+  else:
+    let FF_PROFILE_HEVC_SCC* = 9 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1742:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_HEVC_SCC" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VVC_MAIN_10):
+  when 1 is static:
+    const
+      FF_PROFILE_VVC_MAIN_10* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1744:9
+  else:
+    let FF_PROFILE_VVC_MAIN_10* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1744:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VVC_MAIN_10" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_VVC_MAIN_10_444):
+  when 33 is static:
+    const
+      FF_PROFILE_VVC_MAIN_10_444* = 33 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1745:9
+  else:
+    let FF_PROFILE_VVC_MAIN_10_444* = 33 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1745:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_VVC_MAIN_10_444" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AV1_MAIN):
+  when 0 is static:
+    const
+      FF_PROFILE_AV1_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1747:9
+  else:
+    let FF_PROFILE_AV1_MAIN* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1747:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AV1_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AV1_HIGH):
+  when 1 is static:
+    const
+      FF_PROFILE_AV1_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1748:9
+  else:
+    let FF_PROFILE_AV1_HIGH* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1748:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AV1_HIGH" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_AV1_PROFESSIONAL):
+  when 2 is static:
+    const
+      FF_PROFILE_AV1_PROFESSIONAL* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1749:9
+  else:
+    let FF_PROFILE_AV1_PROFESSIONAL* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1749:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_AV1_PROFESSIONAL" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT):
+  when 192 is static:
+    const
+      FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT* = 192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1751:9
+  else:
+    let FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT* = 192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1751:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT):
+  when 193 is static:
+    const
+      FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT* = 193 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1752:9
+  else:
+    let FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT* = 193 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1752:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT):
+  when 194 is static:
+    const
+      FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT* = 194 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1753:9
+  else:
+    let FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT* = 194 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1753:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS):
+  when 195 is static:
+    const
+      FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS* = 195 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1754:9
+  else:
+    let FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS* = 195 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1754:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_MJPEG_JPEG_LS):
+  when 247 is static:
+    const
+      FF_PROFILE_MJPEG_JPEG_LS* = 247 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1755:9
+  else:
+    let FF_PROFILE_MJPEG_JPEG_LS* = 247 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1755:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_MJPEG_JPEG_LS" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_SBC_MSBC):
+  when 1 is static:
+    const
+      FF_PROFILE_SBC_MSBC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1757:9
+  else:
+    let FF_PROFILE_SBC_MSBC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1757:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_SBC_MSBC" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_PRORES_PROXY):
+  when 0 is static:
+    const
+      FF_PROFILE_PRORES_PROXY* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1759:9
+  else:
+    let FF_PROFILE_PRORES_PROXY* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1759:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_PRORES_PROXY" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_PRORES_LT):
+  when 1 is static:
+    const
+      FF_PROFILE_PRORES_LT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1760:9
+  else:
+    let FF_PROFILE_PRORES_LT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1760:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_PRORES_LT" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_PRORES_STANDARD):
+  when 2 is static:
+    const
+      FF_PROFILE_PRORES_STANDARD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1761:9
+  else:
+    let FF_PROFILE_PRORES_STANDARD* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1761:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_PRORES_STANDARD" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_PRORES_HQ):
+  when 3 is static:
+    const
+      FF_PROFILE_PRORES_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1762:9
+  else:
+    let FF_PROFILE_PRORES_HQ* = 3 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1762:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_PRORES_HQ" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_PRORES_4444):
+  when 4 is static:
+    const
+      FF_PROFILE_PRORES_4444* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1763:9
+  else:
+    let FF_PROFILE_PRORES_4444* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1763:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_PRORES_4444" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_PRORES_XQ):
+  when 5 is static:
+    const
+      FF_PROFILE_PRORES_XQ* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1764:9
+  else:
+    let FF_PROFILE_PRORES_XQ* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1764:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_PRORES_XQ" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_ARIB_PROFILE_A):
+  when 0 is static:
+    const
+      FF_PROFILE_ARIB_PROFILE_A* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1766:9
+  else:
+    let FF_PROFILE_ARIB_PROFILE_A* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1766:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_ARIB_PROFILE_A" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_ARIB_PROFILE_C):
+  when 1 is static:
+    const
+      FF_PROFILE_ARIB_PROFILE_C* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1767:9
+  else:
+    let FF_PROFILE_ARIB_PROFILE_C* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1767:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_ARIB_PROFILE_C" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_KLVA_SYNC):
+  when 0 is static:
+    const
+      FF_PROFILE_KLVA_SYNC* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1769:9
+  else:
+    let FF_PROFILE_KLVA_SYNC* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1769:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_KLVA_SYNC" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_KLVA_ASYNC):
+  when 1 is static:
+    const
+      FF_PROFILE_KLVA_ASYNC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1770:9
+  else:
+    let FF_PROFILE_KLVA_ASYNC* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1770:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_KLVA_ASYNC" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_EVC_BASELINE):
+  when 0 is static:
+    const
+      FF_PROFILE_EVC_BASELINE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1772:9
+  else:
+    let FF_PROFILE_EVC_BASELINE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1772:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_EVC_BASELINE" &
+        " already exists, not redeclaring")
+when not declared(FF_PROFILE_EVC_MAIN):
+  when 1 is static:
+    const
+      FF_PROFILE_EVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1773:9
+  else:
+    let FF_PROFILE_EVC_MAIN* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1773:9
+else:
+  static :
+    hint("Declaration of " & "FF_PROFILE_EVC_MAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_LEVEL_UNKNOWN):
+  when -99 is static:
+    const
+      FF_LEVEL_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1788:9
+  else:
+    let FF_LEVEL_UNKNOWN* = -99 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1788:9
+else:
+  static :
+    hint("Declaration of " & "FF_LEVEL_UNKNOWN" &
+        " already exists, not redeclaring")
+when not declared(FF_CODEC_PROPERTY_LOSSLESS):
+  when 1 is static:
+    const
+      FF_CODEC_PROPERTY_LOSSLESS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1797:9
+  else:
+    let FF_CODEC_PROPERTY_LOSSLESS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1797:9
+else:
+  static :
+    hint("Declaration of " & "FF_CODEC_PROPERTY_LOSSLESS" &
+        " already exists, not redeclaring")
+when not declared(FF_CODEC_PROPERTY_CLOSED_CAPTIONS):
+  when 2 is static:
+    const
+      FF_CODEC_PROPERTY_CLOSED_CAPTIONS* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1798:9
+  else:
+    let FF_CODEC_PROPERTY_CLOSED_CAPTIONS* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1798:9
+else:
+  static :
+    hint("Declaration of " & "FF_CODEC_PROPERTY_CLOSED_CAPTIONS" &
+        " already exists, not redeclaring")
+when not declared(FF_CODEC_PROPERTY_FILM_GRAIN):
+  when 4 is static:
+    const
+      FF_CODEC_PROPERTY_FILM_GRAIN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1799:9
+  else:
+    let FF_CODEC_PROPERTY_FILM_GRAIN* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1799:9
+else:
+  static :
+    hint("Declaration of " & "FF_CODEC_PROPERTY_FILM_GRAIN" &
+        " already exists, not redeclaring")
+when not declared(FF_SUB_CHARENC_MODE_DO_NOTHING):
+  when -1 is static:
+    const
+      FF_SUB_CHARENC_MODE_DO_NOTHING* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1878:9
+  else:
+    let FF_SUB_CHARENC_MODE_DO_NOTHING* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1878:9
+else:
+  static :
+    hint("Declaration of " & "FF_SUB_CHARENC_MODE_DO_NOTHING" &
+        " already exists, not redeclaring")
+when not declared(FF_SUB_CHARENC_MODE_AUTOMATIC):
+  when 0 is static:
+    const
+      FF_SUB_CHARENC_MODE_AUTOMATIC* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1879:9
+  else:
+    let FF_SUB_CHARENC_MODE_AUTOMATIC* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1879:9
+else:
+  static :
+    hint("Declaration of " & "FF_SUB_CHARENC_MODE_AUTOMATIC" &
+        " already exists, not redeclaring")
+when not declared(FF_SUB_CHARENC_MODE_PRE_DECODER):
+  when 1 is static:
+    const
+      FF_SUB_CHARENC_MODE_PRE_DECODER* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1880:9
+  else:
+    let FF_SUB_CHARENC_MODE_PRE_DECODER* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1880:9
+else:
+  static :
+    hint("Declaration of " & "FF_SUB_CHARENC_MODE_PRE_DECODER" &
+        " already exists, not redeclaring")
+when not declared(FF_SUB_CHARENC_MODE_IGNORE):
+  when 2 is static:
+    const
+      FF_SUB_CHARENC_MODE_IGNORE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1881:9
+  else:
+    let FF_SUB_CHARENC_MODE_IGNORE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:1881:9
+else:
+  static :
+    hint("Declaration of " & "FF_SUB_CHARENC_MODE_IGNORE" &
+        " already exists, not redeclaring")
+when not declared(AV_HWACCEL_CODEC_CAP_EXPERIMENTAL):
+  when 512 is static:
+    const
+      AV_HWACCEL_CODEC_CAP_EXPERIMENTAL* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2129:9
+  else:
+    let AV_HWACCEL_CODEC_CAP_EXPERIMENTAL* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2129:9
+else:
+  static :
+    hint("Declaration of " & "AV_HWACCEL_CODEC_CAP_EXPERIMENTAL" &
+        " already exists, not redeclaring")
+when not declared(AV_SUBTITLE_FLAG_FORCED):
+  when 1 is static:
+    const
+      AV_SUBTITLE_FLAG_FORCED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2199:9
+  else:
+    let AV_SUBTITLE_FLAG_FORCED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2199:9
+else:
+  static :
+    hint("Declaration of " & "AV_SUBTITLE_FLAG_FORCED" &
+        " already exists, not redeclaring")
+when not declared(AV_PARSER_PTS_NB):
+  when 4 is static:
+    const
+      AV_PARSER_PTS_NB* = 4  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2735:9
+  else:
+    let AV_PARSER_PTS_NB* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2735:9
+else:
+  static :
+    hint("Declaration of " & "AV_PARSER_PTS_NB" &
+        " already exists, not redeclaring")
+when not declared(PARSER_FLAG_COMPLETE_FRAMES):
+  when 1 is static:
+    const
+      PARSER_FLAG_COMPLETE_FRAMES* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2742:9
+  else:
+    let PARSER_FLAG_COMPLETE_FRAMES* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2742:9
+else:
+  static :
+    hint("Declaration of " & "PARSER_FLAG_COMPLETE_FRAMES" &
+        " already exists, not redeclaring")
+when not declared(PARSER_FLAG_ONCE):
+  when 2 is static:
+    const
+      PARSER_FLAG_ONCE* = 2  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2743:9
+  else:
+    let PARSER_FLAG_ONCE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2743:9
+else:
+  static :
+    hint("Declaration of " & "PARSER_FLAG_ONCE" &
+        " already exists, not redeclaring")
+when not declared(PARSER_FLAG_FETCHED_OFFSET):
+  when 4 is static:
+    const
+      PARSER_FLAG_FETCHED_OFFSET* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2745:9
+  else:
+    let PARSER_FLAG_FETCHED_OFFSET* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2745:9
+else:
+  static :
+    hint("Declaration of " & "PARSER_FLAG_FETCHED_OFFSET" &
+        " already exists, not redeclaring")
+when not declared(PARSER_FLAG_USE_CODEC_TS):
+  when 4096 is static:
+    const
+      PARSER_FLAG_USE_CODEC_TS* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2746:9
+  else:
+    let PARSER_FLAG_USE_CODEC_TS* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavcodec/avcodec.h:2746:9
+else:
+  static :
+    hint("Declaration of " & "PARSER_FLAG_USE_CODEC_TS" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFORMAT_VERSION_MAJOR):
+  when 61 is static:
+    const
+      LIBAVFORMAT_VERSION_MAJOR* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version_major.h:32:9
+  else:
+    let LIBAVFORMAT_VERSION_MAJOR* = 61 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version_major.h:32:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFORMAT_VERSION_MAJOR" &
+        " already exists, not redeclaring")
+when not declared(FF_API_R_FRAME_RATE):
+  when 1 is static:
+    const
+      FF_API_R_FRAME_RATE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version_major.h:52:9
+  else:
+    let FF_API_R_FRAME_RATE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version_major.h:52:9
+else:
+  static :
+    hint("Declaration of " & "FF_API_R_FRAME_RATE" &
+        " already exists, not redeclaring")
+when not declared(AVSEEK_SIZE):
+  when 65536 is static:
+    const
+      AVSEEK_SIZE* = 65536   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:468:9
+  else:
+    let AVSEEK_SIZE* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:468:9
+else:
+  static :
+    hint("Declaration of " & "AVSEEK_SIZE" & " already exists, not redeclaring")
+when not declared(AVSEEK_FORCE):
+  when 131072 is static:
+    const
+      AVSEEK_FORCE* = 131072 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:476:9
+  else:
+    let AVSEEK_FORCE* = 131072 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:476:9
+else:
+  static :
+    hint("Declaration of " & "AVSEEK_FORCE" & " already exists, not redeclaring")
+when not declared(AVIO_FLAG_READ):
+  when 1 is static:
+    const
+      AVIO_FLAG_READ* = 1    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:617:9
+  else:
+    let AVIO_FLAG_READ* = 1  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:617:9
+else:
+  static :
+    hint("Declaration of " & "AVIO_FLAG_READ" &
+        " already exists, not redeclaring")
+when not declared(AVIO_FLAG_WRITE):
+  when 2 is static:
+    const
+      AVIO_FLAG_WRITE* = 2   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:618:9
+  else:
+    let AVIO_FLAG_WRITE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:618:9
+else:
+  static :
+    hint("Declaration of " & "AVIO_FLAG_WRITE" &
+        " already exists, not redeclaring")
+when not declared(AVIO_FLAG_NONBLOCK):
+  when 8 is static:
+    const
+      AVIO_FLAG_NONBLOCK* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:636:9
+  else:
+    let AVIO_FLAG_NONBLOCK* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:636:9
+else:
+  static :
+    hint("Declaration of " & "AVIO_FLAG_NONBLOCK" &
+        " already exists, not redeclaring")
+when not declared(AVIO_FLAG_DIRECT):
+  when 32768 is static:
+    const
+      AVIO_FLAG_DIRECT* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:644:9
+  else:
+    let AVIO_FLAG_DIRECT* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avio.h:644:9
+else:
+  static :
+    hint("Declaration of " & "AVIO_FLAG_DIRECT" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFORMAT_VERSION_MINOR):
+  when 5 is static:
+    const
+      LIBAVFORMAT_VERSION_MINOR* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:34:9
+  else:
+    let LIBAVFORMAT_VERSION_MINOR* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:34:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFORMAT_VERSION_MINOR" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFORMAT_VERSION_MICRO):
+  when 101 is static:
+    const
+      LIBAVFORMAT_VERSION_MICRO* = 101 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:35:9
+  else:
+    let LIBAVFORMAT_VERSION_MICRO* = 101 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:35:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFORMAT_VERSION_MICRO" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFORMAT_BUILD):
+  when LIBAVFORMAT_VERSION_INT is typedesc:
+    type
+      LIBAVFORMAT_BUILD* = LIBAVFORMAT_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:43:9
+  else:
+    when LIBAVFORMAT_VERSION_INT is static:
+      const
+        LIBAVFORMAT_BUILD* = LIBAVFORMAT_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:43:9
+    else:
+      let LIBAVFORMAT_BUILD* = LIBAVFORMAT_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/version.h:43:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFORMAT_BUILD" &
+        " already exists, not redeclaring")
+when not declared(AVPROBE_SCORE_EXTENSION):
+  when 50 is static:
+    const
+      AVPROBE_SCORE_EXTENSION* = 50 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:461:9
+  else:
+    let AVPROBE_SCORE_EXTENSION* = 50 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:461:9
+else:
+  static :
+    hint("Declaration of " & "AVPROBE_SCORE_EXTENSION" &
+        " already exists, not redeclaring")
+when not declared(AVPROBE_SCORE_MIME):
+  when 75 is static:
+    const
+      AVPROBE_SCORE_MIME* = 75 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:462:9
+  else:
+    let AVPROBE_SCORE_MIME* = 75 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:462:9
+else:
+  static :
+    hint("Declaration of " & "AVPROBE_SCORE_MIME" &
+        " already exists, not redeclaring")
+when not declared(AVPROBE_SCORE_MAX):
+  when 100 is static:
+    const
+      AVPROBE_SCORE_MAX* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:463:9
+  else:
+    let AVPROBE_SCORE_MAX* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:463:9
+else:
+  static :
+    hint("Declaration of " & "AVPROBE_SCORE_MAX" &
+        " already exists, not redeclaring")
+when not declared(AVPROBE_PADDING_SIZE):
+  when 32 is static:
+    const
+      AVPROBE_PADDING_SIZE* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:465:9
+  else:
+    let AVPROBE_PADDING_SIZE* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:465:9
+else:
+  static :
+    hint("Declaration of " & "AVPROBE_PADDING_SIZE" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NOFILE):
+  when 1 is static:
+    const
+      AVFMT_NOFILE* = 1      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:468:9
+  else:
+    let AVFMT_NOFILE* = 1    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:468:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NOFILE" & " already exists, not redeclaring")
+when not declared(AVFMT_NEEDNUMBER):
+  when 2 is static:
+    const
+      AVFMT_NEEDNUMBER* = 2  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:469:9
+  else:
+    let AVFMT_NEEDNUMBER* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:469:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NEEDNUMBER" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_EXPERIMENTAL):
+  when 4 is static:
+    const
+      AVFMT_EXPERIMENTAL* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:476:9
+  else:
+    let AVFMT_EXPERIMENTAL* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:476:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_EXPERIMENTAL" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_SHOW_IDS):
+  when 8 is static:
+    const
+      AVFMT_SHOW_IDS* = 8    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:477:9
+  else:
+    let AVFMT_SHOW_IDS* = 8  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:477:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_SHOW_IDS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_GLOBALHEADER):
+  when 64 is static:
+    const
+      AVFMT_GLOBALHEADER* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:478:9
+  else:
+    let AVFMT_GLOBALHEADER* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:478:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_GLOBALHEADER" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NOTIMESTAMPS):
+  when 128 is static:
+    const
+      AVFMT_NOTIMESTAMPS* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:479:9
+  else:
+    let AVFMT_NOTIMESTAMPS* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:479:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NOTIMESTAMPS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_GENERIC_INDEX):
+  when 256 is static:
+    const
+      AVFMT_GENERIC_INDEX* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:480:9
+  else:
+    let AVFMT_GENERIC_INDEX* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:480:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_GENERIC_INDEX" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_TS_DISCONT):
+  when 512 is static:
+    const
+      AVFMT_TS_DISCONT* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:481:9
+  else:
+    let AVFMT_TS_DISCONT* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:481:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_TS_DISCONT" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_VARIABLE_FPS):
+  when 1024 is static:
+    const
+      AVFMT_VARIABLE_FPS* = 1024 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:482:9
+  else:
+    let AVFMT_VARIABLE_FPS* = 1024 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:482:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_VARIABLE_FPS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NODIMENSIONS):
+  when 2048 is static:
+    const
+      AVFMT_NODIMENSIONS* = 2048 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:483:9
+  else:
+    let AVFMT_NODIMENSIONS* = 2048 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:483:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NODIMENSIONS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NOSTREAMS):
+  when 4096 is static:
+    const
+      AVFMT_NOSTREAMS* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:484:9
+  else:
+    let AVFMT_NOSTREAMS* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:484:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NOSTREAMS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NOBINSEARCH):
+  when 8192 is static:
+    const
+      AVFMT_NOBINSEARCH* = 8192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:485:9
+  else:
+    let AVFMT_NOBINSEARCH* = 8192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:485:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NOBINSEARCH" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NOGENSEARCH):
+  when 16384 is static:
+    const
+      AVFMT_NOGENSEARCH* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:486:9
+  else:
+    let AVFMT_NOGENSEARCH* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:486:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NOGENSEARCH" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_NO_BYTE_SEEK):
+  when 32768 is static:
+    const
+      AVFMT_NO_BYTE_SEEK* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:487:9
+  else:
+    let AVFMT_NO_BYTE_SEEK* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:487:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_NO_BYTE_SEEK" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_ALLOW_FLUSH):
+  when 65536 is static:
+    const
+      AVFMT_ALLOW_FLUSH* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:489:9
+  else:
+    let AVFMT_ALLOW_FLUSH* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:489:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_ALLOW_FLUSH" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_TS_NONSTRICT):
+  when 131072 is static:
+    const
+      AVFMT_TS_NONSTRICT* = 131072 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:491:9
+  else:
+    let AVFMT_TS_NONSTRICT* = 131072 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:491:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_TS_NONSTRICT" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_TS_NEGATIVE):
+  when 262144 is static:
+    const
+      AVFMT_TS_NEGATIVE* = 262144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:494:9
+  else:
+    let AVFMT_TS_NEGATIVE* = 262144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:494:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_TS_NEGATIVE" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_SEEK_TO_PTS):
+  when 67108864 is static:
+    const
+      AVFMT_SEEK_TO_PTS* = 67108864 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:503:9
+  else:
+    let AVFMT_SEEK_TO_PTS* = 67108864 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:503:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_SEEK_TO_PTS" &
+        " already exists, not redeclaring")
+when not declared(AVINDEX_KEYFRAME):
+  when 1 is static:
+    const
+      AVINDEX_KEYFRAME* = 1  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:610:9
+  else:
+    let AVINDEX_KEYFRAME* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:610:9
+else:
+  static :
+    hint("Declaration of " & "AVINDEX_KEYFRAME" &
+        " already exists, not redeclaring")
+when not declared(AVINDEX_DISCARD_FRAME):
+  when 2 is static:
+    const
+      AVINDEX_DISCARD_FRAME* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:611:9
+  else:
+    let AVINDEX_DISCARD_FRAME* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:611:9
+else:
+  static :
+    hint("Declaration of " & "AVINDEX_DISCARD_FRAME" &
+        " already exists, not redeclaring")
+when not declared(AV_PTS_WRAP_IGNORE):
+  when 0 is static:
+    const
+      AV_PTS_WRAP_IGNORE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:739:9
+  else:
+    let AV_PTS_WRAP_IGNORE* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:739:9
+else:
+  static :
+    hint("Declaration of " & "AV_PTS_WRAP_IGNORE" &
+        " already exists, not redeclaring")
+when not declared(AV_PTS_WRAP_ADD_OFFSET):
+  when 1 is static:
+    const
+      AV_PTS_WRAP_ADD_OFFSET* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:740:9
+  else:
+    let AV_PTS_WRAP_ADD_OFFSET* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:740:9
+else:
+  static :
+    hint("Declaration of " & "AV_PTS_WRAP_ADD_OFFSET" &
+        " already exists, not redeclaring")
+when not declared(AV_PTS_WRAP_SUB_OFFSET):
+  when -1 is static:
+    const
+      AV_PTS_WRAP_SUB_OFFSET* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:741:9
+  else:
+    let AV_PTS_WRAP_SUB_OFFSET* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:741:9
+else:
+  static :
+    hint("Declaration of " & "AV_PTS_WRAP_SUB_OFFSET" &
+        " already exists, not redeclaring")
+when not declared(AVSTREAM_EVENT_FLAG_METADATA_UPDATED):
+  when 1 is static:
+    const
+      AVSTREAM_EVENT_FLAG_METADATA_UPDATED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:900:9
+  else:
+    let AVSTREAM_EVENT_FLAG_METADATA_UPDATED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:900:9
+else:
+  static :
+    hint("Declaration of " & "AVSTREAM_EVENT_FLAG_METADATA_UPDATED" &
+        " already exists, not redeclaring")
+when not declared(AV_PROGRAM_RUNNING):
+  when 1 is static:
+    const
+      AV_PROGRAM_RUNNING* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1178:9
+  else:
+    let AV_PROGRAM_RUNNING* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1178:9
+else:
+  static :
+    hint("Declaration of " & "AV_PROGRAM_RUNNING" &
+        " already exists, not redeclaring")
+when not declared(AVFMTCTX_NOHEADER):
+  when 1 is static:
+    const
+      AVFMTCTX_NOHEADER* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1213:9
+  else:
+    let AVFMTCTX_NOHEADER* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1213:9
+else:
+  static :
+    hint("Declaration of " & "AVFMTCTX_NOHEADER" &
+        " already exists, not redeclaring")
+when not declared(AVFMTCTX_UNSEEKABLE):
+  when 2 is static:
+    const
+      AVFMTCTX_UNSEEKABLE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1215:9
+  else:
+    let AVFMTCTX_UNSEEKABLE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1215:9
+else:
+  static :
+    hint("Declaration of " & "AVFMTCTX_UNSEEKABLE" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_GENPTS):
+  when 1 is static:
+    const
+      AVFMT_FLAG_GENPTS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1414:9
+  else:
+    let AVFMT_FLAG_GENPTS* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1414:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_GENPTS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_IGNIDX):
+  when 2 is static:
+    const
+      AVFMT_FLAG_IGNIDX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1415:9
+  else:
+    let AVFMT_FLAG_IGNIDX* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1415:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_IGNIDX" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_NONBLOCK):
+  when 4 is static:
+    const
+      AVFMT_FLAG_NONBLOCK* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1416:9
+  else:
+    let AVFMT_FLAG_NONBLOCK* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1416:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_NONBLOCK" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_IGNDTS):
+  when 8 is static:
+    const
+      AVFMT_FLAG_IGNDTS* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1417:9
+  else:
+    let AVFMT_FLAG_IGNDTS* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1417:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_IGNDTS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_NOFILLIN):
+  when 16 is static:
+    const
+      AVFMT_FLAG_NOFILLIN* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1418:9
+  else:
+    let AVFMT_FLAG_NOFILLIN* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1418:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_NOFILLIN" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_NOPARSE):
+  when 32 is static:
+    const
+      AVFMT_FLAG_NOPARSE* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1419:9
+  else:
+    let AVFMT_FLAG_NOPARSE* = 32 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1419:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_NOPARSE" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_NOBUFFER):
+  when 64 is static:
+    const
+      AVFMT_FLAG_NOBUFFER* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1420:9
+  else:
+    let AVFMT_FLAG_NOBUFFER* = 64 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1420:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_NOBUFFER" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_CUSTOM_IO):
+  when 128 is static:
+    const
+      AVFMT_FLAG_CUSTOM_IO* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1421:9
+  else:
+    let AVFMT_FLAG_CUSTOM_IO* = 128 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1421:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_CUSTOM_IO" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_DISCARD_CORRUPT):
+  when 256 is static:
+    const
+      AVFMT_FLAG_DISCARD_CORRUPT* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1422:9
+  else:
+    let AVFMT_FLAG_DISCARD_CORRUPT* = 256 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1422:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_DISCARD_CORRUPT" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_FLUSH_PACKETS):
+  when 512 is static:
+    const
+      AVFMT_FLAG_FLUSH_PACKETS* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1423:9
+  else:
+    let AVFMT_FLAG_FLUSH_PACKETS* = 512 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1423:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_FLUSH_PACKETS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_BITEXACT):
+  when 1024 is static:
+    const
+      AVFMT_FLAG_BITEXACT* = 1024 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1430:9
+  else:
+    let AVFMT_FLAG_BITEXACT* = 1024 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1430:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_BITEXACT" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_SORT_DTS):
+  when 65536 is static:
+    const
+      AVFMT_FLAG_SORT_DTS* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1431:9
+  else:
+    let AVFMT_FLAG_SORT_DTS* = 65536 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1431:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_SORT_DTS" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_FAST_SEEK):
+  when 524288 is static:
+    const
+      AVFMT_FLAG_FAST_SEEK* = 524288 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1432:9
+  else:
+    let AVFMT_FLAG_FAST_SEEK* = 524288 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1432:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_FAST_SEEK" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_SHORTEST):
+  when 1048576 is static:
+    const
+      AVFMT_FLAG_SHORTEST* = 1048576 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1434:9
+  else:
+    let AVFMT_FLAG_SHORTEST* = 1048576 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1434:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_SHORTEST" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_FLAG_AUTO_BSF):
+  when 2097152 is static:
+    const
+      AVFMT_FLAG_AUTO_BSF* = 2097152 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1436:9
+  else:
+    let AVFMT_FLAG_AUTO_BSF* = 2097152 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1436:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_FLAG_AUTO_BSF" &
+        " already exists, not redeclaring")
+when not declared(FF_FDEBUG_TS):
+  when 1 is static:
+    const
+      FF_FDEBUG_TS* = 1      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1541:9
+  else:
+    let FF_FDEBUG_TS* = 1    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1541:9
+else:
+  static :
+    hint("Declaration of " & "FF_FDEBUG_TS" & " already exists, not redeclaring")
+when not declared(AVFMT_EVENT_FLAG_METADATA_UPDATED):
+  when 1 is static:
+    const
+      AVFMT_EVENT_FLAG_METADATA_UPDATED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1639:9
+  else:
+    let AVFMT_EVENT_FLAG_METADATA_UPDATED* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1639:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_EVENT_FLAG_METADATA_UPDATED" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_AVOID_NEG_TS_AUTO):
+  when -1 is static:
+    const
+      AVFMT_AVOID_NEG_TS_AUTO* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1650:9
+  else:
+    let AVFMT_AVOID_NEG_TS_AUTO* = -1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1650:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_AVOID_NEG_TS_AUTO" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_AVOID_NEG_TS_DISABLED):
+  when 0 is static:
+    const
+      AVFMT_AVOID_NEG_TS_DISABLED* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1651:9
+  else:
+    let AVFMT_AVOID_NEG_TS_DISABLED* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1651:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_AVOID_NEG_TS_DISABLED" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE):
+  when 1 is static:
+    const
+      AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1652:9
+  else:
+    let AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1652:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE" &
+        " already exists, not redeclaring")
+when not declared(AVFMT_AVOID_NEG_TS_MAKE_ZERO):
+  when 2 is static:
+    const
+      AVFMT_AVOID_NEG_TS_MAKE_ZERO* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1653:9
+  else:
+    let AVFMT_AVOID_NEG_TS_MAKE_ZERO* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:1653:9
+else:
+  static :
+    hint("Declaration of " & "AVFMT_AVOID_NEG_TS_MAKE_ZERO" &
+        " already exists, not redeclaring")
+when not declared(AVSEEK_FLAG_BACKWARD):
+  when 1 is static:
+    const
+      AVSEEK_FLAG_BACKWARD* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2452:9
+  else:
+    let AVSEEK_FLAG_BACKWARD* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2452:9
+else:
+  static :
+    hint("Declaration of " & "AVSEEK_FLAG_BACKWARD" &
+        " already exists, not redeclaring")
+when not declared(AVSEEK_FLAG_BYTE):
+  when 2 is static:
+    const
+      AVSEEK_FLAG_BYTE* = 2  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2453:9
+  else:
+    let AVSEEK_FLAG_BYTE* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2453:9
+else:
+  static :
+    hint("Declaration of " & "AVSEEK_FLAG_BYTE" &
+        " already exists, not redeclaring")
+when not declared(AVSEEK_FLAG_ANY):
+  when 4 is static:
+    const
+      AVSEEK_FLAG_ANY* = 4   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2454:9
+  else:
+    let AVSEEK_FLAG_ANY* = 4 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2454:9
+else:
+  static :
+    hint("Declaration of " & "AVSEEK_FLAG_ANY" &
+        " already exists, not redeclaring")
+when not declared(AVSEEK_FLAG_FRAME):
+  when 8 is static:
+    const
+      AVSEEK_FLAG_FRAME* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2455:9
+  else:
+    let AVSEEK_FLAG_FRAME* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2455:9
+else:
+  static :
+    hint("Declaration of " & "AVSEEK_FLAG_FRAME" &
+        " already exists, not redeclaring")
+when not declared(AVSTREAM_INIT_IN_WRITE_HEADER):
+  when 0 is static:
+    const
+      AVSTREAM_INIT_IN_WRITE_HEADER* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2462:9
+  else:
+    let AVSTREAM_INIT_IN_WRITE_HEADER* = 0 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2462:9
+else:
+  static :
+    hint("Declaration of " & "AVSTREAM_INIT_IN_WRITE_HEADER" &
+        " already exists, not redeclaring")
+when not declared(AVSTREAM_INIT_IN_INIT_OUTPUT):
+  when 1 is static:
+    const
+      AVSTREAM_INIT_IN_INIT_OUTPUT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2463:9
+  else:
+    let AVSTREAM_INIT_IN_INIT_OUTPUT* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2463:9
+else:
+  static :
+    hint("Declaration of " & "AVSTREAM_INIT_IN_INIT_OUTPUT" &
+        " already exists, not redeclaring")
+when not declared(AV_FRAME_FILENAME_FLAGS_MULTIPLE):
+  when 1 is static:
+    const
+      AV_FRAME_FILENAME_FLAGS_MULTIPLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2898:9
+  else:
+    let AV_FRAME_FILENAME_FLAGS_MULTIPLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavformat/avformat.h:2898:9
+else:
+  static :
+    hint("Declaration of " & "AV_FRAME_FILENAME_FLAGS_MULTIPLE" &
+        " already exists, not redeclaring")
+when not declared(LIBSWSCALE_VERSION_MAJOR):
+  when 8 is static:
+    const
+      LIBSWSCALE_VERSION_MAJOR* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version_major.h:27:9
+  else:
+    let LIBSWSCALE_VERSION_MAJOR* = 8 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version_major.h:27:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWSCALE_VERSION_MAJOR" &
+        " already exists, not redeclaring")
+when not declared(LIBSWSCALE_VERSION_MINOR):
+  when 2 is static:
+    const
+      LIBSWSCALE_VERSION_MINOR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:31:9
+  else:
+    let LIBSWSCALE_VERSION_MINOR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:31:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWSCALE_VERSION_MINOR" &
+        " already exists, not redeclaring")
+when not declared(LIBSWSCALE_VERSION_MICRO):
+  when 100 is static:
+    const
+      LIBSWSCALE_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:32:9
+  else:
+    let LIBSWSCALE_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:32:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWSCALE_VERSION_MICRO" &
+        " already exists, not redeclaring")
+when not declared(LIBSWSCALE_BUILD):
+  when LIBSWSCALE_VERSION_INT is typedesc:
+    type
+      LIBSWSCALE_BUILD* = LIBSWSCALE_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:40:9
+  else:
+    when LIBSWSCALE_VERSION_INT is static:
+      const
+        LIBSWSCALE_BUILD* = LIBSWSCALE_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:40:9
+    else:
+      let LIBSWSCALE_BUILD* = LIBSWSCALE_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/version.h:40:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWSCALE_BUILD" &
+        " already exists, not redeclaring")
+when not declared(SWS_FAST_BILINEAR):
+  when 1 is static:
+    const
+      SWS_FAST_BILINEAR* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:65:9
+  else:
+    let SWS_FAST_BILINEAR* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:65:9
+else:
+  static :
+    hint("Declaration of " & "SWS_FAST_BILINEAR" &
+        " already exists, not redeclaring")
+when not declared(SWS_BILINEAR):
+  when 2 is static:
+    const
+      SWS_BILINEAR* = 2      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:66:9
+  else:
+    let SWS_BILINEAR* = 2    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:66:9
+else:
+  static :
+    hint("Declaration of " & "SWS_BILINEAR" & " already exists, not redeclaring")
+when not declared(SWS_BICUBIC):
+  when 4 is static:
+    const
+      SWS_BICUBIC* = 4       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:67:9
+  else:
+    let SWS_BICUBIC* = 4     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:67:9
+else:
+  static :
+    hint("Declaration of " & "SWS_BICUBIC" & " already exists, not redeclaring")
+when not declared(SWS_X):
+  when 8 is static:
+    const
+      SWS_X* = 8             ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:68:9
+  else:
+    let SWS_X* = 8           ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:68:9
+else:
+  static :
+    hint("Declaration of " & "SWS_X" & " already exists, not redeclaring")
+when not declared(SWS_POINT):
+  when 16 is static:
+    const
+      SWS_POINT* = 16        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:69:9
+  else:
+    let SWS_POINT* = 16      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:69:9
+else:
+  static :
+    hint("Declaration of " & "SWS_POINT" & " already exists, not redeclaring")
+when not declared(SWS_AREA):
+  when 32 is static:
+    const
+      SWS_AREA* = 32         ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:70:9
+  else:
+    let SWS_AREA* = 32       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:70:9
+else:
+  static :
+    hint("Declaration of " & "SWS_AREA" & " already exists, not redeclaring")
+when not declared(SWS_BICUBLIN):
+  when 64 is static:
+    const
+      SWS_BICUBLIN* = 64     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:71:9
+  else:
+    let SWS_BICUBLIN* = 64   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:71:9
+else:
+  static :
+    hint("Declaration of " & "SWS_BICUBLIN" & " already exists, not redeclaring")
+when not declared(SWS_GAUSS):
+  when 128 is static:
+    const
+      SWS_GAUSS* = 128       ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:72:9
+  else:
+    let SWS_GAUSS* = 128     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:72:9
+else:
+  static :
+    hint("Declaration of " & "SWS_GAUSS" & " already exists, not redeclaring")
+when not declared(SWS_SINC):
+  when 256 is static:
+    const
+      SWS_SINC* = 256        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:73:9
+  else:
+    let SWS_SINC* = 256      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:73:9
+else:
+  static :
+    hint("Declaration of " & "SWS_SINC" & " already exists, not redeclaring")
+when not declared(SWS_LANCZOS):
+  when 512 is static:
+    const
+      SWS_LANCZOS* = 512     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:74:9
+  else:
+    let SWS_LANCZOS* = 512   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:74:9
+else:
+  static :
+    hint("Declaration of " & "SWS_LANCZOS" & " already exists, not redeclaring")
+when not declared(SWS_SPLINE):
+  when 1024 is static:
+    const
+      SWS_SPLINE* = 1024     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:75:9
+  else:
+    let SWS_SPLINE* = 1024   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:75:9
+else:
+  static :
+    hint("Declaration of " & "SWS_SPLINE" & " already exists, not redeclaring")
+when not declared(SWS_SRC_V_CHR_DROP_MASK):
+  when 196608 is static:
+    const
+      SWS_SRC_V_CHR_DROP_MASK* = 196608 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:77:9
+  else:
+    let SWS_SRC_V_CHR_DROP_MASK* = 196608 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:77:9
+else:
+  static :
+    hint("Declaration of " & "SWS_SRC_V_CHR_DROP_MASK" &
+        " already exists, not redeclaring")
+when not declared(SWS_SRC_V_CHR_DROP_SHIFT):
+  when 16 is static:
+    const
+      SWS_SRC_V_CHR_DROP_SHIFT* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:78:9
+  else:
+    let SWS_SRC_V_CHR_DROP_SHIFT* = 16 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:78:9
+else:
+  static :
+    hint("Declaration of " & "SWS_SRC_V_CHR_DROP_SHIFT" &
+        " already exists, not redeclaring")
+when not declared(SWS_PARAM_DEFAULT):
+  when 123456 is static:
+    const
+      SWS_PARAM_DEFAULT* = 123456 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:80:9
+  else:
+    let SWS_PARAM_DEFAULT* = 123456 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:80:9
+else:
+  static :
+    hint("Declaration of " & "SWS_PARAM_DEFAULT" &
+        " already exists, not redeclaring")
+when not declared(SWS_PRINT_INFO):
+  when 4096 is static:
+    const
+      SWS_PRINT_INFO* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:82:9
+  else:
+    let SWS_PRINT_INFO* = 4096 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:82:9
+else:
+  static :
+    hint("Declaration of " & "SWS_PRINT_INFO" &
+        " already exists, not redeclaring")
+when not declared(SWS_FULL_CHR_H_INT):
+  when 8192 is static:
+    const
+      SWS_FULL_CHR_H_INT* = 8192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:86:9
+  else:
+    let SWS_FULL_CHR_H_INT* = 8192 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:86:9
+else:
+  static :
+    hint("Declaration of " & "SWS_FULL_CHR_H_INT" &
+        " already exists, not redeclaring")
+when not declared(SWS_FULL_CHR_H_INP):
+  when 16384 is static:
+    const
+      SWS_FULL_CHR_H_INP* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:88:9
+  else:
+    let SWS_FULL_CHR_H_INP* = 16384 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:88:9
+else:
+  static :
+    hint("Declaration of " & "SWS_FULL_CHR_H_INP" &
+        " already exists, not redeclaring")
+when not declared(SWS_DIRECT_BGR):
+  when 32768 is static:
+    const
+      SWS_DIRECT_BGR* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:89:9
+  else:
+    let SWS_DIRECT_BGR* = 32768 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:89:9
+else:
+  static :
+    hint("Declaration of " & "SWS_DIRECT_BGR" &
+        " already exists, not redeclaring")
+when not declared(SWS_ACCURATE_RND):
+  when 262144 is static:
+    const
+      SWS_ACCURATE_RND* = 262144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:90:9
+  else:
+    let SWS_ACCURATE_RND* = 262144 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:90:9
+else:
+  static :
+    hint("Declaration of " & "SWS_ACCURATE_RND" &
+        " already exists, not redeclaring")
+when not declared(SWS_BITEXACT):
+  when 524288 is static:
+    const
+      SWS_BITEXACT* = 524288 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:91:9
+  else:
+    let SWS_BITEXACT* = 524288 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:91:9
+else:
+  static :
+    hint("Declaration of " & "SWS_BITEXACT" & " already exists, not redeclaring")
+when not declared(SWS_ERROR_DIFFUSION):
+  when 8388608 is static:
+    const
+      SWS_ERROR_DIFFUSION* = 8388608 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:92:9
+  else:
+    let SWS_ERROR_DIFFUSION* = 8388608 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:92:9
+else:
+  static :
+    hint("Declaration of " & "SWS_ERROR_DIFFUSION" &
+        " already exists, not redeclaring")
+when not declared(SWS_MAX_REDUCE_CUTOFF):
+  when 0.002 is static:
+    const
+      SWS_MAX_REDUCE_CUTOFF* = 0.002 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:94:9
+  else:
+    let SWS_MAX_REDUCE_CUTOFF* = 0.002 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:94:9
+else:
+  static :
+    hint("Declaration of " & "SWS_MAX_REDUCE_CUTOFF" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_ITU709):
+  when 1 is static:
+    const
+      SWS_CS_ITU709* = 1     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:96:9
+  else:
+    let SWS_CS_ITU709* = 1   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:96:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_ITU709" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_FCC):
+  when 4 is static:
+    const
+      SWS_CS_FCC* = 4        ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:97:9
+  else:
+    let SWS_CS_FCC* = 4      ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:97:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_FCC" & " already exists, not redeclaring")
+when not declared(SWS_CS_ITU601):
+  when 5 is static:
+    const
+      SWS_CS_ITU601* = 5     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:98:9
+  else:
+    let SWS_CS_ITU601* = 5   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:98:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_ITU601" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_ITU624):
+  when 5 is static:
+    const
+      SWS_CS_ITU624* = 5     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:99:9
+  else:
+    let SWS_CS_ITU624* = 5   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:99:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_ITU624" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_SMPTE170M):
+  when 5 is static:
+    const
+      SWS_CS_SMPTE170M* = 5  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:100:9
+  else:
+    let SWS_CS_SMPTE170M* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:100:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_SMPTE170M" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_SMPTE240M):
+  when 7 is static:
+    const
+      SWS_CS_SMPTE240M* = 7  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:101:9
+  else:
+    let SWS_CS_SMPTE240M* = 7 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:101:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_SMPTE240M" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_DEFAULT):
+  when 5 is static:
+    const
+      SWS_CS_DEFAULT* = 5    ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:102:9
+  else:
+    let SWS_CS_DEFAULT* = 5  ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:102:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_DEFAULT" &
+        " already exists, not redeclaring")
+when not declared(SWS_CS_BT2020):
+  when 9 is static:
+    const
+      SWS_CS_BT2020* = 9     ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:103:9
+  else:
+    let SWS_CS_BT2020* = 9   ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswscale/swscale.h:103:9
+else:
+  static :
+    hint("Declaration of " & "SWS_CS_BT2020" &
+        " already exists, not redeclaring")
+when not declared(LIBSWRESAMPLE_VERSION_MAJOR):
+  when 5 is static:
+    const
+      LIBSWRESAMPLE_VERSION_MAJOR* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version_major.h:29:9
+  else:
+    let LIBSWRESAMPLE_VERSION_MAJOR* = 5 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version_major.h:29:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWRESAMPLE_VERSION_MAJOR" &
+        " already exists, not redeclaring")
+when not declared(LIBSWRESAMPLE_VERSION_MINOR):
+  when 2 is static:
+    const
+      LIBSWRESAMPLE_VERSION_MINOR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:33:9
+  else:
+    let LIBSWRESAMPLE_VERSION_MINOR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:33:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWRESAMPLE_VERSION_MINOR" &
+        " already exists, not redeclaring")
+when not declared(LIBSWRESAMPLE_VERSION_MICRO):
+  when 100 is static:
+    const
+      LIBSWRESAMPLE_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:34:9
+  else:
+    let LIBSWRESAMPLE_VERSION_MICRO* = 100 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:34:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWRESAMPLE_VERSION_MICRO" &
+        " already exists, not redeclaring")
+when not declared(LIBSWRESAMPLE_BUILD):
+  when LIBSWRESAMPLE_VERSION_INT is typedesc:
+    type
+      LIBSWRESAMPLE_BUILD* = LIBSWRESAMPLE_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:42:9
+  else:
+    when LIBSWRESAMPLE_VERSION_INT is static:
+      const
+        LIBSWRESAMPLE_BUILD* = LIBSWRESAMPLE_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:42:9
+    else:
+      let LIBSWRESAMPLE_BUILD* = LIBSWRESAMPLE_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/version.h:42:9
+else:
+  static :
+    hint("Declaration of " & "LIBSWRESAMPLE_BUILD" &
+        " already exists, not redeclaring")
+when not declared(SWR_FLAG_RESAMPLE):
+  when 1 is static:
+    const
+      SWR_FLAG_RESAMPLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/swresample.h:143:9
+  else:
+    let SWR_FLAG_RESAMPLE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libswresample/swresample.h:143:9
+else:
+  static :
+    hint("Declaration of " & "SWR_FLAG_RESAMPLE" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFILTER_VERSION_MAJOR):
+  when 10 is static:
+    const
+      LIBAVFILTER_VERSION_MAJOR* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version_major.h:30:9
+  else:
+    let LIBAVFILTER_VERSION_MAJOR* = 10 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version_major.h:30:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFILTER_VERSION_MAJOR" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFILTER_VERSION_MINOR):
+  when 2 is static:
+    const
+      LIBAVFILTER_VERSION_MINOR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:34:9
+  else:
+    let LIBAVFILTER_VERSION_MINOR* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:34:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFILTER_VERSION_MINOR" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFILTER_VERSION_MICRO):
+  when 102 is static:
+    const
+      LIBAVFILTER_VERSION_MICRO* = 102 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:35:9
+  else:
+    let LIBAVFILTER_VERSION_MICRO* = 102 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:35:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFILTER_VERSION_MICRO" &
+        " already exists, not redeclaring")
+when not declared(LIBAVFILTER_BUILD):
+  when LIBAVFILTER_VERSION_INT is typedesc:
+    type
+      LIBAVFILTER_BUILD* = LIBAVFILTER_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:44:9
+  else:
+    when LIBAVFILTER_VERSION_INT is static:
+      const
+        LIBAVFILTER_BUILD* = LIBAVFILTER_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:44:9
+    else:
+      let LIBAVFILTER_BUILD* = LIBAVFILTER_VERSION_INT ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/version.h:44:9
+else:
+  static :
+    hint("Declaration of " & "LIBAVFILTER_BUILD" &
+        " already exists, not redeclaring")
+when not declared(AVFILTER_CMD_FLAG_ONE):
+  when 1 is static:
+    const
+      AVFILTER_CMD_FLAG_ONE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:693:9
+  else:
+    let AVFILTER_CMD_FLAG_ONE* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:693:9
+else:
+  static :
+    hint("Declaration of " & "AVFILTER_CMD_FLAG_ONE" &
+        " already exists, not redeclaring")
+when not declared(AVFILTER_CMD_FLAG_FAST):
+  when 2 is static:
+    const
+      AVFILTER_CMD_FLAG_FAST* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:694:9
+  else:
+    let AVFILTER_CMD_FLAG_FAST* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/avfilter.h:694:9
+else:
+  static :
+    hint("Declaration of " & "AVFILTER_CMD_FLAG_FAST" &
+        " already exists, not redeclaring")
+when not declared(AV_BUFFERSINK_FLAG_PEEK):
+  when 1 is static:
+    const
+      AV_BUFFERSINK_FLAG_PEEK* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/buffersink.h:90:9
+  else:
+    let AV_BUFFERSINK_FLAG_PEEK* = 1 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/buffersink.h:90:9
+else:
+  static :
+    hint("Declaration of " & "AV_BUFFERSINK_FLAG_PEEK" &
+        " already exists, not redeclaring")
+when not declared(AV_BUFFERSINK_FLAG_NO_REQUEST):
+  when 2 is static:
+    const
+      AV_BUFFERSINK_FLAG_NO_REQUEST* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/buffersink.h:97:9
+  else:
+    let AV_BUFFERSINK_FLAG_NO_REQUEST* = 2 ## Generated based on /home/shu/Desktop/gits/ffmpegKyuick/src/ffmpegKyuick/wrapper/headers/libavfilter/buffersink.h:97:9
+else:
+  static :
+    hint("Declaration of " & "AV_BUFFERSINK_FLAG_NO_REQUEST" &
+        " already exists, not redeclaring")
+when not declared(av_strerror):
+  proc av_strerror*(errnum: cint; errbuf: cstring; errbuf_size: csize_t): cint {.
+      cdecl, importc: "av_strerror".}
+else:
+  static :
+    hint("Declaration of " & "av_strerror" & " already exists, not redeclaring")
+when not declared(av_channel_name):
+  proc av_channel_name*(buf: cstring; buf_size: csize_t; channel: enum_AVChannel_1644167637): cint {.
+      cdecl, importc: "av_channel_name".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_name" &
+        " already exists, not redeclaring")
+when not declared(av_channel_name_bprint):
+  proc av_channel_name_bprint*(bp: ptr struct_AVBPrint;
+                               channel_id: enum_AVChannel_1644167637): void {.
+      cdecl, importc: "av_channel_name_bprint".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_name_bprint" &
+        " already exists, not redeclaring")
+when not declared(av_channel_description):
+  proc av_channel_description*(buf: cstring; buf_size: csize_t;
+                               channel: enum_AVChannel_1644167637): cint {.
+      cdecl, importc: "av_channel_description".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_description" &
+        " already exists, not redeclaring")
+when not declared(av_channel_description_bprint):
+  proc av_channel_description_bprint*(bp: ptr struct_AVBPrint;
+                                      channel_id: enum_AVChannel_1644167637): void {.
+      cdecl, importc: "av_channel_description_bprint".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_description_bprint" &
+        " already exists, not redeclaring")
+when not declared(av_channel_from_string):
+  proc av_channel_from_string*(name: cstring): enum_AVChannel_1644167637 {.
+      cdecl, importc: "av_channel_from_string".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_from_string" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_custom_init):
+  proc av_channel_layout_custom_init*(channel_layout: ptr AVChannelLayout_1644167649;
+                                      nb_channels: cint): cint {.cdecl,
+      importc: "av_channel_layout_custom_init".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_custom_init" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_from_mask):
+  proc av_channel_layout_from_mask*(channel_layout: ptr AVChannelLayout_1644167649;
+                                    mask: uint64): cint {.cdecl,
+      importc: "av_channel_layout_from_mask".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_from_mask" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_from_string):
+  proc av_channel_layout_from_string*(channel_layout: ptr AVChannelLayout_1644167649;
+                                      str: cstring): cint {.cdecl,
+      importc: "av_channel_layout_from_string".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_from_string" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_default):
+  proc av_channel_layout_default*(ch_layout: ptr AVChannelLayout_1644167649;
+                                  nb_channels: cint): void {.cdecl,
+      importc: "av_channel_layout_default".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_default" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_standard):
+  proc av_channel_layout_standard*(opaque: ptr pointer): ptr AVChannelLayout_1644167649 {.
+      cdecl, importc: "av_channel_layout_standard".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_standard" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_uninit):
+  proc av_channel_layout_uninit*(channel_layout: ptr AVChannelLayout_1644167649): void {.
+      cdecl, importc: "av_channel_layout_uninit".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_uninit" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_copy):
+  proc av_channel_layout_copy*(dst: ptr AVChannelLayout_1644167649;
+                               src: ptr AVChannelLayout_1644167649): cint {.
+      cdecl, importc: "av_channel_layout_copy".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_copy" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_describe):
+  proc av_channel_layout_describe*(channel_layout: ptr AVChannelLayout_1644167649;
+                                   buf: cstring; buf_size: csize_t): cint {.
+      cdecl, importc: "av_channel_layout_describe".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_describe" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_describe_bprint):
+  proc av_channel_layout_describe_bprint*(channel_layout: ptr AVChannelLayout_1644167649;
+      bp: ptr struct_AVBPrint): cint {.cdecl, importc: "av_channel_layout_describe_bprint".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_describe_bprint" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_channel_from_index):
+  proc av_channel_layout_channel_from_index*(
+      channel_layout: ptr AVChannelLayout_1644167649; idx: cuint): enum_AVChannel_1644167637 {.
+      cdecl, importc: "av_channel_layout_channel_from_index".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_channel_from_index" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_index_from_channel):
+  proc av_channel_layout_index_from_channel*(
+      channel_layout: ptr AVChannelLayout_1644167649; channel: enum_AVChannel_1644167637): cint {.
+      cdecl, importc: "av_channel_layout_index_from_channel".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_index_from_channel" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_index_from_string):
+  proc av_channel_layout_index_from_string*(channel_layout: ptr AVChannelLayout_1644167649;
+      name: cstring): cint {.cdecl,
+                             importc: "av_channel_layout_index_from_string".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_index_from_string" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_channel_from_string):
+  proc av_channel_layout_channel_from_string*(
+      channel_layout: ptr AVChannelLayout_1644167649; name: cstring): enum_AVChannel_1644167637 {.
+      cdecl, importc: "av_channel_layout_channel_from_string".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_channel_from_string" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_subset):
+  proc av_channel_layout_subset*(channel_layout: ptr AVChannelLayout_1644167649;
+                                 mask: uint64): uint64 {.cdecl,
+      importc: "av_channel_layout_subset".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_subset" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_check):
+  proc av_channel_layout_check*(channel_layout: ptr AVChannelLayout_1644167649): cint {.
+      cdecl, importc: "av_channel_layout_check".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_check" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_compare):
+  proc av_channel_layout_compare*(chl: ptr AVChannelLayout_1644167649;
+                                  chl1: ptr AVChannelLayout_1644167649): cint {.
+      cdecl, importc: "av_channel_layout_compare".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_compare" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_ambisonic_order):
+  proc av_channel_layout_ambisonic_order*(channel_layout: ptr AVChannelLayout_1644167649): cint {.
+      cdecl, importc: "av_channel_layout_ambisonic_order".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_ambisonic_order" &
+        " already exists, not redeclaring")
+when not declared(av_channel_layout_retype):
+  proc av_channel_layout_retype*(channel_layout: ptr AVChannelLayout_1644167649;
+                                 order: enum_AVChannelOrder_1644167639;
+                                 flags: cint): cint {.cdecl,
+      importc: "av_channel_layout_retype".}
+else:
+  static :
+    hint("Declaration of " & "av_channel_layout_retype" &
+        " already exists, not redeclaring")
+when not declared(av_get_sample_fmt_name):
+  proc av_get_sample_fmt_name*(sample_fmt: enum_AVSampleFormat_1644167651): cstring {.
+      cdecl, importc: "av_get_sample_fmt_name".}
+else:
+  static :
+    hint("Declaration of " & "av_get_sample_fmt_name" &
+        " already exists, not redeclaring")
+when not declared(av_get_sample_fmt):
+  proc av_get_sample_fmt*(name: cstring): enum_AVSampleFormat_1644167651 {.
+      cdecl, importc: "av_get_sample_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_get_sample_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_get_alt_sample_fmt):
+  proc av_get_alt_sample_fmt*(sample_fmt: enum_AVSampleFormat_1644167651;
+                              planar: cint): enum_AVSampleFormat_1644167651 {.
+      cdecl, importc: "av_get_alt_sample_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_get_alt_sample_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_get_packed_sample_fmt):
+  proc av_get_packed_sample_fmt*(sample_fmt: enum_AVSampleFormat_1644167651): enum_AVSampleFormat_1644167651 {.
+      cdecl, importc: "av_get_packed_sample_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_get_packed_sample_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_get_planar_sample_fmt):
+  proc av_get_planar_sample_fmt*(sample_fmt: enum_AVSampleFormat_1644167651): enum_AVSampleFormat_1644167651 {.
+      cdecl, importc: "av_get_planar_sample_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_get_planar_sample_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_get_sample_fmt_string):
+  proc av_get_sample_fmt_string*(buf: cstring; buf_size: cint;
+                                 sample_fmt: enum_AVSampleFormat_1644167651): cstring {.
+      cdecl, importc: "av_get_sample_fmt_string".}
+else:
+  static :
+    hint("Declaration of " & "av_get_sample_fmt_string" &
+        " already exists, not redeclaring")
+when not declared(av_get_bytes_per_sample):
+  proc av_get_bytes_per_sample*(sample_fmt: enum_AVSampleFormat_1644167651): cint {.
+      cdecl, importc: "av_get_bytes_per_sample".}
+else:
+  static :
+    hint("Declaration of " & "av_get_bytes_per_sample" &
+        " already exists, not redeclaring")
+when not declared(av_sample_fmt_is_planar):
+  proc av_sample_fmt_is_planar*(sample_fmt: enum_AVSampleFormat_1644167651): cint {.
+      cdecl, importc: "av_sample_fmt_is_planar".}
+else:
+  static :
+    hint("Declaration of " & "av_sample_fmt_is_planar" &
+        " already exists, not redeclaring")
+when not declared(av_samples_get_buffer_size):
+  proc av_samples_get_buffer_size*(linesize: ptr cint; nb_channels: cint;
+                                   nb_samples: cint;
+                                   sample_fmt: enum_AVSampleFormat_1644167651;
+                                   align: cint): cint {.cdecl,
+      importc: "av_samples_get_buffer_size".}
+else:
+  static :
+    hint("Declaration of " & "av_samples_get_buffer_size" &
+        " already exists, not redeclaring")
+when not declared(av_samples_fill_arrays):
+  proc av_samples_fill_arrays*(audio_data: ptr ptr uint8; linesize: ptr cint;
+                               buf: ptr uint8; nb_channels: cint;
+                               nb_samples: cint;
+                               sample_fmt: enum_AVSampleFormat_1644167651;
+                               align: cint): cint {.cdecl,
+      importc: "av_samples_fill_arrays".}
+else:
+  static :
+    hint("Declaration of " & "av_samples_fill_arrays" &
+        " already exists, not redeclaring")
+when not declared(av_samples_alloc):
+  proc av_samples_alloc*(audio_data: ptr ptr uint8; linesize: ptr cint;
+                         nb_channels: cint; nb_samples: cint;
+                         sample_fmt: enum_AVSampleFormat_1644167651; align: cint): cint {.
+      cdecl, importc: "av_samples_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_samples_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_samples_alloc_array_and_samples):
+  proc av_samples_alloc_array_and_samples*(audio_data: ptr ptr ptr uint8;
+      linesize: ptr cint; nb_channels: cint; nb_samples: cint;
+      sample_fmt: enum_AVSampleFormat_1644167651; align: cint): cint {.cdecl,
+      importc: "av_samples_alloc_array_and_samples".}
+else:
+  static :
+    hint("Declaration of " & "av_samples_alloc_array_and_samples" &
+        " already exists, not redeclaring")
+when not declared(av_samples_copy):
+  proc av_samples_copy*(dst: ptr ptr uint8; src: ptr ptr uint8;
+                        dst_offset: cint; src_offset: cint; nb_samples: cint;
+                        nb_channels: cint; sample_fmt: enum_AVSampleFormat_1644167651): cint {.
+      cdecl, importc: "av_samples_copy".}
+else:
+  static :
+    hint("Declaration of " & "av_samples_copy" &
+        " already exists, not redeclaring")
+when not declared(av_samples_set_silence):
+  proc av_samples_set_silence*(audio_data: ptr ptr uint8; offset: cint;
+                               nb_samples: cint; nb_channels: cint;
+                               sample_fmt: enum_AVSampleFormat_1644167651): cint {.
+      cdecl, importc: "av_samples_set_silence".}
+else:
+  static :
+    hint("Declaration of " & "av_samples_set_silence" &
+        " already exists, not redeclaring")
+when not declared(av_log):
+  proc av_log*(avcl: pointer; level: cint; fmt: cstring): void {.cdecl, varargs,
+      importc: "av_log".}
+else:
+  static :
+    hint("Declaration of " & "av_log" & " already exists, not redeclaring")
+when not declared(av_log_once):
+  proc av_log_once*(avcl: pointer; initial_level: cint; subsequent_level: cint;
+                    state: ptr cint; fmt: cstring): void {.cdecl, varargs,
+      importc: "av_log_once".}
+else:
+  static :
+    hint("Declaration of " & "av_log_once" & " already exists, not redeclaring")
+when not declared(av_vlog):
+  proc av_vlog*(avcl: pointer; level: cint; fmt: cstring): void {.cdecl,
+      varargs, importc: "av_vlog".}
+else:
+  static :
+    hint("Declaration of " & "av_vlog" & " already exists, not redeclaring")
+when not declared(av_log_get_level):
+  proc av_log_get_level*(): cint {.cdecl, importc: "av_log_get_level".}
+else:
+  static :
+    hint("Declaration of " & "av_log_get_level" &
+        " already exists, not redeclaring")
+when not declared(av_log_set_level):
+  proc av_log_set_level*(level: cint): void {.cdecl, importc: "av_log_set_level".}
+else:
+  static :
+    hint("Declaration of " & "av_log_set_level" &
+        " already exists, not redeclaring")
+when not declared(av_log_set_callback):
+  proc av_log_set_callback*(callback: proc (a0: pointer; a1: cint; a2: cstring): void {.
+      cdecl, varargs.}): void {.cdecl, importc: "av_log_set_callback".}
+else:
+  static :
+    hint("Declaration of " & "av_log_set_callback" &
+        " already exists, not redeclaring")
+when not declared(av_log_default_callback):
+  proc av_log_default_callback*(avcl: pointer; level: cint; fmt: cstring): void {.
+      cdecl, varargs, importc: "av_log_default_callback".}
+else:
+  static :
+    hint("Declaration of " & "av_log_default_callback" &
+        " already exists, not redeclaring")
+when not declared(av_default_item_name):
+  proc av_default_item_name*(ctx: pointer): cstring {.cdecl,
+      importc: "av_default_item_name".}
+else:
+  static :
+    hint("Declaration of " & "av_default_item_name" &
+        " already exists, not redeclaring")
+when not declared(av_default_get_category):
+  proc av_default_get_category*(ptr_arg: pointer): AVClassCategory_1644167655 {.
+      cdecl, importc: "av_default_get_category".}
+else:
+  static :
+    hint("Declaration of " & "av_default_get_category" &
+        " already exists, not redeclaring")
+when not declared(av_log_format_line):
+  proc av_log_format_line*(ptr_arg: pointer; level: cint; fmt: cstring;
+                           vl: va_list_1644167665; line: cstring;
+                           line_size: cint; print_prefix: ptr cint): void {.
+      cdecl, importc: "av_log_format_line".}
+else:
+  static :
+    hint("Declaration of " & "av_log_format_line" &
+        " already exists, not redeclaring")
+when not declared(av_log_format_line2):
+  proc av_log_format_line2*(ptr_arg: pointer; level: cint; fmt: cstring;
+                            vl: va_list_1644167665; line: cstring;
+                            line_size: cint; print_prefix: ptr cint): cint {.
+      cdecl, importc: "av_log_format_line2".}
+else:
+  static :
+    hint("Declaration of " & "av_log_format_line2" &
+        " already exists, not redeclaring")
+when not declared(av_log_set_flags):
+  proc av_log_set_flags*(arg: cint): void {.cdecl, importc: "av_log_set_flags".}
+else:
+  static :
+    hint("Declaration of " & "av_log_set_flags" &
+        " already exists, not redeclaring")
+when not declared(av_log_get_flags):
+  proc av_log_get_flags*(): cint {.cdecl, importc: "av_log_get_flags".}
+else:
+  static :
+    hint("Declaration of " & "av_log_get_flags" &
+        " already exists, not redeclaring")
+when not declared(av_dict_get):
+  proc av_dict_get*(m: ptr AVDictionary_1644167671; key: cstring;
+                    prev: ptr AVDictionaryEntry_1644167669; flags: cint): ptr AVDictionaryEntry_1644167669 {.
+      cdecl, importc: "av_dict_get".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_get" & " already exists, not redeclaring")
+when not declared(av_dict_iterate):
+  proc av_dict_iterate*(m: ptr AVDictionary_1644167671;
+                        prev: ptr AVDictionaryEntry_1644167669): ptr AVDictionaryEntry_1644167669 {.
+      cdecl, importc: "av_dict_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_iterate" &
+        " already exists, not redeclaring")
+when not declared(av_dict_count):
+  proc av_dict_count*(m: ptr AVDictionary_1644167671): cint {.cdecl,
+      importc: "av_dict_count".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_count" &
+        " already exists, not redeclaring")
+when not declared(av_dict_set):
+  proc av_dict_set*(pm: ptr ptr AVDictionary_1644167671; key: cstring;
+                    value: cstring; flags: cint): cint {.cdecl,
+      importc: "av_dict_set".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_set" & " already exists, not redeclaring")
+when not declared(av_dict_set_int):
+  proc av_dict_set_int*(pm: ptr ptr AVDictionary_1644167671; key: cstring;
+                        value: int64; flags: cint): cint {.cdecl,
+      importc: "av_dict_set_int".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_set_int" &
+        " already exists, not redeclaring")
+when not declared(av_dict_parse_string):
+  proc av_dict_parse_string*(pm: ptr ptr AVDictionary_1644167671; str: cstring;
+                             key_val_sep: cstring; pairs_sep: cstring;
+                             flags: cint): cint {.cdecl,
+      importc: "av_dict_parse_string".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_parse_string" &
+        " already exists, not redeclaring")
+when not declared(av_dict_copy):
+  proc av_dict_copy*(dst: ptr ptr AVDictionary_1644167671;
+                     src: ptr AVDictionary_1644167671; flags: cint): cint {.
+      cdecl, importc: "av_dict_copy".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_copy" & " already exists, not redeclaring")
+when not declared(av_dict_free):
+  proc av_dict_free*(m: ptr ptr AVDictionary_1644167671): void {.cdecl,
+      importc: "av_dict_free".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_free" & " already exists, not redeclaring")
+when not declared(av_dict_get_string):
+  proc av_dict_get_string*(m: ptr AVDictionary_1644167671; buffer: ptr cstring;
+                           key_val_sep: cschar; pairs_sep: cschar): cint {.
+      cdecl, importc: "av_dict_get_string".}
+else:
+  static :
+    hint("Declaration of " & "av_dict_get_string" &
+        " already exists, not redeclaring")
+when not declared(av_reduce):
+  proc av_reduce*(dst_num: ptr cint; dst_den: ptr cint; num: int64; den: int64;
+                  max: int64): cint {.cdecl, importc: "av_reduce".}
+else:
+  static :
+    hint("Declaration of " & "av_reduce" & " already exists, not redeclaring")
+when not declared(av_mul_q):
+  proc av_mul_q*(b: AVRational_1644167675; c: AVRational_1644167675): AVRational_1644167675 {.
+      cdecl, importc: "av_mul_q".}
+else:
+  static :
+    hint("Declaration of " & "av_mul_q" & " already exists, not redeclaring")
+when not declared(av_div_q):
+  proc av_div_q*(b: AVRational_1644167675; c: AVRational_1644167675): AVRational_1644167675 {.
+      cdecl, importc: "av_div_q".}
+else:
+  static :
+    hint("Declaration of " & "av_div_q" & " already exists, not redeclaring")
+when not declared(av_add_q):
+  proc av_add_q*(b: AVRational_1644167675; c: AVRational_1644167675): AVRational_1644167675 {.
+      cdecl, importc: "av_add_q".}
+else:
+  static :
+    hint("Declaration of " & "av_add_q" & " already exists, not redeclaring")
+when not declared(av_sub_q):
+  proc av_sub_q*(b: AVRational_1644167675; c: AVRational_1644167675): AVRational_1644167675 {.
+      cdecl, importc: "av_sub_q".}
+else:
+  static :
+    hint("Declaration of " & "av_sub_q" & " already exists, not redeclaring")
+when not declared(av_d2q):
+  proc av_d2q*(d: cdouble; max: cint): AVRational_1644167675 {.cdecl,
+      importc: "av_d2q".}
+else:
+  static :
+    hint("Declaration of " & "av_d2q" & " already exists, not redeclaring")
+when not declared(av_nearer_q):
+  proc av_nearer_q*(q: AVRational_1644167675; q1: AVRational_1644167675;
+                    q2: AVRational_1644167675): cint {.cdecl,
+      importc: "av_nearer_q".}
+else:
+  static :
+    hint("Declaration of " & "av_nearer_q" & " already exists, not redeclaring")
+when not declared(av_find_nearest_q_idx):
+  proc av_find_nearest_q_idx*(q: AVRational_1644167675; q_list: ptr AVRational_1644167675): cint {.
+      cdecl, importc: "av_find_nearest_q_idx".}
+else:
+  static :
+    hint("Declaration of " & "av_find_nearest_q_idx" &
+        " already exists, not redeclaring")
+when not declared(av_q2intfloat):
+  proc av_q2intfloat*(q: AVRational_1644167675): uint32 {.cdecl,
+      importc: "av_q2intfloat".}
+else:
+  static :
+    hint("Declaration of " & "av_q2intfloat" &
+        " already exists, not redeclaring")
+when not declared(av_gcd_q):
+  proc av_gcd_q*(a: AVRational_1644167675; b: AVRational_1644167675;
+                 max_den: cint; def: AVRational_1644167675): AVRational_1644167675 {.
+      cdecl, importc: "av_gcd_q".}
+else:
+  static :
+    hint("Declaration of " & "av_gcd_q" & " already exists, not redeclaring")
+when not declared(avutil_version):
+  proc avutil_version*(): cuint {.cdecl, importc: "avutil_version".}
+else:
+  static :
+    hint("Declaration of " & "avutil_version" &
+        " already exists, not redeclaring")
+when not declared(av_version_info):
+  proc av_version_info*(): cstring {.cdecl, importc: "av_version_info".}
+else:
+  static :
+    hint("Declaration of " & "av_version_info" &
+        " already exists, not redeclaring")
+when not declared(avutil_configuration):
+  proc avutil_configuration*(): cstring {.cdecl, importc: "avutil_configuration".}
+else:
+  static :
+    hint("Declaration of " & "avutil_configuration" &
+        " already exists, not redeclaring")
+when not declared(avutil_license):
+  proc avutil_license*(): cstring {.cdecl, importc: "avutil_license".}
+else:
+  static :
+    hint("Declaration of " & "avutil_license" &
+        " already exists, not redeclaring")
+when not declared(av_get_media_type_string):
+  proc av_get_media_type_string*(media_type: enum_AVMediaType_1644167677): cstring {.
+      cdecl, importc: "av_get_media_type_string".}
+else:
+  static :
+    hint("Declaration of " & "av_get_media_type_string" &
+        " already exists, not redeclaring")
+when not declared(av_get_picture_type_char):
+  proc av_get_picture_type_char*(pict_type: enum_AVPictureType_1644167679): cschar {.
+      cdecl, importc: "av_get_picture_type_char".}
+else:
+  static :
+    hint("Declaration of " & "av_get_picture_type_char" &
+        " already exists, not redeclaring")
+when not declared(av_malloc):
+  proc av_malloc*(size: csize_t): pointer {.cdecl, importc: "av_malloc".}
+else:
+  static :
+    hint("Declaration of " & "av_malloc" & " already exists, not redeclaring")
+when not declared(av_mallocz):
+  proc av_mallocz*(size: csize_t): pointer {.cdecl, importc: "av_mallocz".}
+else:
+  static :
+    hint("Declaration of " & "av_mallocz" & " already exists, not redeclaring")
+when not declared(av_malloc_array):
+  proc av_malloc_array*(nmemb: csize_t; size: csize_t): pointer {.cdecl,
+      importc: "av_malloc_array".}
+else:
+  static :
+    hint("Declaration of " & "av_malloc_array" &
+        " already exists, not redeclaring")
+when not declared(av_calloc):
+  proc av_calloc*(nmemb: csize_t; size: csize_t): pointer {.cdecl,
+      importc: "av_calloc".}
+else:
+  static :
+    hint("Declaration of " & "av_calloc" & " already exists, not redeclaring")
+when not declared(av_realloc):
+  proc av_realloc*(ptr_arg: pointer; size: csize_t): pointer {.cdecl,
+      importc: "av_realloc".}
+else:
+  static :
+    hint("Declaration of " & "av_realloc" & " already exists, not redeclaring")
+when not declared(av_reallocp):
+  proc av_reallocp*(ptr_arg: pointer; size: csize_t): cint {.cdecl,
+      importc: "av_reallocp".}
+else:
+  static :
+    hint("Declaration of " & "av_reallocp" & " already exists, not redeclaring")
+when not declared(av_realloc_f):
+  proc av_realloc_f*(ptr_arg: pointer; nelem: csize_t; elsize: csize_t): pointer {.
+      cdecl, importc: "av_realloc_f".}
+else:
+  static :
+    hint("Declaration of " & "av_realloc_f" & " already exists, not redeclaring")
+when not declared(av_realloc_array):
+  proc av_realloc_array*(ptr_arg: pointer; nmemb: csize_t; size: csize_t): pointer {.
+      cdecl, importc: "av_realloc_array".}
+else:
+  static :
+    hint("Declaration of " & "av_realloc_array" &
+        " already exists, not redeclaring")
+when not declared(av_reallocp_array):
+  proc av_reallocp_array*(ptr_arg: pointer; nmemb: csize_t; size: csize_t): cint {.
+      cdecl, importc: "av_reallocp_array".}
+else:
+  static :
+    hint("Declaration of " & "av_reallocp_array" &
+        " already exists, not redeclaring")
+when not declared(av_fast_realloc):
+  proc av_fast_realloc*(ptr_arg: pointer; size: ptr cuint; min_size: csize_t): pointer {.
+      cdecl, importc: "av_fast_realloc".}
+else:
+  static :
+    hint("Declaration of " & "av_fast_realloc" &
+        " already exists, not redeclaring")
+when not declared(av_fast_malloc):
+  proc av_fast_malloc*(ptr_arg: pointer; size: ptr cuint; min_size: csize_t): void {.
+      cdecl, importc: "av_fast_malloc".}
+else:
+  static :
+    hint("Declaration of " & "av_fast_malloc" &
+        " already exists, not redeclaring")
+when not declared(av_fast_mallocz):
+  proc av_fast_mallocz*(ptr_arg: pointer; size: ptr cuint; min_size: csize_t): void {.
+      cdecl, importc: "av_fast_mallocz".}
+else:
+  static :
+    hint("Declaration of " & "av_fast_mallocz" &
+        " already exists, not redeclaring")
+when not declared(av_free):
+  proc av_free*(ptr_arg: pointer): void {.cdecl, importc: "av_free".}
+else:
+  static :
+    hint("Declaration of " & "av_free" & " already exists, not redeclaring")
+when not declared(av_freep):
+  proc av_freep*(ptr_arg: pointer): void {.cdecl, importc: "av_freep".}
+else:
+  static :
+    hint("Declaration of " & "av_freep" & " already exists, not redeclaring")
+when not declared(av_strdup):
+  proc av_strdup*(s: cstring): cstring {.cdecl, importc: "av_strdup".}
+else:
+  static :
+    hint("Declaration of " & "av_strdup" & " already exists, not redeclaring")
+when not declared(av_strndup):
+  proc av_strndup*(s: cstring; len: csize_t): cstring {.cdecl,
+      importc: "av_strndup".}
+else:
+  static :
+    hint("Declaration of " & "av_strndup" & " already exists, not redeclaring")
+when not declared(av_memdup):
+  proc av_memdup*(p: pointer; size: csize_t): pointer {.cdecl,
+      importc: "av_memdup".}
+else:
+  static :
+    hint("Declaration of " & "av_memdup" & " already exists, not redeclaring")
+when not declared(av_memcpy_backptr):
+  proc av_memcpy_backptr*(dst: ptr uint8; back: cint; cnt: cint): void {.cdecl,
+      importc: "av_memcpy_backptr".}
+else:
+  static :
+    hint("Declaration of " & "av_memcpy_backptr" &
+        " already exists, not redeclaring")
+when not declared(av_dynarray_add):
+  proc av_dynarray_add*(tab_ptr: pointer; nb_ptr: ptr cint; elem: pointer): void {.
+      cdecl, importc: "av_dynarray_add".}
+else:
+  static :
+    hint("Declaration of " & "av_dynarray_add" &
+        " already exists, not redeclaring")
+when not declared(av_dynarray_add_nofree):
+  proc av_dynarray_add_nofree*(tab_ptr: pointer; nb_ptr: ptr cint; elem: pointer): cint {.
+      cdecl, importc: "av_dynarray_add_nofree".}
+else:
+  static :
+    hint("Declaration of " & "av_dynarray_add_nofree" &
+        " already exists, not redeclaring")
+when not declared(av_dynarray2_add):
+  proc av_dynarray2_add*(tab_ptr: ptr pointer; nb_ptr: ptr cint;
+                         elem_size: csize_t; elem_data: ptr uint8): pointer {.
+      cdecl, importc: "av_dynarray2_add".}
+else:
+  static :
+    hint("Declaration of " & "av_dynarray2_add" &
+        " already exists, not redeclaring")
+when not declared(av_size_mult):
+  proc av_size_mult*(a: csize_t; b: csize_t; r: ptr csize_t): cint {.cdecl,
+      importc: "av_size_mult".}
+else:
+  static :
+    hint("Declaration of " & "av_size_mult" & " already exists, not redeclaring")
+when not declared(av_max_alloc):
+  proc av_max_alloc*(max: csize_t): void {.cdecl, importc: "av_max_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_max_alloc" & " already exists, not redeclaring")
+when not declared(av_log2):
+  proc av_log2*(v: cuint): cint {.cdecl, importc: "av_log2".}
+else:
+  static :
+    hint("Declaration of " & "av_log2" & " already exists, not redeclaring")
+when not declared(av_log2_16bit):
+  proc av_log2_16bit*(v: cuint): cint {.cdecl, importc: "av_log2_16bit".}
+else:
+  static :
+    hint("Declaration of " & "av_log2_16bit" &
+        " already exists, not redeclaring")
+when not declared(av_gcd):
+  proc av_gcd*(a: int64; b: int64): int64 {.cdecl, importc: "av_gcd".}
+else:
+  static :
+    hint("Declaration of " & "av_gcd" & " already exists, not redeclaring")
+when not declared(av_rescale):
+  proc av_rescale*(a: int64; b: int64; c: int64): int64 {.cdecl,
+      importc: "av_rescale".}
+else:
+  static :
+    hint("Declaration of " & "av_rescale" & " already exists, not redeclaring")
+when not declared(av_rescale_rnd):
+  proc av_rescale_rnd*(a: int64; b: int64; c: int64; rnd: enum_AVRounding_1644167685): int64 {.
+      cdecl, importc: "av_rescale_rnd".}
+else:
+  static :
+    hint("Declaration of " & "av_rescale_rnd" &
+        " already exists, not redeclaring")
+when not declared(av_rescale_q):
+  proc av_rescale_q*(a: int64; bq: AVRational_1644167675; cq: AVRational_1644167675): int64 {.
+      cdecl, importc: "av_rescale_q".}
+else:
+  static :
+    hint("Declaration of " & "av_rescale_q" & " already exists, not redeclaring")
+when not declared(av_rescale_q_rnd):
+  proc av_rescale_q_rnd*(a: int64; bq: AVRational_1644167675; cq: AVRational_1644167675;
+                         rnd: enum_AVRounding_1644167685): int64 {.cdecl,
+      importc: "av_rescale_q_rnd".}
+else:
+  static :
+    hint("Declaration of " & "av_rescale_q_rnd" &
+        " already exists, not redeclaring")
+when not declared(av_compare_ts):
+  proc av_compare_ts*(ts_a: int64; tb_a: AVRational_1644167675; ts_b: int64;
+                      tb_b: AVRational_1644167675): cint {.cdecl,
+      importc: "av_compare_ts".}
+else:
+  static :
+    hint("Declaration of " & "av_compare_ts" &
+        " already exists, not redeclaring")
+when not declared(av_compare_mod):
+  proc av_compare_mod*(a: uint64; b: uint64; mod_arg: uint64): int64 {.cdecl,
+      importc: "av_compare_mod".}
+else:
+  static :
+    hint("Declaration of " & "av_compare_mod" &
+        " already exists, not redeclaring")
+when not declared(av_rescale_delta):
+  proc av_rescale_delta*(in_tb: AVRational_1644167675; in_ts: int64;
+                         fs_tb: AVRational_1644167675; duration: cint;
+                         last: ptr int64; out_tb: AVRational_1644167675): int64 {.
+      cdecl, importc: "av_rescale_delta".}
+else:
+  static :
+    hint("Declaration of " & "av_rescale_delta" &
+        " already exists, not redeclaring")
+when not declared(av_add_stable):
+  proc av_add_stable*(ts_tb: AVRational_1644167675; ts: int64;
+                      inc_tb: AVRational_1644167675; inc: int64): int64 {.cdecl,
+      importc: "av_add_stable".}
+else:
+  static :
+    hint("Declaration of " & "av_add_stable" &
+        " already exists, not redeclaring")
+when not declared(av_bessel_i0):
+  proc av_bessel_i0*(x: cdouble): cdouble {.cdecl, importc: "av_bessel_i0".}
+else:
+  static :
+    hint("Declaration of " & "av_bessel_i0" & " already exists, not redeclaring")
+when not declared(av_int_list_length_for_size):
+  proc av_int_list_length_for_size*(elsize: cuint; list: pointer; term: uint64): cuint {.
+      cdecl, importc: "av_int_list_length_for_size".}
+else:
+  static :
+    hint("Declaration of " & "av_int_list_length_for_size" &
+        " already exists, not redeclaring")
+when not declared(av_get_time_base_q):
+  proc av_get_time_base_q*(): AVRational_1644167675 {.cdecl,
+      importc: "av_get_time_base_q".}
+else:
+  static :
+    hint("Declaration of " & "av_get_time_base_q" &
+        " already exists, not redeclaring")
+when not declared(av_fourcc_make_string):
+  proc av_fourcc_make_string*(buf: cstring; fourcc: uint32): cstring {.cdecl,
+      importc: "av_fourcc_make_string".}
+else:
+  static :
+    hint("Declaration of " & "av_fourcc_make_string" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_defaults):
+  proc av_opt_set_defaults*(s: pointer): void {.cdecl,
+      importc: "av_opt_set_defaults".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_defaults" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_defaults2):
+  proc av_opt_set_defaults2*(s: pointer; mask: cint; flags: cint): void {.cdecl,
+      importc: "av_opt_set_defaults2".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_defaults2" &
+        " already exists, not redeclaring")
+when not declared(av_opt_free):
+  proc av_opt_free*(obj: pointer): void {.cdecl, importc: "av_opt_free".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_free" & " already exists, not redeclaring")
+when not declared(av_opt_next):
+  proc av_opt_next*(obj: pointer; prev: ptr AVOption_1644167712): ptr AVOption_1644167712 {.
+      cdecl, importc: "av_opt_next".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_next" & " already exists, not redeclaring")
+when not declared(av_opt_child_next):
+  proc av_opt_child_next*(obj: pointer; prev: pointer): pointer {.cdecl,
+      importc: "av_opt_child_next".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_child_next" &
+        " already exists, not redeclaring")
+when not declared(av_opt_child_class_iterate):
+  proc av_opt_child_class_iterate*(parent: ptr AVClass_1644167663;
+                                   iter: ptr pointer): ptr AVClass_1644167663 {.
+      cdecl, importc: "av_opt_child_class_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_child_class_iterate" &
+        " already exists, not redeclaring")
+when not declared(av_opt_find):
+  proc av_opt_find*(obj: pointer; name: cstring; unit: cstring; opt_flags: cint;
+                    search_flags: cint): ptr AVOption_1644167712 {.cdecl,
+      importc: "av_opt_find".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_find" & " already exists, not redeclaring")
+when not declared(av_opt_find2):
+  proc av_opt_find2*(obj: pointer; name: cstring; unit: cstring;
+                     opt_flags: cint; search_flags: cint;
+                     target_obj: ptr pointer): ptr AVOption_1644167712 {.cdecl,
+      importc: "av_opt_find2".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_find2" & " already exists, not redeclaring")
+when not declared(av_opt_show2):
+  proc av_opt_show2*(obj: pointer; av_log_obj: pointer; req_flags: cint;
+                     rej_flags: cint): cint {.cdecl, importc: "av_opt_show2".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_show2" & " already exists, not redeclaring")
+when not declared(av_opt_get_key_value):
+  proc av_opt_get_key_value*(ropts: ptr cstring; key_val_sep: cstring;
+                             pairs_sep: cstring; flags: cuint;
+                             rkey: ptr cstring; rval: ptr cstring): cint {.
+      cdecl, importc: "av_opt_get_key_value".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_key_value" &
+        " already exists, not redeclaring")
+when not declared(av_set_options_string):
+  proc av_set_options_string*(ctx: pointer; opts: cstring; key_val_sep: cstring;
+                              pairs_sep: cstring): cint {.cdecl,
+      importc: "av_set_options_string".}
+else:
+  static :
+    hint("Declaration of " & "av_set_options_string" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_from_string):
+  proc av_opt_set_from_string*(ctx: pointer; opts: cstring;
+                               shorthand: ptr cstring; key_val_sep: cstring;
+                               pairs_sep: cstring): cint {.cdecl,
+      importc: "av_opt_set_from_string".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_from_string" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_dict):
+  proc av_opt_set_dict*(obj: pointer; options: ptr ptr struct_AVDictionary): cint {.
+      cdecl, importc: "av_opt_set_dict".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_dict" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_dict2):
+  proc av_opt_set_dict2*(obj: pointer; options: ptr ptr struct_AVDictionary;
+                         search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_dict2".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_dict2" &
+        " already exists, not redeclaring")
+when not declared(av_opt_copy):
+  proc av_opt_copy*(dest: pointer; src: pointer): cint {.cdecl,
+      importc: "av_opt_copy".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_copy" & " already exists, not redeclaring")
+when not declared(av_opt_set):
+  proc av_opt_set*(obj: pointer; name: cstring; val: cstring; search_flags: cint): cint {.
+      cdecl, importc: "av_opt_set".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set" & " already exists, not redeclaring")
+when not declared(av_opt_set_int):
+  proc av_opt_set_int*(obj: pointer; name: cstring; val: int64;
+                       search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_int".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_int" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_double):
+  proc av_opt_set_double*(obj: pointer; name: cstring; val: cdouble;
+                          search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_double".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_double" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_q):
+  proc av_opt_set_q*(obj: pointer; name: cstring; val: AVRational_1644167675;
+                     search_flags: cint): cint {.cdecl, importc: "av_opt_set_q".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_q" & " already exists, not redeclaring")
+when not declared(av_opt_set_bin):
+  proc av_opt_set_bin*(obj: pointer; name: cstring; val: ptr uint8; size: cint;
+                       search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_bin".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_bin" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_image_size):
+  proc av_opt_set_image_size*(obj: pointer; name: cstring; w: cint; h: cint;
+                              search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_image_size".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_image_size" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_pixel_fmt):
+  proc av_opt_set_pixel_fmt*(obj: pointer; name: cstring;
+                             fmt: enum_AVPixelFormat_1644167687;
+                             search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_pixel_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_pixel_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_sample_fmt):
+  proc av_opt_set_sample_fmt*(obj: pointer; name: cstring;
+                              fmt: enum_AVSampleFormat_1644167651;
+                              search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_sample_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_sample_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_video_rate):
+  proc av_opt_set_video_rate*(obj: pointer; name: cstring; val: AVRational_1644167675;
+                              search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_video_rate".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_video_rate" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_chlayout):
+  proc av_opt_set_chlayout*(obj: pointer; name: cstring;
+                            layout: ptr AVChannelLayout_1644167649;
+                            search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_chlayout".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_chlayout" &
+        " already exists, not redeclaring")
+when not declared(av_opt_set_dict_val):
+  proc av_opt_set_dict_val*(obj: pointer; name: cstring; val: ptr AVDictionary_1644167671;
+                            search_flags: cint): cint {.cdecl,
+      importc: "av_opt_set_dict_val".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_set_dict_val" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get):
+  proc av_opt_get*(obj: pointer; name: cstring; search_flags: cint;
+                   out_val: ptr ptr uint8): cint {.cdecl, importc: "av_opt_get".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get" & " already exists, not redeclaring")
+when not declared(av_opt_get_int):
+  proc av_opt_get_int*(obj: pointer; name: cstring; search_flags: cint;
+                       out_val: ptr int64): cint {.cdecl,
+      importc: "av_opt_get_int".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_int" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_double):
+  proc av_opt_get_double*(obj: pointer; name: cstring; search_flags: cint;
+                          out_val: ptr cdouble): cint {.cdecl,
+      importc: "av_opt_get_double".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_double" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_q):
+  proc av_opt_get_q*(obj: pointer; name: cstring; search_flags: cint;
+                     out_val: ptr AVRational_1644167675): cint {.cdecl,
+      importc: "av_opt_get_q".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_q" & " already exists, not redeclaring")
+when not declared(av_opt_get_image_size):
+  proc av_opt_get_image_size*(obj: pointer; name: cstring; search_flags: cint;
+                              w_out: ptr cint; h_out: ptr cint): cint {.cdecl,
+      importc: "av_opt_get_image_size".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_image_size" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_pixel_fmt):
+  proc av_opt_get_pixel_fmt*(obj: pointer; name: cstring; search_flags: cint;
+                             out_fmt: ptr enum_AVPixelFormat_1644167687): cint {.
+      cdecl, importc: "av_opt_get_pixel_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_pixel_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_sample_fmt):
+  proc av_opt_get_sample_fmt*(obj: pointer; name: cstring; search_flags: cint;
+                              out_fmt: ptr enum_AVSampleFormat_1644167651): cint {.
+      cdecl, importc: "av_opt_get_sample_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_sample_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_video_rate):
+  proc av_opt_get_video_rate*(obj: pointer; name: cstring; search_flags: cint;
+                              out_val: ptr AVRational_1644167675): cint {.cdecl,
+      importc: "av_opt_get_video_rate".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_video_rate" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_chlayout):
+  proc av_opt_get_chlayout*(obj: pointer; name: cstring; search_flags: cint;
+                            layout: ptr AVChannelLayout_1644167649): cint {.
+      cdecl, importc: "av_opt_get_chlayout".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_chlayout" &
+        " already exists, not redeclaring")
+when not declared(av_opt_get_dict_val):
+  proc av_opt_get_dict_val*(obj: pointer; name: cstring; search_flags: cint;
+                            out_val: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "av_opt_get_dict_val".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_get_dict_val" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_flags):
+  proc av_opt_eval_flags*(obj: pointer; o: ptr AVOption_1644167712;
+                          val: cstring; flags_out: ptr cint): cint {.cdecl,
+      importc: "av_opt_eval_flags".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_flags" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_int):
+  proc av_opt_eval_int*(obj: pointer; o: ptr AVOption_1644167712; val: cstring;
+                        int_out: ptr cint): cint {.cdecl,
+      importc: "av_opt_eval_int".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_int" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_uint):
+  proc av_opt_eval_uint*(obj: pointer; o: ptr AVOption_1644167712; val: cstring;
+                         uint_out: ptr cuint): cint {.cdecl,
+      importc: "av_opt_eval_uint".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_uint" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_int64):
+  proc av_opt_eval_int64*(obj: pointer; o: ptr AVOption_1644167712;
+                          val: cstring; int64_out: ptr int64): cint {.cdecl,
+      importc: "av_opt_eval_int64".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_int64" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_float):
+  proc av_opt_eval_float*(obj: pointer; o: ptr AVOption_1644167712;
+                          val: cstring; float_out: ptr cfloat): cint {.cdecl,
+      importc: "av_opt_eval_float".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_float" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_double):
+  proc av_opt_eval_double*(obj: pointer; o: ptr AVOption_1644167712;
+                           val: cstring; double_out: ptr cdouble): cint {.cdecl,
+      importc: "av_opt_eval_double".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_double" &
+        " already exists, not redeclaring")
+when not declared(av_opt_eval_q):
+  proc av_opt_eval_q*(obj: pointer; o: ptr AVOption_1644167712; val: cstring;
+                      q_out: ptr AVRational_1644167675): cint {.cdecl,
+      importc: "av_opt_eval_q".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_eval_q" &
+        " already exists, not redeclaring")
+when not declared(av_opt_ptr):
+  proc av_opt_ptr*(avclass: ptr AVClass_1644167663; obj: pointer; name: cstring): pointer {.
+      cdecl, importc: "av_opt_ptr".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_ptr" & " already exists, not redeclaring")
+when not declared(av_opt_is_set_to_default):
+  proc av_opt_is_set_to_default*(obj: pointer; o: ptr AVOption_1644167712): cint {.
+      cdecl, importc: "av_opt_is_set_to_default".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_is_set_to_default" &
+        " already exists, not redeclaring")
+when not declared(av_opt_is_set_to_default_by_name):
+  proc av_opt_is_set_to_default_by_name*(obj: pointer; name: cstring;
+      search_flags: cint): cint {.cdecl,
+                                  importc: "av_opt_is_set_to_default_by_name".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_is_set_to_default_by_name" &
+        " already exists, not redeclaring")
+when not declared(av_opt_flag_is_set):
+  proc av_opt_flag_is_set*(obj: pointer; field_name: cstring; flag_name: cstring): cint {.
+      cdecl, importc: "av_opt_flag_is_set".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_flag_is_set" &
+        " already exists, not redeclaring")
+when not declared(av_opt_serialize):
+  proc av_opt_serialize*(obj: pointer; opt_flags: cint; flags: cint;
+                         buffer: ptr cstring; key_val_sep: cschar;
+                         pairs_sep: cschar): cint {.cdecl,
+      importc: "av_opt_serialize".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_serialize" &
+        " already exists, not redeclaring")
+when not declared(av_opt_freep_ranges):
+  proc av_opt_freep_ranges*(ranges: ptr ptr AVOptionRanges_1644167718): void {.
+      cdecl, importc: "av_opt_freep_ranges".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_freep_ranges" &
+        " already exists, not redeclaring")
+when not declared(av_opt_query_ranges):
+  proc av_opt_query_ranges*(a0: ptr ptr AVOptionRanges_1644167718; obj: pointer;
+                            key: cstring; flags: cint): cint {.cdecl,
+      importc: "av_opt_query_ranges".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_query_ranges" &
+        " already exists, not redeclaring")
+when not declared(av_opt_query_ranges_default):
+  proc av_opt_query_ranges_default*(a0: ptr ptr AVOptionRanges_1644167718;
+                                    obj: pointer; key: cstring; flags: cint): cint {.
+      cdecl, importc: "av_opt_query_ranges_default".}
+else:
+  static :
+    hint("Declaration of " & "av_opt_query_ranges_default" &
+        " already exists, not redeclaring")
+when not declared(av_get_bits_per_pixel):
+  proc av_get_bits_per_pixel*(pixdesc: ptr AVPixFmtDescriptor_1644167726): cint {.
+      cdecl, importc: "av_get_bits_per_pixel".}
+else:
+  static :
+    hint("Declaration of " & "av_get_bits_per_pixel" &
+        " already exists, not redeclaring")
+when not declared(av_get_padded_bits_per_pixel):
+  proc av_get_padded_bits_per_pixel*(pixdesc: ptr AVPixFmtDescriptor_1644167726): cint {.
+      cdecl, importc: "av_get_padded_bits_per_pixel".}
+else:
+  static :
+    hint("Declaration of " & "av_get_padded_bits_per_pixel" &
+        " already exists, not redeclaring")
+when not declared(av_pix_fmt_desc_get):
+  proc av_pix_fmt_desc_get*(pix_fmt: enum_AVPixelFormat_1644167687): ptr AVPixFmtDescriptor_1644167726 {.
+      cdecl, importc: "av_pix_fmt_desc_get".}
+else:
+  static :
+    hint("Declaration of " & "av_pix_fmt_desc_get" &
+        " already exists, not redeclaring")
+when not declared(av_pix_fmt_desc_next):
+  proc av_pix_fmt_desc_next*(prev: ptr AVPixFmtDescriptor_1644167726): ptr AVPixFmtDescriptor_1644167726 {.
+      cdecl, importc: "av_pix_fmt_desc_next".}
+else:
+  static :
+    hint("Declaration of " & "av_pix_fmt_desc_next" &
+        " already exists, not redeclaring")
+when not declared(av_pix_fmt_desc_get_id):
+  proc av_pix_fmt_desc_get_id*(desc: ptr AVPixFmtDescriptor_1644167726): enum_AVPixelFormat_1644167687 {.
+      cdecl, importc: "av_pix_fmt_desc_get_id".}
+else:
+  static :
+    hint("Declaration of " & "av_pix_fmt_desc_get_id" &
+        " already exists, not redeclaring")
+when not declared(av_pix_fmt_get_chroma_sub_sample):
+  proc av_pix_fmt_get_chroma_sub_sample*(pix_fmt: enum_AVPixelFormat_1644167687;
+      h_shift: ptr cint; v_shift: ptr cint): cint {.cdecl,
+      importc: "av_pix_fmt_get_chroma_sub_sample".}
+else:
+  static :
+    hint("Declaration of " & "av_pix_fmt_get_chroma_sub_sample" &
+        " already exists, not redeclaring")
+when not declared(av_pix_fmt_count_planes):
+  proc av_pix_fmt_count_planes*(pix_fmt: enum_AVPixelFormat_1644167687): cint {.
+      cdecl, importc: "av_pix_fmt_count_planes".}
+else:
+  static :
+    hint("Declaration of " & "av_pix_fmt_count_planes" &
+        " already exists, not redeclaring")
+when not declared(av_color_range_name):
+  proc av_color_range_name*(range: enum_AVColorRange_1644167702): cstring {.
+      cdecl, importc: "av_color_range_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_range_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_range_from_name):
+  proc av_color_range_from_name*(name: cstring): cint {.cdecl,
+      importc: "av_color_range_from_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_range_from_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_primaries_name):
+  proc av_color_primaries_name*(primaries: enum_AVColorPrimaries_1644167696): cstring {.
+      cdecl, importc: "av_color_primaries_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_primaries_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_primaries_from_name):
+  proc av_color_primaries_from_name*(name: cstring): cint {.cdecl,
+      importc: "av_color_primaries_from_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_primaries_from_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_transfer_name):
+  proc av_color_transfer_name*(transfer: enum_AVColorTransferCharacteristic_1644167698): cstring {.
+      cdecl, importc: "av_color_transfer_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_transfer_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_transfer_from_name):
+  proc av_color_transfer_from_name*(name: cstring): cint {.cdecl,
+      importc: "av_color_transfer_from_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_transfer_from_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_space_name):
+  proc av_color_space_name*(space: enum_AVColorSpace_1644167700): cstring {.
+      cdecl, importc: "av_color_space_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_space_name" &
+        " already exists, not redeclaring")
+when not declared(av_color_space_from_name):
+  proc av_color_space_from_name*(name: cstring): cint {.cdecl,
+      importc: "av_color_space_from_name".}
+else:
+  static :
+    hint("Declaration of " & "av_color_space_from_name" &
+        " already exists, not redeclaring")
+when not declared(av_chroma_location_name):
+  proc av_chroma_location_name*(location: enum_AVChromaLocation_1644167704): cstring {.
+      cdecl, importc: "av_chroma_location_name".}
+else:
+  static :
+    hint("Declaration of " & "av_chroma_location_name" &
+        " already exists, not redeclaring")
+when not declared(av_chroma_location_from_name):
+  proc av_chroma_location_from_name*(name: cstring): cint {.cdecl,
+      importc: "av_chroma_location_from_name".}
+else:
+  static :
+    hint("Declaration of " & "av_chroma_location_from_name" &
+        " already exists, not redeclaring")
+when not declared(av_chroma_location_enum_to_pos):
+  proc av_chroma_location_enum_to_pos*(xpos: ptr cint; ypos: ptr cint;
+                                       pos: enum_AVChromaLocation_1644167704): cint {.
+      cdecl, importc: "av_chroma_location_enum_to_pos".}
+else:
+  static :
+    hint("Declaration of " & "av_chroma_location_enum_to_pos" &
+        " already exists, not redeclaring")
+when not declared(av_chroma_location_pos_to_enum):
+  proc av_chroma_location_pos_to_enum*(xpos: cint; ypos: cint): enum_AVChromaLocation_1644167704 {.
+      cdecl, importc: "av_chroma_location_pos_to_enum".}
+else:
+  static :
+    hint("Declaration of " & "av_chroma_location_pos_to_enum" &
+        " already exists, not redeclaring")
+when not declared(av_get_pix_fmt):
+  proc av_get_pix_fmt*(name: cstring): enum_AVPixelFormat_1644167687 {.cdecl,
+      importc: "av_get_pix_fmt".}
+else:
+  static :
+    hint("Declaration of " & "av_get_pix_fmt" &
+        " already exists, not redeclaring")
+when not declared(av_get_pix_fmt_name):
+  proc av_get_pix_fmt_name*(pix_fmt: enum_AVPixelFormat_1644167687): cstring {.
+      cdecl, importc: "av_get_pix_fmt_name".}
+else:
+  static :
+    hint("Declaration of " & "av_get_pix_fmt_name" &
+        " already exists, not redeclaring")
+when not declared(av_get_pix_fmt_string):
+  proc av_get_pix_fmt_string*(buf: cstring; buf_size: cint;
+                              pix_fmt: enum_AVPixelFormat_1644167687): cstring {.
+      cdecl, importc: "av_get_pix_fmt_string".}
+else:
+  static :
+    hint("Declaration of " & "av_get_pix_fmt_string" &
+        " already exists, not redeclaring")
+when not declared(av_read_image_line2):
+  proc av_read_image_line2*(dst: pointer; data: array[4'i64, ptr uint8];
+                            linesize: array[4'i64, cint];
+                            desc: ptr AVPixFmtDescriptor_1644167726; x: cint;
+                            y: cint; c: cint; w: cint; read_pal_component: cint;
+                            dst_element_size: cint): void {.cdecl,
+      importc: "av_read_image_line2".}
+else:
+  static :
+    hint("Declaration of " & "av_read_image_line2" &
+        " already exists, not redeclaring")
+when not declared(av_read_image_line):
+  proc av_read_image_line*(dst: ptr uint16; data: array[4'i64, ptr uint8];
+                           linesize: array[4'i64, cint];
+                           desc: ptr AVPixFmtDescriptor_1644167726; x: cint;
+                           y: cint; c: cint; w: cint; read_pal_component: cint): void {.
+      cdecl, importc: "av_read_image_line".}
+else:
+  static :
+    hint("Declaration of " & "av_read_image_line" &
+        " already exists, not redeclaring")
+when not declared(av_write_image_line2):
+  proc av_write_image_line2*(src: pointer; data: array[4'i64, ptr uint8];
+                             linesize: array[4'i64, cint];
+                             desc: ptr AVPixFmtDescriptor_1644167726; x: cint;
+                             y: cint; c: cint; w: cint; src_element_size: cint): void {.
+      cdecl, importc: "av_write_image_line2".}
+else:
+  static :
+    hint("Declaration of " & "av_write_image_line2" &
+        " already exists, not redeclaring")
+when not declared(av_write_image_line):
+  proc av_write_image_line*(src: ptr uint16; data: array[4'i64, ptr uint8];
+                            linesize: array[4'i64, cint];
+                            desc: ptr AVPixFmtDescriptor_1644167726; x: cint;
+                            y: cint; c: cint; w: cint): void {.cdecl,
+      importc: "av_write_image_line".}
+else:
+  static :
+    hint("Declaration of " & "av_write_image_line" &
+        " already exists, not redeclaring")
+when not declared(av_pix_fmt_swap_endianness):
+  proc av_pix_fmt_swap_endianness*(pix_fmt: enum_AVPixelFormat_1644167687): enum_AVPixelFormat_1644167687 {.
+      cdecl, importc: "av_pix_fmt_swap_endianness".}
+else:
+  static :
+    hint("Declaration of " & "av_pix_fmt_swap_endianness" &
+        " already exists, not redeclaring")
+when not declared(av_get_pix_fmt_loss):
+  proc av_get_pix_fmt_loss*(dst_pix_fmt: enum_AVPixelFormat_1644167687;
+                            src_pix_fmt: enum_AVPixelFormat_1644167687;
+                            has_alpha: cint): cint {.cdecl,
+      importc: "av_get_pix_fmt_loss".}
+else:
+  static :
+    hint("Declaration of " & "av_get_pix_fmt_loss" &
+        " already exists, not redeclaring")
+when not declared(av_find_best_pix_fmt_of_2):
+  proc av_find_best_pix_fmt_of_2*(dst_pix_fmt1: enum_AVPixelFormat_1644167687;
+                                  dst_pix_fmt2: enum_AVPixelFormat_1644167687;
+                                  src_pix_fmt: enum_AVPixelFormat_1644167687;
+                                  has_alpha: cint; loss_ptr: ptr cint): enum_AVPixelFormat_1644167687 {.
+      cdecl, importc: "av_find_best_pix_fmt_of_2".}
+else:
+  static :
+    hint("Declaration of " & "av_find_best_pix_fmt_of_2" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_max_pixsteps):
+  proc av_image_fill_max_pixsteps*(max_pixsteps: array[4'i64, cint];
+                                   max_pixstep_comps: array[4'i64, cint];
+                                   pixdesc: ptr AVPixFmtDescriptor_1644167726): void {.
+      cdecl, importc: "av_image_fill_max_pixsteps".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_max_pixsteps" &
+        " already exists, not redeclaring")
+when not declared(av_image_get_linesize):
+  proc av_image_get_linesize*(pix_fmt: enum_AVPixelFormat_1644167687;
+                              width: cint; plane: cint): cint {.cdecl,
+      importc: "av_image_get_linesize".}
+else:
+  static :
+    hint("Declaration of " & "av_image_get_linesize" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_linesizes):
+  proc av_image_fill_linesizes*(linesizes: array[4'i64, cint];
+                                pix_fmt: enum_AVPixelFormat_1644167687;
+                                width: cint): cint {.cdecl,
+      importc: "av_image_fill_linesizes".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_linesizes" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_plane_sizes):
+  proc av_image_fill_plane_sizes*(size: array[4'i64, csize_t];
+                                  pix_fmt: enum_AVPixelFormat_1644167687;
+                                  height: cint;
+                                  linesizes: array[4'i64, ptrdiff_t_1644167728]): cint {.
+      cdecl, importc: "av_image_fill_plane_sizes".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_plane_sizes" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_pointers):
+  proc av_image_fill_pointers*(data: array[4'i64, ptr uint8];
+                               pix_fmt: enum_AVPixelFormat_1644167687;
+                               height: cint; ptr_arg: ptr uint8;
+                               linesizes: array[4'i64, cint]): cint {.cdecl,
+      importc: "av_image_fill_pointers".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_pointers" &
+        " already exists, not redeclaring")
+when not declared(av_image_alloc):
+  proc av_image_alloc*(pointers: array[4'i64, ptr uint8];
+                       linesizes: array[4'i64, cint]; w: cint; h: cint;
+                       pix_fmt: enum_AVPixelFormat_1644167687; align: cint): cint {.
+      cdecl, importc: "av_image_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_image_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_image_copy_plane):
+  proc av_image_copy_plane*(dst: ptr uint8; dst_linesize: cint; src: ptr uint8;
+                            src_linesize: cint; bytewidth: cint; height: cint): void {.
+      cdecl, importc: "av_image_copy_plane".}
+else:
+  static :
+    hint("Declaration of " & "av_image_copy_plane" &
+        " already exists, not redeclaring")
+when not declared(av_image_copy_plane_uc_from):
+  proc av_image_copy_plane_uc_from*(dst: ptr uint8; dst_linesize: ptrdiff_t_1644167728;
+                                    src: ptr uint8; src_linesize: ptrdiff_t_1644167728;
+                                    bytewidth: ptrdiff_t_1644167728;
+                                    height: cint): void {.cdecl,
+      importc: "av_image_copy_plane_uc_from".}
+else:
+  static :
+    hint("Declaration of " & "av_image_copy_plane_uc_from" &
+        " already exists, not redeclaring")
+when not declared(av_image_copy):
+  proc av_image_copy*(dst_data: array[4'i64, ptr uint8];
+                      dst_linesizes: array[4'i64, cint];
+                      src_data: array[4'i64, ptr uint8];
+                      src_linesizes: array[4'i64, cint];
+                      pix_fmt: enum_AVPixelFormat_1644167687; width: cint;
+                      height: cint): void {.cdecl, importc: "av_image_copy".}
+else:
+  static :
+    hint("Declaration of " & "av_image_copy" &
+        " already exists, not redeclaring")
+when not declared(av_image_copy_uc_from):
+  proc av_image_copy_uc_from*(dst_data: array[4'i64, ptr uint8];
+                              dst_linesizes: array[4'i64, ptrdiff_t_1644167728];
+                              src_data: array[4'i64, ptr uint8];
+                              src_linesizes: array[4'i64, ptrdiff_t_1644167728];
+                              pix_fmt: enum_AVPixelFormat_1644167687;
+                              width: cint; height: cint): void {.cdecl,
+      importc: "av_image_copy_uc_from".}
+else:
+  static :
+    hint("Declaration of " & "av_image_copy_uc_from" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_arrays):
+  proc av_image_fill_arrays*(dst_data: array[4'i64, ptr uint8];
+                             dst_linesize: array[4'i64, cint]; src: ptr uint8;
+                             pix_fmt: enum_AVPixelFormat_1644167687;
+                             width: cint; height: cint; align: cint): cint {.
+      cdecl, importc: "av_image_fill_arrays".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_arrays" &
+        " already exists, not redeclaring")
+when not declared(av_image_get_buffer_size):
+  proc av_image_get_buffer_size*(pix_fmt: enum_AVPixelFormat_1644167687;
+                                 width: cint; height: cint; align: cint): cint {.
+      cdecl, importc: "av_image_get_buffer_size".}
+else:
+  static :
+    hint("Declaration of " & "av_image_get_buffer_size" &
+        " already exists, not redeclaring")
+when not declared(av_image_copy_to_buffer):
+  proc av_image_copy_to_buffer*(dst: ptr uint8; dst_size: cint;
+                                src_data: array[4'i64, ptr uint8];
+                                src_linesize: array[4'i64, cint];
+                                pix_fmt: enum_AVPixelFormat_1644167687;
+                                width: cint; height: cint; align: cint): cint {.
+      cdecl, importc: "av_image_copy_to_buffer".}
+else:
+  static :
+    hint("Declaration of " & "av_image_copy_to_buffer" &
+        " already exists, not redeclaring")
+when not declared(av_image_check_size):
+  proc av_image_check_size*(w: cuint; h: cuint; log_offset: cint;
+                            log_ctx: pointer): cint {.cdecl,
+      importc: "av_image_check_size".}
+else:
+  static :
+    hint("Declaration of " & "av_image_check_size" &
+        " already exists, not redeclaring")
+when not declared(av_image_check_size2):
+  proc av_image_check_size2*(w: cuint; h: cuint; max_pixels: int64;
+                             pix_fmt: enum_AVPixelFormat_1644167687;
+                             log_offset: cint; log_ctx: pointer): cint {.cdecl,
+      importc: "av_image_check_size2".}
+else:
+  static :
+    hint("Declaration of " & "av_image_check_size2" &
+        " already exists, not redeclaring")
+when not declared(av_image_check_sar):
+  proc av_image_check_sar*(w: cuint; h: cuint; sar: AVRational_1644167675): cint {.
+      cdecl, importc: "av_image_check_sar".}
+else:
+  static :
+    hint("Declaration of " & "av_image_check_sar" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_black):
+  proc av_image_fill_black*(dst_data: array[4'i64, ptr uint8];
+                            dst_linesize: array[4'i64, ptrdiff_t_1644167728];
+                            pix_fmt: enum_AVPixelFormat_1644167687;
+                            range: enum_AVColorRange_1644167702; width: cint;
+                            height: cint): cint {.cdecl,
+      importc: "av_image_fill_black".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_black" &
+        " already exists, not redeclaring")
+when not declared(av_image_fill_color):
+  proc av_image_fill_color*(dst_data: array[4'i64, ptr uint8];
+                            dst_linesize: array[4'i64, ptrdiff_t_1644167728];
+                            pix_fmt: enum_AVPixelFormat_1644167687;
+                            color: array[4'i64, uint32]; width: cint;
+                            height: cint; flags: cint): cint {.cdecl,
+      importc: "av_image_fill_color".}
+else:
+  static :
+    hint("Declaration of " & "av_image_fill_color" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_alloc):
+  proc av_buffer_alloc*(size: csize_t): ptr AVBufferRef_1644167734 {.cdecl,
+      importc: "av_buffer_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_allocz):
+  proc av_buffer_allocz*(size: csize_t): ptr AVBufferRef_1644167734 {.cdecl,
+      importc: "av_buffer_allocz".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_allocz" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_create):
+  proc av_buffer_create*(data: ptr uint8; size: csize_t; free: proc (
+      a0: pointer; a1: ptr uint8): void {.cdecl.}; opaque: pointer; flags: cint): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_buffer_create".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_create" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_default_free):
+  proc av_buffer_default_free*(opaque: pointer; data: ptr uint8): void {.cdecl,
+      importc: "av_buffer_default_free".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_default_free" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_ref):
+  proc av_buffer_ref*(buf: ptr AVBufferRef_1644167734): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_buffer_ref".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_ref" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_unref):
+  proc av_buffer_unref*(buf: ptr ptr AVBufferRef_1644167734): void {.cdecl,
+      importc: "av_buffer_unref".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_unref" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_is_writable):
+  proc av_buffer_is_writable*(buf: ptr AVBufferRef_1644167734): cint {.cdecl,
+      importc: "av_buffer_is_writable".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_is_writable" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_get_opaque):
+  proc av_buffer_get_opaque*(buf: ptr AVBufferRef_1644167734): pointer {.cdecl,
+      importc: "av_buffer_get_opaque".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_get_opaque" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_get_ref_count):
+  proc av_buffer_get_ref_count*(buf: ptr AVBufferRef_1644167734): cint {.cdecl,
+      importc: "av_buffer_get_ref_count".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_get_ref_count" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_make_writable):
+  proc av_buffer_make_writable*(buf: ptr ptr AVBufferRef_1644167734): cint {.
+      cdecl, importc: "av_buffer_make_writable".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_make_writable" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_realloc):
+  proc av_buffer_realloc*(buf: ptr ptr AVBufferRef_1644167734; size: csize_t): cint {.
+      cdecl, importc: "av_buffer_realloc".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_realloc" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_replace):
+  proc av_buffer_replace*(dst: ptr ptr AVBufferRef_1644167734;
+                          src: ptr AVBufferRef_1644167734): cint {.cdecl,
+      importc: "av_buffer_replace".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_replace" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_pool_init):
+  proc av_buffer_pool_init*(size: csize_t;
+                            alloc: proc (a0: csize_t): ptr AVBufferRef_1644167734 {.
+      cdecl.}): ptr AVBufferPool_1644167736 {.cdecl,
+      importc: "av_buffer_pool_init".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_pool_init" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_pool_init2):
+  proc av_buffer_pool_init2*(size: csize_t; opaque: pointer; alloc: proc (
+      a0: pointer; a1: csize_t): ptr AVBufferRef_1644167734 {.cdecl.};
+                             pool_free: proc (a0: pointer): void {.cdecl.}): ptr AVBufferPool_1644167736 {.
+      cdecl, importc: "av_buffer_pool_init2".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_pool_init2" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_pool_uninit):
+  proc av_buffer_pool_uninit*(pool: ptr ptr AVBufferPool_1644167736): void {.
+      cdecl, importc: "av_buffer_pool_uninit".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_pool_uninit" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_pool_get):
+  proc av_buffer_pool_get*(pool: ptr AVBufferPool_1644167736): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_buffer_pool_get".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_pool_get" &
+        " already exists, not redeclaring")
+when not declared(av_buffer_pool_buffer_get_opaque):
+  proc av_buffer_pool_buffer_get_opaque*(ref_arg: ptr AVBufferRef_1644167734): pointer {.
+      cdecl, importc: "av_buffer_pool_buffer_get_opaque".}
+else:
+  static :
+    hint("Declaration of " & "av_buffer_pool_buffer_get_opaque" &
+        " already exists, not redeclaring")
+when not declared(av_frame_alloc):
+  proc av_frame_alloc*(): ptr AVFrame_1644167758 {.cdecl,
+      importc: "av_frame_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_frame_free):
+  proc av_frame_free*(frame: ptr ptr AVFrame_1644167758): void {.cdecl,
+      importc: "av_frame_free".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_free" &
+        " already exists, not redeclaring")
+when not declared(av_frame_ref):
+  proc av_frame_ref*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758): cint {.
+      cdecl, importc: "av_frame_ref".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_ref" & " already exists, not redeclaring")
+when not declared(av_frame_replace):
+  proc av_frame_replace*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758): cint {.
+      cdecl, importc: "av_frame_replace".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_replace" &
+        " already exists, not redeclaring")
+when not declared(av_frame_clone):
+  proc av_frame_clone*(src: ptr AVFrame_1644167758): ptr AVFrame_1644167758 {.
+      cdecl, importc: "av_frame_clone".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_clone" &
+        " already exists, not redeclaring")
+when not declared(av_frame_unref):
+  proc av_frame_unref*(frame: ptr AVFrame_1644167758): void {.cdecl,
+      importc: "av_frame_unref".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_unref" &
+        " already exists, not redeclaring")
+when not declared(av_frame_move_ref):
+  proc av_frame_move_ref*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758): void {.
+      cdecl, importc: "av_frame_move_ref".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_move_ref" &
+        " already exists, not redeclaring")
+when not declared(av_frame_get_buffer):
+  proc av_frame_get_buffer*(frame: ptr AVFrame_1644167758; align: cint): cint {.
+      cdecl, importc: "av_frame_get_buffer".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_get_buffer" &
+        " already exists, not redeclaring")
+when not declared(av_frame_is_writable):
+  proc av_frame_is_writable*(frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "av_frame_is_writable".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_is_writable" &
+        " already exists, not redeclaring")
+when not declared(av_frame_make_writable):
+  proc av_frame_make_writable*(frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "av_frame_make_writable".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_make_writable" &
+        " already exists, not redeclaring")
+when not declared(av_frame_copy):
+  proc av_frame_copy*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758): cint {.
+      cdecl, importc: "av_frame_copy".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_copy" &
+        " already exists, not redeclaring")
+when not declared(av_frame_copy_props):
+  proc av_frame_copy_props*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758): cint {.
+      cdecl, importc: "av_frame_copy_props".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_copy_props" &
+        " already exists, not redeclaring")
+when not declared(av_frame_get_plane_buffer):
+  proc av_frame_get_plane_buffer*(frame: ptr AVFrame_1644167758; plane: cint): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_frame_get_plane_buffer".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_get_plane_buffer" &
+        " already exists, not redeclaring")
+when not declared(av_frame_new_side_data):
+  proc av_frame_new_side_data*(frame: ptr AVFrame_1644167758;
+                               type_arg: enum_AVFrameSideDataType_1644167738;
+                               size: csize_t): ptr AVFrameSideData_1644167744 {.
+      cdecl, importc: "av_frame_new_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_new_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_frame_new_side_data_from_buf):
+  proc av_frame_new_side_data_from_buf*(frame: ptr AVFrame_1644167758;
+                                        type_arg: enum_AVFrameSideDataType_1644167738;
+                                        buf: ptr AVBufferRef_1644167734): ptr AVFrameSideData_1644167744 {.
+      cdecl, importc: "av_frame_new_side_data_from_buf".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_new_side_data_from_buf" &
+        " already exists, not redeclaring")
+when not declared(av_frame_get_side_data):
+  proc av_frame_get_side_data*(frame: ptr AVFrame_1644167758;
+                               type_arg: enum_AVFrameSideDataType_1644167738): ptr AVFrameSideData_1644167744 {.
+      cdecl, importc: "av_frame_get_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_get_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_frame_remove_side_data):
+  proc av_frame_remove_side_data*(frame: ptr AVFrame_1644167758;
+                                  type_arg: enum_AVFrameSideDataType_1644167738): void {.
+      cdecl, importc: "av_frame_remove_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_remove_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_frame_apply_cropping):
+  proc av_frame_apply_cropping*(frame: ptr AVFrame_1644167758; flags: cint): cint {.
+      cdecl, importc: "av_frame_apply_cropping".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_apply_cropping" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_name):
+  proc av_frame_side_data_name*(type_arg: enum_AVFrameSideDataType_1644167738): cstring {.
+      cdecl, importc: "av_frame_side_data_name".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_name" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_desc):
+  proc av_frame_side_data_desc*(type_arg: enum_AVFrameSideDataType_1644167738): ptr AVSideDataDescriptor_1644167750 {.
+      cdecl, importc: "av_frame_side_data_desc".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_desc" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_free):
+  proc av_frame_side_data_free*(sd: ptr ptr ptr AVFrameSideData_1644167744;
+                                nb_sd: ptr cint): void {.cdecl,
+      importc: "av_frame_side_data_free".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_free" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_new):
+  proc av_frame_side_data_new*(sd: ptr ptr ptr AVFrameSideData_1644167744;
+                               nb_sd: ptr cint;
+                               type_arg: enum_AVFrameSideDataType_1644167738;
+                               size: csize_t; flags: cuint): ptr AVFrameSideData_1644167744 {.
+      cdecl, importc: "av_frame_side_data_new".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_new" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_add):
+  proc av_frame_side_data_add*(sd: ptr ptr ptr AVFrameSideData_1644167744;
+                               nb_sd: ptr cint;
+                               type_arg: enum_AVFrameSideDataType_1644167738;
+                               buf: ptr ptr AVBufferRef_1644167734; flags: cuint): ptr AVFrameSideData_1644167744 {.
+      cdecl, importc: "av_frame_side_data_add".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_add" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_clone):
+  proc av_frame_side_data_clone*(sd: ptr ptr ptr AVFrameSideData_1644167744;
+                                 nb_sd: ptr cint; src: ptr AVFrameSideData_1644167744;
+                                 flags: cuint): cint {.cdecl,
+      importc: "av_frame_side_data_clone".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_clone" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_get_c):
+  proc av_frame_side_data_get_c*(sd: ptr ptr AVFrameSideData_1644167744;
+                                 nb_sd: cint; type_arg: enum_AVFrameSideDataType_1644167738): ptr AVFrameSideData_1644167744 {.
+      cdecl, importc: "av_frame_side_data_get_c".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_get_c" &
+        " already exists, not redeclaring")
+when not declared(av_frame_side_data_remove):
+  proc av_frame_side_data_remove*(sd: ptr ptr ptr AVFrameSideData_1644167744;
+                                  nb_sd: ptr cint;
+                                  type_arg: enum_AVFrameSideDataType_1644167738): void {.
+      cdecl, importc: "av_frame_side_data_remove".}
+else:
+  static :
+    hint("Declaration of " & "av_frame_side_data_remove" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_find_type_by_name):
+  proc av_hwdevice_find_type_by_name*(name: cstring): enum_AVHWDeviceType_1644167760 {.
+      cdecl, importc: "av_hwdevice_find_type_by_name".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_find_type_by_name" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_get_type_name):
+  proc av_hwdevice_get_type_name*(type_arg: enum_AVHWDeviceType_1644167760): cstring {.
+      cdecl, importc: "av_hwdevice_get_type_name".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_get_type_name" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_iterate_types):
+  proc av_hwdevice_iterate_types*(prev: enum_AVHWDeviceType_1644167760): enum_AVHWDeviceType_1644167760 {.
+      cdecl, importc: "av_hwdevice_iterate_types".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_iterate_types" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_ctx_alloc):
+  proc av_hwdevice_ctx_alloc*(type_arg: enum_AVHWDeviceType_1644167760): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_hwdevice_ctx_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_ctx_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_ctx_init):
+  proc av_hwdevice_ctx_init*(ref_arg: ptr AVBufferRef_1644167734): cint {.cdecl,
+      importc: "av_hwdevice_ctx_init".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_ctx_init" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_ctx_create):
+  proc av_hwdevice_ctx_create*(device_ctx: ptr ptr AVBufferRef_1644167734;
+                               type_arg: enum_AVHWDeviceType_1644167760;
+                               device: cstring; opts: ptr AVDictionary_1644167671;
+                               flags: cint): cint {.cdecl,
+      importc: "av_hwdevice_ctx_create".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_ctx_create" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_ctx_create_derived):
+  proc av_hwdevice_ctx_create_derived*(dst_ctx: ptr ptr AVBufferRef_1644167734;
+                                       type_arg: enum_AVHWDeviceType_1644167760;
+                                       src_ctx: ptr AVBufferRef_1644167734;
+                                       flags: cint): cint {.cdecl,
+      importc: "av_hwdevice_ctx_create_derived".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_ctx_create_derived" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_ctx_create_derived_opts):
+  proc av_hwdevice_ctx_create_derived_opts*(dst_ctx: ptr ptr AVBufferRef_1644167734;
+      type_arg: enum_AVHWDeviceType_1644167760; src_ctx: ptr AVBufferRef_1644167734;
+      options: ptr AVDictionary_1644167671; flags: cint): cint {.cdecl,
+      importc: "av_hwdevice_ctx_create_derived_opts".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_ctx_create_derived_opts" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_ctx_alloc):
+  proc av_hwframe_ctx_alloc*(device_ctx: ptr AVBufferRef_1644167734): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_hwframe_ctx_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_ctx_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_ctx_init):
+  proc av_hwframe_ctx_init*(ref_arg: ptr AVBufferRef_1644167734): cint {.cdecl,
+      importc: "av_hwframe_ctx_init".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_ctx_init" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_get_buffer):
+  proc av_hwframe_get_buffer*(hwframe_ctx: ptr AVBufferRef_1644167734;
+                              frame: ptr AVFrame_1644167758; flags: cint): cint {.
+      cdecl, importc: "av_hwframe_get_buffer".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_get_buffer" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_transfer_data):
+  proc av_hwframe_transfer_data*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758;
+                                 flags: cint): cint {.cdecl,
+      importc: "av_hwframe_transfer_data".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_transfer_data" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_transfer_get_formats):
+  proc av_hwframe_transfer_get_formats*(hwframe_ctx: ptr AVBufferRef_1644167734;
+                                        dir: enum_AVHWFrameTransferDirection_1644167770;
+                                        formats: ptr ptr enum_AVPixelFormat_1644167687;
+                                        flags: cint): cint {.cdecl,
+      importc: "av_hwframe_transfer_get_formats".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_transfer_get_formats" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_hwconfig_alloc):
+  proc av_hwdevice_hwconfig_alloc*(device_ctx: ptr AVBufferRef_1644167734): pointer {.
+      cdecl, importc: "av_hwdevice_hwconfig_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_hwconfig_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_hwdevice_get_hwframe_constraints):
+  proc av_hwdevice_get_hwframe_constraints*(ref_arg: ptr AVBufferRef_1644167734;
+      hwconfig: pointer): ptr AVHWFramesConstraints_1644167774 {.cdecl,
+      importc: "av_hwdevice_get_hwframe_constraints".}
+else:
+  static :
+    hint("Declaration of " & "av_hwdevice_get_hwframe_constraints" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_constraints_free):
+  proc av_hwframe_constraints_free*(constraints: ptr ptr AVHWFramesConstraints_1644167774): void {.
+      cdecl, importc: "av_hwframe_constraints_free".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_constraints_free" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_map):
+  proc av_hwframe_map*(dst: ptr AVFrame_1644167758; src: ptr AVFrame_1644167758;
+                       flags: cint): cint {.cdecl, importc: "av_hwframe_map".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_map" &
+        " already exists, not redeclaring")
+when not declared(av_hwframe_ctx_create_derived):
+  proc av_hwframe_ctx_create_derived*(derived_frame_ctx: ptr ptr AVBufferRef_1644167734;
+                                      format: enum_AVPixelFormat_1644167687;
+                                      derived_device_ctx: ptr AVBufferRef_1644167734;
+                                      source_frame_ctx: ptr AVBufferRef_1644167734;
+                                      flags: cint): cint {.cdecl,
+      importc: "av_hwframe_ctx_create_derived".}
+else:
+  static :
+    hint("Declaration of " & "av_hwframe_ctx_create_derived" &
+        " already exists, not redeclaring")
+when not declared(avcodec_get_type):
+  proc avcodec_get_type*(codec_id: enum_AVCodecID_1644167776): enum_AVMediaType_1644167677 {.
+      cdecl, importc: "avcodec_get_type".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_get_type" &
+        " already exists, not redeclaring")
+when not declared(avcodec_get_name):
+  proc avcodec_get_name*(id: enum_AVCodecID_1644167776): cstring {.cdecl,
+      importc: "avcodec_get_name".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_get_name" &
+        " already exists, not redeclaring")
+when not declared(av_get_bits_per_sample):
+  proc av_get_bits_per_sample*(codec_id: enum_AVCodecID_1644167776): cint {.
+      cdecl, importc: "av_get_bits_per_sample".}
+else:
+  static :
+    hint("Declaration of " & "av_get_bits_per_sample" &
+        " already exists, not redeclaring")
+when not declared(av_get_exact_bits_per_sample):
+  proc av_get_exact_bits_per_sample*(codec_id: enum_AVCodecID_1644167776): cint {.
+      cdecl, importc: "av_get_exact_bits_per_sample".}
+else:
+  static :
+    hint("Declaration of " & "av_get_exact_bits_per_sample" &
+        " already exists, not redeclaring")
+when not declared(avcodec_profile_name):
+  proc avcodec_profile_name*(codec_id: enum_AVCodecID_1644167776; profile: cint): cstring {.
+      cdecl, importc: "avcodec_profile_name".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_profile_name" &
+        " already exists, not redeclaring")
+when not declared(av_get_pcm_codec):
+  proc av_get_pcm_codec*(fmt: enum_AVSampleFormat_1644167651; be: cint): enum_AVCodecID_1644167776 {.
+      cdecl, importc: "av_get_pcm_codec".}
+else:
+  static :
+    hint("Declaration of " & "av_get_pcm_codec" &
+        " already exists, not redeclaring")
+when not declared(av_codec_iterate):
+  proc av_codec_iterate*(opaque: ptr pointer): ptr AVCodec_1644167784 {.cdecl,
+      importc: "av_codec_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_codec_iterate" &
+        " already exists, not redeclaring")
+when not declared(avcodec_find_decoder):
+  proc avcodec_find_decoder*(id: enum_AVCodecID_1644167776): ptr AVCodec_1644167784 {.
+      cdecl, importc: "avcodec_find_decoder".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_find_decoder" &
+        " already exists, not redeclaring")
+when not declared(avcodec_find_decoder_by_name):
+  proc avcodec_find_decoder_by_name*(name: cstring): ptr AVCodec_1644167784 {.
+      cdecl, importc: "avcodec_find_decoder_by_name".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_find_decoder_by_name" &
+        " already exists, not redeclaring")
+when not declared(avcodec_find_encoder):
+  proc avcodec_find_encoder*(id: enum_AVCodecID_1644167776): ptr AVCodec_1644167784 {.
+      cdecl, importc: "avcodec_find_encoder".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_find_encoder" &
+        " already exists, not redeclaring")
+when not declared(avcodec_find_encoder_by_name):
+  proc avcodec_find_encoder_by_name*(name: cstring): ptr AVCodec_1644167784 {.
+      cdecl, importc: "avcodec_find_encoder_by_name".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_find_encoder_by_name" &
+        " already exists, not redeclaring")
+when not declared(av_codec_is_encoder):
+  proc av_codec_is_encoder*(codec: ptr AVCodec_1644167784): cint {.cdecl,
+      importc: "av_codec_is_encoder".}
+else:
+  static :
+    hint("Declaration of " & "av_codec_is_encoder" &
+        " already exists, not redeclaring")
+when not declared(av_codec_is_decoder):
+  proc av_codec_is_decoder*(codec: ptr AVCodec_1644167784): cint {.cdecl,
+      importc: "av_codec_is_decoder".}
+else:
+  static :
+    hint("Declaration of " & "av_codec_is_decoder" &
+        " already exists, not redeclaring")
+when not declared(av_get_profile_name):
+  proc av_get_profile_name*(codec: ptr AVCodec_1644167784; profile: cint): cstring {.
+      cdecl, importc: "av_get_profile_name".}
+else:
+  static :
+    hint("Declaration of " & "av_get_profile_name" &
+        " already exists, not redeclaring")
+when not declared(avcodec_get_hw_config):
+  proc avcodec_get_hw_config*(codec: ptr AVCodec_1644167784; index: cint): ptr AVCodecHWConfig_1644167788 {.
+      cdecl, importc: "avcodec_get_hw_config".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_get_hw_config" &
+        " already exists, not redeclaring")
+when not declared(av_cpb_properties_alloc):
+  proc av_cpb_properties_alloc*(size: ptr csize_t): ptr AVCPBProperties_1644167802 {.
+      cdecl, importc: "av_cpb_properties_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_cpb_properties_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_xiphlacing):
+  proc av_xiphlacing*(s: ptr uint8; v: cuint): cuint {.cdecl,
+      importc: "av_xiphlacing".}
+else:
+  static :
+    hint("Declaration of " & "av_xiphlacing" &
+        " already exists, not redeclaring")
+when not declared(av_packet_side_data_new):
+  proc av_packet_side_data_new*(psd: ptr ptr AVPacketSideData_1644167812;
+                                pnb_sd: ptr cint;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                size: csize_t; flags: cint): ptr AVPacketSideData_1644167812 {.
+      cdecl, importc: "av_packet_side_data_new".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_side_data_new" &
+        " already exists, not redeclaring")
+when not declared(av_packet_side_data_add):
+  proc av_packet_side_data_add*(sd: ptr ptr AVPacketSideData_1644167812;
+                                nb_sd: ptr cint;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                data: pointer; size: csize_t; flags: cint): ptr AVPacketSideData_1644167812 {.
+      cdecl, importc: "av_packet_side_data_add".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_side_data_add" &
+        " already exists, not redeclaring")
+when not declared(av_packet_side_data_get):
+  proc av_packet_side_data_get*(sd: ptr AVPacketSideData_1644167812;
+                                nb_sd: cint; type_arg: enum_AVPacketSideDataType_1644167808): ptr AVPacketSideData_1644167812 {.
+      cdecl, importc: "av_packet_side_data_get".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_side_data_get" &
+        " already exists, not redeclaring")
+when not declared(av_packet_side_data_remove):
+  proc av_packet_side_data_remove*(sd: ptr AVPacketSideData_1644167812;
+                                   nb_sd: ptr cint;
+                                   type_arg: enum_AVPacketSideDataType_1644167808): void {.
+      cdecl, importc: "av_packet_side_data_remove".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_side_data_remove" &
+        " already exists, not redeclaring")
+when not declared(av_packet_side_data_free):
+  proc av_packet_side_data_free*(sd: ptr ptr AVPacketSideData_1644167812;
+                                 nb_sd: ptr cint): void {.cdecl,
+      importc: "av_packet_side_data_free".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_side_data_free" &
+        " already exists, not redeclaring")
+when not declared(av_packet_side_data_name):
+  proc av_packet_side_data_name*(type_arg: enum_AVPacketSideDataType_1644167808): cstring {.
+      cdecl, importc: "av_packet_side_data_name".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_side_data_name" &
+        " already exists, not redeclaring")
+when not declared(av_packet_alloc):
+  proc av_packet_alloc*(): ptr AVPacket_1644167816 {.cdecl,
+      importc: "av_packet_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_packet_clone):
+  proc av_packet_clone*(src: ptr AVPacket_1644167816): ptr AVPacket_1644167816 {.
+      cdecl, importc: "av_packet_clone".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_clone" &
+        " already exists, not redeclaring")
+when not declared(av_packet_free):
+  proc av_packet_free*(pkt: ptr ptr AVPacket_1644167816): void {.cdecl,
+      importc: "av_packet_free".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_free" &
+        " already exists, not redeclaring")
+when not declared(av_init_packet):
+  proc av_init_packet*(pkt: ptr AVPacket_1644167816): void {.cdecl,
+      importc: "av_init_packet".}
+else:
+  static :
+    hint("Declaration of " & "av_init_packet" &
+        " already exists, not redeclaring")
+when not declared(av_new_packet):
+  proc av_new_packet*(pkt: ptr AVPacket_1644167816; size: cint): cint {.cdecl,
+      importc: "av_new_packet".}
+else:
+  static :
+    hint("Declaration of " & "av_new_packet" &
+        " already exists, not redeclaring")
+when not declared(av_shrink_packet):
+  proc av_shrink_packet*(pkt: ptr AVPacket_1644167816; size: cint): void {.
+      cdecl, importc: "av_shrink_packet".}
+else:
+  static :
+    hint("Declaration of " & "av_shrink_packet" &
+        " already exists, not redeclaring")
+when not declared(av_grow_packet):
+  proc av_grow_packet*(pkt: ptr AVPacket_1644167816; grow_by: cint): cint {.
+      cdecl, importc: "av_grow_packet".}
+else:
+  static :
+    hint("Declaration of " & "av_grow_packet" &
+        " already exists, not redeclaring")
+when not declared(av_packet_from_data):
+  proc av_packet_from_data*(pkt: ptr AVPacket_1644167816; data: ptr uint8;
+                            size: cint): cint {.cdecl,
+      importc: "av_packet_from_data".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_from_data" &
+        " already exists, not redeclaring")
+when not declared(av_packet_new_side_data):
+  proc av_packet_new_side_data*(pkt: ptr AVPacket_1644167816;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                size: csize_t): ptr uint8 {.cdecl,
+      importc: "av_packet_new_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_new_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_packet_add_side_data):
+  proc av_packet_add_side_data*(pkt: ptr AVPacket_1644167816;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                data: ptr uint8; size: csize_t): cint {.cdecl,
+      importc: "av_packet_add_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_add_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_packet_shrink_side_data):
+  proc av_packet_shrink_side_data*(pkt: ptr AVPacket_1644167816;
+                                   type_arg: enum_AVPacketSideDataType_1644167808;
+                                   size: csize_t): cint {.cdecl,
+      importc: "av_packet_shrink_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_shrink_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_packet_get_side_data):
+  proc av_packet_get_side_data*(pkt: ptr AVPacket_1644167816;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                size: ptr csize_t): ptr uint8 {.cdecl,
+      importc: "av_packet_get_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_get_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_packet_pack_dictionary):
+  proc av_packet_pack_dictionary*(dict: ptr AVDictionary_1644167671;
+                                  size: ptr csize_t): ptr uint8 {.cdecl,
+      importc: "av_packet_pack_dictionary".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_pack_dictionary" &
+        " already exists, not redeclaring")
+when not declared(av_packet_unpack_dictionary):
+  proc av_packet_unpack_dictionary*(data: ptr uint8; size: csize_t;
+                                    dict: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "av_packet_unpack_dictionary".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_unpack_dictionary" &
+        " already exists, not redeclaring")
+when not declared(av_packet_free_side_data):
+  proc av_packet_free_side_data*(pkt: ptr AVPacket_1644167816): void {.cdecl,
+      importc: "av_packet_free_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_free_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_packet_ref):
+  proc av_packet_ref*(dst: ptr AVPacket_1644167816; src: ptr AVPacket_1644167816): cint {.
+      cdecl, importc: "av_packet_ref".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_ref" &
+        " already exists, not redeclaring")
+when not declared(av_packet_unref):
+  proc av_packet_unref*(pkt: ptr AVPacket_1644167816): void {.cdecl,
+      importc: "av_packet_unref".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_unref" &
+        " already exists, not redeclaring")
+when not declared(av_packet_move_ref):
+  proc av_packet_move_ref*(dst: ptr AVPacket_1644167816; src: ptr AVPacket_1644167816): void {.
+      cdecl, importc: "av_packet_move_ref".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_move_ref" &
+        " already exists, not redeclaring")
+when not declared(av_packet_copy_props):
+  proc av_packet_copy_props*(dst: ptr AVPacket_1644167816; src: ptr AVPacket_1644167816): cint {.
+      cdecl, importc: "av_packet_copy_props".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_copy_props" &
+        " already exists, not redeclaring")
+when not declared(av_packet_make_refcounted):
+  proc av_packet_make_refcounted*(pkt: ptr AVPacket_1644167816): cint {.cdecl,
+      importc: "av_packet_make_refcounted".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_make_refcounted" &
+        " already exists, not redeclaring")
+when not declared(av_packet_make_writable):
+  proc av_packet_make_writable*(pkt: ptr AVPacket_1644167816): cint {.cdecl,
+      importc: "av_packet_make_writable".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_make_writable" &
+        " already exists, not redeclaring")
+when not declared(av_packet_rescale_ts):
+  proc av_packet_rescale_ts*(pkt: ptr AVPacket_1644167816; tb_src: AVRational_1644167675;
+                             tb_dst: AVRational_1644167675): void {.cdecl,
+      importc: "av_packet_rescale_ts".}
+else:
+  static :
+    hint("Declaration of " & "av_packet_rescale_ts" &
+        " already exists, not redeclaring")
+when not declared(avcodec_descriptor_get):
+  proc avcodec_descriptor_get*(id: enum_AVCodecID_1644167776): ptr AVCodecDescriptor_1644167826 {.
+      cdecl, importc: "avcodec_descriptor_get".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_descriptor_get" &
+        " already exists, not redeclaring")
+when not declared(avcodec_descriptor_next):
+  proc avcodec_descriptor_next*(prev: ptr AVCodecDescriptor_1644167826): ptr AVCodecDescriptor_1644167826 {.
+      cdecl, importc: "avcodec_descriptor_next".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_descriptor_next" &
+        " already exists, not redeclaring")
+when not declared(avcodec_descriptor_get_by_name):
+  proc avcodec_descriptor_get_by_name*(name: cstring): ptr AVCodecDescriptor_1644167826 {.
+      cdecl, importc: "avcodec_descriptor_get_by_name".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_descriptor_get_by_name" &
+        " already exists, not redeclaring")
+when not declared(avcodec_parameters_alloc):
+  proc avcodec_parameters_alloc*(): ptr AVCodecParameters_1644167830 {.cdecl,
+      importc: "avcodec_parameters_alloc".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_parameters_alloc" &
+        " already exists, not redeclaring")
+when not declared(avcodec_parameters_free):
+  proc avcodec_parameters_free*(par: ptr ptr AVCodecParameters_1644167830): void {.
+      cdecl, importc: "avcodec_parameters_free".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_parameters_free" &
+        " already exists, not redeclaring")
+when not declared(avcodec_parameters_copy):
+  proc avcodec_parameters_copy*(dst: ptr AVCodecParameters_1644167830;
+                                src: ptr AVCodecParameters_1644167830): cint {.
+      cdecl, importc: "avcodec_parameters_copy".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_parameters_copy" &
+        " already exists, not redeclaring")
+when not declared(av_get_audio_frame_duration2):
+  proc av_get_audio_frame_duration2*(par: ptr AVCodecParameters_1644167830;
+                                     frame_bytes: cint): cint {.cdecl,
+      importc: "av_get_audio_frame_duration2".}
+else:
+  static :
+    hint("Declaration of " & "av_get_audio_frame_duration2" &
+        " already exists, not redeclaring")
+when not declared(avcodec_version):
+  proc avcodec_version*(): cuint {.cdecl, importc: "avcodec_version".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_version" &
+        " already exists, not redeclaring")
+when not declared(avcodec_configuration):
+  proc avcodec_configuration*(): cstring {.cdecl,
+      importc: "avcodec_configuration".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_configuration" &
+        " already exists, not redeclaring")
+when not declared(avcodec_license):
+  proc avcodec_license*(): cstring {.cdecl, importc: "avcodec_license".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_license" &
+        " already exists, not redeclaring")
+when not declared(avcodec_alloc_context3):
+  proc avcodec_alloc_context3*(codec: ptr AVCodec_1644167784): ptr AVCodecContext_1644167840 {.
+      cdecl, importc: "avcodec_alloc_context3".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_alloc_context3" &
+        " already exists, not redeclaring")
+when not declared(avcodec_free_context):
+  proc avcodec_free_context*(avctx: ptr ptr AVCodecContext_1644167840): void {.
+      cdecl, importc: "avcodec_free_context".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_free_context" &
+        " already exists, not redeclaring")
+when not declared(avcodec_get_class):
+  proc avcodec_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "avcodec_get_class".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_get_class" &
+        " already exists, not redeclaring")
+when not declared(avcodec_get_subtitle_rect_class):
+  proc avcodec_get_subtitle_rect_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "avcodec_get_subtitle_rect_class".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_get_subtitle_rect_class" &
+        " already exists, not redeclaring")
+when not declared(avcodec_parameters_from_context):
+  proc avcodec_parameters_from_context*(par: ptr struct_AVCodecParameters_1644167828;
+                                        codec: ptr AVCodecContext_1644167840): cint {.
+      cdecl, importc: "avcodec_parameters_from_context".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_parameters_from_context" &
+        " already exists, not redeclaring")
+when not declared(avcodec_parameters_to_context):
+  proc avcodec_parameters_to_context*(codec: ptr AVCodecContext_1644167840;
+                                      par: ptr struct_AVCodecParameters_1644167828): cint {.
+      cdecl, importc: "avcodec_parameters_to_context".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_parameters_to_context" &
+        " already exists, not redeclaring")
+when not declared(avcodec_open2):
+  proc avcodec_open2*(avctx: ptr AVCodecContext_1644167840; codec: ptr AVCodec_1644167784;
+                      options: ptr ptr AVDictionary_1644167671): cint {.cdecl,
+      importc: "avcodec_open2".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_open2" &
+        " already exists, not redeclaring")
+when not declared(avcodec_close):
+  proc avcodec_close*(avctx: ptr AVCodecContext_1644167840): cint {.cdecl,
+      importc: "avcodec_close".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_close" &
+        " already exists, not redeclaring")
+when not declared(avsubtitle_free):
+  proc avsubtitle_free*(sub: ptr AVSubtitle_1644167852): void {.cdecl,
+      importc: "avsubtitle_free".}
+else:
+  static :
+    hint("Declaration of " & "avsubtitle_free" &
+        " already exists, not redeclaring")
+when not declared(avcodec_default_get_buffer2):
+  proc avcodec_default_get_buffer2*(s: ptr AVCodecContext_1644167840;
+                                    frame: ptr AVFrame_1644167758; flags: cint): cint {.
+      cdecl, importc: "avcodec_default_get_buffer2".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_default_get_buffer2" &
+        " already exists, not redeclaring")
+when not declared(avcodec_default_get_encode_buffer):
+  proc avcodec_default_get_encode_buffer*(s: ptr AVCodecContext_1644167840;
+      pkt: ptr AVPacket_1644167816; flags: cint): cint {.cdecl,
+      importc: "avcodec_default_get_encode_buffer".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_default_get_encode_buffer" &
+        " already exists, not redeclaring")
+when not declared(avcodec_align_dimensions):
+  proc avcodec_align_dimensions*(s: ptr AVCodecContext_1644167840;
+                                 width: ptr cint; height: ptr cint): void {.
+      cdecl, importc: "avcodec_align_dimensions".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_align_dimensions" &
+        " already exists, not redeclaring")
+when not declared(avcodec_align_dimensions2):
+  proc avcodec_align_dimensions2*(s: ptr AVCodecContext_1644167840;
+                                  width: ptr cint; height: ptr cint;
+                                  linesize_align: array[8'i64, cint]): void {.
+      cdecl, importc: "avcodec_align_dimensions2".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_align_dimensions2" &
+        " already exists, not redeclaring")
+when not declared(avcodec_decode_subtitle2):
+  proc avcodec_decode_subtitle2*(avctx: ptr AVCodecContext_1644167840;
+                                 sub: ptr AVSubtitle_1644167852;
+                                 got_sub_ptr: ptr cint; avpkt: ptr AVPacket_1644167816): cint {.
+      cdecl, importc: "avcodec_decode_subtitle2".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_decode_subtitle2" &
+        " already exists, not redeclaring")
+when not declared(avcodec_send_packet):
+  proc avcodec_send_packet*(avctx: ptr AVCodecContext_1644167840;
+                            avpkt: ptr AVPacket_1644167816): cint {.cdecl,
+      importc: "avcodec_send_packet".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_send_packet" &
+        " already exists, not redeclaring")
+when not declared(avcodec_receive_frame):
+  proc avcodec_receive_frame*(avctx: ptr AVCodecContext_1644167840;
+                              frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "avcodec_receive_frame".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_receive_frame" &
+        " already exists, not redeclaring")
+when not declared(avcodec_send_frame):
+  proc avcodec_send_frame*(avctx: ptr AVCodecContext_1644167840;
+                           frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "avcodec_send_frame".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_send_frame" &
+        " already exists, not redeclaring")
+when not declared(avcodec_receive_packet):
+  proc avcodec_receive_packet*(avctx: ptr AVCodecContext_1644167840;
+                               avpkt: ptr AVPacket_1644167816): cint {.cdecl,
+      importc: "avcodec_receive_packet".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_receive_packet" &
+        " already exists, not redeclaring")
+when not declared(avcodec_get_hw_frames_parameters):
+  proc avcodec_get_hw_frames_parameters*(avctx: ptr AVCodecContext_1644167840;
+      device_ref: ptr AVBufferRef_1644167734; hw_pix_fmt: enum_AVPixelFormat_1644167687;
+      out_frames_ref: ptr ptr AVBufferRef_1644167734): cint {.cdecl,
+      importc: "avcodec_get_hw_frames_parameters".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_get_hw_frames_parameters" &
+        " already exists, not redeclaring")
+when not declared(av_parser_iterate):
+  proc av_parser_iterate*(opaque: ptr pointer): ptr AVCodecParser_1644167862 {.
+      cdecl, importc: "av_parser_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_parser_iterate" &
+        " already exists, not redeclaring")
+when not declared(av_parser_init):
+  proc av_parser_init*(codec_id: cint): ptr AVCodecParserContext_1644167860 {.
+      cdecl, importc: "av_parser_init".}
+else:
+  static :
+    hint("Declaration of " & "av_parser_init" &
+        " already exists, not redeclaring")
+when not declared(av_parser_parse2):
+  proc av_parser_parse2*(s: ptr AVCodecParserContext_1644167860;
+                         avctx: ptr AVCodecContext_1644167840;
+                         poutbuf: ptr ptr uint8; poutbuf_size: ptr cint;
+                         buf: ptr uint8; buf_size: cint; pts: int64; dts: int64;
+                         pos: int64): cint {.cdecl, importc: "av_parser_parse2".}
+else:
+  static :
+    hint("Declaration of " & "av_parser_parse2" &
+        " already exists, not redeclaring")
+when not declared(av_parser_close):
+  proc av_parser_close*(s: ptr AVCodecParserContext_1644167860): void {.cdecl,
+      importc: "av_parser_close".}
+else:
+  static :
+    hint("Declaration of " & "av_parser_close" &
+        " already exists, not redeclaring")
+when not declared(avcodec_encode_subtitle):
+  proc avcodec_encode_subtitle*(avctx: ptr AVCodecContext_1644167840;
+                                buf: ptr uint8; buf_size: cint;
+                                sub: ptr AVSubtitle_1644167852): cint {.cdecl,
+      importc: "avcodec_encode_subtitle".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_encode_subtitle" &
+        " already exists, not redeclaring")
+when not declared(avcodec_pix_fmt_to_codec_tag):
+  proc avcodec_pix_fmt_to_codec_tag*(pix_fmt: enum_AVPixelFormat_1644167687): cuint {.
+      cdecl, importc: "avcodec_pix_fmt_to_codec_tag".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_pix_fmt_to_codec_tag" &
+        " already exists, not redeclaring")
+when not declared(avcodec_find_best_pix_fmt_of_list):
+  proc avcodec_find_best_pix_fmt_of_list*(pix_fmt_list: ptr enum_AVPixelFormat_1644167687;
+      src_pix_fmt: enum_AVPixelFormat_1644167687; has_alpha: cint;
+      loss_ptr: ptr cint): enum_AVPixelFormat_1644167687 {.cdecl,
+      importc: "avcodec_find_best_pix_fmt_of_list".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_find_best_pix_fmt_of_list" &
+        " already exists, not redeclaring")
+when not declared(avcodec_default_get_format):
+  proc avcodec_default_get_format*(s: ptr struct_AVCodecContext_1644167836;
+                                   fmt: ptr enum_AVPixelFormat_1644167687): enum_AVPixelFormat_1644167687 {.
+      cdecl, importc: "avcodec_default_get_format".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_default_get_format" &
+        " already exists, not redeclaring")
+when not declared(avcodec_string):
+  proc avcodec_string*(buf: cstring; buf_size: cint; enc: ptr AVCodecContext_1644167840;
+                       encode: cint): void {.cdecl, importc: "avcodec_string".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_string" &
+        " already exists, not redeclaring")
+when not declared(avcodec_default_execute):
+  proc avcodec_default_execute*(c: ptr AVCodecContext_1644167840; func_arg: proc (
+      a0: ptr AVCodecContext_1644167840; a1: pointer): cint {.cdecl.};
+                                arg: pointer; ret: ptr cint; count: cint;
+                                size: cint): cint {.cdecl,
+      importc: "avcodec_default_execute".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_default_execute" &
+        " already exists, not redeclaring")
+when not declared(avcodec_default_execute2):
+  proc avcodec_default_execute2*(c: ptr AVCodecContext_1644167840; func_arg: proc (
+      a0: ptr AVCodecContext_1644167840; a1: pointer; a2: cint; a3: cint): cint {.
+      cdecl.}; arg: pointer; ret: ptr cint; count: cint): cint {.cdecl,
+      importc: "avcodec_default_execute2".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_default_execute2" &
+        " already exists, not redeclaring")
+when not declared(avcodec_fill_audio_frame):
+  proc avcodec_fill_audio_frame*(frame: ptr AVFrame_1644167758;
+                                 nb_channels: cint;
+                                 sample_fmt: enum_AVSampleFormat_1644167651;
+                                 buf: ptr uint8; buf_size: cint; align: cint): cint {.
+      cdecl, importc: "avcodec_fill_audio_frame".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_fill_audio_frame" &
+        " already exists, not redeclaring")
+when not declared(avcodec_flush_buffers):
+  proc avcodec_flush_buffers*(avctx: ptr AVCodecContext_1644167840): void {.
+      cdecl, importc: "avcodec_flush_buffers".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_flush_buffers" &
+        " already exists, not redeclaring")
+when not declared(av_get_audio_frame_duration):
+  proc av_get_audio_frame_duration*(avctx: ptr AVCodecContext_1644167840;
+                                    frame_bytes: cint): cint {.cdecl,
+      importc: "av_get_audio_frame_duration".}
+else:
+  static :
+    hint("Declaration of " & "av_get_audio_frame_duration" &
+        " already exists, not redeclaring")
+when not declared(av_fast_padded_malloc):
+  proc av_fast_padded_malloc*(ptr_arg: pointer; size: ptr cuint;
+                              min_size: csize_t): void {.cdecl,
+      importc: "av_fast_padded_malloc".}
+else:
+  static :
+    hint("Declaration of " & "av_fast_padded_malloc" &
+        " already exists, not redeclaring")
+when not declared(av_fast_padded_mallocz):
+  proc av_fast_padded_mallocz*(ptr_arg: pointer; size: ptr cuint;
+                               min_size: csize_t): void {.cdecl,
+      importc: "av_fast_padded_mallocz".}
+else:
+  static :
+    hint("Declaration of " & "av_fast_padded_mallocz" &
+        " already exists, not redeclaring")
+when not declared(avcodec_is_open):
+  proc avcodec_is_open*(s: ptr AVCodecContext_1644167840): cint {.cdecl,
+      importc: "avcodec_is_open".}
+else:
+  static :
+    hint("Declaration of " & "avcodec_is_open" &
+        " already exists, not redeclaring")
+when not declared(avio_find_protocol_name):
+  proc avio_find_protocol_name*(url: cstring): cstring {.cdecl,
+      importc: "avio_find_protocol_name".}
+else:
+  static :
+    hint("Declaration of " & "avio_find_protocol_name" &
+        " already exists, not redeclaring")
+when not declared(avio_check):
+  proc avio_check*(url: cstring; flags: cint): cint {.cdecl,
+      importc: "avio_check".}
+else:
+  static :
+    hint("Declaration of " & "avio_check" & " already exists, not redeclaring")
+when not declared(avio_open_dir):
+  proc avio_open_dir*(s: ptr ptr AVIODirContext_1644167874; url: cstring;
+                      options: ptr ptr AVDictionary_1644167671): cint {.cdecl,
+      importc: "avio_open_dir".}
+else:
+  static :
+    hint("Declaration of " & "avio_open_dir" &
+        " already exists, not redeclaring")
+when not declared(avio_read_dir):
+  proc avio_read_dir*(s: ptr AVIODirContext_1644167874;
+                      next: ptr ptr AVIODirEntry_1644167872): cint {.cdecl,
+      importc: "avio_read_dir".}
+else:
+  static :
+    hint("Declaration of " & "avio_read_dir" &
+        " already exists, not redeclaring")
+when not declared(avio_close_dir):
+  proc avio_close_dir*(s: ptr ptr AVIODirContext_1644167874): cint {.cdecl,
+      importc: "avio_close_dir".}
+else:
+  static :
+    hint("Declaration of " & "avio_close_dir" &
+        " already exists, not redeclaring")
+when not declared(avio_free_directory_entry):
+  proc avio_free_directory_entry*(entry: ptr ptr AVIODirEntry_1644167872): void {.
+      cdecl, importc: "avio_free_directory_entry".}
+else:
+  static :
+    hint("Declaration of " & "avio_free_directory_entry" &
+        " already exists, not redeclaring")
+when not declared(avio_alloc_context):
+  proc avio_alloc_context*(buffer: ptr uint8; buffer_size: cint;
+                           write_flag: cint; opaque: pointer; read_packet: proc (
+      a0: pointer; a1: ptr uint8; a2: cint): cint {.cdecl.}; write_packet: proc (
+      a0: pointer; a1: ptr uint8; a2: cint): cint {.cdecl.}; seek: proc (
+      a0: pointer; a1: int64; a2: cint): int64 {.cdecl.}): ptr AVIOContext_1644167880 {.
+      cdecl, importc: "avio_alloc_context".}
+else:
+  static :
+    hint("Declaration of " & "avio_alloc_context" &
+        " already exists, not redeclaring")
+when not declared(avio_context_free):
+  proc avio_context_free*(s: ptr ptr AVIOContext_1644167880): void {.cdecl,
+      importc: "avio_context_free".}
+else:
+  static :
+    hint("Declaration of " & "avio_context_free" &
+        " already exists, not redeclaring")
+when not declared(avio_w8):
+  proc avio_w8*(s: ptr AVIOContext_1644167880; b: cint): void {.cdecl,
+      importc: "avio_w8".}
+else:
+  static :
+    hint("Declaration of " & "avio_w8" & " already exists, not redeclaring")
+when not declared(avio_write):
+  proc avio_write*(s: ptr AVIOContext_1644167880; buf: ptr uint8; size: cint): void {.
+      cdecl, importc: "avio_write".}
+else:
+  static :
+    hint("Declaration of " & "avio_write" & " already exists, not redeclaring")
+when not declared(avio_wl64):
+  proc avio_wl64*(s: ptr AVIOContext_1644167880; val: uint64): void {.cdecl,
+      importc: "avio_wl64".}
+else:
+  static :
+    hint("Declaration of " & "avio_wl64" & " already exists, not redeclaring")
+when not declared(avio_wb64):
+  proc avio_wb64*(s: ptr AVIOContext_1644167880; val: uint64): void {.cdecl,
+      importc: "avio_wb64".}
+else:
+  static :
+    hint("Declaration of " & "avio_wb64" & " already exists, not redeclaring")
+when not declared(avio_wl32):
+  proc avio_wl32*(s: ptr AVIOContext_1644167880; val: cuint): void {.cdecl,
+      importc: "avio_wl32".}
+else:
+  static :
+    hint("Declaration of " & "avio_wl32" & " already exists, not redeclaring")
+when not declared(avio_wb32):
+  proc avio_wb32*(s: ptr AVIOContext_1644167880; val: cuint): void {.cdecl,
+      importc: "avio_wb32".}
+else:
+  static :
+    hint("Declaration of " & "avio_wb32" & " already exists, not redeclaring")
+when not declared(avio_wl24):
+  proc avio_wl24*(s: ptr AVIOContext_1644167880; val: cuint): void {.cdecl,
+      importc: "avio_wl24".}
+else:
+  static :
+    hint("Declaration of " & "avio_wl24" & " already exists, not redeclaring")
+when not declared(avio_wb24):
+  proc avio_wb24*(s: ptr AVIOContext_1644167880; val: cuint): void {.cdecl,
+      importc: "avio_wb24".}
+else:
+  static :
+    hint("Declaration of " & "avio_wb24" & " already exists, not redeclaring")
+when not declared(avio_wl16):
+  proc avio_wl16*(s: ptr AVIOContext_1644167880; val: cuint): void {.cdecl,
+      importc: "avio_wl16".}
+else:
+  static :
+    hint("Declaration of " & "avio_wl16" & " already exists, not redeclaring")
+when not declared(avio_wb16):
+  proc avio_wb16*(s: ptr AVIOContext_1644167880; val: cuint): void {.cdecl,
+      importc: "avio_wb16".}
+else:
+  static :
+    hint("Declaration of " & "avio_wb16" & " already exists, not redeclaring")
+when not declared(avio_put_str):
+  proc avio_put_str*(s: ptr AVIOContext_1644167880; str: cstring): cint {.cdecl,
+      importc: "avio_put_str".}
+else:
+  static :
+    hint("Declaration of " & "avio_put_str" & " already exists, not redeclaring")
+when not declared(avio_put_str16le):
+  proc avio_put_str16le*(s: ptr AVIOContext_1644167880; str: cstring): cint {.
+      cdecl, importc: "avio_put_str16le".}
+else:
+  static :
+    hint("Declaration of " & "avio_put_str16le" &
+        " already exists, not redeclaring")
+when not declared(avio_put_str16be):
+  proc avio_put_str16be*(s: ptr AVIOContext_1644167880; str: cstring): cint {.
+      cdecl, importc: "avio_put_str16be".}
+else:
+  static :
+    hint("Declaration of " & "avio_put_str16be" &
+        " already exists, not redeclaring")
+when not declared(avio_write_marker):
+  proc avio_write_marker*(s: ptr AVIOContext_1644167880; time: int64;
+                          type_arg: enum_AVIODataMarkerType_1644167876): void {.
+      cdecl, importc: "avio_write_marker".}
+else:
+  static :
+    hint("Declaration of " & "avio_write_marker" &
+        " already exists, not redeclaring")
+when not declared(avio_seek):
+  proc avio_seek*(s: ptr AVIOContext_1644167880; offset: int64; whence: cint): int64 {.
+      cdecl, importc: "avio_seek".}
+else:
+  static :
+    hint("Declaration of " & "avio_seek" & " already exists, not redeclaring")
+when not declared(avio_skip):
+  proc avio_skip*(s: ptr AVIOContext_1644167880; offset: int64): int64 {.cdecl,
+      importc: "avio_skip".}
+else:
+  static :
+    hint("Declaration of " & "avio_skip" & " already exists, not redeclaring")
+when not declared(avio_size):
+  proc avio_size*(s: ptr AVIOContext_1644167880): int64 {.cdecl,
+      importc: "avio_size".}
+else:
+  static :
+    hint("Declaration of " & "avio_size" & " already exists, not redeclaring")
+when not declared(avio_feof):
+  proc avio_feof*(s: ptr AVIOContext_1644167880): cint {.cdecl,
+      importc: "avio_feof".}
+else:
+  static :
+    hint("Declaration of " & "avio_feof" & " already exists, not redeclaring")
+when not declared(avio_vprintf):
+  proc avio_vprintf*(s: ptr AVIOContext_1644167880; fmt: cstring): cint {.cdecl,
+      varargs, importc: "avio_vprintf".}
+else:
+  static :
+    hint("Declaration of " & "avio_vprintf" & " already exists, not redeclaring")
+when not declared(avio_printf):
+  proc avio_printf*(s: ptr AVIOContext_1644167880; fmt: cstring): cint {.cdecl,
+      varargs, importc: "avio_printf".}
+else:
+  static :
+    hint("Declaration of " & "avio_printf" & " already exists, not redeclaring")
+when not declared(avio_print_string_array):
+  proc avio_print_string_array*(s: ptr AVIOContext_1644167880;
+                                strings: ptr UncheckedArray[cstring]): void {.
+      cdecl, importc: "avio_print_string_array".}
+else:
+  static :
+    hint("Declaration of " & "avio_print_string_array" &
+        " already exists, not redeclaring")
+when not declared(avio_flush):
+  proc avio_flush*(s: ptr AVIOContext_1644167880): void {.cdecl,
+      importc: "avio_flush".}
+else:
+  static :
+    hint("Declaration of " & "avio_flush" & " already exists, not redeclaring")
+when not declared(avio_read):
+  proc avio_read*(s: ptr AVIOContext_1644167880; buf: ptr uint8; size: cint): cint {.
+      cdecl, importc: "avio_read".}
+else:
+  static :
+    hint("Declaration of " & "avio_read" & " already exists, not redeclaring")
+when not declared(avio_read_partial):
+  proc avio_read_partial*(s: ptr AVIOContext_1644167880; buf: ptr uint8;
+                          size: cint): cint {.cdecl,
+      importc: "avio_read_partial".}
+else:
+  static :
+    hint("Declaration of " & "avio_read_partial" &
+        " already exists, not redeclaring")
+when not declared(avio_r8):
+  proc avio_r8*(s: ptr AVIOContext_1644167880): cint {.cdecl, importc: "avio_r8".}
+else:
+  static :
+    hint("Declaration of " & "avio_r8" & " already exists, not redeclaring")
+when not declared(avio_rl16):
+  proc avio_rl16*(s: ptr AVIOContext_1644167880): cuint {.cdecl,
+      importc: "avio_rl16".}
+else:
+  static :
+    hint("Declaration of " & "avio_rl16" & " already exists, not redeclaring")
+when not declared(avio_rl24):
+  proc avio_rl24*(s: ptr AVIOContext_1644167880): cuint {.cdecl,
+      importc: "avio_rl24".}
+else:
+  static :
+    hint("Declaration of " & "avio_rl24" & " already exists, not redeclaring")
+when not declared(avio_rl32):
+  proc avio_rl32*(s: ptr AVIOContext_1644167880): cuint {.cdecl,
+      importc: "avio_rl32".}
+else:
+  static :
+    hint("Declaration of " & "avio_rl32" & " already exists, not redeclaring")
+when not declared(avio_rl64):
+  proc avio_rl64*(s: ptr AVIOContext_1644167880): uint64 {.cdecl,
+      importc: "avio_rl64".}
+else:
+  static :
+    hint("Declaration of " & "avio_rl64" & " already exists, not redeclaring")
+when not declared(avio_rb16):
+  proc avio_rb16*(s: ptr AVIOContext_1644167880): cuint {.cdecl,
+      importc: "avio_rb16".}
+else:
+  static :
+    hint("Declaration of " & "avio_rb16" & " already exists, not redeclaring")
+when not declared(avio_rb24):
+  proc avio_rb24*(s: ptr AVIOContext_1644167880): cuint {.cdecl,
+      importc: "avio_rb24".}
+else:
+  static :
+    hint("Declaration of " & "avio_rb24" & " already exists, not redeclaring")
+when not declared(avio_rb32):
+  proc avio_rb32*(s: ptr AVIOContext_1644167880): cuint {.cdecl,
+      importc: "avio_rb32".}
+else:
+  static :
+    hint("Declaration of " & "avio_rb32" & " already exists, not redeclaring")
+when not declared(avio_rb64):
+  proc avio_rb64*(s: ptr AVIOContext_1644167880): uint64 {.cdecl,
+      importc: "avio_rb64".}
+else:
+  static :
+    hint("Declaration of " & "avio_rb64" & " already exists, not redeclaring")
+when not declared(avio_get_str):
+  proc avio_get_str*(pb: ptr AVIOContext_1644167880; maxlen: cint; buf: cstring;
+                     buflen: cint): cint {.cdecl, importc: "avio_get_str".}
+else:
+  static :
+    hint("Declaration of " & "avio_get_str" & " already exists, not redeclaring")
+when not declared(avio_get_str16le):
+  proc avio_get_str16le*(pb: ptr AVIOContext_1644167880; maxlen: cint;
+                         buf: cstring; buflen: cint): cint {.cdecl,
+      importc: "avio_get_str16le".}
+else:
+  static :
+    hint("Declaration of " & "avio_get_str16le" &
+        " already exists, not redeclaring")
+when not declared(avio_get_str16be):
+  proc avio_get_str16be*(pb: ptr AVIOContext_1644167880; maxlen: cint;
+                         buf: cstring; buflen: cint): cint {.cdecl,
+      importc: "avio_get_str16be".}
+else:
+  static :
+    hint("Declaration of " & "avio_get_str16be" &
+        " already exists, not redeclaring")
+when not declared(avio_open):
+  proc avio_open*(s: ptr ptr AVIOContext_1644167880; url: cstring; flags: cint): cint {.
+      cdecl, importc: "avio_open".}
+else:
+  static :
+    hint("Declaration of " & "avio_open" & " already exists, not redeclaring")
+when not declared(avio_open2):
+  proc avio_open2*(s: ptr ptr AVIOContext_1644167880; url: cstring; flags: cint;
+                   int_cb: ptr AVIOInterruptCB_1644167866;
+                   options: ptr ptr AVDictionary_1644167671): cint {.cdecl,
+      importc: "avio_open2".}
+else:
+  static :
+    hint("Declaration of " & "avio_open2" & " already exists, not redeclaring")
+when not declared(avio_close):
+  proc avio_close*(s: ptr AVIOContext_1644167880): cint {.cdecl,
+      importc: "avio_close".}
+else:
+  static :
+    hint("Declaration of " & "avio_close" & " already exists, not redeclaring")
+when not declared(avio_closep):
+  proc avio_closep*(s: ptr ptr AVIOContext_1644167880): cint {.cdecl,
+      importc: "avio_closep".}
+else:
+  static :
+    hint("Declaration of " & "avio_closep" & " already exists, not redeclaring")
+when not declared(avio_open_dyn_buf):
+  proc avio_open_dyn_buf*(s: ptr ptr AVIOContext_1644167880): cint {.cdecl,
+      importc: "avio_open_dyn_buf".}
+else:
+  static :
+    hint("Declaration of " & "avio_open_dyn_buf" &
+        " already exists, not redeclaring")
+when not declared(avio_get_dyn_buf):
+  proc avio_get_dyn_buf*(s: ptr AVIOContext_1644167880; pbuffer: ptr ptr uint8): cint {.
+      cdecl, importc: "avio_get_dyn_buf".}
+else:
+  static :
+    hint("Declaration of " & "avio_get_dyn_buf" &
+        " already exists, not redeclaring")
+when not declared(avio_close_dyn_buf):
+  proc avio_close_dyn_buf*(s: ptr AVIOContext_1644167880; pbuffer: ptr ptr uint8): cint {.
+      cdecl, importc: "avio_close_dyn_buf".}
+else:
+  static :
+    hint("Declaration of " & "avio_close_dyn_buf" &
+        " already exists, not redeclaring")
+when not declared(avio_enum_protocols):
+  proc avio_enum_protocols*(opaque: ptr pointer; output: cint): cstring {.cdecl,
+      importc: "avio_enum_protocols".}
+else:
+  static :
+    hint("Declaration of " & "avio_enum_protocols" &
+        " already exists, not redeclaring")
+when not declared(avio_protocol_get_class):
+  proc avio_protocol_get_class*(name: cstring): ptr AVClass_1644167663 {.cdecl,
+      importc: "avio_protocol_get_class".}
+else:
+  static :
+    hint("Declaration of " & "avio_protocol_get_class" &
+        " already exists, not redeclaring")
+when not declared(avio_pause):
+  proc avio_pause*(h: ptr AVIOContext_1644167880; pause: cint): cint {.cdecl,
+      importc: "avio_pause".}
+else:
+  static :
+    hint("Declaration of " & "avio_pause" & " already exists, not redeclaring")
+when not declared(avio_seek_time):
+  proc avio_seek_time*(h: ptr AVIOContext_1644167880; stream_index: cint;
+                       timestamp: int64; flags: cint): int64 {.cdecl,
+      importc: "avio_seek_time".}
+else:
+  static :
+    hint("Declaration of " & "avio_seek_time" &
+        " already exists, not redeclaring")
+when not declared(avio_read_to_bprint):
+  proc avio_read_to_bprint*(h: ptr AVIOContext_1644167880;
+                            pb: ptr struct_AVBPrint; max_size: csize_t): cint {.
+      cdecl, importc: "avio_read_to_bprint".}
+else:
+  static :
+    hint("Declaration of " & "avio_read_to_bprint" &
+        " already exists, not redeclaring")
+when not declared(avio_accept):
+  proc avio_accept*(s: ptr AVIOContext_1644167880; c: ptr ptr AVIOContext_1644167880): cint {.
+      cdecl, importc: "avio_accept".}
+else:
+  static :
+    hint("Declaration of " & "avio_accept" & " already exists, not redeclaring")
+when not declared(avio_handshake):
+  proc avio_handshake*(c: ptr AVIOContext_1644167880): cint {.cdecl,
+      importc: "avio_handshake".}
+else:
+  static :
+    hint("Declaration of " & "avio_handshake" &
+        " already exists, not redeclaring")
+when not declared(av_get_packet):
+  proc av_get_packet*(s: ptr AVIOContext_1644167880; pkt: ptr AVPacket_1644167816;
+                      size: cint): cint {.cdecl, importc: "av_get_packet".}
+else:
+  static :
+    hint("Declaration of " & "av_get_packet" &
+        " already exists, not redeclaring")
+when not declared(av_append_packet):
+  proc av_append_packet*(s: ptr AVIOContext_1644167880; pkt: ptr AVPacket_1644167816;
+                         size: cint): cint {.cdecl, importc: "av_append_packet".}
+else:
+  static :
+    hint("Declaration of " & "av_append_packet" &
+        " already exists, not redeclaring")
+when not declared(av_disposition_from_string):
+  proc av_disposition_from_string*(disp: cstring): cint {.cdecl,
+      importc: "av_disposition_from_string".}
+else:
+  static :
+    hint("Declaration of " & "av_disposition_from_string" &
+        " already exists, not redeclaring")
+when not declared(av_disposition_to_string):
+  proc av_disposition_to_string*(disposition: cint): cstring {.cdecl,
+      importc: "av_disposition_to_string".}
+else:
+  static :
+    hint("Declaration of " & "av_disposition_to_string" &
+        " already exists, not redeclaring")
+when not declared(av_stream_get_parser):
+  proc av_stream_get_parser*(s: ptr AVStream_1644167902): ptr struct_AVCodecParserContext_1644167856 {.
+      cdecl, importc: "av_stream_get_parser".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_get_parser" &
+        " already exists, not redeclaring")
+when not declared(av_format_inject_global_side_data):
+  proc av_format_inject_global_side_data*(s: ptr AVFormatContext_1644167930): void {.
+      cdecl, importc: "av_format_inject_global_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_format_inject_global_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_fmt_ctx_get_duration_estimation_method):
+  proc av_fmt_ctx_get_duration_estimation_method*(ctx: ptr AVFormatContext_1644167930): enum_AVDurationEstimationMethod_1644167928 {.
+      cdecl, importc: "av_fmt_ctx_get_duration_estimation_method".}
+else:
+  static :
+    hint("Declaration of " & "av_fmt_ctx_get_duration_estimation_method" &
+        " already exists, not redeclaring")
+when not declared(avformat_version):
+  proc avformat_version*(): cuint {.cdecl, importc: "avformat_version".}
+else:
+  static :
+    hint("Declaration of " & "avformat_version" &
+        " already exists, not redeclaring")
+when not declared(avformat_configuration):
+  proc avformat_configuration*(): cstring {.cdecl,
+      importc: "avformat_configuration".}
+else:
+  static :
+    hint("Declaration of " & "avformat_configuration" &
+        " already exists, not redeclaring")
+when not declared(avformat_license):
+  proc avformat_license*(): cstring {.cdecl, importc: "avformat_license".}
+else:
+  static :
+    hint("Declaration of " & "avformat_license" &
+        " already exists, not redeclaring")
+when not declared(avformat_network_init):
+  proc avformat_network_init*(): cint {.cdecl, importc: "avformat_network_init".}
+else:
+  static :
+    hint("Declaration of " & "avformat_network_init" &
+        " already exists, not redeclaring")
+when not declared(avformat_network_deinit):
+  proc avformat_network_deinit*(): cint {.cdecl,
+      importc: "avformat_network_deinit".}
+else:
+  static :
+    hint("Declaration of " & "avformat_network_deinit" &
+        " already exists, not redeclaring")
+when not declared(av_muxer_iterate):
+  proc av_muxer_iterate*(opaque: ptr pointer): ptr AVOutputFormat_1644167888 {.
+      cdecl, importc: "av_muxer_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_muxer_iterate" &
+        " already exists, not redeclaring")
+when not declared(av_demuxer_iterate):
+  proc av_demuxer_iterate*(opaque: ptr pointer): ptr AVInputFormat_1644167892 {.
+      cdecl, importc: "av_demuxer_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_demuxer_iterate" &
+        " already exists, not redeclaring")
+when not declared(avformat_alloc_context):
+  proc avformat_alloc_context*(): ptr AVFormatContext_1644167930 {.cdecl,
+      importc: "avformat_alloc_context".}
+else:
+  static :
+    hint("Declaration of " & "avformat_alloc_context" &
+        " already exists, not redeclaring")
+when not declared(avformat_free_context):
+  proc avformat_free_context*(s: ptr AVFormatContext_1644167930): void {.cdecl,
+      importc: "avformat_free_context".}
+else:
+  static :
+    hint("Declaration of " & "avformat_free_context" &
+        " already exists, not redeclaring")
+when not declared(avformat_get_class):
+  proc avformat_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "avformat_get_class".}
+else:
+  static :
+    hint("Declaration of " & "avformat_get_class" &
+        " already exists, not redeclaring")
+when not declared(av_stream_get_class):
+  proc av_stream_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "av_stream_get_class".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_get_class" &
+        " already exists, not redeclaring")
+when not declared(av_stream_group_get_class):
+  proc av_stream_group_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "av_stream_group_get_class".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_group_get_class" &
+        " already exists, not redeclaring")
+when not declared(avformat_stream_group_name):
+  proc avformat_stream_group_name*(type_arg: enum_AVStreamGroupParamsType_1644167908): cstring {.
+      cdecl, importc: "avformat_stream_group_name".}
+else:
+  static :
+    hint("Declaration of " & "avformat_stream_group_name" &
+        " already exists, not redeclaring")
+when not declared(avformat_stream_group_create):
+  proc avformat_stream_group_create*(s: ptr AVFormatContext_1644167930;
+                                     type_arg: enum_AVStreamGroupParamsType_1644167908;
+                                     options: ptr ptr AVDictionary_1644167671): ptr AVStreamGroup_1644167912 {.
+      cdecl, importc: "avformat_stream_group_create".}
+else:
+  static :
+    hint("Declaration of " & "avformat_stream_group_create" &
+        " already exists, not redeclaring")
+when not declared(avformat_new_stream):
+  proc avformat_new_stream*(s: ptr AVFormatContext_1644167930;
+                            c: ptr struct_AVCodec_1644167782): ptr AVStream_1644167902 {.
+      cdecl, importc: "avformat_new_stream".}
+else:
+  static :
+    hint("Declaration of " & "avformat_new_stream" &
+        " already exists, not redeclaring")
+when not declared(avformat_stream_group_add_stream):
+  proc avformat_stream_group_add_stream*(stg: ptr AVStreamGroup_1644167912;
+      st: ptr AVStream_1644167902): cint {.cdecl,
+      importc: "avformat_stream_group_add_stream".}
+else:
+  static :
+    hint("Declaration of " & "avformat_stream_group_add_stream" &
+        " already exists, not redeclaring")
+when not declared(av_stream_add_side_data):
+  proc av_stream_add_side_data*(st: ptr AVStream_1644167902;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                data: ptr uint8; size: csize_t): cint {.cdecl,
+      importc: "av_stream_add_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_add_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_stream_new_side_data):
+  proc av_stream_new_side_data*(stream: ptr AVStream_1644167902;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                size: csize_t): ptr uint8 {.cdecl,
+      importc: "av_stream_new_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_new_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_stream_get_side_data):
+  proc av_stream_get_side_data*(stream: ptr AVStream_1644167902;
+                                type_arg: enum_AVPacketSideDataType_1644167808;
+                                size: ptr csize_t): ptr uint8 {.cdecl,
+      importc: "av_stream_get_side_data".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_get_side_data" &
+        " already exists, not redeclaring")
+when not declared(av_new_program):
+  proc av_new_program*(s: ptr AVFormatContext_1644167930; id: cint): ptr AVProgram_1644167916 {.
+      cdecl, importc: "av_new_program".}
+else:
+  static :
+    hint("Declaration of " & "av_new_program" &
+        " already exists, not redeclaring")
+when not declared(avformat_alloc_output_context2):
+  proc avformat_alloc_output_context2*(ctx: ptr ptr AVFormatContext_1644167930;
+                                       oformat: ptr AVOutputFormat_1644167888;
+                                       format_name: cstring; filename: cstring): cint {.
+      cdecl, importc: "avformat_alloc_output_context2".}
+else:
+  static :
+    hint("Declaration of " & "avformat_alloc_output_context2" &
+        " already exists, not redeclaring")
+when not declared(av_find_input_format):
+  proc av_find_input_format*(short_name: cstring): ptr AVInputFormat_1644167892 {.
+      cdecl, importc: "av_find_input_format".}
+else:
+  static :
+    hint("Declaration of " & "av_find_input_format" &
+        " already exists, not redeclaring")
+when not declared(av_probe_input_format):
+  proc av_probe_input_format*(pd: ptr AVProbeData_1644167884; is_opened: cint): ptr AVInputFormat_1644167892 {.
+      cdecl, importc: "av_probe_input_format".}
+else:
+  static :
+    hint("Declaration of " & "av_probe_input_format" &
+        " already exists, not redeclaring")
+when not declared(av_probe_input_format2):
+  proc av_probe_input_format2*(pd: ptr AVProbeData_1644167884; is_opened: cint;
+                               score_max: ptr cint): ptr AVInputFormat_1644167892 {.
+      cdecl, importc: "av_probe_input_format2".}
+else:
+  static :
+    hint("Declaration of " & "av_probe_input_format2" &
+        " already exists, not redeclaring")
+when not declared(av_probe_input_format3):
+  proc av_probe_input_format3*(pd: ptr AVProbeData_1644167884; is_opened: cint;
+                               score_ret: ptr cint): ptr AVInputFormat_1644167892 {.
+      cdecl, importc: "av_probe_input_format3".}
+else:
+  static :
+    hint("Declaration of " & "av_probe_input_format3" &
+        " already exists, not redeclaring")
+when not declared(av_probe_input_buffer2):
+  proc av_probe_input_buffer2*(pb: ptr AVIOContext_1644167880;
+                               fmt: ptr ptr AVInputFormat_1644167892;
+                               url: cstring; logctx: pointer; offset: cuint;
+                               max_probe_size: cuint): cint {.cdecl,
+      importc: "av_probe_input_buffer2".}
+else:
+  static :
+    hint("Declaration of " & "av_probe_input_buffer2" &
+        " already exists, not redeclaring")
+when not declared(av_probe_input_buffer):
+  proc av_probe_input_buffer*(pb: ptr AVIOContext_1644167880;
+                              fmt: ptr ptr AVInputFormat_1644167892;
+                              url: cstring; logctx: pointer; offset: cuint;
+                              max_probe_size: cuint): cint {.cdecl,
+      importc: "av_probe_input_buffer".}
+else:
+  static :
+    hint("Declaration of " & "av_probe_input_buffer" &
+        " already exists, not redeclaring")
+when not declared(avformat_open_input):
+  proc avformat_open_input*(ps: ptr ptr AVFormatContext_1644167930;
+                            url: cstring; fmt: ptr AVInputFormat_1644167892;
+                            options: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "avformat_open_input".}
+else:
+  static :
+    hint("Declaration of " & "avformat_open_input" &
+        " already exists, not redeclaring")
+when not declared(avformat_find_stream_info):
+  proc avformat_find_stream_info*(ic: ptr AVFormatContext_1644167930;
+                                  options: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "avformat_find_stream_info".}
+else:
+  static :
+    hint("Declaration of " & "avformat_find_stream_info" &
+        " already exists, not redeclaring")
+when not declared(av_find_program_from_stream):
+  proc av_find_program_from_stream*(ic: ptr AVFormatContext_1644167930;
+                                    last: ptr AVProgram_1644167916; s: cint): ptr AVProgram_1644167916 {.
+      cdecl, importc: "av_find_program_from_stream".}
+else:
+  static :
+    hint("Declaration of " & "av_find_program_from_stream" &
+        " already exists, not redeclaring")
+when not declared(av_program_add_stream_index):
+  proc av_program_add_stream_index*(ac: ptr AVFormatContext_1644167930;
+                                    progid: cint; idx: cuint): void {.cdecl,
+      importc: "av_program_add_stream_index".}
+else:
+  static :
+    hint("Declaration of " & "av_program_add_stream_index" &
+        " already exists, not redeclaring")
+when not declared(av_find_best_stream):
+  proc av_find_best_stream*(ic: ptr AVFormatContext_1644167930;
+                            type_arg: enum_AVMediaType_1644167677;
+                            wanted_stream_nb: cint; related_stream: cint;
+                            decoder_ret: ptr ptr struct_AVCodec_1644167782;
+                            flags: cint): cint {.cdecl,
+      importc: "av_find_best_stream".}
+else:
+  static :
+    hint("Declaration of " & "av_find_best_stream" &
+        " already exists, not redeclaring")
+when not declared(av_read_frame):
+  proc av_read_frame*(s: ptr AVFormatContext_1644167930; pkt: ptr AVPacket_1644167816): cint {.
+      cdecl, importc: "av_read_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_read_frame" &
+        " already exists, not redeclaring")
+when not declared(av_seek_frame):
+  proc av_seek_frame*(s: ptr AVFormatContext_1644167930; stream_index: cint;
+                      timestamp: int64; flags: cint): cint {.cdecl,
+      importc: "av_seek_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_seek_frame" &
+        " already exists, not redeclaring")
+when not declared(avformat_seek_file):
+  proc avformat_seek_file*(s: ptr AVFormatContext_1644167930;
+                           stream_index: cint; min_ts: int64; ts: int64;
+                           max_ts: int64; flags: cint): cint {.cdecl,
+      importc: "avformat_seek_file".}
+else:
+  static :
+    hint("Declaration of " & "avformat_seek_file" &
+        " already exists, not redeclaring")
+when not declared(avformat_flush):
+  proc avformat_flush*(s: ptr AVFormatContext_1644167930): cint {.cdecl,
+      importc: "avformat_flush".}
+else:
+  static :
+    hint("Declaration of " & "avformat_flush" &
+        " already exists, not redeclaring")
+when not declared(av_read_play):
+  proc av_read_play*(s: ptr AVFormatContext_1644167930): cint {.cdecl,
+      importc: "av_read_play".}
+else:
+  static :
+    hint("Declaration of " & "av_read_play" & " already exists, not redeclaring")
+when not declared(av_read_pause):
+  proc av_read_pause*(s: ptr AVFormatContext_1644167930): cint {.cdecl,
+      importc: "av_read_pause".}
+else:
+  static :
+    hint("Declaration of " & "av_read_pause" &
+        " already exists, not redeclaring")
+when not declared(avformat_close_input):
+  proc avformat_close_input*(s: ptr ptr AVFormatContext_1644167930): void {.
+      cdecl, importc: "avformat_close_input".}
+else:
+  static :
+    hint("Declaration of " & "avformat_close_input" &
+        " already exists, not redeclaring")
+when not declared(avformat_write_header):
+  proc avformat_write_header*(s: ptr AVFormatContext_1644167930;
+                              options: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "avformat_write_header".}
+else:
+  static :
+    hint("Declaration of " & "avformat_write_header" &
+        " already exists, not redeclaring")
+when not declared(avformat_init_output):
+  proc avformat_init_output*(s: ptr AVFormatContext_1644167930;
+                             options: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "avformat_init_output".}
+else:
+  static :
+    hint("Declaration of " & "avformat_init_output" &
+        " already exists, not redeclaring")
+when not declared(av_write_frame):
+  proc av_write_frame*(s: ptr AVFormatContext_1644167930; pkt: ptr AVPacket_1644167816): cint {.
+      cdecl, importc: "av_write_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_write_frame" &
+        " already exists, not redeclaring")
+when not declared(av_interleaved_write_frame):
+  proc av_interleaved_write_frame*(s: ptr AVFormatContext_1644167930;
+                                   pkt: ptr AVPacket_1644167816): cint {.cdecl,
+      importc: "av_interleaved_write_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_interleaved_write_frame" &
+        " already exists, not redeclaring")
+when not declared(av_write_uncoded_frame):
+  proc av_write_uncoded_frame*(s: ptr AVFormatContext_1644167930;
+                               stream_index: cint; frame: ptr struct_AVFrame_1644167756): cint {.
+      cdecl, importc: "av_write_uncoded_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_write_uncoded_frame" &
+        " already exists, not redeclaring")
+when not declared(av_interleaved_write_uncoded_frame):
+  proc av_interleaved_write_uncoded_frame*(s: ptr AVFormatContext_1644167930;
+      stream_index: cint; frame: ptr struct_AVFrame_1644167756): cint {.cdecl,
+      importc: "av_interleaved_write_uncoded_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_interleaved_write_uncoded_frame" &
+        " already exists, not redeclaring")
+when not declared(av_write_uncoded_frame_query):
+  proc av_write_uncoded_frame_query*(s: ptr AVFormatContext_1644167930;
+                                     stream_index: cint): cint {.cdecl,
+      importc: "av_write_uncoded_frame_query".}
+else:
+  static :
+    hint("Declaration of " & "av_write_uncoded_frame_query" &
+        " already exists, not redeclaring")
+when not declared(av_write_trailer):
+  proc av_write_trailer*(s: ptr AVFormatContext_1644167930): cint {.cdecl,
+      importc: "av_write_trailer".}
+else:
+  static :
+    hint("Declaration of " & "av_write_trailer" &
+        " already exists, not redeclaring")
+when not declared(av_guess_format):
+  proc av_guess_format*(short_name: cstring; filename: cstring;
+                        mime_type: cstring): ptr AVOutputFormat_1644167888 {.
+      cdecl, importc: "av_guess_format".}
+else:
+  static :
+    hint("Declaration of " & "av_guess_format" &
+        " already exists, not redeclaring")
+when not declared(av_guess_codec):
+  proc av_guess_codec*(fmt: ptr AVOutputFormat_1644167888; short_name: cstring;
+                       filename: cstring; mime_type: cstring;
+                       type_arg: enum_AVMediaType_1644167677): enum_AVCodecID_1644167776 {.
+      cdecl, importc: "av_guess_codec".}
+else:
+  static :
+    hint("Declaration of " & "av_guess_codec" &
+        " already exists, not redeclaring")
+when not declared(av_get_output_timestamp):
+  proc av_get_output_timestamp*(s: ptr struct_AVFormatContext_1644167924;
+                                stream: cint; dts: ptr int64; wall: ptr int64): cint {.
+      cdecl, importc: "av_get_output_timestamp".}
+else:
+  static :
+    hint("Declaration of " & "av_get_output_timestamp" &
+        " already exists, not redeclaring")
+when not declared(av_hex_dump):
+  proc av_hex_dump*(f: ptr FILE_1644167932; buf: ptr uint8; size: cint): void {.
+      cdecl, importc: "av_hex_dump".}
+else:
+  static :
+    hint("Declaration of " & "av_hex_dump" & " already exists, not redeclaring")
+when not declared(av_hex_dump_log):
+  proc av_hex_dump_log*(avcl: pointer; level: cint; buf: ptr uint8; size: cint): void {.
+      cdecl, importc: "av_hex_dump_log".}
+else:
+  static :
+    hint("Declaration of " & "av_hex_dump_log" &
+        " already exists, not redeclaring")
+when not declared(av_pkt_dump2):
+  proc av_pkt_dump2*(f: ptr FILE_1644167932; pkt: ptr AVPacket_1644167816;
+                     dump_payload: cint; st: ptr AVStream_1644167902): void {.
+      cdecl, importc: "av_pkt_dump2".}
+else:
+  static :
+    hint("Declaration of " & "av_pkt_dump2" & " already exists, not redeclaring")
+when not declared(av_pkt_dump_log2):
+  proc av_pkt_dump_log2*(avcl: pointer; level: cint; pkt: ptr AVPacket_1644167816;
+                         dump_payload: cint; st: ptr AVStream_1644167902): void {.
+      cdecl, importc: "av_pkt_dump_log2".}
+else:
+  static :
+    hint("Declaration of " & "av_pkt_dump_log2" &
+        " already exists, not redeclaring")
+when not declared(av_codec_get_id):
+  proc av_codec_get_id*(tags: ptr ptr struct_AVCodecTag; tag: cuint): enum_AVCodecID_1644167776 {.
+      cdecl, importc: "av_codec_get_id".}
+else:
+  static :
+    hint("Declaration of " & "av_codec_get_id" &
+        " already exists, not redeclaring")
+when not declared(av_codec_get_tag):
+  proc av_codec_get_tag*(tags: ptr ptr struct_AVCodecTag; id: enum_AVCodecID_1644167776): cuint {.
+      cdecl, importc: "av_codec_get_tag".}
+else:
+  static :
+    hint("Declaration of " & "av_codec_get_tag" &
+        " already exists, not redeclaring")
+when not declared(av_codec_get_tag2):
+  proc av_codec_get_tag2*(tags: ptr ptr struct_AVCodecTag; id: enum_AVCodecID_1644167776;
+                          tag: ptr cuint): cint {.cdecl,
+      importc: "av_codec_get_tag2".}
+else:
+  static :
+    hint("Declaration of " & "av_codec_get_tag2" &
+        " already exists, not redeclaring")
+when not declared(av_find_default_stream_index):
+  proc av_find_default_stream_index*(s: ptr AVFormatContext_1644167930): cint {.
+      cdecl, importc: "av_find_default_stream_index".}
+else:
+  static :
+    hint("Declaration of " & "av_find_default_stream_index" &
+        " already exists, not redeclaring")
+when not declared(av_index_search_timestamp):
+  proc av_index_search_timestamp*(st: ptr AVStream_1644167902; timestamp: int64;
+                                  flags: cint): cint {.cdecl,
+      importc: "av_index_search_timestamp".}
+else:
+  static :
+    hint("Declaration of " & "av_index_search_timestamp" &
+        " already exists, not redeclaring")
+when not declared(avformat_index_get_entries_count):
+  proc avformat_index_get_entries_count*(st: ptr AVStream_1644167902): cint {.
+      cdecl, importc: "avformat_index_get_entries_count".}
+else:
+  static :
+    hint("Declaration of " & "avformat_index_get_entries_count" &
+        " already exists, not redeclaring")
+when not declared(avformat_index_get_entry):
+  proc avformat_index_get_entry*(st: ptr AVStream_1644167902; idx: cint): ptr AVIndexEntry_1644167898 {.
+      cdecl, importc: "avformat_index_get_entry".}
+else:
+  static :
+    hint("Declaration of " & "avformat_index_get_entry" &
+        " already exists, not redeclaring")
+when not declared(avformat_index_get_entry_from_timestamp):
+  proc avformat_index_get_entry_from_timestamp*(st: ptr AVStream_1644167902;
+      wanted_timestamp: int64; flags: cint): ptr AVIndexEntry_1644167898 {.
+      cdecl, importc: "avformat_index_get_entry_from_timestamp".}
+else:
+  static :
+    hint("Declaration of " & "avformat_index_get_entry_from_timestamp" &
+        " already exists, not redeclaring")
+when not declared(av_add_index_entry):
+  proc av_add_index_entry*(st: ptr AVStream_1644167902; pos: int64;
+                           timestamp: int64; size: cint; distance: cint;
+                           flags: cint): cint {.cdecl,
+      importc: "av_add_index_entry".}
+else:
+  static :
+    hint("Declaration of " & "av_add_index_entry" &
+        " already exists, not redeclaring")
+when not declared(av_url_split):
+  proc av_url_split*(proto: cstring; proto_size: cint; authorization: cstring;
+                     authorization_size: cint; hostname: cstring;
+                     hostname_size: cint; port_ptr: ptr cint; path: cstring;
+                     path_size: cint; url: cstring): void {.cdecl,
+      importc: "av_url_split".}
+else:
+  static :
+    hint("Declaration of " & "av_url_split" & " already exists, not redeclaring")
+when not declared(av_dump_format):
+  proc av_dump_format*(ic: ptr AVFormatContext_1644167930; index: cint;
+                       url: cstring; is_output: cint): void {.cdecl,
+      importc: "av_dump_format".}
+else:
+  static :
+    hint("Declaration of " & "av_dump_format" &
+        " already exists, not redeclaring")
+when not declared(av_get_frame_filename2):
+  proc av_get_frame_filename2*(buf: cstring; buf_size: cint; path: cstring;
+                               number: cint; flags: cint): cint {.cdecl,
+      importc: "av_get_frame_filename2".}
+else:
+  static :
+    hint("Declaration of " & "av_get_frame_filename2" &
+        " already exists, not redeclaring")
+when not declared(av_get_frame_filename):
+  proc av_get_frame_filename*(buf: cstring; buf_size: cint; path: cstring;
+                              number: cint): cint {.cdecl,
+      importc: "av_get_frame_filename".}
+else:
+  static :
+    hint("Declaration of " & "av_get_frame_filename" &
+        " already exists, not redeclaring")
+when not declared(av_filename_number_test):
+  proc av_filename_number_test*(filename: cstring): cint {.cdecl,
+      importc: "av_filename_number_test".}
+else:
+  static :
+    hint("Declaration of " & "av_filename_number_test" &
+        " already exists, not redeclaring")
+when not declared(av_sdp_create):
+  proc av_sdp_create*(ac: ptr UncheckedArray[ptr AVFormatContext_1644167930];
+                      n_files: cint; buf: cstring; size: cint): cint {.cdecl,
+      importc: "av_sdp_create".}
+else:
+  static :
+    hint("Declaration of " & "av_sdp_create" &
+        " already exists, not redeclaring")
+when not declared(av_match_ext):
+  proc av_match_ext*(filename: cstring; extensions: cstring): cint {.cdecl,
+      importc: "av_match_ext".}
+else:
+  static :
+    hint("Declaration of " & "av_match_ext" & " already exists, not redeclaring")
+when not declared(avformat_query_codec):
+  proc avformat_query_codec*(ofmt: ptr AVOutputFormat_1644167888;
+                             codec_id: enum_AVCodecID_1644167776;
+                             std_compliance: cint): cint {.cdecl,
+      importc: "avformat_query_codec".}
+else:
+  static :
+    hint("Declaration of " & "avformat_query_codec" &
+        " already exists, not redeclaring")
+when not declared(avformat_get_riff_video_tags):
+  proc avformat_get_riff_video_tags*(): ptr struct_AVCodecTag {.cdecl,
+      importc: "avformat_get_riff_video_tags".}
+else:
+  static :
+    hint("Declaration of " & "avformat_get_riff_video_tags" &
+        " already exists, not redeclaring")
+when not declared(avformat_get_riff_audio_tags):
+  proc avformat_get_riff_audio_tags*(): ptr struct_AVCodecTag {.cdecl,
+      importc: "avformat_get_riff_audio_tags".}
+else:
+  static :
+    hint("Declaration of " & "avformat_get_riff_audio_tags" &
+        " already exists, not redeclaring")
+when not declared(avformat_get_mov_video_tags):
+  proc avformat_get_mov_video_tags*(): ptr struct_AVCodecTag {.cdecl,
+      importc: "avformat_get_mov_video_tags".}
+else:
+  static :
+    hint("Declaration of " & "avformat_get_mov_video_tags" &
+        " already exists, not redeclaring")
+when not declared(avformat_get_mov_audio_tags):
+  proc avformat_get_mov_audio_tags*(): ptr struct_AVCodecTag {.cdecl,
+      importc: "avformat_get_mov_audio_tags".}
+else:
+  static :
+    hint("Declaration of " & "avformat_get_mov_audio_tags" &
+        " already exists, not redeclaring")
+when not declared(av_guess_sample_aspect_ratio):
+  proc av_guess_sample_aspect_ratio*(format: ptr AVFormatContext_1644167930;
+                                     stream: ptr AVStream_1644167902;
+                                     frame: ptr struct_AVFrame_1644167756): AVRational_1644167675 {.
+      cdecl, importc: "av_guess_sample_aspect_ratio".}
+else:
+  static :
+    hint("Declaration of " & "av_guess_sample_aspect_ratio" &
+        " already exists, not redeclaring")
+when not declared(av_guess_frame_rate):
+  proc av_guess_frame_rate*(ctx: ptr AVFormatContext_1644167930;
+                            stream: ptr AVStream_1644167902;
+                            frame: ptr struct_AVFrame_1644167756): AVRational_1644167675 {.
+      cdecl, importc: "av_guess_frame_rate".}
+else:
+  static :
+    hint("Declaration of " & "av_guess_frame_rate" &
+        " already exists, not redeclaring")
+when not declared(avformat_match_stream_specifier):
+  proc avformat_match_stream_specifier*(s: ptr AVFormatContext_1644167930;
+                                        st: ptr AVStream_1644167902;
+                                        spec: cstring): cint {.cdecl,
+      importc: "avformat_match_stream_specifier".}
+else:
+  static :
+    hint("Declaration of " & "avformat_match_stream_specifier" &
+        " already exists, not redeclaring")
+when not declared(avformat_queue_attached_pictures):
+  proc avformat_queue_attached_pictures*(s: ptr AVFormatContext_1644167930): cint {.
+      cdecl, importc: "avformat_queue_attached_pictures".}
+else:
+  static :
+    hint("Declaration of " & "avformat_queue_attached_pictures" &
+        " already exists, not redeclaring")
+when not declared(avformat_transfer_internal_stream_timing_info):
+  proc avformat_transfer_internal_stream_timing_info*(ofmt: ptr AVOutputFormat_1644167888;
+      ost: ptr AVStream_1644167902; ist: ptr AVStream_1644167902;
+      copy_tb: enum_AVTimebaseSource_1644167934): cint {.cdecl,
+      importc: "avformat_transfer_internal_stream_timing_info".}
+else:
+  static :
+    hint("Declaration of " & "avformat_transfer_internal_stream_timing_info" &
+        " already exists, not redeclaring")
+when not declared(av_stream_get_codec_timebase):
+  proc av_stream_get_codec_timebase*(st: ptr AVStream_1644167902): AVRational_1644167675 {.
+      cdecl, importc: "av_stream_get_codec_timebase".}
+else:
+  static :
+    hint("Declaration of " & "av_stream_get_codec_timebase" &
+        " already exists, not redeclaring")
+when not declared(swscale_version):
+  proc swscale_version*(): cuint {.cdecl, importc: "swscale_version".}
+else:
+  static :
+    hint("Declaration of " & "swscale_version" &
+        " already exists, not redeclaring")
+when not declared(swscale_configuration):
+  proc swscale_configuration*(): cstring {.cdecl,
+      importc: "swscale_configuration".}
+else:
+  static :
+    hint("Declaration of " & "swscale_configuration" &
+        " already exists, not redeclaring")
+when not declared(swscale_license):
+  proc swscale_license*(): cstring {.cdecl, importc: "swscale_license".}
+else:
+  static :
+    hint("Declaration of " & "swscale_license" &
+        " already exists, not redeclaring")
+when not declared(sws_getCoefficients):
+  proc sws_getCoefficients*(colorspace: cint): ptr cint {.cdecl,
+      importc: "sws_getCoefficients".}
+else:
+  static :
+    hint("Declaration of " & "sws_getCoefficients" &
+        " already exists, not redeclaring")
+when not declared(sws_isSupportedInput):
+  proc sws_isSupportedInput*(pix_fmt: enum_AVPixelFormat_1644167687): cint {.
+      cdecl, importc: "sws_isSupportedInput".}
+else:
+  static :
+    hint("Declaration of " & "sws_isSupportedInput" &
+        " already exists, not redeclaring")
+when not declared(sws_isSupportedOutput):
+  proc sws_isSupportedOutput*(pix_fmt: enum_AVPixelFormat_1644167687): cint {.
+      cdecl, importc: "sws_isSupportedOutput".}
+else:
+  static :
+    hint("Declaration of " & "sws_isSupportedOutput" &
+        " already exists, not redeclaring")
+when not declared(sws_isSupportedEndiannessConversion):
+  proc sws_isSupportedEndiannessConversion*(pix_fmt: enum_AVPixelFormat_1644167687): cint {.
+      cdecl, importc: "sws_isSupportedEndiannessConversion".}
+else:
+  static :
+    hint("Declaration of " & "sws_isSupportedEndiannessConversion" &
+        " already exists, not redeclaring")
+when not declared(sws_alloc_context):
+  proc sws_alloc_context*(): ptr struct_SwsContext {.cdecl,
+      importc: "sws_alloc_context".}
+else:
+  static :
+    hint("Declaration of " & "sws_alloc_context" &
+        " already exists, not redeclaring")
+when not declared(sws_init_context):
+  proc sws_init_context*(sws_context: ptr struct_SwsContext;
+                         srcFilter: ptr SwsFilter_1644167942;
+                         dstFilter: ptr SwsFilter_1644167942): cint {.cdecl,
+      importc: "sws_init_context".}
+else:
+  static :
+    hint("Declaration of " & "sws_init_context" &
+        " already exists, not redeclaring")
+when not declared(sws_freeContext):
+  proc sws_freeContext*(swsContext: ptr struct_SwsContext): void {.cdecl,
+      importc: "sws_freeContext".}
+else:
+  static :
+    hint("Declaration of " & "sws_freeContext" &
+        " already exists, not redeclaring")
+when not declared(sws_getContext):
+  proc sws_getContext*(srcW: cint; srcH: cint; srcFormat: enum_AVPixelFormat_1644167687;
+                       dstW: cint; dstH: cint; dstFormat: enum_AVPixelFormat_1644167687;
+                       flags: cint; srcFilter: ptr SwsFilter_1644167942;
+                       dstFilter: ptr SwsFilter_1644167942; param: ptr cdouble): ptr struct_SwsContext {.
+      cdecl, importc: "sws_getContext".}
+else:
+  static :
+    hint("Declaration of " & "sws_getContext" &
+        " already exists, not redeclaring")
+when not declared(sws_scale):
+  proc sws_scale*(c: ptr struct_SwsContext;
+                  srcSlice: ptr UncheckedArray[ptr uint8];
+                  srcStride: ptr UncheckedArray[cint]; srcSliceY: cint;
+                  srcSliceH: cint; dst: ptr UncheckedArray[ptr uint8];
+                  dstStride: ptr UncheckedArray[cint]): cint {.cdecl,
+      importc: "sws_scale".}
+else:
+  static :
+    hint("Declaration of " & "sws_scale" & " already exists, not redeclaring")
+when not declared(sws_scale_frame):
+  proc sws_scale_frame*(c: ptr struct_SwsContext; dst: ptr AVFrame_1644167758;
+                        src: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "sws_scale_frame".}
+else:
+  static :
+    hint("Declaration of " & "sws_scale_frame" &
+        " already exists, not redeclaring")
+when not declared(sws_frame_start):
+  proc sws_frame_start*(c: ptr struct_SwsContext; dst: ptr AVFrame_1644167758;
+                        src: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "sws_frame_start".}
+else:
+  static :
+    hint("Declaration of " & "sws_frame_start" &
+        " already exists, not redeclaring")
+when not declared(sws_frame_end):
+  proc sws_frame_end*(c: ptr struct_SwsContext): void {.cdecl,
+      importc: "sws_frame_end".}
+else:
+  static :
+    hint("Declaration of " & "sws_frame_end" &
+        " already exists, not redeclaring")
+when not declared(sws_send_slice):
+  proc sws_send_slice*(c: ptr struct_SwsContext; slice_start: cuint;
+                       slice_height: cuint): cint {.cdecl,
+      importc: "sws_send_slice".}
+else:
+  static :
+    hint("Declaration of " & "sws_send_slice" &
+        " already exists, not redeclaring")
+when not declared(sws_receive_slice):
+  proc sws_receive_slice*(c: ptr struct_SwsContext; slice_start: cuint;
+                          slice_height: cuint): cint {.cdecl,
+      importc: "sws_receive_slice".}
+else:
+  static :
+    hint("Declaration of " & "sws_receive_slice" &
+        " already exists, not redeclaring")
+when not declared(sws_receive_slice_alignment):
+  proc sws_receive_slice_alignment*(c: ptr struct_SwsContext): cuint {.cdecl,
+      importc: "sws_receive_slice_alignment".}
+else:
+  static :
+    hint("Declaration of " & "sws_receive_slice_alignment" &
+        " already exists, not redeclaring")
+when not declared(sws_setColorspaceDetails):
+  proc sws_setColorspaceDetails*(c: ptr struct_SwsContext;
+                                 inv_table: array[4'i64, cint]; srcRange: cint;
+                                 table: array[4'i64, cint]; dstRange: cint;
+                                 brightness: cint; contrast: cint;
+                                 saturation: cint): cint {.cdecl,
+      importc: "sws_setColorspaceDetails".}
+else:
+  static :
+    hint("Declaration of " & "sws_setColorspaceDetails" &
+        " already exists, not redeclaring")
+when not declared(sws_getColorspaceDetails):
+  proc sws_getColorspaceDetails*(c: ptr struct_SwsContext;
+                                 inv_table: ptr ptr cint; srcRange: ptr cint;
+                                 table: ptr ptr cint; dstRange: ptr cint;
+                                 brightness: ptr cint; contrast: ptr cint;
+                                 saturation: ptr cint): cint {.cdecl,
+      importc: "sws_getColorspaceDetails".}
+else:
+  static :
+    hint("Declaration of " & "sws_getColorspaceDetails" &
+        " already exists, not redeclaring")
+when not declared(sws_allocVec):
+  proc sws_allocVec*(length: cint): ptr SwsVector_1644167938 {.cdecl,
+      importc: "sws_allocVec".}
+else:
+  static :
+    hint("Declaration of " & "sws_allocVec" & " already exists, not redeclaring")
+when not declared(sws_getGaussianVec):
+  proc sws_getGaussianVec*(variance: cdouble; quality: cdouble): ptr SwsVector_1644167938 {.
+      cdecl, importc: "sws_getGaussianVec".}
+else:
+  static :
+    hint("Declaration of " & "sws_getGaussianVec" &
+        " already exists, not redeclaring")
+when not declared(sws_scaleVec):
+  proc sws_scaleVec*(a: ptr SwsVector_1644167938; scalar: cdouble): void {.
+      cdecl, importc: "sws_scaleVec".}
+else:
+  static :
+    hint("Declaration of " & "sws_scaleVec" & " already exists, not redeclaring")
+when not declared(sws_normalizeVec):
+  proc sws_normalizeVec*(a: ptr SwsVector_1644167938; height: cdouble): void {.
+      cdecl, importc: "sws_normalizeVec".}
+else:
+  static :
+    hint("Declaration of " & "sws_normalizeVec" &
+        " already exists, not redeclaring")
+when not declared(sws_freeVec):
+  proc sws_freeVec*(a: ptr SwsVector_1644167938): void {.cdecl,
+      importc: "sws_freeVec".}
+else:
+  static :
+    hint("Declaration of " & "sws_freeVec" & " already exists, not redeclaring")
+when not declared(sws_getDefaultFilter):
+  proc sws_getDefaultFilter*(lumaGBlur: cfloat; chromaGBlur: cfloat;
+                             lumaSharpen: cfloat; chromaSharpen: cfloat;
+                             chromaHShift: cfloat; chromaVShift: cfloat;
+                             verbose: cint): ptr SwsFilter_1644167942 {.cdecl,
+      importc: "sws_getDefaultFilter".}
+else:
+  static :
+    hint("Declaration of " & "sws_getDefaultFilter" &
+        " already exists, not redeclaring")
+when not declared(sws_freeFilter):
+  proc sws_freeFilter*(filter: ptr SwsFilter_1644167942): void {.cdecl,
+      importc: "sws_freeFilter".}
+else:
+  static :
+    hint("Declaration of " & "sws_freeFilter" &
+        " already exists, not redeclaring")
+when not declared(sws_getCachedContext):
+  proc sws_getCachedContext*(context: ptr struct_SwsContext; srcW: cint;
+                             srcH: cint; srcFormat: enum_AVPixelFormat_1644167687;
+                             dstW: cint; dstH: cint;
+                             dstFormat: enum_AVPixelFormat_1644167687;
+                             flags: cint; srcFilter: ptr SwsFilter_1644167942;
+                             dstFilter: ptr SwsFilter_1644167942;
+                             param: ptr cdouble): ptr struct_SwsContext {.cdecl,
+      importc: "sws_getCachedContext".}
+else:
+  static :
+    hint("Declaration of " & "sws_getCachedContext" &
+        " already exists, not redeclaring")
+when not declared(sws_convertPalette8ToPacked32):
+  proc sws_convertPalette8ToPacked32*(src: ptr uint8; dst: ptr uint8;
+                                      num_pixels: cint; palette: ptr uint8): void {.
+      cdecl, importc: "sws_convertPalette8ToPacked32".}
+else:
+  static :
+    hint("Declaration of " & "sws_convertPalette8ToPacked32" &
+        " already exists, not redeclaring")
+when not declared(sws_convertPalette8ToPacked24):
+  proc sws_convertPalette8ToPacked24*(src: ptr uint8; dst: ptr uint8;
+                                      num_pixels: cint; palette: ptr uint8): void {.
+      cdecl, importc: "sws_convertPalette8ToPacked24".}
+else:
+  static :
+    hint("Declaration of " & "sws_convertPalette8ToPacked24" &
+        " already exists, not redeclaring")
+when not declared(sws_get_class):
+  proc sws_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "sws_get_class".}
+else:
+  static :
+    hint("Declaration of " & "sws_get_class" &
+        " already exists, not redeclaring")
+when not declared(swr_get_class):
+  proc swr_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "swr_get_class".}
+else:
+  static :
+    hint("Declaration of " & "swr_get_class" &
+        " already exists, not redeclaring")
+when not declared(swr_alloc):
+  proc swr_alloc*(): ptr struct_SwrContext {.cdecl, importc: "swr_alloc".}
+else:
+  static :
+    hint("Declaration of " & "swr_alloc" & " already exists, not redeclaring")
+when not declared(swr_init):
+  proc swr_init*(s: ptr struct_SwrContext): cint {.cdecl, importc: "swr_init".}
+else:
+  static :
+    hint("Declaration of " & "swr_init" & " already exists, not redeclaring")
+when not declared(swr_is_initialized):
+  proc swr_is_initialized*(s: ptr struct_SwrContext): cint {.cdecl,
+      importc: "swr_is_initialized".}
+else:
+  static :
+    hint("Declaration of " & "swr_is_initialized" &
+        " already exists, not redeclaring")
+when not declared(swr_alloc_set_opts2):
+  proc swr_alloc_set_opts2*(ps: ptr ptr struct_SwrContext;
+                            out_ch_layout: ptr AVChannelLayout_1644167649;
+                            out_sample_fmt: enum_AVSampleFormat_1644167651;
+                            out_sample_rate: cint;
+                            in_ch_layout: ptr AVChannelLayout_1644167649;
+                            in_sample_fmt: enum_AVSampleFormat_1644167651;
+                            in_sample_rate: cint; log_offset: cint;
+                            log_ctx: pointer): cint {.cdecl,
+      importc: "swr_alloc_set_opts2".}
+else:
+  static :
+    hint("Declaration of " & "swr_alloc_set_opts2" &
+        " already exists, not redeclaring")
+when not declared(swr_free):
+  proc swr_free*(s: ptr ptr struct_SwrContext): void {.cdecl,
+      importc: "swr_free".}
+else:
+  static :
+    hint("Declaration of " & "swr_free" & " already exists, not redeclaring")
+when not declared(swr_close):
+  proc swr_close*(s: ptr struct_SwrContext): void {.cdecl, importc: "swr_close".}
+else:
+  static :
+    hint("Declaration of " & "swr_close" & " already exists, not redeclaring")
+when not declared(swr_convert):
+  proc swr_convert*(s: ptr struct_SwrContext; out_arg: ptr ptr uint8;
+                    out_count: cint; in_arg: ptr ptr uint8; in_count: cint): cint {.
+      cdecl, importc: "swr_convert".}
+else:
+  static :
+    hint("Declaration of " & "swr_convert" & " already exists, not redeclaring")
+when not declared(swr_next_pts):
+  proc swr_next_pts*(s: ptr struct_SwrContext; pts: int64): int64 {.cdecl,
+      importc: "swr_next_pts".}
+else:
+  static :
+    hint("Declaration of " & "swr_next_pts" & " already exists, not redeclaring")
+when not declared(swr_set_compensation):
+  proc swr_set_compensation*(s: ptr struct_SwrContext; sample_delta: cint;
+                             compensation_distance: cint): cint {.cdecl,
+      importc: "swr_set_compensation".}
+else:
+  static :
+    hint("Declaration of " & "swr_set_compensation" &
+        " already exists, not redeclaring")
+when not declared(swr_set_channel_mapping):
+  proc swr_set_channel_mapping*(s: ptr struct_SwrContext; channel_map: ptr cint): cint {.
+      cdecl, importc: "swr_set_channel_mapping".}
+else:
+  static :
+    hint("Declaration of " & "swr_set_channel_mapping" &
+        " already exists, not redeclaring")
+when not declared(swr_build_matrix2):
+  proc swr_build_matrix2*(in_layout: ptr AVChannelLayout_1644167649;
+                          out_layout: ptr AVChannelLayout_1644167649;
+                          center_mix_level: cdouble;
+                          surround_mix_level: cdouble; lfe_mix_level: cdouble;
+                          maxval: cdouble; rematrix_volume: cdouble;
+                          matrix: ptr cdouble; stride: ptrdiff_t_1644167728;
+                          matrix_encoding: enum_AVMatrixEncoding_1644167641;
+                          log_context: pointer): cint {.cdecl,
+      importc: "swr_build_matrix2".}
+else:
+  static :
+    hint("Declaration of " & "swr_build_matrix2" &
+        " already exists, not redeclaring")
+when not declared(swr_set_matrix):
+  proc swr_set_matrix*(s: ptr struct_SwrContext; matrix: ptr cdouble;
+                       stride: cint): cint {.cdecl, importc: "swr_set_matrix".}
+else:
+  static :
+    hint("Declaration of " & "swr_set_matrix" &
+        " already exists, not redeclaring")
+when not declared(swr_drop_output):
+  proc swr_drop_output*(s: ptr struct_SwrContext; count: cint): cint {.cdecl,
+      importc: "swr_drop_output".}
+else:
+  static :
+    hint("Declaration of " & "swr_drop_output" &
+        " already exists, not redeclaring")
+when not declared(swr_inject_silence):
+  proc swr_inject_silence*(s: ptr struct_SwrContext; count: cint): cint {.cdecl,
+      importc: "swr_inject_silence".}
+else:
+  static :
+    hint("Declaration of " & "swr_inject_silence" &
+        " already exists, not redeclaring")
+when not declared(swr_get_delay):
+  proc swr_get_delay*(s: ptr struct_SwrContext; base: int64): int64 {.cdecl,
+      importc: "swr_get_delay".}
+else:
+  static :
+    hint("Declaration of " & "swr_get_delay" &
+        " already exists, not redeclaring")
+when not declared(swr_get_out_samples):
+  proc swr_get_out_samples*(s: ptr struct_SwrContext; in_samples: cint): cint {.
+      cdecl, importc: "swr_get_out_samples".}
+else:
+  static :
+    hint("Declaration of " & "swr_get_out_samples" &
+        " already exists, not redeclaring")
+when not declared(swresample_version):
+  proc swresample_version*(): cuint {.cdecl, importc: "swresample_version".}
+else:
+  static :
+    hint("Declaration of " & "swresample_version" &
+        " already exists, not redeclaring")
+when not declared(swresample_configuration):
+  proc swresample_configuration*(): cstring {.cdecl,
+      importc: "swresample_configuration".}
+else:
+  static :
+    hint("Declaration of " & "swresample_configuration" &
+        " already exists, not redeclaring")
+when not declared(swresample_license):
+  proc swresample_license*(): cstring {.cdecl, importc: "swresample_license".}
+else:
+  static :
+    hint("Declaration of " & "swresample_license" &
+        " already exists, not redeclaring")
+when not declared(swr_convert_frame):
+  proc swr_convert_frame*(swr: ptr SwrContext_1644167950; output: ptr AVFrame_1644167758;
+                          input: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "swr_convert_frame".}
+else:
+  static :
+    hint("Declaration of " & "swr_convert_frame" &
+        " already exists, not redeclaring")
+when not declared(swr_config_frame):
+  proc swr_config_frame*(swr: ptr SwrContext_1644167950; out_arg: ptr AVFrame_1644167758;
+                         in_arg: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "swr_config_frame".}
+else:
+  static :
+    hint("Declaration of " & "swr_config_frame" &
+        " already exists, not redeclaring")
+when not declared(avfilter_version):
+  proc avfilter_version*(): cuint {.cdecl, importc: "avfilter_version".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_version" &
+        " already exists, not redeclaring")
+when not declared(avfilter_configuration):
+  proc avfilter_configuration*(): cstring {.cdecl,
+      importc: "avfilter_configuration".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_configuration" &
+        " already exists, not redeclaring")
+when not declared(avfilter_license):
+  proc avfilter_license*(): cstring {.cdecl, importc: "avfilter_license".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_license" &
+        " already exists, not redeclaring")
+when not declared(avfilter_pad_get_name):
+  proc avfilter_pad_get_name*(pads: ptr AVFilterPad_1644167960; pad_idx: cint): cstring {.
+      cdecl, importc: "avfilter_pad_get_name".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_pad_get_name" &
+        " already exists, not redeclaring")
+when not declared(avfilter_pad_get_type):
+  proc avfilter_pad_get_type*(pads: ptr AVFilterPad_1644167960; pad_idx: cint): enum_AVMediaType_1644167677 {.
+      cdecl, importc: "avfilter_pad_get_type".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_pad_get_type" &
+        " already exists, not redeclaring")
+when not declared(avfilter_filter_pad_count):
+  proc avfilter_filter_pad_count*(filter: ptr AVFilter_1644167968;
+                                  is_output: cint): cuint {.cdecl,
+      importc: "avfilter_filter_pad_count".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_filter_pad_count" &
+        " already exists, not redeclaring")
+when not declared(avfilter_link):
+  proc avfilter_link*(src: ptr AVFilterContext_1644167952; srcpad: cuint;
+                      dst: ptr AVFilterContext_1644167952; dstpad: cuint): cint {.
+      cdecl, importc: "avfilter_link".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_link" &
+        " already exists, not redeclaring")
+when not declared(avfilter_link_free):
+  proc avfilter_link_free*(link: ptr ptr AVFilterLink_1644167956): void {.cdecl,
+      importc: "avfilter_link_free".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_link_free" &
+        " already exists, not redeclaring")
+when not declared(avfilter_config_links):
+  proc avfilter_config_links*(filter: ptr AVFilterContext_1644167952): cint {.
+      cdecl, importc: "avfilter_config_links".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_config_links" &
+        " already exists, not redeclaring")
+when not declared(avfilter_process_command):
+  proc avfilter_process_command*(filter: ptr AVFilterContext_1644167952;
+                                 cmd: cstring; arg: cstring; res: cstring;
+                                 res_len: cint; flags: cint): cint {.cdecl,
+      importc: "avfilter_process_command".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_process_command" &
+        " already exists, not redeclaring")
+when not declared(av_filter_iterate):
+  proc av_filter_iterate*(opaque: ptr pointer): ptr AVFilter_1644167968 {.cdecl,
+      importc: "av_filter_iterate".}
+else:
+  static :
+    hint("Declaration of " & "av_filter_iterate" &
+        " already exists, not redeclaring")
+when not declared(avfilter_get_by_name):
+  proc avfilter_get_by_name*(name: cstring): ptr AVFilter_1644167968 {.cdecl,
+      importc: "avfilter_get_by_name".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_get_by_name" &
+        " already exists, not redeclaring")
+when not declared(avfilter_init_str):
+  proc avfilter_init_str*(ctx: ptr AVFilterContext_1644167952; args: cstring): cint {.
+      cdecl, importc: "avfilter_init_str".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_init_str" &
+        " already exists, not redeclaring")
+when not declared(avfilter_init_dict):
+  proc avfilter_init_dict*(ctx: ptr AVFilterContext_1644167952;
+                           options: ptr ptr AVDictionary_1644167671): cint {.
+      cdecl, importc: "avfilter_init_dict".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_init_dict" &
+        " already exists, not redeclaring")
+when not declared(avfilter_free):
+  proc avfilter_free*(filter: ptr AVFilterContext_1644167952): void {.cdecl,
+      importc: "avfilter_free".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_free" &
+        " already exists, not redeclaring")
+when not declared(avfilter_insert_filter):
+  proc avfilter_insert_filter*(link: ptr AVFilterLink_1644167956;
+                               filt: ptr AVFilterContext_1644167952;
+                               filt_srcpad_idx: cuint; filt_dstpad_idx: cuint): cint {.
+      cdecl, importc: "avfilter_insert_filter".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_insert_filter" &
+        " already exists, not redeclaring")
+when not declared(avfilter_get_class):
+  proc avfilter_get_class*(): ptr AVClass_1644167663 {.cdecl,
+      importc: "avfilter_get_class".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_get_class" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_alloc):
+  proc avfilter_graph_alloc*(): ptr AVFilterGraph_1644167980 {.cdecl,
+      importc: "avfilter_graph_alloc".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_alloc" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_alloc_filter):
+  proc avfilter_graph_alloc_filter*(graph: ptr AVFilterGraph_1644167980;
+                                    filter: ptr AVFilter_1644167968;
+                                    name: cstring): ptr AVFilterContext_1644167952 {.
+      cdecl, importc: "avfilter_graph_alloc_filter".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_alloc_filter" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_get_filter):
+  proc avfilter_graph_get_filter*(graph: ptr AVFilterGraph_1644167980;
+                                  name: cstring): ptr AVFilterContext_1644167952 {.
+      cdecl, importc: "avfilter_graph_get_filter".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_get_filter" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_create_filter):
+  proc avfilter_graph_create_filter*(filt_ctx: ptr ptr AVFilterContext_1644167952;
+                                     filt: ptr AVFilter_1644167968;
+                                     name: cstring; args: cstring;
+                                     opaque: pointer;
+                                     graph_ctx: ptr AVFilterGraph_1644167980): cint {.
+      cdecl, importc: "avfilter_graph_create_filter".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_create_filter" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_set_auto_convert):
+  proc avfilter_graph_set_auto_convert*(graph: ptr AVFilterGraph_1644167980;
+                                        flags: cuint): void {.cdecl,
+      importc: "avfilter_graph_set_auto_convert".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_set_auto_convert" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_config):
+  proc avfilter_graph_config*(graphctx: ptr AVFilterGraph_1644167980;
+                              log_ctx: pointer): cint {.cdecl,
+      importc: "avfilter_graph_config".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_config" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_free):
+  proc avfilter_graph_free*(graph: ptr ptr AVFilterGraph_1644167980): void {.
+      cdecl, importc: "avfilter_graph_free".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_free" &
+        " already exists, not redeclaring")
+when not declared(avfilter_inout_alloc):
+  proc avfilter_inout_alloc*(): ptr AVFilterInOut_1644167984 {.cdecl,
+      importc: "avfilter_inout_alloc".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_inout_alloc" &
+        " already exists, not redeclaring")
+when not declared(avfilter_inout_free):
+  proc avfilter_inout_free*(inout: ptr ptr AVFilterInOut_1644167984): void {.
+      cdecl, importc: "avfilter_inout_free".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_inout_free" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_parse):
+  proc avfilter_graph_parse*(graph: ptr AVFilterGraph_1644167980;
+                             filters: cstring; inputs: ptr AVFilterInOut_1644167984;
+                             outputs: ptr AVFilterInOut_1644167984;
+                             log_ctx: pointer): cint {.cdecl,
+      importc: "avfilter_graph_parse".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_parse" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_parse_ptr):
+  proc avfilter_graph_parse_ptr*(graph: ptr AVFilterGraph_1644167980;
+                                 filters: cstring;
+                                 inputs: ptr ptr AVFilterInOut_1644167984;
+                                 outputs: ptr ptr AVFilterInOut_1644167984;
+                                 log_ctx: pointer): cint {.cdecl,
+      importc: "avfilter_graph_parse_ptr".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_parse_ptr" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_parse2):
+  proc avfilter_graph_parse2*(graph: ptr AVFilterGraph_1644167980;
+                              filters: cstring; inputs: ptr ptr AVFilterInOut_1644167984;
+                              outputs: ptr ptr AVFilterInOut_1644167984): cint {.
+      cdecl, importc: "avfilter_graph_parse2".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_parse2" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_parse):
+  proc avfilter_graph_segment_parse*(graph: ptr AVFilterGraph_1644167980;
+                                     graph_str: cstring; flags: cint;
+                                     seg: ptr ptr AVFilterGraphSegment_1644168000): cint {.
+      cdecl, importc: "avfilter_graph_segment_parse".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_parse" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_create_filters):
+  proc avfilter_graph_segment_create_filters*(seg: ptr AVFilterGraphSegment_1644168000;
+      flags: cint): cint {.cdecl,
+                           importc: "avfilter_graph_segment_create_filters".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_create_filters" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_apply_opts):
+  proc avfilter_graph_segment_apply_opts*(seg: ptr AVFilterGraphSegment_1644168000;
+      flags: cint): cint {.cdecl, importc: "avfilter_graph_segment_apply_opts".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_apply_opts" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_init):
+  proc avfilter_graph_segment_init*(seg: ptr AVFilterGraphSegment_1644168000;
+                                    flags: cint): cint {.cdecl,
+      importc: "avfilter_graph_segment_init".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_init" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_link):
+  proc avfilter_graph_segment_link*(seg: ptr AVFilterGraphSegment_1644168000;
+                                    flags: cint; inputs: ptr ptr AVFilterInOut_1644167984;
+                                    outputs: ptr ptr AVFilterInOut_1644167984): cint {.
+      cdecl, importc: "avfilter_graph_segment_link".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_link" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_apply):
+  proc avfilter_graph_segment_apply*(seg: ptr AVFilterGraphSegment_1644168000;
+                                     flags: cint; inputs: ptr ptr AVFilterInOut_1644167984;
+                                     outputs: ptr ptr AVFilterInOut_1644167984): cint {.
+      cdecl, importc: "avfilter_graph_segment_apply".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_apply" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_segment_free):
+  proc avfilter_graph_segment_free*(seg: ptr ptr AVFilterGraphSegment_1644168000): void {.
+      cdecl, importc: "avfilter_graph_segment_free".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_segment_free" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_send_command):
+  proc avfilter_graph_send_command*(graph: ptr AVFilterGraph_1644167980;
+                                    target: cstring; cmd: cstring; arg: cstring;
+                                    res: cstring; res_len: cint; flags: cint): cint {.
+      cdecl, importc: "avfilter_graph_send_command".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_send_command" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_queue_command):
+  proc avfilter_graph_queue_command*(graph: ptr AVFilterGraph_1644167980;
+                                     target: cstring; cmd: cstring;
+                                     arg: cstring; flags: cint; ts: cdouble): cint {.
+      cdecl, importc: "avfilter_graph_queue_command".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_queue_command" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_dump):
+  proc avfilter_graph_dump*(graph: ptr AVFilterGraph_1644167980;
+                            options: cstring): cstring {.cdecl,
+      importc: "avfilter_graph_dump".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_dump" &
+        " already exists, not redeclaring")
+when not declared(avfilter_graph_request_oldest):
+  proc avfilter_graph_request_oldest*(graph: ptr AVFilterGraph_1644167980): cint {.
+      cdecl, importc: "avfilter_graph_request_oldest".}
+else:
+  static :
+    hint("Declaration of " & "avfilter_graph_request_oldest" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_frame_flags):
+  proc av_buffersink_get_frame_flags*(ctx: ptr AVFilterContext_1644167952;
+                                      frame: ptr AVFrame_1644167758; flags: cint): cint {.
+      cdecl, importc: "av_buffersink_get_frame_flags".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_frame_flags" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_set_frame_size):
+  proc av_buffersink_set_frame_size*(ctx: ptr AVFilterContext_1644167952;
+                                     frame_size: cuint): void {.cdecl,
+      importc: "av_buffersink_set_frame_size".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_set_frame_size" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_type):
+  proc av_buffersink_get_type*(ctx: ptr AVFilterContext_1644167952): enum_AVMediaType_1644167677 {.
+      cdecl, importc: "av_buffersink_get_type".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_type" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_time_base):
+  proc av_buffersink_get_time_base*(ctx: ptr AVFilterContext_1644167952): AVRational_1644167675 {.
+      cdecl, importc: "av_buffersink_get_time_base".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_time_base" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_format):
+  proc av_buffersink_get_format*(ctx: ptr AVFilterContext_1644167952): cint {.
+      cdecl, importc: "av_buffersink_get_format".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_format" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_frame_rate):
+  proc av_buffersink_get_frame_rate*(ctx: ptr AVFilterContext_1644167952): AVRational_1644167675 {.
+      cdecl, importc: "av_buffersink_get_frame_rate".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_frame_rate" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_w):
+  proc av_buffersink_get_w*(ctx: ptr AVFilterContext_1644167952): cint {.cdecl,
+      importc: "av_buffersink_get_w".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_w" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_h):
+  proc av_buffersink_get_h*(ctx: ptr AVFilterContext_1644167952): cint {.cdecl,
+      importc: "av_buffersink_get_h".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_h" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_sample_aspect_ratio):
+  proc av_buffersink_get_sample_aspect_ratio*(ctx: ptr AVFilterContext_1644167952): AVRational_1644167675 {.
+      cdecl, importc: "av_buffersink_get_sample_aspect_ratio".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_sample_aspect_ratio" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_colorspace):
+  proc av_buffersink_get_colorspace*(ctx: ptr AVFilterContext_1644167952): enum_AVColorSpace_1644167700 {.
+      cdecl, importc: "av_buffersink_get_colorspace".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_colorspace" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_color_range):
+  proc av_buffersink_get_color_range*(ctx: ptr AVFilterContext_1644167952): enum_AVColorRange_1644167702 {.
+      cdecl, importc: "av_buffersink_get_color_range".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_color_range" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_channels):
+  proc av_buffersink_get_channels*(ctx: ptr AVFilterContext_1644167952): cint {.
+      cdecl, importc: "av_buffersink_get_channels".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_channels" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_ch_layout):
+  proc av_buffersink_get_ch_layout*(ctx: ptr AVFilterContext_1644167952;
+                                    ch_layout: ptr AVChannelLayout_1644167649): cint {.
+      cdecl, importc: "av_buffersink_get_ch_layout".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_ch_layout" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_sample_rate):
+  proc av_buffersink_get_sample_rate*(ctx: ptr AVFilterContext_1644167952): cint {.
+      cdecl, importc: "av_buffersink_get_sample_rate".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_sample_rate" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_hw_frames_ctx):
+  proc av_buffersink_get_hw_frames_ctx*(ctx: ptr AVFilterContext_1644167952): ptr AVBufferRef_1644167734 {.
+      cdecl, importc: "av_buffersink_get_hw_frames_ctx".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_hw_frames_ctx" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_frame):
+  proc av_buffersink_get_frame*(ctx: ptr AVFilterContext_1644167952;
+                                frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "av_buffersink_get_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_frame" &
+        " already exists, not redeclaring")
+when not declared(av_buffersink_get_samples):
+  proc av_buffersink_get_samples*(ctx: ptr AVFilterContext_1644167952;
+                                  frame: ptr AVFrame_1644167758;
+                                  nb_samples: cint): cint {.cdecl,
+      importc: "av_buffersink_get_samples".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersink_get_samples" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_get_nb_failed_requests):
+  proc av_buffersrc_get_nb_failed_requests*(buffer_src: ptr AVFilterContext_1644167952): cuint {.
+      cdecl, importc: "av_buffersrc_get_nb_failed_requests".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_get_nb_failed_requests" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_parameters_alloc):
+  proc av_buffersrc_parameters_alloc*(): ptr AVBufferSrcParameters_1644168004 {.
+      cdecl, importc: "av_buffersrc_parameters_alloc".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_parameters_alloc" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_parameters_set):
+  proc av_buffersrc_parameters_set*(ctx: ptr AVFilterContext_1644167952;
+                                    param: ptr AVBufferSrcParameters_1644168004): cint {.
+      cdecl, importc: "av_buffersrc_parameters_set".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_parameters_set" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_write_frame):
+  proc av_buffersrc_write_frame*(ctx: ptr AVFilterContext_1644167952;
+                                 frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "av_buffersrc_write_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_write_frame" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_add_frame):
+  proc av_buffersrc_add_frame*(ctx: ptr AVFilterContext_1644167952;
+                               frame: ptr AVFrame_1644167758): cint {.cdecl,
+      importc: "av_buffersrc_add_frame".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_add_frame" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_add_frame_flags):
+  proc av_buffersrc_add_frame_flags*(buffer_src: ptr AVFilterContext_1644167952;
+                                     frame: ptr AVFrame_1644167758; flags: cint): cint {.
+      cdecl, importc: "av_buffersrc_add_frame_flags".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_add_frame_flags" &
+        " already exists, not redeclaring")
+when not declared(av_buffersrc_close):
+  proc av_buffersrc_close*(ctx: ptr AVFilterContext_1644167952; pts: int64;
+                           flags: cuint): cint {.cdecl,
+      importc: "av_buffersrc_close".}
+else:
+  static :
+    hint("Declaration of " & "av_buffersrc_close" &
+        " already exists, not redeclaring")
+
+# A way to avoid UncheckedArrays and ptr's to ptr's in Nim
+{.compile: currentSourcePath.parentDir() / "cinclude" / "kyuickWrap.c".}
+proc getAVStream*(ctx: ptr AVFormatContext, index: cint): ptr AVStream {.importc.}

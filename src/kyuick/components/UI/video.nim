@@ -1,4 +1,4 @@
-import ffmpeg
+import ../../utils/rawFF
 import sdl2, sdl2/audio
 import os, strformat, times, math, asyncdispatch, locks, threadpool, times, terminal
 import ../kyuickObject
@@ -87,12 +87,12 @@ proc parseCodec*(stream: ptr AVStream): CodecData =
   return codecDat
 proc decodeAudio(dev: AudioDeviceID, resampler: ptr SwrContext, frame: AVFrame, aFrame: ptr AVFrame) =
   var dst_samples = 
-    frame.channels * av_rescale_rnd(swr_get_delay(resampler, frame.sample_rate) + frame.nb_samples, 44100, frame.sample_rate, AV_ROUND_DOWN)
+    frame.ch_layout.nb_channels * av_rescale_rnd(swr_get_delay(resampler, frame.sample_rate) + frame.nb_samples, 44100, frame.sample_rate, AV_ROUND_DOWN)
   var 
     audioBuf: ptr uint8 = nil
     buf: cint = 1
   discard av_samples_alloc(audioBuf.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1)
-  dst_samples = frame.channels * swr_convert(resampler, audioBuf.addr, dst_samples.cint, cast[ptr ptr uint8](frame.data.addr), frame.nb_samples)
+  dst_samples = frame.ch_layout.nb_channels * swr_convert(resampler, audioBuf.addr, dst_samples.cint, cast[ptr ptr uint8](frame.data.addr), frame.nb_samples)
   discard av_samples_fill_arrays(cast[ptr ptr uint8](aFrame[].data.addr), cast[ptr cint](aFrame.linesize.addr), audioBuf, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1)
   if audioBuf == nil: return
   av_free(audioBuf)
@@ -275,13 +275,13 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
   if w > -1 or h > -1:
     video.fBuffer = rect(x, y, w, h)
     video.doResize = true
-  dump video.audioCtx.channel_layout
+  #dump video.audioCtx.channel_layout
   dump video.audioCtx.sample_fmt
   dump video.audioCtx.sample_rate
   dump 1.0f / video.vidFPS
   dump video.vidFPS
-  video.resampler = swr_alloc_set_opts(nil, video.audioCtx.channel_layout.int64,
-    AV_SAMPLE_FMT_S32, 44100, video.audioCtx.channel_layout.int64, video.audioCtx.sample_fmt,
+  discard swr_alloc_set_opts2(video.resampler.addr, video.audioCtx.ch_layout.addr,
+    AV_SAMPLE_FMT_S32, 44100, video.audioCtx.ch_layout.addr, video.audioCtx.sample_fmt,
     video.audioCtx.sample_rate, 0, nil)
   discard swr_init(video.resampler)
   initLock(video.drawLock)

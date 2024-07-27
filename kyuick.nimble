@@ -12,6 +12,6 @@ requires "yaml"
 requires "https://github.com/vrienstudios/zippy"
 requires "https://github.com/ShujianDou/nim-epub"
 
-task buildR "Build and run":
+task build "build":
   withDir "src":
-    exec "nim c --run kyuick.nim"
+    exec "nim c -f --passL:\"-lavcodec -lswresample -lavutil -lavformat -lavdevice -lavfilter\" ./kyuick.nim"
