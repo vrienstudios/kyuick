@@ -207,7 +207,9 @@ proc fillQueues(video: Video) {.thread.} =
           continue
         if avcodec_send_packet(video.audioCtx, video.packet) < 0:
           echo "ERR SENDING PACKET"
-          continue
+          av_packet_free(video.packet.addr)
+          video.packet = av_packet_alloc()
+          break
         let idx = video.audioQueue.add av_frame_alloc()
         let f = avcodec_receive_frame(video.audioCtx, video.audioQueue[idx])
         if f == -11:
@@ -230,7 +232,9 @@ proc fillQueues(video: Video) {.thread.} =
           continue
         if avcodec_send_packet(video.videoCtx, video.packet) < 0:
           echo "ERR SENDING PACKET"
-          continue
+          av_packet_free(video.packet.addr)
+          video.packet = av_packet_alloc()
+          break
         #acquire(video.videoQueue.lock)
         let idx = video.videoQueue.add av_frame_alloc()
         #video.videoQueue.frames.add av_frame_alloc()
@@ -331,7 +335,29 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
   video.videoInfo = CodecData(idx: 0)
   video.aTFrame = av_frame_alloc()
   if w > -1 or h > -1:
-    video.fBuffer = rect(x, y, w, h)
+    var
+      cW: float = w.float
+      cH: float = h.float
+    var
+      wr: float = w.float / video.width.float
+      hr: float = h.float / video.height.float
+    if wr < 1 or hr < 1:
+      cW = (video.width.float * wr)
+      cH = (video.height.float * hr)
+      if wr > 1:
+        cW = cW - video.width.float
+      if hr > 1:
+        cH = cH - video.height.float
+    elif wr < hr:
+      cW = wr * video.width.float
+      cH = wr * video.height.float
+    else:
+      cW = hr * video.width.float
+      cH = hr * video.height.float
+    var nX = x
+    if cW < w.float:
+      nX = ((w.float / 2) - (cW / 2)).cint
+    video.fBuffer = rect(nX, y, cW.cint, cH.cint)
     video.doResize = true
   #dump video.audioCtx.channel_layout
   dump video.audioCtx.sample_fmt

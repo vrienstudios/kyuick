@@ -14,8 +14,8 @@ import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strform
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
-  WinWidth* = 1920
-  WinHeight* = 1080
+  WinWidth* = 1600
+  WinHeight* = 900
 var
   mainScene*: KyuickObject
   mainAuddev*: AudioDeviceID
@@ -97,10 +97,11 @@ proc initEngine*() =
 proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
     onInit()
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN or SDL_WINDOW_BORDERLESS)
   let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
+  #window.setFullscren(SDL_WINDOW_FULLSCREEN)
   showFPS()
   showFrameTime()
   showTotalMem()
@@ -167,6 +168,7 @@ proc usProvinceDetectionTest() =
   for n in provinces:
     mainScene.children.add n
 proc videoTest(file: string)
+var dstr: string = ""
 proc onVidEnd(video: Video) =
   echo video.returned
   if video.returned == true:
@@ -178,9 +180,10 @@ proc onVidEnd(video: Video) =
   mainScene.children.delete(idx)
   mainScene.renderSaved = false
   echo "deleted video"
-  videoTest("./ss.webm")
+  videoTest(dstr)
 proc videoTest(file: string) =
   echo "Loading Video Test"
+  dstr = file
   var
     filename: string = file
     tVideo: Video = Video()
