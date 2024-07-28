@@ -1,8 +1,8 @@
 import ../../utils/rawFF
 import sdl2, sdl2/audio
-import os, strformat, times, math, asyncdispatch, locks, threadpool, times, terminal
+import os, strformat, times, math, asyncdispatch, locks, times, terminal
 import ../kyuickObject
-import sugar
+import sugar, threadpool
 
 type 
     CodecData* = ref object of RootObj
@@ -11,12 +11,15 @@ type
       idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
+      frames_test: array[10, ptr AVFrame]
+      pos: int = 0
+      firstFilled: bool
       # Higher -> More Mem usage
       # Higher values help with not having choppy playback
       # and not having to skip frames to let buffer fill
       limit: int = 10
       lock: Lock
-      nb_packets: cint
+      free: bool
     Video* = ref object of KyuickObject
       videoQueue: PQueue
       audioQueue: PQueue
@@ -41,10 +44,46 @@ type
       canWaitThrd: int = 1
       endCallback*: proc(v: Video)
       auddev: ptr AudioDeviceID
-
+      qft: Lock
+      vlt: Lock
+      alt: Lock
+proc `[]`(queue: PQueue, idx: int): var ptr AVFrame =
+  if idx < 0:
+    return
+  return queue.frames_test[idx]
+proc `[]=`(queue: PQueue, idx: int, frame: ptr AVFrame) =
+  queue.frames_test[idx] = frame
+proc del*(queue: PQueue, pos: int) = 
+  acquire(queue.lock)
+  let frame = queue[pos]
+  if frame != nil:
+    av_frame_free(frame.addr)
+    queue[pos] = nil
+  if queue.pos != 0:
+    dec queue.pos
+  var idx = pos
+  while idx < queue.limit - 1:
+    queue[idx] = queue[idx + 1]
+    inc idx
+  release(queue.lock)
+proc add*(queue: PQueue, frame: ptr AVFrame): int =
+  acquire queue.lock
+  if queue.pos >= 998:
+    return -1
+  if queue[queue.pos] != nil:
+    av_frame_free(queue[queue.pos].addr)
+    queue[queue.pos] = frame
+  else:
+    queue[queue.pos] = frame
+  result = queue.pos
+  inc queue.pos
+  release(queue.lock)
 proc destroy*(v: Video) =
   # Stop modifications
-  echo "DESTROY"
+  echo "Awaiting Thread Finish"
+  acquire(v.qft)
+  acquire(v.vlt)
+  acquire(v.alt)
   acquire(v.drawLock)
   if v.destroyed == true:
     release(v.drawLock)
@@ -63,19 +102,24 @@ proc destroy*(v: Video) =
   v.audioQueue.frames = @[]
   release(v.videoQueue.lock)
   release(v.audioQueue.lock)
-  v.videoQueue = nil
-  v.audioQueue = nil
   if v.aTFrame != nil:
     av_frame_unref(v.aTFrame)
     av_frame_free(v.aTFrame.addr)
   swr_free(v.resampler.addr)
-  av_format_close_input(v.pFormatCtx.addr)
   destroyTexture(v.texture)
   if v.packet != nil:
     av_packet_unref(v.packet)
     av_packet_free(v.packet.addr)
   v.auddev = nil
+  av_format_close_input(v.pFormatCtx.addr)
+  deinitLock(v.videoQueue.lock)
+  deinitLock(v.audioQueue.lock)
+  #dealloc(v.videoQueue.addr)
+  #dealloc(v.audioQueue.addr)
   release(v.drawLock)
+  v.render = nil
+  deinitLock(v.drawLock)
+  echo "FINISHED DESTROY"
 proc updYUVTexture*(texture: TexturePtr, rect: ptr Rect, 
     yPlane: ptr uint8, yPitch: cint, 
     uPlane: ptr uint8, uPitch: cint,
@@ -97,119 +141,132 @@ proc decodeAudio(dev: AudioDeviceID, resampler: ptr SwrContext, frame: AVFrame, 
   if audioBuf == nil: return
   av_free(audioBuf)
 proc audioLoop(video: Video) {.thread.} =
+  acquire(video.alt)
   while video.isDone == false:
-    while video.audioQueue.frames.len > 0:
-      acquire(video.audioQueue.lock)
+    while video.audioQueue[0] != nil:
       #if video.videoQueue.frames[0] == nil: continue
       #if video.aTFrame == nil: continue
-      decodeAudio(video.auddev[], video.resampler, video.audioQueue.frames[0][], video.aTFrame)
+      decodeAudio(video.auddev[], video.resampler, video.audioQueue[0][], video.aTFrame)
       discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
-      if video.audioQueue.frames[0] != nil:
-        av_frame_free(video.audioQueue.frames[0].addr)
+      video.audioQueue.del(0)
       if video.aTFrame != nil:
         av_frame_free(video.aTFrame.addr)
         video.aTFrame = av_frame_alloc()
-      video.audioQueue.frames.delete(0)
-      #echo video.audioQueue.frames.len
-      release(video.audioQueue.lock)
-    sleep(1)
+    waitFor sleepAsync(1)
+  waitFor sleepAsync(20)
+  release(video.alt)
 proc videoLoop(video: Video) {.thread.} =
+  acquire(video.vlt)
   var aligns: int = 0
   while video.isDone == false:
-    while video.videoQueue.frames.len > 0:
+    while video.videoQueue[0] == nil and video.isDone == false:
+      waitFor sleepAsync(1)
+    while video.videoQueue[0] != nil:
       if video.startTime == 0:
         break
+      #acquire(video.videoQueue.lock)
       let 
-        frame = video.videoQueue.frames[0]
+        frame = video.videoQueue[0]
         bets = (video.fCounter.float64 * video.vidFPS.float64)
         bE = frame.best_effort_timestamp / 10000
         bDiff = -(bets - bE)
         cTime = epochTime() - video.startTime + bDiff
         diff = if bE < cTime: (cTime - bE) else: (cTime - bE)
+      var
         output = "dif $#   frame $#|Ots $# vs bts $# COMP $#\tvidTime $# | ECs $#" % [$diff, $video.fCounter, $bE, $bets, $bDiff, $cTime, $aligns]
       #video.startTime = epochTime()
       if diff < -0.01:
         # Track error in time tracking, and continue, 
         #          if we're too early for this frame.
-        #eraseLine(stdout)
-        #styledWriteLine(stdout, "Compensating for Diff ", fgGreen, $diff)
-        #cursorUp 1
-        #video.canWaitThrd = true
-        sleep(1)
+        release(video.videoQueue.lock)
+        waitFor sleepAsync(1)
         continue
       elif diff > 0 and video.fCounter > 0:
         # Can't fill buffers fast enough; disable buffer thread optimization
         # And skip frameC to try and delay
-        styledWriteLine(stdout, "ALIGN", fgGreen, $bets)
-        video.fCounter += 3
+        output = output & " OOS'd ($#)" % [$diff]
+        video.fCounter += 2
+        waitFor sleepAsync(10) #(diff * 1000).int
         video.canWaitThrd = 0
         inc aligns
       inc video.fCounter
       eraseLine(stdout)
       styledWriteLine(stdout, $output)
       cursorUp 1
-      acquire(video.videoQueue.lock)
-      av_frame_free(frame.addr)
-      video.videoQueue.frames.delete(0)
+      video.videoQueue.del(0)
       release(video.videoQueue.lock)
-      #echo video.videoQueue.frames.len
+      waitFor sleepAsync(5)
+  release(video.vlt)
 proc fillQueues(video: Video) {.thread.} =
+  acquire(video.qft)
   while av_read_frame(video.pFormatCtx, video.packet) >= 0:
     while true:
       # AUDIO
       if video.packet.stream_index.int == video.audioInfo.idx:
-        if video.audioQueue.frames.len > video.audioQueue.limit:
+        if video.audioQueue.pos > video.audioQueue.limit - 2:
           continue
         if avcodec_send_packet(video.audioCtx, video.packet) < 0:
           echo "ERR SENDING PACKET"
           continue
-        var vfs: ptr AVFrame = av_frame_alloc()
-        let f = avcodec_receive_frame(video.audioCtx, vfs)
+        let idx = video.audioQueue.add av_frame_alloc()
+        let f = avcodec_receive_frame(video.audioCtx, video.audioQueue[idx])
         if f == -11:
           # READ MORE
-          av_frame_free(vfs.addr)
+          video.videoQueue.del(idx)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
           break
         if f < 0:
-          av_frame_free(vfs.addr)
+          video.videoQueue.del(idx)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
           continue
-        acquire(video.audioQueue.lock)
-        video.audioQueue.frames.add(vfs)
         av_packet_free(video.packet.addr)
         video.packet = av_packet_alloc()
-        release(video.audioQueue.lock)
         break
       # VIDEO
       if video.packet.stream_index.int == video.videoInfo.idx:
-        if video.videoQueue.frames.len > video.videoQueue.limit:
+        if video.videoQueue.pos > video.videoQueue.limit - 2:
           continue
         if avcodec_send_packet(video.videoCtx, video.packet) < 0:
           echo "ERR SENDING PACKET"
           continue
-        var vfs: ptr AVFrame = av_frame_alloc()
-        let f = avcodec_receive_frame(video.videoCtx, vfs)
+        #acquire(video.videoQueue.lock)
+        let idx = video.videoQueue.add av_frame_alloc()
+        #video.videoQueue.frames.add av_frame_alloc()
+        let f = avcodec_receive_frame(video.videoCtx, video.videoQueue[idx])
         if f == -11:
           # READ MORE
-          av_frame_free(vfs.addr)
+          video.videoQueue.del(video.videoQueue.pos)
+          #video.videoQueue.frames.delete(video.videoQueue.frames.len - 1)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
+          release(video.videoQueue.lock)
           break
         if f < 0:
-          av_frame_free(vfs.addr)
+          #video.videoQueue.frames.delete(video.videoQueue.frames.len - 1)
+          video.videoQueue.del(video.videoQueue.pos)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
+          release(video.videoQueue.lock)
           continue
-        #acquire(video.videoQueue.lock)
-        video.videoQueue.frames.add(vfs)
+        #if video.videoQueue.free == true:
+        #  av_frame_free(video.videoQueue.frames[0].addr)
+        #  video.videoQueue.frames.delete(0)
+        #  video.videoQueue.free = false
+        #video.videoQueue.frames.add(vfs)
+        #av_frame_free(video.videoQueue.frames[0].addr)
         av_packet_free(video.packet.addr)
         video.packet = av_packet_alloc()
-        #release(video.videoQueue.lock)
+        release(video.videoQueue.lock)
+        break
+      av_packet_free(video.packet.addr)
+      video.packet = av_packet_alloc()
       break
-    sleep(video.canWaitThrd)
+    if video.canWaitThrd > 0:
+      waitFor sleepAsync(video.canWaitThrd)
   video.isDone = true
+  release(video.qft)
 proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
   var video = Video(obj)
   if video.renderSaved == false:
@@ -220,15 +277,16 @@ proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
     video.renderSaved = true
     video.startTime = epochTime()
   acquire(video.videoQueue.lock)
-  if video.isDone and video.videoQueue.frames.len == 0:
+  if video.isDone and video.videoQueue[0] == nil:
     release(video.videoQueue.lock)
     destroy(video)
     if video.endCallback != nil: video.endCallback(video)
     video.returned = true
     return
-  if video.videoQueue.frames.len > 0:
-    let frame = video.videoQueue.frames[0]
-    discard updYUVTexture(video.texture, video.rect.addr, frame.data[0], frame.linesize[0], frame.data[1], frame.linesize[1], frame.data[2], frame.linesize[2])
+  if video.videoQueue.frames_test.len > 0:
+    let frame = video.videoQueue[0]
+    if frame != nil:
+      discard updYUVTexture(video.texture, video.rect.addr, frame.data[0], frame.linesize[0], frame.data[1], frame.linesize[1], frame.data[2], frame.linesize[2])
   release(video.videoQueue.lock)
   if video.doResize:
     var p: Point = point(0, 0)
@@ -289,8 +347,10 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
   video.videoQueue = PQueue()
   initLock(video.audioQueue.lock)
   initLock(video.videoQueue.lock)
-  spawn fillQueues(video)
-  sleep(10)
-  spawn audioLoop(video)
+  initLock(video.qft)
+  initLock(video.vlt)
+  initLock(video.alt)
+  spawn fillQueues(video) #fillQueues(video)
   spawn videoLoop(video)
+  spawn audioLoop(video)
   return video

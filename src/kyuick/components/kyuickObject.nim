@@ -51,6 +51,9 @@ proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEve
   if this.onHoverStatusChange != nil:
     this.onHoverStatusChange(this, e)
 proc defaultRender*(renderer: RendererPtr, this: KyuickObject) =
+  if this.renderSaved == false:
+    this.renderSaved = true
+    return
   var idx: int = 0
   while idx < this.children.len:
     var child = this.children[idx]

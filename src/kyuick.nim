@@ -25,6 +25,9 @@ var
   canvasZoom: cint
   currentFrameRate*: float = 0
   currentFrameTime*: float = 0
+  currentTotalMem*: float = 0
+  currentOccMem*: float = 0
+  currentFreeMem*: float = 0
   inFocus: KyuickObject
   keyDownTracker = initTable[string, bool]()
   mouseXYTracker: tuple[x, y: cint] = (0, 0)
@@ -57,6 +60,24 @@ proc showFrameTime*() =
     newLabel(0, 18, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameTime.addr
   mainScene.children.add fpsc
+proc showTotalMem*() =
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var fpsc = 
+    newLabel(0, 36, "FPSC", [100, 200, 100, 255], ffont, cint(18))
+  fpsc.trackNum = currentTotalMem.addr
+  mainScene.children.add fpsc
+proc showOccMem*() =
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var fpsc = 
+    newLabel(0, 52, "FPSC", [100, 200, 100, 255], ffont, cint(18))
+  fpsc.trackNum = currentOccMem.addr
+  mainScene.children.add fpsc
+proc showFreeMem*() =
+  var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
+  var fpsc = 
+    newLabel(0, 70, "FPSC", [100, 200, 100, 255], ffont, cint(18))
+  fpsc.trackNum = currentFreeMem.addr
+  mainScene.children.add fpsc
 proc initEngine*() =
   echo "Init Kyuick (v." & $manualVersion & ") Engine"
   sdl2.init(INIT_EVERYTHING)
@@ -82,6 +103,9 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
   var endCounter = getPerformanceCounter()
   showFPS()
   showFrameTime()
+  showTotalMem()
+  showOccMem()
+  showFreeMem()
   while true:
     startCounter = getPerformanceCounter()
     var event = defaultEvent
@@ -120,6 +144,9 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     endCounter = getPerformanceCounter()
     currentFrameRate = (1 / ((endCounter - startCounter).float /
       getPerformanceFrequency().float))
+    currentTotalMem = getTotalMem().float
+    currentOccMem = getOccupiedMem().float
+    currentFreeMem = getFreeMem().float
     #echo currentFrameRate
     # Cap
     #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
@@ -149,8 +176,9 @@ proc onVidEnd(video: Video) =
     if mainScene.children[idx] == video: break
     inc idx
   mainScene.children.delete(idx)
+  mainScene.renderSaved = false
   echo "deleted video"
-  #videoTest()
+  videoTest("./ss.webm")
 proc videoTest(file: string) =
   echo "Loading Video Test"
   var
