@@ -11,13 +11,13 @@ type
       idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
-      frames_test: array[10, ptr AVFrame]
+      frames_test: array[100, ptr AVFrame]
       pos: int = 0
       firstFilled: bool
       # Higher -> More Mem usage
       # Higher values help with not having choppy playback
       # and not having to skip frames to let buffer fill
-      limit: int = 10
+      limit: int = 100
       lock: Lock
       free: bool
     Video* = ref object of KyuickObject
@@ -129,29 +129,33 @@ proc parseCodec*(stream: ptr AVStream): CodecData =
   codecDat.params = stream.codecpar[]
   codecDat.codec = avcodec_find_decoder(stream.codecpar.codec_id)
   return codecDat
-proc decodeAudio(dev: AudioDeviceID, resampler: ptr SwrContext, frame: AVFrame, aFrame: ptr AVFrame) =
-  var dst_samples = 
-    frame.ch_layout.nb_channels * av_rescale_rnd(swr_get_delay(resampler, frame.sample_rate) + frame.nb_samples, 44100, frame.sample_rate, AV_ROUND_DOWN)
-  var 
-    audioBuf: ptr uint8 = nil
-    buf: cint = 1
-  discard av_samples_alloc(audioBuf.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1)
-  dst_samples = frame.ch_layout.nb_channels * swr_convert(resampler, audioBuf.addr, dst_samples.cint, cast[ptr ptr uint8](frame.data.addr), frame.nb_samples)
-  discard av_samples_fill_arrays(cast[ptr ptr uint8](aFrame[].data.addr), cast[ptr cint](aFrame.linesize.addr), audioBuf, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1)
-  if audioBuf == nil: return
-  av_free(audioBuf)
 proc audioLoop(video: Video) {.thread.} =
   acquire(video.alt)
   while video.isDone == false:
     while video.audioQueue[0] != nil:
-      #if video.videoQueue.frames[0] == nil: continue
-      #if video.aTFrame == nil: continue
-      decodeAudio(video.auddev[], video.resampler, video.audioQueue[0][], video.aTFrame)
-      discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
-      video.audioQueue.del(0)
+      var
+        dst_samples = video.audioQueue[0].ch_layout.nb_channels * av_rescale_rnd(swr_get_delay(video.resampler, video.audioQueue[0].sample_rate) + video.audioQueue[0].nb_samples, 44100, video.audioQueue[0].sample_rate, AV_ROUND_DOWN)
+        audioBuffer: ptr uint8 = nil
+        buf: cint = 1
+      if av_samples_alloc(audioBuffer.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) < 0:
+        video.audioQueue.del(0)
+        if audioBuffer != nil:
+          av_free(audioBuffer)
+        break
+      dst_samples = video.audioQueue[0].ch_layout.nb_channels * swr_convert(video.resampler, audioBuffer.addr, dst_samples.cint, cast[ptr ptr uint8](video.audioQueue[0].data.addr), video.audioQueue[0].nb_samples)
+      if av_samples_fill_arrays(cast[ptr ptr uint8](video.aTFrame[].data.addr), cast[ptr cint](video.aTFrame.linesize.addr), audioBuffer, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) < 0:
+        video.audioQueue.del(0)
+        if video.aTFrame != nil:
+          av_frame_free(video.aTFrame.addr)
+        video.aTFrame = av_frame_alloc()
+        break
+      if audioBuffer != nil:
+        av_free(audioBuffer)
       if video.aTFrame != nil:
+        discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
         av_frame_free(video.aTFrame.addr)
         video.aTFrame = av_frame_alloc()
+      video.audioQueue.del(0)
     waitFor sleepAsync(1)
   waitFor sleepAsync(20)
   release(video.alt)
@@ -341,19 +345,30 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
     var
       wr: float = w.float / video.width.float
       hr: float = h.float / video.height.float
+    dump wr
+    dump hr
     if wr < 1 or hr < 1:
       cW = (video.width.float * wr)
       cH = (video.height.float * hr)
-      if wr > 1:
-        cW = cW - video.width.float
-      if hr > 1:
-        cH = cH - video.height.float
+      if wr < 1 and hr < 1:
+        cW = (video.width.float * hr)
+        cH = (video.height.float * wr)
+      elif wr < 1:
+        cW = cW #- (video.width.float * mRatio)
+        cH = (video.height.float * wr)
+      elif hr < 1:
+        cW = (video.width.float * hr)
+        cH = cH #(video.height.float * mRatio)
+      dump cW
+      dump cH
     elif wr < hr:
       cW = wr * video.width.float
       cH = wr * video.height.float
     else:
       cW = hr * video.width.float
       cH = hr * video.height.float
+      dump cW
+      dump cH
     var nX = x
     if cW < w.float:
       nX = ((w.float / 2) - (cW / 2)).cint

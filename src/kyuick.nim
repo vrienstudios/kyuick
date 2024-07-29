@@ -14,8 +14,8 @@ import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strform
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
-  WinWidth* = 1600
-  WinHeight* = 900
+  WinWidth* = 2560
+  WinHeight* = 1440
 var
   mainScene*: KyuickObject
   mainAuddev*: AudioDeviceID
