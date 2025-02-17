@@ -14,8 +14,8 @@ import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strform
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
-  WinWidth* = 2560
-  WinHeight* = 1440
+  WinWidth* = 1920#2560
+  WinHeight* = 1080#1440
 var
   mainScene*: KyuickObject
   mainAuddev*: AudioDeviceID
@@ -48,6 +48,19 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
       return
     else:
       return
+proc mouseMove(e: MouseMotionEventPtr) =
+  var obj = mainScene.getClickable(e.x, e.y)
+  if obj == nil: 
+    if inFocus != nil:
+      inFocus.hoverStatus = (false, e)
+    return
+  if inFocus != nil:
+    if inFocus == obj: 
+      inFocus.hoverStatus = (true, e)
+      return
+  obj.hoverStatus = (true, e)
+  inFocus.hoverStatus = (false, e)
+  inFocus = obj
 proc showFPS*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
   var fpsc = 
@@ -92,21 +105,22 @@ proc initEngine*() =
     audwant.freq = (44100).cint
     audwant.format = AUDIO_S32
     audwant.channels = 2
-    mainAuddev = openAudioDevice(getAudioDeviceName(0, 0), 0, addr audwant, addr audhave, 0)
+    mainAuddev = openAudioDevice(getAudioDeviceName(1, 0), 0, addr audwant, addr audhave, 0)
     mainAuddev.pauseAudioDevice 0
 proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
     onInit()
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN or SDL_WINDOW_BORDERLESS)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
   let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
   #window.setFullscren(SDL_WINDOW_FULLSCREEN)
-  showFPS()
-  showFrameTime()
-  showTotalMem()
-  showOccMem()
-  showFreeMem()
+  when defined(perf):
+    showFPS()
+    showFrameTime()
+    showTotalMem()
+    showOccMem()
+    showFreeMem()
   while true:
     startCounter = getPerformanceCounter()
     var event = defaultEvent
@@ -119,15 +133,16 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
         of MouseButtonUp:
           mousePress(event.button, false)
         of MouseMotion:
-          continue
-          #mouseMove(event.motion)
+          mouseMove(event.motion)
         of KeyDown:
-          echo event.key.keysym.scancode
-          if inFocus != nil and inFocus.onKeyDown != nil:
+          echo $event.key.keysym
+          if inFocus != nil and inFocus.onKeyDown != nil and not (inFocus of all.TextInput):
             inFocus.onKeyDown(inFocus, $event.key.keysym.scancode)
           if inFocus of all.TextInput:
             if $event.key.keysym.scancode == "SDL_SCANCODE_BACKSPACE":
               all.TextInput(inFocus).remove()
+            elif event.key.keysym.sym > 0 and event.key.keysym.sym < 255:
+              inFocus.onKeyDown(inFocus, (if event.key.keysym.modstate == 1 or event.key.keysym.modstate == 2: ($(chr)event.key.keysym.sym).toUpper() else: $(chr)event.key.keysym.sym))
           keyDownTracker[$event.key.keysym.scancode] = true
         of KeyUp:
           if isDown("SDL_SCANCODE_LCTRL") and isDown("SDL_SCANCODE_C"):
@@ -154,10 +169,18 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     #echo GC_getStatistics()
     #echo $len(screenObjects)
 import macros
-proc defTest() =
-  var mapC = openMapEditorForTile(fontTracker, WinWidth, WinHeight)
-  mainScene = mapC
-  mapC.render = defaultRender
+when defined(Create):
+  #INTERNALS
+  import kyuick/internalTools/uiMaker
+  proc defTest() =
+    var uic = createuiCon(fontTracker, WinWidth, WinHeight)
+    mainScene = uic
+    uic.render = defaultRender
+else:
+  proc defTest() =
+    var mapC = openMapEditorForTile(fontTracker, WinWidth, WinHeight)
+    mainScene = mapC
+    mapC.render = defaultRender
 proc provinceBuilder*() =
   let data = buildExampleProvinces()
   dumpProvinceDataToFile(data, "pdat1")
@@ -192,6 +215,11 @@ proc videoTest(file: string) =
   video = tVideo.addr
   mainScene.children.add tVideo
 when isMainModule:
+  let nowStr = $now()
+  var logFile =open("/dev/null")#fmt"{getAppDir()}/logs/{nowStr}.txt", fmWrite)
+  echo fmt"See ./logs/{nowStr}.txt for log details"
+  #stdout = logFile
+  echo fmt"Compiled Nim Version: {NimVersion} ran on {nowStr}"
   initEngine()
   mainScene = 
     uiCon KyuickObject:
@@ -210,5 +238,6 @@ when isMainModule:
         inc pidx
         videoTest(paramStr(pidx))
       else:
+        defTest()
         continue
   startGameLoop("tester")

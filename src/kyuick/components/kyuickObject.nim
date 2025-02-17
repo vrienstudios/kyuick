@@ -42,10 +42,11 @@ proc hover*(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
   obj.onHoverStatusChange(obj, e)
 proc hoverStatus*(this: KyuickObject): bool = return this.hoverStatus
 proc `hoverStatus=`*(this: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr]) =
+  if this == nil: return
   if e[0] == this.hoverStatus and this.passthrough == false or this.enabled == false:
     return
-  this.renderSaved = false
-  this.texture.destroy()
+  #this.renderSaved = false
+  #this.texture.destroy()
   this.hoverStatus = e[0]
   this.focused = e[0]
   if this.onHoverStatusChange != nil:

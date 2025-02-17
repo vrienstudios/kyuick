@@ -31,8 +31,9 @@ proc renderTextInput(renderer: RendererPtr, obj: KyuickObject) =
     renderIndexLine(renderer, textInput)
     return
   textInput.rect = rect(cint(obj.x), cint(obj.y), cint(obj.width), cint(obj.height))
-  renderLabel(renderer, textInput.textField)
+  echo "X $# Y $# W $# H $#" % [$obj.x, $obj.y, $obj.width, $obj.height]
   renderer.fillRect(textInput.rect)
+  renderLabel(renderer, textInput.textField)
   renderIndexLine(renderer, textInput)
   textInput.renderSaved = true
 proc add*(this: TextInput, chr: char) =
@@ -49,10 +50,12 @@ proc add*(this: TextInput, chr: char) =
   this.cLength.insert(w, this.cursorPosition)
   inc this.cursorPosition
 proc remove*(this: TextInput) =
+  echo "REMOVE!"
   if len(this.textField.text) == 0:
     return
   if this.cursorPosition == 0:
     return
+  echo this.cursorPosition
   if this.cursorPosition >= len(this.textField.text):
     this.cursorPosition = len(this.textField.text)
   this.cLength.delete(this.cursorPosition - 1)
@@ -92,10 +95,12 @@ proc keyDown*(obj: KyuickObject, scancode: string) =
     if this.cursorPosition == this.cLength.len: return
     inc this.cursorPosition
     this.updateCalcLength()
+  else:
+    this.add(scancode[^1])
   return
 
 proc newTextInput*(x, y, width, height: cint, backgroundColor: array[4, int] = [255, 255, 255, 255], 
-    text: string, foregroundColor: array[4, int] = [0, 0, 0, 255],
+    text: string = "", foregroundColor: array[4, int] = [0, 0, 0, 255],
     font: FontPtr, fontSize: cint): TextInput =
   var tInput: Label =
     uiGen Label:
@@ -113,8 +118,13 @@ proc newTextInput*(x, y, width, height: cint, backgroundColor: array[4, int] = [
       onLeftClick defaultOnLeftClick
       onKeyDown keyDown
       cursorPosition len(text)
+      #rect rect(x, y, width, height)
       multiLine false
       characterLimit 20
+      width width
+      height height
+      x x
+      y y
   var w, h: cint = 0
   for chr in text:
     discard ttf.sizeText(obj.textField.font, cstring($chr), addr w, addr h)

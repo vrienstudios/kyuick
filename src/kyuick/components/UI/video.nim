@@ -4,6 +4,7 @@ import os, strformat, times, math, asyncdispatch, locks, times, terminal
 import ../kyuickObject
 import sugar, threadpool
 
+const frameLim: int = 100
 type 
     CodecData* = ref object of RootObj
       params*: AVcodecParameters
@@ -11,13 +12,13 @@ type
       idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
-      frames_test: array[100, ptr AVFrame]
+      frames_test: array[frameLim, ptr AVFrame]
       pos: int = 0
       firstFilled: bool
       # Higher -> More Mem usage
       # Higher values help with not having choppy playback
       # and not having to skip frames to let buffer fill
-      limit: int = 100
+      limit: int = frameLim     
       lock: Lock
       free: bool
     Video* = ref object of KyuickObject
@@ -41,7 +42,7 @@ type
       isDone: bool
       destroyed: bool
       returned*: bool
-      canWaitThrd: int = 1
+      canWaitThrd: int = 0
       endCallback*: proc(v: Video)
       auddev: ptr AudioDeviceID
       qft: Lock
@@ -194,9 +195,10 @@ proc videoLoop(video: Video) {.thread.} =
         video.canWaitThrd = 0
         inc aligns
       inc video.fCounter
-      eraseLine(stdout)
-      styledWriteLine(stdout, $output)
-      cursorUp 1
+      #eraseLine(stdout)
+      #styledWriteLine(stdout, $output)
+      #cursorUp 1
+      echo output
       video.videoQueue.del(0)
       release(video.videoQueue.lock)
       waitFor sleepAsync(5)
@@ -380,7 +382,7 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
   dump 1.0f / video.vidFPS
   dump video.vidFPS
   discard swr_alloc_set_opts2(video.resampler.addr, video.audioCtx.ch_layout.addr,
-    AV_SAMPLE_FMT_S32, 44100, video.audioCtx.ch_layout.addr, video.audioCtx.sample_fmt,
+    AV_SAMPLE_FMT_S32, 44800, video.audioCtx.ch_layout.addr, video.audioCtx.sample_fmt,
     video.audioCtx.sample_rate, 0, nil)
   discard swr_init(video.resampler)
   initLock(video.drawLock)

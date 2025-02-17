@@ -1,12 +1,11 @@
-import ./gameObjects
-import ../UI/all
-import ../scene
-import ../kyuickObject
+import ../components/UI/all
+import ../components/scene
+import ../components/kyuickObject
 # Grids
-import ../Grids/verticalGrid
-import ../Grids/horizontalGrid
+import ../components/Grids/verticalGrid
+import ../components/Grids/horizontalGrid
 # Font
-import ../../utils/fontUtils
+import ../utils/fontUtils
 # SDL2
 import sdl2
 import sdl2/ttf
@@ -14,33 +13,68 @@ import sdl2/image
 # STD
 import os
 
-type MapEditor* = ref object of KyuickObject
-  tileFolder*: string
-  cMap*: Map
+type uiMaker* = ref object of KyuickObject
   mainScene*: Scene
+  fontTracker*: FontTracker
   aux*: Scene
   menuPanel*: Menubar
   leftPanel*: VerticalGrid
   mapPanel*: Scene
 
-proc renderMapEditor*(renderer: RendererPtr, obj: KyuickObject) =
-  let editor = MapEditor(obj)
+proc renderuiMaker*(renderer: RendererPtr, obj: KyuickObject) =
+  let editor = uiMaker(obj)
   renderer.render(editor.menuPanel)
+  render(editor.mainScene, renderer)
   return
 proc processOpenning(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   return
 proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
-  return
-proc openNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
-  echo "AA"
-  return
   var 
     ourLabel = Label(obj)
-    dad = MapEditor(ourLabel.parent)
+    dad = (uiMaker)ourLabel.parent
+    layout =
+      uiCon VerticalGrid:
+        x 0
+        y 140
+        width dad.width
+        height 200
+        backgroundColor [66, 66, 255, 255]
+        render renderVert
+        rect rect(0, 140, dad.width, 200)
+        passthrough true
+    font = dad.fontTracker.getFont("liberation-sans.ttf", cint(18))
+    tInput =
+      uiGen TextInput:
+        x 0
+        y 140
+        width dad.width
+        height 20
+        font font
+        text "ooga booga"
+        fontSize 18
+    confirm =
+      uiGen Button:
+        x 0
+        y 0
+        w 200
+        h 100
+        text "OK"
+        font font
+        fontSize 18
+        backgroundColor [0, 0, 255, 255]
+        foregroundColor [255,255,255,255]
+  dad.aux = dad.mainScene
+  layout.add tInput
+  #layout.add confirm
+  dad.children.add layout
+proc openNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  var 
+    ourLabel = Label(obj)
+    dad = uiMaker(ourLabel.parent)
     layout = VerticalGrid()
     nScene = Scene()
   dad.aux = dad.mainScene
-  for file in walkFiles("./assets/kmaps/*.kmap"):
+  for file in walkFiles("./assets/ui/*.ui.yml"):
     var labli = ourLabel.clone(0, 0, file)
     labli.onLeftClick = processOpenning
     layout.add labli
@@ -60,7 +94,7 @@ proc labelHover(obj: KyuickObject, e: (bool, MouseMotionEventPtr)) =
 proc createNewMapPack*(name: string) =
   return
 # Fill Screen
-proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
+proc buildMenuBar(fonts: var FontTracker, w, h: cint, dada: KyuickObject): Menubar =
   var menuPanel: Menubar = newMenubar(x = 0, y = 100, width = w, height = 40)
   let font = fonts.getFont("liberation-sans.ttf", cint(18))
   block menuItems:
@@ -86,22 +120,28 @@ proc buildMenuBar(fonts: var FontTracker, w, h: cint): Menubar =
     
     lCreate.onLeftClick = createNew
     lCreate.onHoverStatusChange = labelHover
-    
+    lCreate.parent = dada
+
     lOpen.onLeftClick = openNow
     lOpen.onHoverStatusChange = labelHover
+    lOpen.parent = dada
 
     lSave.onLeftClick = saveNow
     lSave.onHoverStatusChange = labelHover
+    lSave.parent = dada
 
     menuPanel.add lCreate
     menuPanel.add lOpen
     menuPanel.add lSave
   return menuPanel
-proc openMapEditorForTile*(fonts: var FontTracker, width, height: cint): MapEditor =
-  var editor = MapEditor()
-  editor.render = renderMapEditor
-  editor.tileFolder = "./assets/tiles/"
-  editor.menuPanel = buildMenuBar(fonts, width, height)
+proc createuiCon*(fonts: var FontTracker, width, height: cint): uiMaker =
+  var editor = uiMaker()
+  editor.passthrough = true
+  editor.width = width
+  editor.height = height
+  editor.fontTracker = fonts
+  editor.render = renderuiMaker
+  editor.menuPanel = buildMenuBar(fonts, width, height, editor)
   editor.mainScene = Scene()
   editor.children.add editor.menuPanel
   #editor.leftPanel = newVerticalGrid(0, 0, 100, height)
