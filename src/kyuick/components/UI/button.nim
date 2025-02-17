@@ -27,6 +27,15 @@ proc renderButton*(renderer: RendererPtr, obj: KyuickObject) =
     button.backgroundColor[2], button.backgroundColor[3]))
   renderer.fillRect(r)
   button.rect = r
+  let
+    x = button.x
+    y = button.y
+    w = button.width
+    h = button.height
+  if button.textAlign == textAlignment.center:
+    button.btnLabel.x = (x + cint(w / 2)) - cint(button.btnLabel.width / 2)
+    button.btnLabel.y = (y + cint(h / 2)) - cint(button.btnLabel.height / 2)
+  button.btnLabel.renderSaved = false
   renderLabel(renderer, button.btnLabel)
   button.renderSaved = true
 

@@ -14,11 +14,13 @@ type VerticalGrid* = ref object of KyuickObject
   focusedObj: KyuickObject
 
 proc add*(this: VerticalGrid, obj: KyuickObject) =
-  #if this.totalH + obj.height > this.height:
-  #  return
-  obj.x = this.totalW
-  obj.y = obj.y
-  this.totalH = this.totalH + obj.y
+  if this.totalH + obj.height > this.height:
+    return
+  obj.x = this.x + this.totalW
+  obj.y = this.y + this.totalH + this.yPad
+  this.totalH = this.totalH + obj.height
+  obj.width = this.width
+  obj.renderSaved = false
   this.children.add obj
 proc renderVert*(renderer: RendererPtr, obj: KyuickObject) =
   let vrrr = VerticalGrid(obj)

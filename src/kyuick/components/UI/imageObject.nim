@@ -27,5 +27,10 @@ proc renderImage*(renderer: RendererPtr, obj: KyuickObject) =
   return
 
 proc newImageObject*(x, y, width, height: cint, dirOrSheet: string): ImageObject =
-  return ImageObject(x: x, y: y, width: width, height: height, imagePath: dirOrSheet,
-    render: renderImage)
+  return uiCon ImageObject:
+    x x
+    y y
+    width width
+    height height
+    imagePath dirOrSheet
+    render renderImage

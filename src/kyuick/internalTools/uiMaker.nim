@@ -42,30 +42,32 @@ proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
         render renderVert
         rect rect(0, 140, dad.width, 200)
         passthrough true
-    font = dad.fontTracker.getFont("liberation-sans.ttf", cint(18))
+    font = dad.fontTracker.getFont("liberation-sans.ttf", cint(20))
     tInput =
       uiGen TextInput:
-        x 0
-        y 140
-        width dad.width
-        height 20
+        x layout.x
+        y layout.y + 10
+        width 0
+        height 30
         font font
-        text "ooga booga"
+        text ""
+        backgroundColor [200, 255, 255, 255]
         fontSize 18
     confirm =
       uiGen Button:
         x 0
         y 0
-        w 200
+        w 0
         h 100
         text "OK"
         font font
         fontSize 18
-        backgroundColor [0, 0, 255, 255]
+        backgroundColor [0, 255, 255, 255]
         foregroundColor [255,255,255,255]
+        textAlign textAlignment.center
   dad.aux = dad.mainScene
   layout.add tInput
-  #layout.add confirm
+  layout.add confirm
   dad.children.add layout
 proc openNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var 
@@ -144,11 +146,4 @@ proc createuiCon*(fonts: var FontTracker, width, height: cint): uiMaker =
   editor.menuPanel = buildMenuBar(fonts, width, height, editor)
   editor.mainScene = Scene()
   editor.children.add editor.menuPanel
-  #editor.leftPanel = newVerticalGrid(0, 0, 100, height)
-
-  # Read/Load all assets.
-  # While under Dev, assume assets are under ./assets/*
-  # Setup UI
-  # Load assets OR setup province fields on leftPanel
-  # Setup callback
   return editor
