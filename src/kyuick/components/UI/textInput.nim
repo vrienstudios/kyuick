@@ -33,6 +33,8 @@ proc renderTextInput(renderer: RendererPtr, obj: KyuickObject) =
   textInput.rect = rect(cint(obj.x), cint(obj.y), cint(obj.width), cint(obj.height))
   echo "X $# Y $# W $# H $#" % [$obj.x, $obj.y, $obj.width, $obj.height]
   renderer.fillRect(textInput.rect)
+  textInput.textField.x = textInput.x
+  textInput.textField.y = textInput.y
   renderLabel(renderer, textInput.textField)
   renderIndexLine(renderer, textInput)
   textInput.renderSaved = true

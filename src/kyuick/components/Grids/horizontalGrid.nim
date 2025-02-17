@@ -12,11 +12,12 @@ type HorizontalGrid* = ref object of KyuickObject
   focusedObj: KyuickObject
 
 proc add*(this: HorizontalGrid, obj: KyuickObject) =
-  if this.totalW + obj.width > this.width:
-    return
-  obj.x = this.totalW
-  obj.y = this.y + this.topPad
+  #if this.totalW + obj.width > this.width:
+  #  return
+  obj.x = this.x + this.totalW
+  obj.y = this.y
   this.totalW = this.totalW + obj.width + this.pad
+  obj.renderSaved = false
   this.children.add obj
 proc renderHor*(renderer: RendererPtr, obj: KyuickObject) =
   let hor = HorizontalGrid(obj)

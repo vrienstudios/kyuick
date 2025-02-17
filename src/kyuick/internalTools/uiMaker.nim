@@ -34,40 +34,57 @@ proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
     dad = (uiMaker)ourLabel.parent
     layout =
       uiCon VerticalGrid:
-        x 0
-        y 140
-        width dad.width
-        height 200
-        backgroundColor [66, 66, 255, 255]
+        x cint(dad.width / 2 - 200)
+        y cint(dad.height / 2 - 50)
+        width 400
+        height 60
+        backgroundColor [255, 255, 255, 255]
         render renderVert
-        rect rect(0, 140, dad.width, 200)
+        rect rect(cint(dad.width / 2 - 200), cint(dad.height / 2 - 50), 400, 60)
         passthrough true
     font = dad.fontTracker.getFont("liberation-sans.ttf", cint(20))
+    textLayout =
+      uiGen HorizontalGrid:
+        x 0
+        y 0
+        width layout.width
+        height 30
+    inputHere =
+      uiGen "Label":
+        x 0
+        y 0
+        font font
+        text "name:"
+        fontSize 20
     tInput =
       uiGen TextInput:
-        x layout.x
-        y layout.y + 10
-        width 0
+        x 0
+        y 0
+        width textLayout.width - inputHere.width - 10
         height 30
         font font
-        text ""
-        backgroundColor [200, 255, 255, 255]
-        fontSize 18
+        text "text here"
+        backgroundColor [200, 200, 200, 255]
+        fontSize 20
     confirm =
       uiGen Button:
         x 0
         y 0
         w 0
-        h 100
+        h 30
         text "OK"
         font font
-        fontSize 18
-        backgroundColor [0, 255, 255, 255]
+        fontSize 20
+        backgroundColor [40, 40, 40, 255]
         foregroundColor [255,255,255,255]
         textAlign textAlignment.center
   dad.aux = dad.mainScene
-  layout.add tInput
+  layout.add textLayout
+  textLayout.add inputHere
+  textLayout.add tInput
+  tInput.textField.renderSaved = false
   layout.add confirm
+  confirm.btnLabel.renderSaved = false
   dad.children.add layout
 proc openNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var 
