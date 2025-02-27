@@ -14,7 +14,7 @@ type
     noRen*: bool
     # optionals
     hoverStatus: bool
-    enabled: bool = true
+    enabled*: bool = true
     passthrough*: bool
     autoFocusable*: bool
     focused*: bool

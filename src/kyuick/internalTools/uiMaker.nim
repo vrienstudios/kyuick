@@ -33,7 +33,7 @@ proc confirm_onLeftClick(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var
     ourBtn = Button(obj)
     dada = ourBtn.parent
-  saveUIElement(dada, "confirmNameDialog")
+  discard saveUIElement(dada, "confirmNameDialog")
 proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var 
     ourLabel = Label(obj)
