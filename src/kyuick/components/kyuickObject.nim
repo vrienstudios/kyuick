@@ -1,8 +1,11 @@
 import sdl2
 import ../utils/utils
+import json
 export macroUtils
 type
   KyuickObject* = ref object of RootObj
+    typ*: string
+    id*: string
     parent*: KyuickObject
     children*: seq[KyuickObject]
     # Dimensions
@@ -28,6 +31,20 @@ type
     onLeftClick*: proc(obj: KyuickObject, mouseEvent: MouseButtonEventPtr)
     onKeyDown*: proc(obj: KyuickObject, scancode: string)
     onHoverStatusChange*: proc(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr])
+proc `%`*(r: Rect): JsonNode =
+  result = %[r.x, r.y, r.w, r.h]
+proc `%`*(r: TexturePtr): JsonNode =
+  result = JsonNode(kind: JBool, bval: r != nil)
+proc `%`*(r: proc(renderer: RendererPtr, obj: KyuickObject)): JsonNode =
+  result = JsonNode(kind: JBool, bval: r != nil)
+#proc `%`*(r: proc(renderer: RendererPtr, obj: KyuickObject)): JsonNode =
+#  result = %nil
+proc `%`*(r: proc(obj: KyuickObject, mouseEvent: MouseButtonEventPtr)): JsonNode =
+  result = JsonNode(kind: JBool, bval: r != nil)
+proc `%`*(r: proc(obj: KyuickObject, scancode: string)): JsonNode =
+  result = JsonNode(kind: JBool, bval: r != nil)
+proc `%`*(r: proc(obj: KyuickObject, e: tuple[b: bool, mouse: MouseMotionEventPtr])): JsonNode =
+  result = JsonNode(kind: JBool, bval: r != nil)
 proc render*(renderer: RendererPtr, obj: KyuickObject) =
   if obj.hoverStatus and obj.hoverRender != nil:
     obj.hoverRender(renderer, obj)

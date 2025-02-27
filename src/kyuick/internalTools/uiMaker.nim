@@ -6,6 +6,7 @@ import ../components/Grids/verticalGrid
 import ../components/Grids/horizontalGrid
 # Font
 import ../utils/fontUtils
+import ../utils/uiUtil
 # SDL2
 import sdl2
 import sdl2/ttf
@@ -28,6 +29,11 @@ proc renderuiMaker*(renderer: RendererPtr, obj: KyuickObject) =
   return
 proc processOpenning(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   return
+proc confirm_onLeftClick(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  var
+    ourBtn = Button(obj)
+    dada = ourBtn.parent
+  saveUIElement(dada, "confirmNameDialog")
 proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var 
     ourLabel = Label(obj)
@@ -79,13 +85,19 @@ proc createNew(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
         foregroundColor [255,255,255,255]
         textAlign textAlignment.center
   dad.aux = dad.mainScene
+  confirm.parent = layout
   layout.add textLayout
   textLayout.add inputHere
   textLayout.add tInput
   tInput.textField.renderSaved = false
+  confirm.onLeftClick = confirm_onLeftClick
   layout.add confirm
   confirm.btnLabel.renderSaved = false
   dad.children.add layout
+proc elementSelector(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  return
+proc uiDesigner(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
+  return
 proc openNow(obj: KyuickObject, mouseEvent: MouseButtonEventPtr) =
   var 
     ourLabel = Label(obj)

@@ -24,6 +24,10 @@ macro uiCon*(uiType, body: untyped): untyped =
     expreq.add newIdentNode($node[0])
     expreq.add node[1]
     construct.add expreq
+  var rtypNode = newNimNode(nnkExprColonExpr)
+  rtypNode.add newIdentNode("typ")
+  rtypNode.add newLit(uiName)
+  construct.add rtypNode
   result.add construct
 macro uiGen*(uiType, body: untyped): untyped =
   var uiName: string = ""

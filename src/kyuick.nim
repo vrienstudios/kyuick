@@ -141,6 +141,7 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
           if inFocus of all.TextInput:
             if $event.key.keysym.scancode == "SDL_SCANCODE_BACKSPACE":
               all.TextInput(inFocus).remove()
+            # quick hack to reimplement text input to text fields
             elif event.key.keysym.sym > 0 and event.key.keysym.sym < 255:
               inFocus.onKeyDown(inFocus, (if event.key.keysym.modstate == 1 or event.key.keysym.modstate == 2: ($(chr)event.key.keysym.sym).toUpper() else: $(chr)event.key.keysym.sym))
           keyDownTracker[$event.key.keysym.scancode] = true
@@ -151,8 +152,6 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
         else:
           continue
     let cB = cpuTime()
-    #frameBufferController()
-    #renderer.setScale(0.5, 0.5)
     renderer.clear()
     mainScene.render(renderer, mainScene)
     renderer.present()
@@ -163,11 +162,6 @@ proc startGameLoop*(name: string, onInit: proc() = nil) =
     currentTotalMem = getTotalMem().float
     currentOccMem = getOccupiedMem().float
     currentFreeMem = getFreeMem().float
-    #echo currentFrameRate
-    # Cap
-    #delay uint32(floor((100.0f - (endCounter.float - startCounter.float)/(getPerformanceFrequency().float * 1000.0f))))
-    #echo GC_getStatistics()
-    #echo $len(screenObjects)
 import macros
 when defined(Create):
   #INTERNALS

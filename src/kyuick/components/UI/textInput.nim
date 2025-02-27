@@ -9,7 +9,6 @@ import ../../utils/rendererUtils
 import label
 
 type TextInput* = ref object of KyuickObject
-  # Position of cursor in the text sequence.
   cursorPosition: int
   # X-length of where the cursor is | Default is width.
   calcLength: int
@@ -52,7 +51,6 @@ proc add*(this: TextInput, chr: char) =
   this.cLength.insert(w, this.cursorPosition)
   inc this.cursorPosition
 proc remove*(this: TextInput) =
-  echo "REMOVE!"
   if len(this.textField.text) == 0:
     return
   if this.cursorPosition == 0:
