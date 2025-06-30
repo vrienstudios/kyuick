@@ -42,7 +42,9 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
   case e.button:
     of 1:
       var obj = mainScene.getClickable(e.x, e.y)
-      if obj == nil: return
+      if obj == nil:
+        echo "clicked nul"
+        return
       inFocus = obj
       obj.leftClick(e)
       return
@@ -199,7 +201,9 @@ proc onVidEnd(video: Video) =
   while idx < mainScene.children.len:
     if mainScene.children[idx] == video: break
     inc idx
-  mainScene.children.delete(idx)
+  mainScene.children.delete(idx) # TODO: WRITE A MANAGER IN THE PARENT TO AUTO REMOVE INFOCUS AND OTHER REFERENCES
+  if inFocus == video:
+    inFocus = nil
   mainScene.renderSaved = false
   echo "deleted video"
   inc vSel
@@ -215,6 +219,7 @@ proc genVideo(fn: string) =
   tVideo.endCallback = onVidEnd
   video = tVideo.addr
   mainScene.children.add tVideo
+  inFocus = tVideo
 proc videoTest(file: string, newCall: bool = false) =
   if newCall:
     echo "Continuing to Next Queued Video"

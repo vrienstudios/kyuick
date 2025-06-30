@@ -40,6 +40,7 @@ type
       fBuffer: Rect
       doResize: bool
       isDone: bool
+      prematureEnd: bool
       destroyed: bool
       returned*: bool
       canWaitThrd: int = 5
@@ -77,7 +78,7 @@ proc add*(queue: PQueue, frame: ptr AVFrame): int =
   inc queue.pos
 proc destroy*(v: Video) =
   # Stop modifications
-  echo "Awaiting Thread Finish"
+  echo "Awaiting Thread Finish, if stalled here, you might need to force quit-- sorry."
   acquire(v.qft)
   acquire(v.vlt)
   acquire(v.alt)
@@ -126,6 +127,11 @@ proc parseCodec*(stream: ptr AVStream): CodecData =
   codecDat.params = stream.codecpar[]
   codecDat.codec = avcodec_find_decoder(stream.codecpar.codec_id)
   return codecDat
+proc keyDown*(obj: KyuickObject, scancode: string) =
+  var this = Video(obj)
+  if scancode == "SDL_SCANCODE_RETURN":
+    this.prematureEnd = true # Send signal
+    echo "signal sent"
 
 proc playAudio(video: Video, frame: AVFrame) =
   var
@@ -185,7 +191,7 @@ proc videoLoop(video: Video) {.thread.} =
     while video.videoQueue[0] != nil:
       if video.startTime == 0:
         break
-      #acquire(video.videoQueue.lock)
+      acquire(video.videoQueue.lock)
       let
         frame = video.videoQueue[0]
         bets = (video.fCounter.float64 * video.vidFPS.float64)
@@ -221,7 +227,7 @@ proc videoLoop(video: Video) {.thread.} =
   release(video.vlt)
 proc fillQueues(video: Video) {.thread.} =
   acquire(video.qft)
-  while av_read_frame(video.pFormatCtx, video.packet) >= 0:
+  while av_read_frame(video.pFormatCtx, video.packet) >= 0 and video.prematureEnd == false:
     while true:
       # AUDIO
       if video.packet.stream_index.int == video.audioInfo.idx:
@@ -322,6 +328,7 @@ proc renderVideo(renderer: RendererPtr, obj: KyuickObject) =
   renderer.copy video.texture, nil, video.rect.addr
 proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, auddev: ptr AudioDeviceID = nil): Video =
   var video: Video = Video()
+  video.onKeyDown = keyDown
   video.auddev = auddev
   assert avformat_open_input(addr video.pFormatCtx, fileName, nil, nil) == 0
   assert avformat_find_stream_info(video.pFormatCtx, nil) == 0
