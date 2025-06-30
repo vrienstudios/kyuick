@@ -5,7 +5,7 @@ import ../kyuickObject
 import sugar, threadpool
 
 const frameLim: int = 100
-type 
+type
     CodecData* = ref object of RootObj
       params*: AVcodecParameters
       codec*: ptr AVCodec
@@ -18,7 +18,7 @@ type
       # Higher -> More Mem usage
       # Higher values help with not having choppy playback
       # and not having to skip frames to let buffer fill
-      limit: int = frameLim     
+      limit: int = frameLim
       lock: Lock
       free: bool
     Video* = ref object of KyuickObject
@@ -54,7 +54,7 @@ proc `[]`(queue: PQueue, idx: int): var ptr AVFrame =
   return queue.frames_test[idx]
 proc `[]=`(queue: PQueue, idx: int, frame: ptr AVFrame) =
   queue.frames_test[idx] = frame
-proc del*(queue: PQueue, pos: int) = 
+proc del*(queue: PQueue, pos: int) =
   acquire(queue.lock)
   let frame = queue[pos]
   if frame != nil:
@@ -121,8 +121,8 @@ proc destroy*(v: Video) =
   v.render = nil
   deinitLock(v.drawLock)
   echo "FINISHED DESTROY"
-proc updYUVTexture*(texture: TexturePtr, rect: ptr Rect, 
-    yPlane: ptr uint8, yPitch: cint, 
+proc updYUVTexture*(texture: TexturePtr, rect: ptr Rect,
+    yPlane: ptr uint8, yPitch: cint,
     uPlane: ptr uint8, uPitch: cint,
     vPlane: ptr uint8, vPitch: cint): cint {.cdecl, importc: "SDL_UpdateYUVTexture", dynlib: "libSDL2.so".}
 proc parseCodec*(stream: ptr AVStream): CodecData =
@@ -170,7 +170,7 @@ proc videoLoop(video: Video) {.thread.} =
       if video.startTime == 0:
         break
       #acquire(video.videoQueue.lock)
-      let 
+      let
         frame = video.videoQueue[0]
         bets = (video.fCounter.float64 * video.vidFPS.float64)
         bE = frame.best_effort_timestamp / 10000
@@ -181,7 +181,7 @@ proc videoLoop(video: Video) {.thread.} =
         output = "dif $#   frame $#|Ots $# vs bts $# COMP $#\tvidTime $# | ECs $#" % [$diff, $video.fCounter, $bE, $bets, $bDiff, $cTime, $aligns]
       #video.startTime = epochTime()
       if diff < -0.01:
-        # Track error in time tracking, and continue, 
+        # Track error in time tracking, and continue,
         #          if we're too early for this frame.
         release(video.videoQueue.lock)
         waitFor sleepAsync(1)
@@ -308,14 +308,14 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
   video.auddev = auddev
   assert avformat_open_input(addr video.pFormatCtx, fileName, nil, nil) == 0
   assert avformat_find_stream_info(video.pFormatCtx, nil) == 0
-  var 
+  var
     videoStream = getAVStream(video.pFormatCtx, 0)
     audioStream = getAVStream(video.pFormatCtx, 1)
-  let 
+  let
     codecParam = videoStream.codecpar
     rational = videoStream.avg_frame_rate
   video.vidFPS = (1.0 / (rational.num.float / rational.den.float))
-  var 
+  var
     videoCodec = parseCodec(videoStream)
     audioCodec = parseCodec(audioStream)
 
@@ -329,7 +329,7 @@ proc generateVideo*(fileName: string, x, y: cint, w: cint = -1, h: cint = -1, au
   assert avcodec_parameters_to_context(video.audioCtx, audioCodec.params.addr) >= 0
   assert avcodec_open2(video.videoCtx, videoCodec.codec, nil) >= 0
   assert avcodec_open2(video.audioCtx, audioCodec.codec, nil) >= 0
-  
+
   #(video.audioCtx.sample_rate.float * 1).cint
   #echo video.audioCtx.sample_rate
   #echo video.audioCtx.channels.uint8

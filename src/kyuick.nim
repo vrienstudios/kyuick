@@ -50,12 +50,12 @@ proc mousePress(e: MouseButtonEventPtr, isDown: bool = true) =
       return
 proc mouseMove(e: MouseMotionEventPtr) =
   var obj = mainScene.getClickable(e.x, e.y)
-  if obj == nil: 
+  if obj == nil:
     if inFocus != nil:
       inFocus.hoverStatus = (false, e)
     return
   if inFocus != nil:
-    if inFocus == obj: 
+    if inFocus == obj:
       inFocus.hoverStatus = (true, e)
       return
   obj.hoverStatus = (true, e)
@@ -63,31 +63,31 @@ proc mouseMove(e: MouseMotionEventPtr) =
   inFocus = obj
 proc showFPS*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var fpsc = 
+  var fpsc =
     newLabel(0, 0, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameRate.addr
   mainScene.children.add fpsc
 proc showFrameTime*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var fpsc = 
+  var fpsc =
     newLabel(0, 18, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFrameTime.addr
   mainScene.children.add fpsc
 proc showTotalMem*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var fpsc = 
+  var fpsc =
     newLabel(0, 36, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentTotalMem.addr
   mainScene.children.add fpsc
 proc showOccMem*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var fpsc = 
+  var fpsc =
     newLabel(0, 52, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentOccMem.addr
   mainScene.children.add fpsc
 proc showFreeMem*() =
   var ffont = fontTracker.getFont("liberation-sans.ttf", cint(18))
-  var fpsc = 
+  var fpsc =
     newLabel(0, 70, "FPSC", [100, 200, 100, 255], ffont, cint(18))
   fpsc.trackNum = currentFreeMem.addr
   mainScene.children.add fpsc
@@ -102,10 +102,11 @@ proc initEngine*() =
     echo "Audio Devices: " & $numAudioDev
     zeroMem(addr audwant, sizeof AudioSpec)
     zeroMem(addr audhave, sizeof AudioSpec)
-    audwant.freq = (44100).cint
+    audwant.freq = (44800).cint
     audwant.format = AUDIO_S32
     audwant.channels = 2
-    mainAuddev = openAudioDevice(getAudioDeviceName(1, 0), 0, addr audwant, addr audhave, 0)
+    # learned that passing nil values will choose default.
+    mainAuddev = openAudioDevice(nil, 0, addr audwant, addr audhave, 0)
     mainAuddev.pauseAudioDevice 0
 proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
@@ -215,7 +216,7 @@ when isMainModule:
   #stdout = logFile
   echo fmt"Compiled Nim Version: {NimVersion} ran on {nowStr}"
   initEngine()
-  mainScene = 
+  mainScene =
     uiCon KyuickObject:
       width WinWidth
       height WinHeight

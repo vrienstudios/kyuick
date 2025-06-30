@@ -1,6 +1,6 @@
 # Introduction
 
-> An expansible game engine built with SDL2 for the production of Grand Strategy Games like Crusader Kings 2, March of The Eagles, and Victoria 2. 
+> An expansible game engine built with SDL2 for the production of Grand Strategy Games like Crusader Kings 2, March of The Eagles, and Victoria 2.
 
 
 ## Progress Tracker --
@@ -14,6 +14,9 @@
 - 'Animatable' Objects [X]
 - Province ColorMap Mapper [X]
 - Video Support [X]
+
+> Video Support Example
+![video example]()
 
 ### WIP:
 - YAML Load/Save System [Continuous]
