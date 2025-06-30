@@ -4,7 +4,7 @@ import os, strformat, times, math, asyncdispatch, locks, times, terminal
 import ../kyuickObject
 import sugar, threadpool
 
-const frameLim: int = 100
+const frameLim: int = 10
 type
     CodecData* = ref object of RootObj
       params*: AVcodecParameters
@@ -12,7 +12,7 @@ type
       idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
-      frames_test: array[frameLim, ptr AVFrame]
+      frames_test: array[frameLim, ptr AVFrame] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
       pos: int = 0
       firstFilled: bool
       # Higher -> More Mem usage
@@ -69,7 +69,7 @@ proc del*(queue: PQueue, pos: int) =
   release(queue.lock)
 proc add*(queue: PQueue, frame: ptr AVFrame): int =
   acquire queue.lock
-  if queue.pos >= 998:
+  if queue.pos >= frameLim - 1:
     return -1
   if queue[queue.pos] != nil:
     av_frame_free(queue[queue.pos].addr)
@@ -140,22 +140,23 @@ proc audioLoop(video: Video) {.thread.} =
         buf: cint = 1
       if av_samples_alloc(audioBuffer.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) < 0:
         video.audioQueue.del(0)
-        if audioBuffer != nil:
-          av_free(audioBuffer)
         break
       dst_samples = video.audioQueue[0].ch_layout.nb_channels * swr_convert(video.resampler, audioBuffer.addr, dst_samples.cint, cast[ptr ptr uint8](video.audioQueue[0].data.addr), video.audioQueue[0].nb_samples)
       if av_samples_fill_arrays(cast[ptr ptr uint8](video.aTFrame[].data.addr), cast[ptr cint](video.aTFrame.linesize.addr), audioBuffer, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) < 0:
         video.audioQueue.del(0)
-        if video.aTFrame != nil:
-          av_frame_free(video.aTFrame.addr)
-        video.aTFrame = av_frame_alloc()
+        #if video.aTFrame != nil:
+        #  av_frame_free(video.aTFrame.addr)
+        #video.aTFrame = av_frame_alloc()
         break
-      if audioBuffer != nil:
-        av_free(audioBuffer)
-      if video.aTFrame != nil:
-        discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
-        av_frame_free(video.aTFrame.addr)
-        video.aTFrame = av_frame_alloc()
+      if video.aTFrame == nil:
+        video.audioQueue.del(0)
+        if audioBuffer != nil: # even though it is also likely 0
+          av_free(audioBuffer)
+        break
+      discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
+      av_frame_free(video.aTFrame.addr)
+      av_free(audioBuffer)
+      video.aTFrame = av_frame_alloc()
       video.audioQueue.del(0)
     waitFor sleepAsync(1)
   waitFor sleepAsync(20)
@@ -248,13 +249,11 @@ proc fillQueues(video: Video) {.thread.} =
         if f == -11:
           # READ MORE
           video.videoQueue.del(video.videoQueue.pos)
-          #video.videoQueue.frames.delete(video.videoQueue.frames.len - 1)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
           release(video.videoQueue.lock)
           break
         if f < 0:
-          #video.videoQueue.frames.delete(video.videoQueue.frames.len - 1)
           video.videoQueue.del(video.videoQueue.pos)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
