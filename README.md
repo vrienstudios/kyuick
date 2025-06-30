@@ -16,7 +16,7 @@
 - Video Support [X]
 
 > Video Support Example
-![video example]()
+![video example](https://github.com/vrienstudios/kyuick/blob/master/src/kyuick/promo/videxample.jpeg?raw=true)
 
 ### WIP:
 - YAML Load/Save System [Continuous]
