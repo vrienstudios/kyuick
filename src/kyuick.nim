@@ -14,8 +14,8 @@ import std/[math, tables, sequtils, os, strutils, times, sugar, streams, strform
 const
   WinXPos* = SDL_WINDOWPOS_CENTERED
   WinYPos* = SDL_WINDOWPOS_CENTERED
-  WinWidth* = 1920#2560
-  WinHeight* = 1080#1440
+  WinWidth* = 2560
+  WinHeight* = 1440
 var
   mainScene*: KyuickObject
   mainAuddev*: AudioDeviceID
@@ -111,7 +111,7 @@ proc initEngine*() =
 proc startGameLoop*(name: string, onInit: proc() = nil) =
   if onInit != nil:
     onInit()
-  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN)
+  let window = sdl2.createWindow(name, WinXPos, WinYPos, WinWidth, WinHeight, SDL_WINDOW_SHOWN or SDL_WINDOW_FULLSCREEN)
   let renderer = createRenderer(window = window, index = -1, Renderer_Accelerated or Renderer_PresentVsync)
   var startCounter = getPerformanceCounter()
   var endCounter = getPerformanceCounter()
@@ -185,8 +185,12 @@ proc usProvinceDetectionTest() =
   var provinces: seq[Province] = getRendererPolys(pdata)
   for n in provinces:
     mainScene.children.add n
-proc videoTest(file: string)
-var dstr: string = ""
+proc videoTest(file: string, newCall: bool = false)
+var
+  vSel: cint = 0
+  dstr: seq[string] = @[]
+  repl: bool = true
+  finished = false
 proc onVidEnd(video: Video) =
   echo video.returned
   if video.returned == true:
@@ -198,17 +202,33 @@ proc onVidEnd(video: Video) =
   mainScene.children.delete(idx)
   mainScene.renderSaved = false
   echo "deleted video"
-  videoTest(dstr)
-proc videoTest(file: string) =
-  echo "Loading Video Test"
-  dstr = file
-  var
-    filename: string = file
-    tVideo: Video = Video()
-  tVideo = generateVideo(filename, 0, 0, WinWidth, WinHeight, addr mainAuddev)
+  inc vSel
+  if finished != true: videoTest(dstr[vSel], true)
+  if idx == dstr.len:
+    if repl: vSel = 0
+    else: finished = true
+proc genVideo(fn: string) =
+  var tVideo: Video = Video()
+  tVideo = generateVideo(fn, 0, 0, WinWidth, WinHeight, addr mainAuddev)
   tVideo.endCallback = onVidEnd
   video = tVideo.addr
   mainScene.children.add tVideo
+proc videoTest(file: string, newCall: bool = false) =
+  if newCall:
+    echo "Continuing to Next Queued Video"
+    genVideo(file)
+    return
+  echo "Loading Video Test"
+  if file.contains('*'):
+    repl = false
+    for i in walkFiles(file):
+      echo i
+      dstr.add i
+    genVideo(dstr[0])
+  else:
+    echo file
+    genVideo(file)
+
 when isMainModule:
   let nowStr = $now()
   var logFile =open("/dev/null")#fmt"{getAppDir()}/logs/{nowStr}.txt", fmWrite)

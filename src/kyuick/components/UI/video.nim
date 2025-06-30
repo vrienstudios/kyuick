@@ -12,7 +12,7 @@ type
       idx*: int
     PQueue = ref object of RootObj
       frames: seq[ptr AVFrame]
-      frames_test: array[frameLim, ptr AVFrame] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+      frames_test: array[frameLim, ptr AVFrame]
       pos: int = 0
       firstFilled: bool
       # Higher -> More Mem usage
@@ -42,7 +42,7 @@ type
       isDone: bool
       destroyed: bool
       returned*: bool
-      canWaitThrd: int = 0
+      canWaitThrd: int = 5
       endCallback*: proc(v: Video)
       auddev: ptr AudioDeviceID
       qft: Lock
@@ -55,7 +55,6 @@ proc `[]`(queue: PQueue, idx: int): var ptr AVFrame =
 proc `[]=`(queue: PQueue, idx: int, frame: ptr AVFrame) =
   queue.frames_test[idx] = frame
 proc del*(queue: PQueue, pos: int) =
-  acquire(queue.lock)
   let frame = queue[pos]
   if frame != nil:
     av_frame_free(frame.addr)
@@ -66,9 +65,7 @@ proc del*(queue: PQueue, pos: int) =
   while idx < queue.limit - 1:
     queue[idx] = queue[idx + 1]
     inc idx
-  release(queue.lock)
 proc add*(queue: PQueue, frame: ptr AVFrame): int =
-  acquire queue.lock
   if queue.pos >= frameLim - 1:
     return -1
   if queue[queue.pos] != nil:
@@ -78,7 +75,6 @@ proc add*(queue: PQueue, frame: ptr AVFrame): int =
     queue[queue.pos] = frame
   result = queue.pos
   inc queue.pos
-  release(queue.lock)
 proc destroy*(v: Video) =
   # Stop modifications
   echo "Awaiting Thread Finish"
@@ -130,15 +126,34 @@ proc parseCodec*(stream: ptr AVStream): CodecData =
   codecDat.params = stream.codecpar[]
   codecDat.codec = avcodec_find_decoder(stream.codecpar.codec_id)
   return codecDat
+
+proc playAudio(video: Video, frame: AVFrame) =
+  var
+    dst_samples = frame.ch_layout.nb_channels * av_rescale_rnd(swr_get_delay(video.resampler, frame.sample_rate) + frame.nb_samples, 44100, frame.sample_rate, AV_ROUND_DOWN)
+    audioBuffer: ptr uint8 = nil
+    buf: cint = 1
+  let lnbSize = av_samples_alloc(audioBuffer.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) # now returns size of array
+  if lnbSize < 0:
+    return # can't alloc, so return
+  dst_samples = frame.ch_layout.nb_channels * swr_convert(video.resampler, audioBuffer.addr, dst_samples.cint, cast[ptr ptr uint8](frame.data.addr), frame.nb_samples)
+  if av_samples_fill_arrays(cast[ptr ptr uint8](video.aTFrame[].data.addr), cast[ptr cint](video.aTFrame.linesize.addr), audioBuffer, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) < 0:
+    return
+  av_freep(audioBuffer.addr)
+  discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
+
 proc audioLoop(video: Video) {.thread.} =
   acquire(video.alt)
+  var normSize: cint = 0
   while video.isDone == false:
     while video.audioQueue[0] != nil:
+      acquire(video.audioQueue.lock)
       var
         dst_samples = video.audioQueue[0].ch_layout.nb_channels * av_rescale_rnd(swr_get_delay(video.resampler, video.audioQueue[0].sample_rate) + video.audioQueue[0].nb_samples, 44100, video.audioQueue[0].sample_rate, AV_ROUND_DOWN)
         audioBuffer: ptr uint8 = nil
         buf: cint = 1
-      if av_samples_alloc(audioBuffer.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1) < 0:
+      let lnbSize = av_samples_alloc(audioBuffer.addr, nil, 1, dst_samples.cint, AV_SAMPLE_FMT_S32, 1)
+      if normSize == 0: normSize = lnbSize
+      if lnbSize < 0:
         video.audioQueue.del(0)
         break
       dst_samples = video.audioQueue[0].ch_layout.nb_channels * swr_convert(video.resampler, audioBuffer.addr, dst_samples.cint, cast[ptr ptr uint8](video.audioQueue[0].data.addr), video.audioQueue[0].nb_samples)
@@ -148,16 +163,16 @@ proc audioLoop(video: Video) {.thread.} =
         #  av_frame_free(video.aTFrame.addr)
         #video.aTFrame = av_frame_alloc()
         break
+      av_freep(audioBuffer.addr)
       if video.aTFrame == nil:
         video.audioQueue.del(0)
-        if audioBuffer != nil: # even though it is also likely 0
-          av_free(audioBuffer)
         break
+      release(video.audioQueue.lock)
       discard video.auddev[].queueAudio(video.aTFrame[].data[0], uint32 video.aTFrame[].linesize[0])
       av_frame_free(video.aTFrame.addr)
-      av_free(audioBuffer)
       video.aTFrame = av_frame_alloc()
       video.audioQueue.del(0)
+      break
     waitFor sleepAsync(1)
   waitFor sleepAsync(20)
   release(video.alt)
@@ -199,7 +214,7 @@ proc videoLoop(video: Video) {.thread.} =
       #eraseLine(stdout)
       #styledWriteLine(stdout, $output)
       #cursorUp 1
-      echo output
+      #echo output
       video.videoQueue.del(0)
       release(video.videoQueue.lock)
       waitFor sleepAsync(5)
@@ -210,28 +225,32 @@ proc fillQueues(video: Video) {.thread.} =
     while true:
       # AUDIO
       if video.packet.stream_index.int == video.audioInfo.idx:
-        if video.audioQueue.pos > video.audioQueue.limit - 2:
+        if video.audioQueue.pos > video.audioQueue.limit:
           continue
         if avcodec_send_packet(video.audioCtx, video.packet) < 0:
           echo "ERR SENDING PACKET"
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
           break
+        acquire(video.audioQueue.lock)
         let idx = video.audioQueue.add av_frame_alloc()
         let f = avcodec_receive_frame(video.audioCtx, video.audioQueue[idx])
         if f == -11:
           # READ MORE
-          video.videoQueue.del(idx)
+          video.audioQueue.del(idx)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
+          release(video.audioQueue.lock)
           break
         if f < 0:
-          video.videoQueue.del(idx)
+          video.audioQueue.del(idx)
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
+          release(video.audioQueue.lock)
           continue
         av_packet_free(video.packet.addr)
         video.packet = av_packet_alloc()
+        release(video.audioQueue.lock)
         break
       # VIDEO
       if video.packet.stream_index.int == video.videoInfo.idx:
@@ -242,9 +261,8 @@ proc fillQueues(video: Video) {.thread.} =
           av_packet_free(video.packet.addr)
           video.packet = av_packet_alloc()
           break
-        #acquire(video.videoQueue.lock)
+        acquire(video.videoQueue.lock)
         let idx = video.videoQueue.add av_frame_alloc()
-        #video.videoQueue.frames.add av_frame_alloc()
         let f = avcodec_receive_frame(video.videoCtx, video.videoQueue[idx])
         if f == -11:
           # READ MORE
