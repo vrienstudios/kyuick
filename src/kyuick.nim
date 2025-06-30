@@ -203,10 +203,12 @@ proc onVidEnd(video: Video) =
   mainScene.renderSaved = false
   echo "deleted video"
   inc vSel
-  if finished != true: videoTest(dstr[vSel], true)
-  if idx == dstr.len:
+  if vSel >= dstr.len:
     if repl: vSel = 0
-    else: finished = true
+    else:
+      finished = true
+      return
+  if finished != true: videoTest(dstr[vSel], true)
 proc genVideo(fn: string) =
   var tVideo: Video = Video()
   tVideo = generateVideo(fn, 0, 0, WinWidth, WinHeight, addr mainAuddev)
